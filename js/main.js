@@ -236,6 +236,7 @@ function renderMedia(project) {
   img.src = getImageSrc(project);
   img.alt = project.title;
   img.loading = "lazy";
+  if (project.imagePosition) img.style.objectPosition = project.imagePosition;
   media.appendChild(img);
 
   const fileInput = document.createElement("input");

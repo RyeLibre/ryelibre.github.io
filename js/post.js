@@ -21,6 +21,7 @@ function buildCoverMedia(project) {
   const img = document.createElement("img");
   img.src = getImageSrc(project);
   img.alt = project.title;
+  if (project.imagePosition) img.style.objectPosition = project.imagePosition;
   media.appendChild(img);
 
   const fileInput = document.createElement("input");

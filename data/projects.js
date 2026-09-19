@@ -8,6 +8,9 @@
 // auto-generated placeholder image (or a photo you picked with "Change photo").
 // `images` is an optional array of extra photo paths shown in the gallery on
 // the post's own page (post.html?id=...).
+// `imagePosition` is optional CSS object-position (e.g. "top", "bottom",
+// "20% 80%") for the cover photo — useful for tall images where the default
+// center crop hides something important, like a title at the top of a poster.
 // `location` is a city name (e.g. "Tokyo") shown in the pin map at the bottom
 // of the home page. Leave it "" to skip the pin. See data/city-coords.js for
 // the list of cities the map knows how to place — add yours there if it's
@@ -752,8 +755,9 @@ const PROJECTS = [
     "date": "2026-09-19",
     "description": "Feature documentary presented by Living Films  Produced by Sakse",
     "link": "",
-    "image": "",
+    "image": "images/the-laiza-hotel.jpg",
     "images": [],
+    "imagePosition": "top",
     "location": "",
     "place": "",
     "featured": true
@@ -791,7 +795,7 @@ const PROJECTS = [
     "date": "2020-06-19",
     "description": "Funky fashion exhibition in collaboration with the German Consulate of Chiang Mai",
     "link": "",
-    "image": "",
+    "image": "images/east-german-fashion.jpg",
     "images": [],
     "location": "Chiang Mai",
     "place": "Phi Sua House",
