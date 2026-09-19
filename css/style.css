@@ -350,6 +350,11 @@ button {
   text-align: center;
   padding-bottom: 10px;
   color: #1c1c1a;
+  line-height: 1.3rem;
+  min-height: 2.6rem; /* reserves space for 2 lines so every card's red line lands at the same spot, whether the title wraps or not */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .index-card-red-line {
