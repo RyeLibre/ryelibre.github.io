@@ -70,7 +70,7 @@ const TAG_INTROS = {
     "A record of films and video work that got shown somewhere — festivals, one-off screenings, or informal viewings.\n\nExpect notes on the event itself alongside the work that screened.\n\n*Replace this intro with your own description of the Screenings category.*",
 
   "Steal this idea":
-    "Half-finished ideas and open prompts, posted on purpose so someone else might run with them.\n\nNothing here is precious — take it, change it, make it better.\n\n*Replace this intro with your own description of the Steal this idea category.*",
+    "1/2 baked ideas, posted so someone else might run with them or support them.\n\nGet in touch for details.",
 
   "Adobe Abode":
     "Experiments in building with earth — adobe, cob, rammed earth — as a low-impact alternative to conventional construction.\n\nPosts cover material tests, small structures, and the reasoning behind building this way.\n\n*Replace this intro with your own description of the Adobe Abode category.*",
