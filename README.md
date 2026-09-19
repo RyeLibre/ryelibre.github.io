@@ -1,0 +1,151 @@
+# Portfolio Site
+
+A basic portfolio site with a left sidebar of featured hashtags for filtering posts. Plain HTML/CSS/JS —
+no build step, no dependencies to install. Post descriptions support Markdown (rendered client-side with
+[marked](https://github.com/markedjs/marked)).
+
+The sample posts in `data/projects.js` are placeholders — replace their titles, descriptions, links, and
+images with your own work.
+
+## Structure
+
+```
+index.html          Home page (header, sidebar, post grid, footer)
+post.html            Single-post page (post.html?id=...) — cover photo, full text, gallery
+css/style.css        Styling (auto light/dark based on OS)
+js/shared.js          Data/image helpers shared by index.html and post.html
+js/main.js            Renders the post grid and sidebar on index.html
+js/post.js            Renders one post's detail page on post.html
+data/tags.js          Featured hashtags shown in the left sidebar
+data/tag-intros.js    Intro text shown above the grid when one tag is selected
+data/projects.js      Your posts — edit this to add/change posts
+```
+
+## Adding a post
+
+Open [`data/projects.js`](data/projects.js) and add an entry to the `PROJECTS` array:
+
+```js
+{
+  "id": "post-title",
+  "title": "Post Title",
+  "categories": ["Design", "Film"],
+  "date": "2026-01",
+  "description": "Supports **Markdown** — bullet lists, `code`, links, etc.",
+  "link": "https://example.com/your-work",
+  "image": "",
+  "images": []
+}
+```
+
+- `id` must be unique and shouldn't change once set — it's how the site remembers which photo(s) you picked for that post (see **Post images** below). It's also the post's URL: `post.html?id=post-title`.
+- `categories` matches (case-insensitively) against the hashtags in `data/tags.js`. A post can have any tags, including ones not in the sidebar — they just won't have a dedicated filter button yet.
+- `date` is used for sorting (newest first); any sortable string like `"2026-01"` works.
+- `link` is an optional external URL (e.g. a live site or repo) — shown as "Visit external link" on the post's own page.
+- `image` / `images` — see **Post images** below.
+
+## Post pages
+
+Every post has its own page at `post.html?id=<id>` — clicking a post's title or its "View post →"
+link on the home page goes there. The post page shows the cover photo, full description, an optional
+external link, and a photo gallery. Each tag on the post links back to `index.html?tag=<tag>`, which
+pre-filters the home page to that category.
+
+## Post images
+
+Every post shows a cover image. If `image` is empty, the site auto-generates a simple placeholder
+(a colored tile with the post's initials, color derived from the title) so nothing looks broken. The
+post's own page also has a **Gallery** section for additional photos, driven by the `images` array.
+
+To set real photos, you have two options:
+- **Permanent (shows for all visitors):** put image files in an `images/` folder in the project, then
+  set `"image": "images/cover.jpg"` for the cover and/or list more paths in `"images": ["images/a.jpg", "images/b.jpg"]`
+  for the gallery, in `data/projects.js`.
+- **Quick local preview:** click **"Change photo"** (cover, on the home page or the post page) or
+  **"+ Add photo to gallery"** (on the post page) to pick a file from your computer. It updates instantly
+  and is remembered in *your browser only* (saved to `localStorage`, not to a file) — click **"Reset"**
+  or **"Remove"** to undo. This is meant for previewing; it won't appear for site visitors, and
+  large/many photos can hit browser storage limits. For photos everyone sees, use the permanent option
+  above instead.
+
+Either way, any photo picked through **"Change photo"** or **"+ Add photo to gallery"** is automatically
+resized in your browser before saving: scaled down so neither dimension exceeds 2200px (smaller images
+are left alone) and re-encoded as a high-quality JPEG (see `resizeImageForWeb` in `js/shared.js` if you
+want to change the 2200px / quality numbers). Files over **10MB** are rejected upfront with a message
+asking for a smaller one — browsers cap `localStorage` at just a few MB total across *all* your draft
+photos combined, so this catches oversized uploads (e.g. an unedited camera photo) before they eat that
+budget. If you keep hitting the storage-full alert even with photos under 10MB, you've likely saved
+several images already — use the permanent `images/` folder option instead, or "Reset"/"Remove" some
+existing local photos to free up space.
+
+## Category intro text
+
+When exactly one tag is selected, a short intro appears above the grid — a few lines about that
+category. Open [`data/tag-intros.js`](data/tag-intros.js) and edit the `TAG_INTROS` object to change
+it (supports Markdown, same as post descriptions). A tag with no entry there just shows the grid with
+no intro — nothing breaks, so you don't need one for every tag (e.g. tags added via "+ Add tag" won't
+have one until you write it).
+
+## Adding/editing featured hashtags
+
+Open [`data/tags.js`](data/tags.js) and edit the `FEATURED_TAGS` array — this controls exactly what shows in the left sidebar, in order. It's independent from what tags your posts actually use, so you can curate it by hand.
+
+## Adding a post or tag from the site itself
+
+The **"+ New post"** button (above the grid) and **"+ Add tag"** button (in the sidebar) let you add
+content without touching code. Because this is a static site with no backend or database, anything
+you add this way is saved as a **draft in your browser's `localStorage`** — it shows up for you
+immediately (marked "Draft", with a "Remove draft" option) but isn't visible to anyone visiting the
+live site.
+
+To actually publish a draft:
+1. Add it through the "+" button.
+2. A box appears with a ready-to-paste code snippet — copy it (it's pre-selected).
+3. Paste it into the `PROJECTS` array in `data/projects.js` (for a post) or the `FEATURED_TAGS` array
+   in `data/tags.js` (for a tag).
+4. Commit and push — see **Deploying to GitHub Pages** below.
+
+Tagging a new post with a hashtag that isn't in the sidebar yet automatically adds it as a draft tag too.
+
+### Publishing everything at once
+
+Doing the copy-paste above one item at a time gets tedious once you've added several drafts and
+photos. Instead, click **"Export my drafts & photos"** in the sidebar — it downloads one JSON file
+with every draft post, draft tag, and locally-chosen photo (cover and gallery, including photos set on
+posts that already exist in `data/projects.js`). Hand that file to whoever is editing the code (or to
+an AI assistant working in this project) and ask them to "bake it in" — it has everything needed to
+write real entries into `data/projects.js` / `data/tags.js` and save the embedded photos as real files
+under `images/`, without you re-entering anything by hand.
+
+## Customizing
+
+- Edit the name, tagline, and links in `index.html` (`<header class="site-header">`).
+- Colors live as CSS variables at the top of `css/style.css` (`:root` for dark mode, the `@media (prefers-color-scheme: light)` block for light mode).
+
+## Running locally
+
+Just double-click `index.html`, or open it in a browser — no server or build step needed.
+(Project data loads via a plain `<script>` tag rather than `fetch()`, so it works fine over `file://`.)
+
+## Deploying to GitHub Pages
+
+This repo is set up as `ryelibre.github.io` — a special repo name GitHub Pages serves automatically at
+your account's root domain, no extra config needed.
+
+1. Create an empty repo on GitHub named exactly `ryelibre.github.io`.
+2. Push this folder to it:
+   ```bash
+   git init
+   git add .
+   git commit -m "Initial portfolio site"
+   git branch -M main
+   git remote add origin https://github.com/ryelibre/ryelibre.github.io.git
+   git push -u origin main
+   ```
+3. Check **Settings → Pages** on the repo — for a `<username>.github.io` repo this is usually already
+   enabled (source: `main` / `/ (root)`); if not, turn it on there.
+4. Your site will be live at `https://ryelibre.github.io/` (can take a minute or two after the first push).
+
+## License
+
+Feel free to reuse this template for your own portfolio.

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ryan Libre — Portfolio</title>
+<meta name="description" content="Portfolio of work by Ryan Libre.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="data:,">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <h1 class="site-title">Ryan Libre</h1>
+    <p class="site-subtitle">Work, notes, and things I've made. Edit this line in <code>index.html</code>.</p>
+    <nav class="site-links">
+      <a href="https://github.com/ryelibre" target="_blank" rel="noopener">GitHub</a>
+      <a href="mailto:ryanlibre@gmail.com">Email</a>
+      <!-- Add more links: LinkedIn, resume PDF, etc. -->
+    </nav>
+  </div>
+</header>
+
+<main class="wrap layout">
+
+  <aside class="sidebar" aria-label="Filter posts by tag">
+    <h2 class="sidebar-title">Tags</h2>
+    <nav id="tag-list" class="tag-list">
+      <!-- Tag buttons injected by js/main.js -->
+    </nav>
+    <button id="add-tag-btn" type="button" class="add-btn">+ Add tag</button>
+    <button id="export-drafts-btn" type="button" class="add-btn">Export my drafts &amp; photos</button>
+  </aside>
+
+  <div class="content">
+    <div class="content-toolbar">
+      <button id="add-post-btn" type="button" class="add-btn">+ New post</button>
+    </div>
+
+    <div id="category-intro" class="category-intro" hidden></div>
+
+    <section id="project-grid" class="project-grid" aria-live="polite">
+      <!-- Post cards injected by js/main.js -->
+    </section>
+
+    <p id="empty-state" class="empty-state" hidden>No posts match the selected tags.</p>
+  </div>
+
+</main>
+
+<section class="tag-map-section wrap" aria-label="How the tags connect">
+  <h2 class="section-title">How the tags connect</h2>
+  <p class="section-hint">A line connects two tags whenever a post carries both. Thicker lines mean more shared posts — click a tag to filter.</p>
+  <div id="tag-map" class="tag-map"></div>
+</section>
+
+<dialog id="tag-dialog" class="dialog">
+  <form id="tag-form" class="dialog-form">
+    <h3>Add a tag</h3>
+    <label for="tag-name">Tag name</label>
+    <input id="tag-name" type="text" placeholder="e.g. Travel" required autocomplete="off">
+    <div class="dialog-actions">
+      <button type="button" class="btn-secondary" data-close-dialog>Cancel</button>
+      <button type="submit" class="btn-primary">Add tag</button>
+    </div>
+  </form>
+  <div id="tag-generated" class="generated-code" hidden>
+    <p>Paste this into <code>FEATURED_TAGS</code> in <code>data/tags.js</code> to make it permanent for everyone:</p>
+    <textarea readonly rows="2"></textarea>
+  </div>
+</dialog>
+
+<dialog id="post-dialog" class="dialog">
+  <form id="post-form" class="dialog-form">
+    <h3>New post</h3>
+    <label for="post-title">Title</label>
+    <input id="post-title" type="text" required autocomplete="off">
+
+    <label for="post-tags">Tags (comma-separated)</label>
+    <input id="post-tags" type="text" placeholder="Design, Film" autocomplete="off">
+
+    <label for="post-date">Date</label>
+    <input id="post-date" type="date">
+
+    <label for="post-link">Link (optional)</label>
+    <input id="post-link" type="url" placeholder="https://..." autocomplete="off">
+
+    <label for="post-description">Description (Markdown supported)</label>
+    <textarea id="post-description" rows="4"></textarea>
+
+    <div class="dialog-actions">
+      <button type="button" class="btn-secondary" data-close-dialog>Cancel</button>
+      <button type="submit" class="btn-primary">Add post</button>
+    </div>
+  </form>
+  <div id="post-generated" class="generated-code" hidden>
+    <p>Paste this into the <code>PROJECTS</code> array in <code>data/projects.js</code> to make it permanent for everyone:</p>
+    <textarea readonly rows="9"></textarea>
+  </div>
+</dialog>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>Built with plain HTML/CSS/JS · Hosted on GitHub Pages</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="data/tags.js"></script>
+<script src="data/tag-intros.js"></script>
+<script src="data/projects.js"></script>
+<script src="js/shared.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
