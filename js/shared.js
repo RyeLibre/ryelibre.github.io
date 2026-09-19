@@ -244,9 +244,18 @@ function updatePost(id, fields) {
   }
 }
 
+// Featured posts sort first (within any tag, or in the unfiltered "All
+// Projects" view a new visitor lands on), then newest-first by date.
+function compareProjects(a, b) {
+  const fa = a.featured ? 1 : 0;
+  const fb = b.featured ? 1 : 0;
+  if (fa !== fb) return fb - fa;
+  return (b.date || "").localeCompare(a.date || "");
+}
+
 function getAllProjects() {
   const projects = [...PROJECTS, ...loadDraftPosts()].map(applyPostEdit);
-  projects.sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+  projects.sort(compareProjects);
   return projects;
 }
 

@@ -22,4 +22,5 @@ const FEATURED_TAGS = [
   "Studios",
   "Sakse",
   "Bio",
+  "Recognitions",
 ];

@@ -58,9 +58,9 @@
   <div id="tag-map" class="tag-map"></div>
 </section>
 
-<section class="location-map-section wrap" aria-label="Where these were made">
-  <h2 class="section-title">Where these were made</h2>
-  <p class="section-hint">One pin per city — bigger pins mean more posts from that place. Set a post's location from the "+ New post" / "Edit" dialog.</p>
+<section class="location-map-section wrap" aria-label="Project Locations">
+  <h2 class="section-title">Project Locations</h2>
+  <p class="section-hint">One pin per city — bigger pins mean more posts</p>
   <div id="location-map" class="location-map"></div>
 
   <h2 class="section-title timeline-title">Timeline</h2>
@@ -108,6 +108,11 @@
     <label for="post-description">Description (Markdown supported)</label>
     <textarea id="post-description" rows="4"></textarea>
 
+    <label class="featured-check-label">
+      <input id="post-featured" type="checkbox">
+      Featured — show at the top of its tag(s), and of "All Projects"
+    </label>
+
     <div class="dialog-actions">
       <button type="button" class="btn-secondary" data-close-dialog>Cancel</button>
       <button type="submit" id="post-submit-btn" class="btn-primary">Add post</button>
@@ -128,6 +133,7 @@
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="data/tags.js"></script>
 <script src="data/tag-intros.js"></script>
+<script src="data/subtags.js"></script>
 <script src="data/city-coords.js"></script>
 <script src="data/projects.js"></script>
 <script src="js/shared.js"></script>

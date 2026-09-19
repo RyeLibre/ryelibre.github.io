@@ -199,6 +199,13 @@ function renderPost() {
   title.textContent = project.title;
   headerRow.appendChild(title);
 
+  if (project.featured) {
+    const badge = document.createElement("span");
+    badge.className = "featured-badge";
+    badge.textContent = "Featured";
+    headerRow.appendChild(badge);
+  }
+
   if (isDraft) {
     const badge = document.createElement("span");
     badge.className = "draft-badge";

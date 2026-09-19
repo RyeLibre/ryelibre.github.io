@@ -18,7 +18,7 @@ js/main.js            Renders the post grid and sidebar on index.html
 js/post.js            Renders one post's detail page on post.html
 data/tags.js          Featured hashtags shown in the left sidebar
 data/tag-intros.js    Intro text shown above the grid when one tag is selected
-data/city-coords.js   City name -> map position, used by the "Where these were made" pin map
+data/city-coords.js   City name -> map position, used by the "Project Locations" pin map
 data/projects.js      Your posts — edit this to add/change posts
 ```
 
@@ -36,7 +36,8 @@ Open [`data/projects.js`](data/projects.js) and add an entry to the `PROJECTS` a
   "link": "https://example.com/your-work",
   "image": "",
   "images": [],
-  "location": ""
+  "location": "",
+  "featured": false
 }
 ```
 
@@ -45,6 +46,10 @@ Open [`data/projects.js`](data/projects.js) and add an entry to the `PROJECTS` a
 - `date` is used for sorting (newest first); any sortable string like `"2026-01"` works.
 - `link` is an optional external URL (e.g. a live site or repo) — shown as "Visit external link" on the post's own page.
 - `location` is an optional city name (e.g. `"Tokyo"`) — see **Location map** below.
+- `featured: true` moves a post to the top of "All Projects" (what a first-time visitor sees) and to
+  the top of every tag view it belongs to, ahead of the normal newest-first order. Toggle it with the
+  "Featured" checkbox in the "+ New post" / "Edit" dialog — it also gets a "Featured" badge on the card
+  and on the post's own page.
 - `image` / `images` — see **Post images** below.
 
 ## Post pages
@@ -83,19 +88,23 @@ existing local photos to free up space.
 
 ## Location map
 
-Below the tag mind map is a simple pin map ("Where these were made") — set a post's `location` (a
+Below the tag mind map is a simple pin map ("Project Locations") — set a post's `location` (a
 city name) and it gets a pin, sized by how many posts share that city. It's **not real geocoding** —
 there's no address lookup or precise coordinates, just a small hand-picked table in
-[`data/city-coords.js`](data/city-coords.js) mapping city names to a position on a simplified,
-stylized world map (the outlines are illustrative, not surveyed).
+[`data/city-coords.js`](data/city-coords.js) mapping city names to a position on the map image.
 
 If you use a city that isn't in that table, the post still saves fine — it just won't get a pin, and
 shows up in a small note under the map ("Not shown on the map yet…") so you know to add it. To add a
 city, open `data/city-coords.js` and add an entry using the formula in its comments (based on the
 city's real latitude/longitude).
 
-The map itself is drawn as a "wireframe" — a dashed lat/long grid and dashed continent outlines,
-generated in `js/main.js` (`renderLocationMap`), not an image file.
+The map background is a real image, [`images/world-map.png`](images/world-map.png) — pins are
+positioned over it with plain CSS (percentage `left`/`top`), computed in `js/main.js`
+(`renderLocationMap`). To swap in a different map image, replace that file and keep the same
+filename, or update the `<img src>` in `renderLocationMap` if you rename it. Since pin positions are
+computed from the 1000×500 coordinate grid in `data/city-coords.js` (not from the image's actual
+pixel dimensions), a very differently-shaped replacement map may need those coordinates adjusted to
+line back up.
 
 ## Timeline
 

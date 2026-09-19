@@ -8,6 +8,7 @@ const state = {
   draftTagKeys: new Set(), // lowercase tag names added as drafts
   draftPostIds: new Set(),
   activeTags: new Set(), // lowercase tag names currently filtering
+  activeSubtag: null, // lowercase sub-tag narrowing the grid without changing the heading
 };
 
 let editingProjectId = null; // set while the post dialog is in "edit" mode
@@ -105,6 +106,7 @@ function renderTagList() {
   const allBtn = makeTagButton("All Projects", state.activeTags.size === 0);
   allBtn.addEventListener("click", () => {
     state.activeTags.clear();
+    state.activeSubtag = null;
     renderTagList();
     renderProjects();
     renderTagMap();
@@ -124,6 +126,7 @@ function renderTagList() {
       } else {
         state.activeTags.add(key);
       }
+      state.activeSubtag = null;
       renderTagList();
       renderProjects();
       renderTagMap();
@@ -157,8 +160,9 @@ function makeTagButton(label, active) {
 
 function renderProjects() {
   const filtered = state.projects.filter((p) => {
-    if (state.activeTags.size === 0) return true;
     const categories = (p.categories || []).map((c) => c.toLowerCase());
+    if (state.activeSubtag) return categories.includes(state.activeSubtag);
+    if (state.activeTags.size === 0) return true;
     return categories.some((c) => state.activeTags.has(c));
   });
 
@@ -192,10 +196,36 @@ function renderCategoryIntro() {
     return;
   }
 
+  const subtags =
+    (typeof TAG_SUBTAGS !== "undefined" &&
+      (TAG_SUBTAGS[activeTag] || TAG_SUBTAGS[introKey])) ||
+    null;
+
+  const subtagsHtml =
+    subtags && subtags.length
+      ? `<div class="category-subtags">${subtags
+          .map((s) => {
+            const isActive = state.activeTags.has(s.toLowerCase());
+            return `<span class="subtag-row"><button type="button" class="subtag-btn${isActive ? " active" : ""}" data-subtag="${escapeHtml(s)}">${escapeHtml(s)}</button></span>`;
+          })
+          .join("")}</div>`
+      : "";
+
   categoryIntroEl.hidden = false;
   categoryIntroEl.innerHTML =
     `<h2 class="category-intro-title">${escapeHtml(activeTag)}</h2>` +
+    subtagsHtml +
     `<div class="category-intro-text">${window.marked ? marked.parse(intro) : intro}</div>`;
+
+  if (subtags && subtags.length) {
+    categoryIntroEl.querySelectorAll(".subtag-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const key = btn.getAttribute("data-subtag").toLowerCase();
+        state.activeSubtag = state.activeSubtag === key ? null : key;
+        renderProjects();
+      });
+    });
+  }
 }
 
 function renderMedia(project) {
@@ -273,6 +303,13 @@ function renderCard(project) {
     titleRow.appendChild(badge);
   }
   card.appendChild(titleRow);
+
+  if (project.featured) {
+    const badge = document.createElement("span");
+    badge.className = "featured-badge featured-badge-corner";
+    badge.textContent = "Featured";
+    card.appendChild(badge);
+  }
 
   if (project.date || project.location) {
     const meta = document.createElement("div");
@@ -426,6 +463,7 @@ function renderTagMap() {
       } else {
         state.activeTags.add(key);
       }
+      state.activeSubtag = null;
       renderTagList();
       renderProjects();
       renderTagMap();
@@ -441,16 +479,6 @@ function renderTagMap() {
 
   renderLocationMap();
 }
-
-// Rough continent silhouettes for a 1000x500 map — stylized, not surveyed.
-const CONTINENT_SHAPES = [
-  "90,70 150,55 210,60 250,80 275,110 280,150 260,190 230,220 200,235 175,225 150,195 120,165 100,130 85,100",
-  "190,235 230,235 260,260 275,300 270,340 250,380 220,410 195,415 175,390 165,350 170,300 175,260",
-  "470,70 520,60 560,70 585,90 590,115 570,135 540,145 505,140 480,125 465,100",
-  "480,150 540,150 580,165 605,200 615,250 605,300 590,340 560,380 530,395 505,370 490,330 480,280 475,220 478,180",
-  "590,65 650,55 720,55 780,60 830,70 880,90 920,120 930,150 910,180 880,200 850,220 820,240 800,260 780,270 750,260 720,240 700,220 680,200 650,180 620,150 600,120 590,90",
-  "800,320 850,315 890,325 910,345 900,370 870,385 835,385 805,370 795,345",
-];
 
 function renderLocationMap() {
   const mapEl = document.getElementById("location-map");
@@ -476,25 +504,20 @@ function renderLocationMap() {
     }
   });
 
-  const continents = CONTINENT_SHAPES.map((points) => `<polygon class="continent-shape" points="${points}"></polygon>`).join("");
-
-  const graticuleLines = [];
-  for (let x = 0; x <= 1000; x += 100) {
-    graticuleLines.push(`<line x1="${x}" y1="0" x2="${x}" y2="500" class="graticule-line"></line>`);
-  }
-  for (let y = 0; y <= 500; y += 100) {
-    graticuleLines.push(`<line x1="0" y1="${y}" x2="1000" y2="${y}" class="graticule-line"></line>`);
-  }
-
+  // CITY_COORDS is plotted on a 1000x500 grid — convert to percentages so
+  // pins land in the same place regardless of the map image's own size.
   const pinEls = pins
     .map(({ label, count, x, y }) => {
-      const r = 5 + Math.min(count * 2.5, 14);
+      const size = 10 + Math.min(count * 4, 26);
+      const left = (x / 1000) * 100;
+      const top = (y / 500) * 100;
       const label2 = escapeHtml(label);
+      const titleText = `${label2} — ${count} post${count === 1 ? "" : "s"}`;
       return `
-        <g class="location-pin">
-          <circle cx="${x}" cy="${y}" r="${r}"><title>${label2} — ${count} post${count === 1 ? "" : "s"}</title></circle>
-          <text x="${x}" y="${y - r - 6}" text-anchor="middle">${label2}</text>
-        </g>`;
+        <div class="location-pin" style="left:${left.toFixed(2)}%; top:${top.toFixed(2)}%;">
+          <span class="location-pin-dot" style="width:${size}px; height:${size}px;" title="${titleText}"></span>
+          <span class="location-pin-label">${label2}</span>
+        </div>`;
     })
     .join("");
 
@@ -503,12 +526,10 @@ function renderLocationMap() {
     : "";
 
   mapEl.innerHTML = `
-    <svg viewBox="0 0 1000 500" class="location-map-svg" xmlns="http://www.w3.org/2000/svg">
-      <rect x="0.5" y="0.5" width="999" height="499" class="map-frame"></rect>
-      <g class="graticule">${graticuleLines.join("")}</g>
-      <g class="continents">${continents}</g>
-      <g class="location-pins">${pinEls}</g>
-    </svg>
+    <div class="location-map-inner">
+      <img src="images/world-map.png" alt="World map" class="location-map-img">
+      <div class="location-pins-overlay">${pinEls}</div>
+    </div>
     ${unmappedNote}`;
 
   renderTimeline();
@@ -631,6 +652,7 @@ function openPostDialog(project) {
   document.getElementById("post-location").value = project ? project.location || "" : "";
   document.getElementById("post-description").value = project ? project.description || "" : "";
   document.getElementById("post-tags-other").value = "";
+  document.getElementById("post-featured").checked = project ? !!project.featured : false;
 
   const selected = new Set((project ? project.categories || [] : []).map((c) => c.toLowerCase()));
   renderTagChecklist(document.getElementById("post-tag-checklist"), selected);
@@ -665,6 +687,7 @@ function bindDialogs() {
       } else {
         state.activeTags.add(key);
       }
+      state.activeSubtag = null;
       renderTagList();
       renderProjects();
       renderTagMap();
@@ -705,6 +728,7 @@ function bindDialogs() {
       description: document.getElementById("post-description").value.trim(),
       link: document.getElementById("post-link").value.trim(),
       location: document.getElementById("post-location").value.trim(),
+      featured: document.getElementById("post-featured").checked,
     };
 
     categories.forEach((c) => addTagToState(c));
@@ -713,7 +737,7 @@ function bindDialogs() {
       updatePost(editingProjectId, fields);
       const updated = { ...state.projects.find((p) => p.id === editingProjectId), ...fields };
       state.projects = state.projects.map((p) => (p.id === editingProjectId ? updated : p));
-      state.projects.sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+      state.projects.sort(compareProjects);
 
       renderTagList();
       renderProjects();
@@ -728,7 +752,7 @@ function bindDialogs() {
 
       state.projects.push(post);
       state.draftPostIds.add(post.id);
-      state.projects.sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+      state.projects.sort(compareProjects);
 
       renderTagList();
       renderProjects();
@@ -761,6 +785,7 @@ function showGeneratedPost(post) {
     image: "",
     images: [],
     location: post.location || "",
+    featured: !!post.featured,
   };
   const lines = JSON.stringify(snippet, null, 2).split("\n");
   textarea.value = "  " + lines.join("\n  ") + ",";
@@ -793,6 +818,7 @@ function showGeneratedEdit(project) {
     image: project.image || "",
     images: project.images || [],
     location: project.location || "",
+    featured: !!project.featured,
   };
   const lines = JSON.stringify(snippet, null, 2).split("\n");
   textarea.value = "  " + lines.join("\n  ") + ",";

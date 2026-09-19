@@ -12,6 +12,8 @@
 // of the home page. Leave it "" to skip the pin. See data/city-coords.js for
 // the list of cities the map knows how to place — add yours there if it's
 // missing.
+// `featured: true` pins a post to the top of "All Projects" and to the top
+// of every tag view it belongs to (before the normal newest-first sort).
 const PROJECTS = [
   {
     "id": "kachin-highlands",
@@ -22,7 +24,8 @@ const PROJECTS = [
     "link": "",
     "image": "",
     "images": [],
-    "location": ""
+    "location": "",
+    "featured": false
   },
   {
     "id": "object-of-care-exhibition",
@@ -33,7 +36,8 @@ const PROJECTS = [
     "link": "",
     "image": "",
     "images": [],
-    "location": ""
+    "location": "",
+    "featured": false
   },
   {
     "id": "interface-sketches",
@@ -44,7 +48,8 @@ const PROJECTS = [
     "link": "",
     "image": "",
     "images": [],
-    "location": ""
+    "location": "",
+    "featured": false
   },
   {
     "id": "short-film-passage",
@@ -55,7 +60,8 @@ const PROJECTS = [
     "link": "",
     "image": "",
     "images": [],
-    "location": ""
+    "location": "",
+    "featured": false
   },
   {
     "id": "studio-notes",
@@ -66,7 +72,8 @@ const PROJECTS = [
     "link": "",
     "image": "",
     "images": [],
-    "location": ""
+    "location": "",
+    "featured": false
   },
   {
     "id": "earthen-abode",
@@ -77,7 +84,8 @@ const PROJECTS = [
     "link": "",
     "image": "",
     "images": [],
-    "location": ""
+    "location": "",
+    "featured": true
   },
   {
     "id": "mountain-passes",
@@ -88,7 +96,8 @@ const PROJECTS = [
     "link": "",
     "image": "",
     "images": [],
-    "location": ""
+    "location": "",
+    "featured": false
   },
   {
     "id": "peace-work-dialogues",
@@ -99,7 +108,8 @@ const PROJECTS = [
     "link": "",
     "image": "",
     "images": [],
-    "location": ""
+    "location": "",
+    "featured": false
   },
   {
     "id": "unicorn-liberation-front-zine",
@@ -110,7 +120,8 @@ const PROJECTS = [
     "link": "",
     "image": "",
     "images": [],
-    "location": ""
+    "location": "",
+    "featured": false
   },
   {
     "id": "lubecker-hutchen-global-archive-notes",
@@ -121,7 +132,8 @@ const PROJECTS = [
     "link": "",
     "image": "",
     "images": [],
-    "location": ""
+    "location": "",
+    "featured": false
   },
   {
     "id": "group-show-assembled",
@@ -132,7 +144,8 @@ const PROJECTS = [
     "link": "",
     "image": "",
     "images": [],
-    "location": ""
+    "location": "",
+    "featured": false
   },
   {
     "id": "facilitating-workshops",
@@ -143,7 +156,8 @@ const PROJECTS = [
     "link": "",
     "image": "",
     "images": [],
-    "location": ""
+    "location": "",
+    "featured": false
   },
   {
     "id": "reading-list-craft-care",
@@ -154,7 +168,8 @@ const PROJECTS = [
     "link": "",
     "image": "",
     "images": [],
-    "location": ""
+    "location": "",
+    "featured": false
   },
   {
     "id": "learning-media-roundup",
@@ -165,7 +180,8 @@ const PROJECTS = [
     "link": "",
     "image": "",
     "images": [],
-    "location": ""
+    "location": "",
+    "featured": false
   },
   {
     "id": "hokkaido-fieldnotes",
@@ -176,7 +192,8 @@ const PROJECTS = [
     "link": "",
     "image": "",
     "images": [],
-    "location": "Sapporo"
+    "location": "Sapporo",
+    "featured": false
   },
   {
     "id": "cnx-residency",
@@ -187,7 +204,8 @@ const PROJECTS = [
     "link": "",
     "image": "",
     "images": [],
-    "location": "Chiang Mai"
+    "location": "Chiang Mai",
+    "featured": false
   },
   {
     "id": "production-diary",
@@ -198,7 +216,8 @@ const PROJECTS = [
     "link": "",
     "image": "",
     "images": [],
-    "location": ""
+    "location": "",
+    "featured": false
   },
   {
     "id": "portraits-of-independence",
@@ -209,7 +228,8 @@ const PROJECTS = [
     "link": "",
     "image": "images/portraits-of-independence.jpg",
     "images": [],
-    "location": "Tokyo"
+    "location": "Tokyo",
+    "featured": true
   },
   {
     "id": "foundry-photojournalism-workshops",
@@ -220,7 +240,8 @@ const PROJECTS = [
     "link": "",
     "image": "images/foundry-photojournalism-workshops.jpg",
     "images": [],
-    "location": "Chiang Mai"
+    "location": "Chiang Mai",
+    "featured": false
   },
   {
     "id": "everyday-kachin",
@@ -231,7 +252,8 @@ const PROJECTS = [
     "link": "",
     "image": "images/everyday-kachin.jpg",
     "images": [],
-    "location": "Myitkyina"
+    "location": "Myitkyina",
+    "featured": false
   },
   {
     "id": "ansel-adams-born-free-equal",
@@ -242,7 +264,8 @@ const PROJECTS = [
     "link": "",
     "image": "images/ansel-adams-born-free-equal.jpg",
     "images": [],
-    "location": ""
+    "location": "",
+    "featured": false
   },
   {
     "id": "studio-sakse-cnx",
@@ -253,7 +276,8 @@ const PROJECTS = [
     "link": "",
     "image": "images/studio-sakse-cnx.jpg",
     "images": [],
-    "location": "Chiang Mai"
+    "location": "Chiang Mai",
+    "featured": false
   },
   {
     "id": "about-rye-libre",
@@ -264,7 +288,8 @@ const PROJECTS = [
     "link": "",
     "image": "",
     "images": [],
-    "location": ""
+    "location": "",
+    "featured": false
   },
   {
     "id": "artist-statement",
@@ -275,7 +300,8 @@ const PROJECTS = [
     "link": "",
     "image": "",
     "images": [],
-    "location": ""
+    "location": "",
+    "featured": false
   },
   {
     "id": "cv-resume",
@@ -286,7 +312,8 @@ const PROJECTS = [
     "link": "",
     "image": "",
     "images": [],
-    "location": ""
+    "location": "",
+    "featured": false
   },
   {
     "id": "education",
@@ -297,7 +324,8 @@ const PROJECTS = [
     "link": "",
     "image": "",
     "images": [],
-    "location": ""
+    "location": "",
+    "featured": false
   },
   {
     "id": "awards-recognition",
@@ -308,7 +336,8 @@ const PROJECTS = [
     "link": "",
     "image": "",
     "images": [],
-    "location": ""
+    "location": "",
+    "featured": false
   },
   {
     "id": "press-mentions",
@@ -319,7 +348,8 @@ const PROJECTS = [
     "link": "",
     "image": "",
     "images": [],
-    "location": ""
+    "location": "",
+    "featured": false
   },
   {
     "id": "studio-practice",
@@ -330,7 +360,8 @@ const PROJECTS = [
     "link": "",
     "image": "",
     "images": [],
-    "location": ""
+    "location": "",
+    "featured": false
   },
   {
     "id": "influences-inspiration",
@@ -341,7 +372,8 @@ const PROJECTS = [
     "link": "",
     "image": "",
     "images": [],
-    "location": ""
+    "location": "",
+    "featured": false
   },
   {
     "id": "contact-collaborations",
@@ -352,6 +384,67 @@ const PROJECTS = [
     "link": "",
     "image": "",
     "images": [],
-    "location": ""
+    "location": "",
+    "featured": false
+  },
+  {
+    "id": "logo-collection",
+    "title": "Logo Collection",
+    "categories": ["Design", "Logos"],
+    "date": "2026-01",
+    "description": "A collection of logo marks designed for clients and personal projects.\n\n*Replace this with your own project description, image, and link.*",
+    "link": "",
+    "image": "",
+    "images": [],
+    "location": "",
+    "featured": false
+  },
+  {
+    "id": "bag-design",
+    "title": "Bag Design",
+    "categories": ["Design", "Bags"],
+    "date": "2026-01",
+    "description": "Pattern and hardware design for a small run of canvas bags.\n\n*Replace this with your own project description, image, and link.*",
+    "link": "",
+    "image": "",
+    "images": [],
+    "location": "",
+    "featured": false
+  },
+  {
+    "id": "bike-frame-graphics",
+    "title": "Bike Frame Graphics",
+    "categories": ["Design", "Bikes"],
+    "date": "2026-01",
+    "description": "Decal and frame graphics designed for a custom bike build.\n\n*Replace this with your own project description, image, and link.*",
+    "link": "",
+    "image": "",
+    "images": [],
+    "location": "",
+    "featured": false
+  },
+  {
+    "id": "scarf-patterns",
+    "title": "Scarf Patterns",
+    "categories": ["Design", "Scarfs"],
+    "date": "2026-01",
+    "description": "Repeating pattern designs printed on a small run of scarves.\n\n*Replace this with your own project description, image, and link.*",
+    "link": "",
+    "image": "",
+    "images": [],
+    "location": "",
+    "featured": false
+  },
+  {
+    "id": "recognitions",
+    "title": "Recognitions",
+    "categories": ["Recognitions"],
+    "date": "2026-01",
+    "description": "Draft — a running list of grants, awards, and other recognition for the work.\n\n*Replace this with your own project description, image, and link.*",
+    "link": "",
+    "image": "",
+    "images": [],
+    "location": "",
+    "featured": false
   }
 ];
