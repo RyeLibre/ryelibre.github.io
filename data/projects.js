@@ -826,5 +826,18 @@ const PROJECTS = [
     "location": "Sapporo",
     "place": "The Fuji Film Salon",
     "featured": false
+  },
+  {
+    "id": "local-shop-finder-chiang-mai",
+    "title": "Local Shop Finder for Chiang Mai",
+    "categories": ["Steal this idea"],
+    "date": "2026-09-19",
+    "description": "To combat the proliferation of corporate shops in Chiang Mai, this app finds the nearest local shops selling that you need",
+    "link": "",
+    "image": "",
+    "images": [],
+    "location": "Chiang Mai",
+    "place": "",
+    "featured": false
   }
 ];

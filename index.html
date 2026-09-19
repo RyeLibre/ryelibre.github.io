@@ -153,6 +153,26 @@
   </div>
 </dialog>
 
+<dialog id="idea-action-dialog" class="dialog">
+  <form id="idea-action-form" class="dialog-form">
+    <h3 id="idea-action-title">Steal this idea</h3>
+    <p id="idea-action-hint" class="section-hint"></p>
+    <label for="idea-action-name">Your name</label>
+    <input id="idea-action-name" type="text" required autocomplete="off">
+
+    <label for="idea-action-email">Your email</label>
+    <input id="idea-action-email" type="email" required autocomplete="off">
+
+    <label for="idea-action-message">Your message</label>
+    <textarea id="idea-action-message" rows="3" placeholder="What would you build, or how would you help?"></textarea>
+
+    <div class="dialog-actions">
+      <button type="button" class="btn-secondary" data-close-dialog>Cancel</button>
+      <button type="submit" class="btn-primary">Send email</button>
+    </div>
+  </form>
+</dialog>
+
 <footer class="site-footer">
   <div class="wrap">
     <p>Built with plain HTML/CSS/JS · Hosted on GitHub Pages</p>

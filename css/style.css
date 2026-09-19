@@ -328,6 +328,91 @@ button {
   filter: grayscale(0%);
 }
 
+/* "Steal this idea" posts render as a lined index card instead of a photo —
+   experimental alt-format, CSS-drawn (no image asset). */
+.index-card {
+  position: relative;
+  margin: -18px -20px 0;
+  aspect-ratio: 4 / 3;
+  background: #fafaf7;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 18px 10px;
+  color: #2b2b28;
+  font-family: "Special Elite", monospace;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+}
+
+.index-card-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-align: center;
+  padding-bottom: 10px;
+  color: #1c1c1a;
+}
+
+.index-card-red-line {
+  height: 2px;
+  background: #b33a2e;
+  margin: 0 -18px 12px;
+  flex-shrink: 0;
+}
+
+.index-card-body {
+  height: 132px; /* exactly 6 ruled lines at 22px — a flexible height would
+                    cut the last line off partway, since it rarely lands on
+                    an exact multiple of the line spacing */
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 20px,
+    #6f93c4 20px,
+    #6f93c4 22px
+  );
+  font-size: 0.78rem;
+  line-height: 22px;
+  overflow: hidden;
+  color: #2b2b28;
+}
+
+.idea-action-row {
+  display: flex;
+  gap: 8px;
+  margin: 2px 0 4px;
+}
+
+.idea-action-btn {
+  flex: 1;
+  text-align: center;
+  padding: 6px 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid;
+}
+
+.idea-action-btn.steal {
+  color: #b33a2e;
+  border-color: #b33a2e;
+}
+
+.idea-action-btn.support {
+  color: #3a6ea5;
+  border-color: #3a6ea5;
+}
+
+.idea-action-btn:hover {
+  opacity: 0.75;
+}
+
+/* Makes the "Steal this idea" tag visually distinct wherever it shows up. */
+.tag.tag-steal-idea {
+  background: #fff;
+  color: #555;
+}
+
 .change-photo-btn,
 .reset-photo-btn {
   position: absolute;

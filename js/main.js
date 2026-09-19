@@ -34,6 +34,10 @@ const cityPinForm = document.getElementById("city-pin-form");
 const cityPinGenerated = document.getElementById("city-pin-generated");
 let pendingCityPin = null; // { x, y } captured from the last map click
 
+const ideaActionDialog = document.getElementById("idea-action-dialog");
+const ideaActionForm = document.getElementById("idea-action-form");
+let pendingIdeaAction = null; // { project, action } for the open idea-action dialog
+
 function init() {
   state.tags = [...FEATURED_TAGS];
   loadDraftTags().forEach((t) => addTagToState(t, { persist: false }));
@@ -286,13 +290,62 @@ function renderMedia(project) {
   return media;
 }
 
+function isStealIdeaProject(project) {
+  return (project.categories || []).some((c) => c.toLowerCase() === "steal this idea");
+}
+
+function renderIndexCard(project) {
+  const card = document.createElement("div");
+  card.className = "index-card";
+
+  const title = document.createElement("div");
+  title.className = "index-card-title";
+  title.textContent = project.title;
+  card.appendChild(title);
+
+  const redLine = document.createElement("div");
+  redLine.className = "index-card-red-line";
+  card.appendChild(redLine);
+
+  const body = document.createElement("div");
+  body.className = "index-card-body";
+  body.textContent = project.description || "";
+  card.appendChild(body);
+
+  return card;
+}
+
+const IDEA_ACTION_EMAIL = "ryanlibre@gmail.com";
+
+function buildIdeaActionRow(project) {
+  const row = document.createElement("div");
+  row.className = "idea-action-row";
+
+  const stealBtn = document.createElement("button");
+  stealBtn.type = "button";
+  stealBtn.className = "idea-action-btn steal";
+  stealBtn.textContent = "Steal this idea";
+  stealBtn.addEventListener("click", () => openIdeaActionDialog(project, "Steal this idea"));
+  row.appendChild(stealBtn);
+
+  const supportBtn = document.createElement("button");
+  supportBtn.type = "button";
+  supportBtn.className = "idea-action-btn support";
+  supportBtn.textContent = "Support this idea";
+  supportBtn.addEventListener("click", () => openIdeaActionDialog(project, "Support this idea"));
+  row.appendChild(supportBtn);
+
+  return row;
+}
+
 function renderCard(project) {
   const isDraft = state.draftPostIds.has(project.id);
+  const isStealIdea = isStealIdeaProject(project);
 
   const card = document.createElement("article");
   card.className = "project-card";
 
-  card.appendChild(renderMedia(project));
+  card.appendChild(isStealIdea ? renderIndexCard(project) : renderMedia(project));
 
   const titleRow = document.createElement("div");
   titleRow.className = "project-card-header";
@@ -331,17 +384,21 @@ function renderCard(project) {
     tags.className = "project-tags";
     project.categories.forEach((c) => {
       const tag = document.createElement("span");
-      tag.className = "tag";
+      tag.className = "tag" + (c.toLowerCase() === "steal this idea" ? " tag-steal-idea" : "");
       tag.textContent = c;
       tags.appendChild(tag);
     });
     card.appendChild(tags);
   }
 
-  const desc = document.createElement("div");
-  desc.className = "project-description";
-  desc.innerHTML = window.marked ? marked.parse(project.description || "") : (project.description || "");
-  card.appendChild(desc);
+  if (isStealIdea) {
+    card.appendChild(buildIdeaActionRow(project));
+  } else {
+    const desc = document.createElement("div");
+    desc.className = "project-description";
+    desc.innerHTML = window.marked ? marked.parse(project.description || "") : (project.description || "");
+    card.appendChild(desc);
+  }
 
   const linkRow = document.createElement("div");
   linkRow.className = "card-link-row";
@@ -494,6 +551,9 @@ function renderTagMap() {
 const MAP_VISIBLE_Y_MAX = 300;
 
 const MAP_ZOOM_LEVELS = [25, 50, 75, 100];
+// Display label per zoom level above — same order, purely cosmetic (the
+// underlying scale math still uses the MAP_ZOOM_LEVELS numbers unchanged).
+const MAP_ZOOM_LABELS = ["Full Map", "2X", "4X", "8X"];
 // Where to auto-center the view when zoomed in past 25% — the Asia cluster
 // is where pins overlap most, so that's the default focus point.
 const MAP_ZOOM_FOCUS = { x: 820, y: 170 };
@@ -503,7 +563,7 @@ function renderMapZoomControls() {
   if (!el) return;
 
   const zoomBtns = MAP_ZOOM_LEVELS.map(
-    (z) => `<button type="button" class="map-zoom-btn${z === state.mapZoom ? " active" : ""}" data-zoom="${z}">${z}%</button>`
+    (z, i) => `<button type="button" class="map-zoom-btn${z === state.mapZoom ? " active" : ""}" data-zoom="${z}">${MAP_ZOOM_LABELS[i]}</button>`
   ).join("");
   const pinBtn = `<button type="button" id="pin-city-btn" class="map-zoom-btn${state.pinningCity ? " active" : ""}">${state.pinningCity ? "Click the map to pin…" : "+ Pin a city"}</button>`;
 
@@ -805,6 +865,14 @@ function openCityPinDialog(x, y) {
   cityPinDialog.showModal();
 }
 
+function openIdeaActionDialog(project, action) {
+  pendingIdeaAction = { project, action };
+  ideaActionForm.reset();
+  document.getElementById("idea-action-title").textContent = action;
+  document.getElementById("idea-action-hint").textContent = `Re: "${project.title}" — this opens your email app with a message to Rye.`;
+  ideaActionDialog.showModal();
+}
+
 function bindDialogs() {
   document.getElementById("add-tag-btn").addEventListener("click", () => {
     tagForm.reset();
@@ -858,6 +926,30 @@ function bindDialogs() {
     textarea.select();
 
     renderLocationMap();
+  });
+
+  ideaActionForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (!pendingIdeaAction) return;
+    const { project, action } = pendingIdeaAction;
+
+    const name = document.getElementById("idea-action-name").value.trim();
+    const email = document.getElementById("idea-action-email").value.trim();
+    const message = document.getElementById("idea-action-message").value.trim();
+
+    const subject = encodeURIComponent(`${action}: ${project.title}`);
+    const bodyLines = [
+      `${action} — "${project.title}"`,
+      "",
+      `Name: ${name}`,
+      `Email: ${email}`,
+      "",
+      message,
+    ];
+    const body = encodeURIComponent(bodyLines.join("\n"));
+
+    window.location.href = `mailto:${IDEA_ACTION_EMAIL}?subject=${subject}&body=${body}`;
+    ideaActionDialog.close();
   });
 
   tagForm.addEventListener("submit", (e) => {
