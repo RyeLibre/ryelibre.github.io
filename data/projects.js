@@ -517,7 +517,7 @@ const PROJECTS = [
     "image": "images/battle-for-burma.jpg",
     "images": [],
     "location": "",
-    "featured": false
+    "featured": true
   },
   {
     "id": "origami-wallet",
@@ -598,7 +598,7 @@ const PROJECTS = [
     "date": "2026-09-19",
     "description": "Annual photography festival",
     "link": "",
-    "image": "",
+    "image": "images/f28-chiang-mai-month-of-photography.jpg",
     "images": [],
     "location": "Chiang Mai",
     "featured": true
@@ -611,6 +611,42 @@ const PROJECTS = [
     "description": "",
     "link": "",
     "image": "images/interactive-learning-app.jpg",
+    "images": [],
+    "location": "Boulder, CO",
+    "featured": true
+  },
+  {
+    "id": "inside",
+    "title": "Inside :",
+    "categories": ["Kachin", "Photography", "Books"],
+    "date": "2026-09-19",
+    "description": "3 part book project",
+    "link": "",
+    "image": "images/inside.jpg",
+    "images": [],
+    "location": "",
+    "featured": true
+  },
+  {
+    "id": "unjaded-in-the-land-of-jade",
+    "title": "Unjaded : in the land of Jade",
+    "categories": ["Kachin", "Film", "Books", "Scripts"],
+    "date": "2026-09-19",
+    "description": "Feature animation script",
+    "link": "",
+    "image": "",
+    "images": [],
+    "location": "",
+    "featured": true
+  },
+  {
+    "id": "rebels-and-reform",
+    "title": "Rebels & Reform",
+    "categories": ["Curation", "Photography", "Exhibitions", "Production"],
+    "date": "2026-09-19",
+    "description": "Showcase of photography exhibitions",
+    "link": "",
+    "image": "images/rebels-and-reform.jpg",
     "images": [],
     "location": "Boulder, CO",
     "featured": true

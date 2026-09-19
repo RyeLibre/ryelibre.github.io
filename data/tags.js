@@ -25,4 +25,5 @@ const FEATURED_TAGS = [
   "Screenings",
   "Steal this idea",
   "Adobe Abode",
+  "Scripts",
 ];
