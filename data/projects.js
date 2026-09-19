@@ -686,5 +686,41 @@ const PROJECTS = [
     "images": [],
     "location": "",
     "featured": true
+  },
+  {
+    "id": "the-laiza-hotel",
+    "title": "The Laiza Hotel",
+    "categories": ["Kachin", "Film", "Production"],
+    "date": "2026-09-19",
+    "description": "Feature documentary presented by Living Films  Produced by Sakse",
+    "link": "",
+    "image": "",
+    "images": [],
+    "location": "",
+    "featured": true
+  },
+  {
+    "id": "the-opium-war",
+    "title": "The Opium War",
+    "categories": ["Kachin", "Curation", "Photography", "Exhibitions", "Production", "Sakse", "Talks"],
+    "date": "2019-01-19",
+    "description": "",
+    "link": "",
+    "image": "",
+    "images": [],
+    "location": "Myitkyina",
+    "featured": false
+  },
+  {
+    "id": "kuala-lumpur-international-photography-festival",
+    "title": "Kuala Lumpur International Photography Festival",
+    "categories": ["Curation", "Photography", "Exhibitions", "Sakse", "Talks"],
+    "date": "2026-09-19",
+    "description": "Exhibition -  Public talk  -  Juror",
+    "link": "",
+    "image": "",
+    "images": [],
+    "location": "Kuala Lumpur",
+    "featured": false
   }
 ];

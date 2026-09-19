@@ -33,6 +33,7 @@ body {
   color: var(--text);
   font-family: "Special Elite", "Courier New", monospace;
   line-height: 1.5;
+  overflow-x: hidden; /* .location-map uses a 100vw full-bleed trick */
 }
 
 button {
@@ -555,15 +556,30 @@ button {
 
 .location-map-section {
   border-top: 1px solid var(--border);
-  padding: 32px 20px 8px;
+  padding-top: 32px;
+}
+
+.location-map-section .wrap {
+  padding-bottom: 8px;
+}
+
+.location-map {
+  /* Full-bleed: break out of the centered .wrap column to span the full
+     viewport width, edge to edge, regardless of ancestor max-width. */
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  margin-bottom: 20px;
 }
 
 .location-map-inner {
   position: relative;
-  max-width: 700px;
-  margin: 0 auto;
+  width: 100%;
+  aspect-ratio: 441 / 168;
   background: #000;
-  border-radius: 8px;
   overflow: hidden;
 }
 
@@ -610,6 +626,29 @@ button {
   margin-top: 28px;
 }
 
+.timeline-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin: 0 0 14px;
+}
+
+.timeline-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+
+.timeline-legend-swatch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
 .timeline {
   overflow-x: auto;
 }
@@ -640,7 +679,7 @@ button {
 }
 
 .timeline-dot {
-  fill: var(--accent);
+  fill: var(--dot-color, var(--accent));
   stroke: var(--surface);
   stroke-width: 1.5;
   transition: fill 0.15s;

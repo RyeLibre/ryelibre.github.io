@@ -480,6 +480,11 @@ function renderTagMap() {
   renderLocationMap();
 }
 
+// Everything below this y (out of the 0-500 grid CITY_COORDS uses) is
+// cropped out of the map image — keep in sync with the aspect-ratio set on
+// .location-map-inner in css/style.css.
+const MAP_VISIBLE_Y_MAX = 300;
+
 function renderLocationMap() {
   const mapEl = document.getElementById("location-map");
   if (!mapEl) return;
@@ -506,11 +511,14 @@ function renderLocationMap() {
 
   // CITY_COORDS is plotted on a 1000x500 grid — convert to percentages so
   // pins land in the same place regardless of the map image's own size.
+  // The map image is cropped to MAP_VISIBLE_Y_MAX (see CSS aspect-ratio on
+  // .location-map-inner) to hide everything south of Indonesia, so top% is
+  // relative to that visible slice, not the full 500.
   const pinEls = pins
     .map(({ label, count, x, y }) => {
       const size = 10 + Math.min(count * 4, 26);
       const left = (x / 1000) * 100;
-      const top = (y / 500) * 100;
+      const top = (y / MAP_VISIBLE_Y_MAX) * 100;
       const label2 = escapeHtml(label);
       const titleText = `${label2} — ${count} post${count === 1 ? "" : "s"}`;
       return `
@@ -545,9 +553,50 @@ function monthIndexOf(dateStr) {
   return (year - TIMELINE_START_YEAR) * 12 + (month - 1);
 }
 
+// Timeline dots are colored by the first of these tags a post has (in this
+// order); posts with none of them fall back to TIMELINE_OTHER_COLOR.
+const TIMELINE_TAG_COLORS = [
+  ["Exhibitions", "#ef4444"],
+  ["Curation", "#f97316"],
+  ["Design", "#eab308"],
+  ["Photography", "#22c55e"],
+  ["Film", "#14b8a6"],
+  ["Workshops", "#3b82f6"],
+  ["Production", "#8b5cf6"],
+  ["Studios", "#ec4899"],
+  ["Recognitions", "#06b6d4"],
+  ["Screenings", "#a3e635"],
+  ["Talks", "#f43f5e"],
+];
+const TIMELINE_OTHER_COLOR = "#9aa2b1";
+
+function colorForProject(project) {
+  const categories = (project.categories || []).map((c) => c.toLowerCase());
+  for (const [tag, color] of TIMELINE_TAG_COLORS) {
+    if (categories.includes(tag.toLowerCase())) return color;
+  }
+  return TIMELINE_OTHER_COLOR;
+}
+
+function renderTimelineLegend() {
+  const el = document.getElementById("timeline-legend");
+  if (!el) return;
+
+  const items = TIMELINE_TAG_COLORS.map(
+    ([tag, color]) =>
+      `<span class="timeline-legend-item"><span class="timeline-legend-swatch" style="background:${color}"></span>${escapeHtml(tag)}</span>`
+  );
+  items.push(
+    `<span class="timeline-legend-item"><span class="timeline-legend-swatch" style="background:${TIMELINE_OTHER_COLOR}"></span>Other</span>`
+  );
+  el.innerHTML = items.join("");
+}
+
 function renderTimeline() {
   const el = document.getElementById("timeline");
   if (!el) return;
+
+  renderTimelineLegend();
 
   const now = new Date();
   const nowIndex = (now.getFullYear() - TIMELINE_START_YEAR) * 12 + now.getMonth();
@@ -601,9 +650,10 @@ function renderTimeline() {
     projects.forEach((project, i) => {
       const y = lineY - 14 - i * 16;
       const label = escapeHtml(project.title);
+      const color = colorForProject(project);
       dots.push(`
         <a href="post.html?id=${encodeURIComponent(project.id)}" class="timeline-dot-link">
-          <circle cx="${x}" cy="${y}" r="5" class="timeline-dot"><title>${label} — ${escapeHtml(project.date)}</title></circle>
+          <circle cx="${x}" cy="${y}" r="5" class="timeline-dot" style="--dot-color:${color}"><title>${label} — ${escapeHtml(project.date)}</title></circle>
         </a>`);
     });
   });

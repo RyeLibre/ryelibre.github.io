@@ -56,4 +56,31 @@ const TAG_INTROS = {
 
   "Bio":
     "The background material — who's behind this site, how to reach them, and the paper trail that goes with the work.\n\nExpect a bio, artist statement, CV, education, press, and the influences that shaped the practice.\n\n*Replace this intro with your own description of the Bio category.*",
+
+  "Studios":
+    "A look inside the physical spaces work gets made in — studio setups, shared spaces, and the occasional collaborator's corner.\n\nThis tag covers the room more than the finished work: layout, light, tools, and the small decisions that shape how a space gets used.\n\n*Replace this intro with your own description of the Studios category.*",
+
+  "Sakse":
+    "Sakse is a specific studio/collective this practice runs through — its own name, its own thread running across several other tags.\n\nPosts here are anything made under, with, or because of Sakse.\n\n*Replace this intro with your own description of the Sakse category.*",
+
+  "Recognitions":
+    "Draft — a running list of grants, awards, and other recognition for the work, kept mostly so it doesn't have to be reconstructed from memory later.\n\nExpect short entries rather than full write-ups.\n\n*Replace this intro with your own description of the Recognitions category.*",
+
+  "Printmaking":
+    "Work made by cutting, carving, and pressing rather than drawing straight onto a surface — block prints, stamps, and anything else that leaves an impression.\n\nThis tag covers the process as much as the finished print.\n\n*Replace this intro with your own description of the Printmaking category.*",
+
+  "Screenings":
+    "A record of films and video work that got shown somewhere — festivals, one-off screenings, or informal viewings.\n\nExpect notes on the event itself alongside the work that screened.\n\n*Replace this intro with your own description of the Screenings category.*",
+
+  "Steal this idea":
+    "Half-finished ideas and open prompts, posted on purpose so someone else might run with them.\n\nNothing here is precious — take it, change it, make it better.\n\n*Replace this intro with your own description of the Steal this idea category.*",
+
+  "Adobe Abode":
+    "A close relative of Earthen Abode — more experiments in earth-based building, kept as its own thread.\n\n*Replace this intro with your own description of the Adobe Abode category.*",
+
+  "Scripts":
+    "Writing meant to be performed or filmed rather than read straight through — screenplays, treatments, and story outlines.\n\nExpect works in progress more often than finished drafts.\n\n*Replace this intro with your own description of the Scripts category.*",
+
+  "Talks":
+    "Notes and recordings from talks given or attended — conferences, panels, and the odd stage that wasn't expected.\n\nExpect a mix of prep notes and after-the-fact reflection.\n\n*Replace this intro with your own description of the Talks category.*",
 };
