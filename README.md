@@ -102,6 +102,11 @@ shows up in a small note under the map ("Not shown on the map yet…") so you kn
 city, open `data/city-coords.js` and add an entry using the formula in its comments (based on the
 city's real latitude/longitude).
 
+Use the **25% / 50% / 75% / 100%** buttons above the map to zoom in where pins overlap (Asia usually
+needs it most) — the map scrolls/pans within a fixed-size window at every zoom level, and jumping to
+50%+ auto-centers on Asia (`MAP_ZOOM_FOCUS` in `js/main.js`) since that's normally the densest cluster.
+Pins stay in the same relative spot regardless of zoom.
+
 The map background is a real image, [`images/world-map.png`](images/world-map.png) — pins are
 positioned over it with plain CSS (percentage `left`/`top`), computed in `js/main.js`
 (`renderLocationMap`). To swap in a different map image, replace that file and keep the same

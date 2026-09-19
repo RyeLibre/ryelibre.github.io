@@ -9,6 +9,7 @@ const state = {
   draftPostIds: new Set(),
   activeTags: new Set(), // lowercase tag names currently filtering
   activeSubtag: null, // lowercase sub-tag narrowing the grid without changing the heading
+  mapZoom: 25, // 25/50/75/100 — 25 shows the whole (cropped) map, 100 is most zoomed in
 };
 
 let editingProjectId = null; // set while the post dialog is in "edit" mode
@@ -483,12 +484,35 @@ function renderTagMap() {
 
 // Everything below this y (out of the 0-500 grid CITY_COORDS uses) is
 // cropped out of the map image — keep in sync with the aspect-ratio set on
-// .location-map-inner in css/style.css.
+// .location-map-crop in css/style.css.
 const MAP_VISIBLE_Y_MAX = 300;
+
+const MAP_ZOOM_LEVELS = [25, 50, 75, 100];
+// Where to auto-center the view when zoomed in past 25% — the Asia cluster
+// is where pins overlap most, so that's the default focus point.
+const MAP_ZOOM_FOCUS = { x: 820, y: 170 };
+
+function renderMapZoomControls() {
+  const el = document.getElementById("map-zoom-controls");
+  if (!el) return;
+
+  el.innerHTML = MAP_ZOOM_LEVELS.map(
+    (z) => `<button type="button" class="map-zoom-btn${z === state.mapZoom ? " active" : ""}" data-zoom="${z}">${z}%</button>`
+  ).join("");
+
+  el.querySelectorAll(".map-zoom-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      state.mapZoom = parseInt(btn.getAttribute("data-zoom"), 10);
+      renderLocationMap();
+    });
+  });
+}
 
 function renderLocationMap() {
   const mapEl = document.getElementById("location-map");
   if (!mapEl) return;
+
+  renderMapZoomControls();
 
   const counts = new Map(); // lowercase city -> { label, count }
   state.projects.forEach((p) => {
@@ -512,9 +536,10 @@ function renderLocationMap() {
 
   // CITY_COORDS is plotted on a 1000x500 grid — convert to percentages so
   // pins land in the same place regardless of the map image's own size.
-  // The map image is cropped to MAP_VISIBLE_Y_MAX (see CSS aspect-ratio on
-  // .location-map-inner) to hide everything south of Indonesia, so top% is
-  // relative to that visible slice, not the full 500.
+  // The map is cropped to MAP_VISIBLE_Y_MAX (hides everything south of
+  // Indonesia) via .location-map-crop's aspect-ratio, so top% is relative
+  // to that visible slice, not the full 500 — this stays true at every
+  // zoom level since the crop box scales as a whole.
   const pinEls = pins
     .map(({ label, count, x, y }) => {
       const size = 10 + Math.min(count * 4, 26);
@@ -534,12 +559,29 @@ function renderLocationMap() {
     ? `<p class="section-hint">Not shown on the map yet — add these to <code>data/city-coords.js</code>: ${unmapped.map(escapeHtml).join(", ")}</p>`
     : "";
 
+  const scale = state.mapZoom / MAP_ZOOM_LEVELS[0];
+
   mapEl.innerHTML = `
     <div class="location-map-inner">
-      <img src="images/world-map.png" alt="World map" class="location-map-img">
-      <div class="location-pins-overlay">${pinEls}</div>
+      <div class="location-map-crop" style="width:${(scale * 100).toFixed(0)}%;">
+        <img src="images/world-map.png" alt="World map" class="location-map-img">
+        <div class="location-pins-overlay">${pinEls}</div>
+      </div>
     </div>
     ${unmappedNote}`;
+
+  const viewport = mapEl.querySelector(".location-map-inner");
+  if (viewport && scale > 1) {
+    requestAnimationFrame(() => {
+      const vw = viewport.clientWidth;
+      const vh = viewport.clientHeight;
+      viewport.scrollLeft = Math.max(0, (MAP_ZOOM_FOCUS.x / 1000) * (vw * scale) - vw / 2);
+      viewport.scrollTop = Math.max(0, (MAP_ZOOM_FOCUS.y / MAP_VISIBLE_Y_MAX) * (vh * scale) - vh / 2);
+    });
+  } else if (viewport) {
+    viewport.scrollLeft = 0;
+    viewport.scrollTop = 0;
+  }
 
   renderTimeline();
 }
