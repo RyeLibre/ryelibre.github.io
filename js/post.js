@@ -187,7 +187,7 @@ function renderPost() {
     return;
   }
 
-  document.title = project.title + " — Ryan Libre";
+  document.title = project.title + " — Rye Libre";
 
   const isDraft = isDraftPostId(project.id);
 
