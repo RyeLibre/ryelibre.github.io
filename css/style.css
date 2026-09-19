@@ -322,7 +322,7 @@ button {
    nested inside .project-card). */
 .project-card .project-media img {
   filter: grayscale(100%);
-  transition: filter 0.3s ease;
+  transition: filter 1.2s ease;
 }
 
 .project-card:hover .project-media img {
