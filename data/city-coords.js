@@ -55,4 +55,5 @@ const CITY_COORDS = {
   "pingtung, taiwan": { x: 835, y: 187 },
   "boulder, co": { x: 208, y: 139 },
   "kuala lumpur": { x: 783, y: 241 },
+  "battambang": { x: 787, y: 214 },
 };

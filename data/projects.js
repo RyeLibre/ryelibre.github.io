@@ -274,7 +274,7 @@ const PROJECTS = [
     "image": "images/everyday-kachin.jpg",
     "images": [],
     "location": "Chiang Mai",
-    "place": "",
+    "place": "Free Bird",
     "featured": false
   },
   {
@@ -778,10 +778,49 @@ const PROJECTS = [
     "date": "2026-09-19",
     "description": "Exhibition -  Public talk  -  Juror",
     "link": "",
-    "image": "",
+    "image": "images/kuala-lumpur-international-photography-festival.jpg",
     "images": [],
     "location": "Kuala Lumpur",
     "place": "",
+    "featured": false
+  },
+  {
+    "id": "east-german-fashion",
+    "title": "East German Fashion",
+    "categories": ["Curation", "Design", "Photography", "Exhibitions", "CNX", "Production"],
+    "date": "2020-06-19",
+    "description": "Funky fashion exhibition in collaboration with the German Consulate of Chiang Mai",
+    "link": "",
+    "image": "",
+    "images": [],
+    "location": "Chiang Mai",
+    "place": "Phi Sua House",
+    "featured": true
+  },
+  {
+    "id": "photography-trainner",
+    "title": "Photography Trainner",
+    "categories": ["Photography", "Workshops", "CV"],
+    "date": "2026-09-19",
+    "description": "Photography Trainner",
+    "link": "",
+    "image": "",
+    "images": [],
+    "location": "Battambang",
+    "place": "Where There Be Dragons",
+    "featured": false
+  },
+  {
+    "id": "kamui-mintara",
+    "title": "Kamui Mintara",
+    "categories": ["Photography", "Mountains", "Exhibitions", "Hokkaido"],
+    "date": "2026-09-19",
+    "description": "Solo exhibition on Daisetsuzan National Park",
+    "link": "",
+    "image": "",
+    "images": [],
+    "location": "Sapporo",
+    "place": "The Fuji Film Salon",
     "featured": false
   }
 ];
