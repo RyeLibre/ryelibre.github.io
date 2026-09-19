@@ -12,6 +12,8 @@
 // of the home page. Leave it "" to skip the pin. See data/city-coords.js for
 // the list of cities the map knows how to place — add yours there if it's
 // missing.
+// `place` is an optional venue name (e.g. "The Nikon Salon") shown after
+// `location` in the post's meta line: "MONTH 'YY · City · Place".
 // `featured: true` pins a post to the top of "All Projects" and to the top
 // of every tag view it belongs to (before the normal newest-first sort).
 const PROJECTS = [
@@ -25,6 +27,7 @@ const PROJECTS = [
     "image": "",
     "images": [],
     "location": "",
+    "place": "",
     "featured": false
   },
   {
@@ -37,6 +40,7 @@ const PROJECTS = [
     "image": "",
     "images": [],
     "location": "",
+    "place": "",
     "featured": false
   },
   {
@@ -49,6 +53,7 @@ const PROJECTS = [
     "image": "",
     "images": [],
     "location": "",
+    "place": "",
     "featured": false
   },
   {
@@ -61,6 +66,7 @@ const PROJECTS = [
     "image": "",
     "images": [],
     "location": "",
+    "place": "",
     "featured": false
   },
   {
@@ -73,6 +79,7 @@ const PROJECTS = [
     "image": "",
     "images": [],
     "location": "",
+    "place": "",
     "featured": false
   },
   {
@@ -85,6 +92,7 @@ const PROJECTS = [
     "image": "",
     "images": [],
     "location": "",
+    "place": "",
     "featured": false
   },
   {
@@ -97,6 +105,7 @@ const PROJECTS = [
     "image": "",
     "images": [],
     "location": "",
+    "place": "",
     "featured": false
   },
   {
@@ -109,6 +118,7 @@ const PROJECTS = [
     "image": "",
     "images": [],
     "location": "",
+    "place": "",
     "featured": false
   },
   {
@@ -121,6 +131,7 @@ const PROJECTS = [
     "image": "",
     "images": [],
     "location": "",
+    "place": "",
     "featured": false
   },
   {
@@ -133,6 +144,7 @@ const PROJECTS = [
     "image": "",
     "images": [],
     "location": "",
+    "place": "",
     "featured": false
   },
   {
@@ -145,6 +157,7 @@ const PROJECTS = [
     "image": "",
     "images": [],
     "location": "",
+    "place": "",
     "featured": false
   },
   {
@@ -157,6 +170,7 @@ const PROJECTS = [
     "image": "",
     "images": [],
     "location": "",
+    "place": "",
     "featured": false
   },
   {
@@ -169,6 +183,7 @@ const PROJECTS = [
     "image": "",
     "images": [],
     "location": "",
+    "place": "",
     "featured": false
   },
   {
@@ -181,6 +196,7 @@ const PROJECTS = [
     "image": "",
     "images": [],
     "location": "",
+    "place": "",
     "featured": false
   },
   {
@@ -193,6 +209,7 @@ const PROJECTS = [
     "image": "",
     "images": [],
     "location": "Sapporo",
+    "place": "",
     "featured": false
   },
   {
@@ -205,6 +222,7 @@ const PROJECTS = [
     "image": "",
     "images": [],
     "location": "Chiang Mai",
+    "place": "",
     "featured": false
   },
   {
@@ -217,6 +235,7 @@ const PROJECTS = [
     "image": "",
     "images": [],
     "location": "",
+    "place": "",
     "featured": false
   },
   {
@@ -229,6 +248,7 @@ const PROJECTS = [
     "image": "images/portraits-of-independence.jpg",
     "images": [],
     "location": "Tokyo",
+    "place": "The Nikon Salon",
     "featured": true
   },
   {
@@ -241,6 +261,7 @@ const PROJECTS = [
     "image": "images/foundry-photojournalism-workshops.jpg",
     "images": [],
     "location": "Chiang Mai",
+    "place": "",
     "featured": true
   },
   {
@@ -253,6 +274,7 @@ const PROJECTS = [
     "image": "images/everyday-kachin.jpg",
     "images": [],
     "location": "Chiang Mai",
+    "place": "",
     "featured": false
   },
   {
@@ -265,6 +287,7 @@ const PROJECTS = [
     "image": "images/ansel-adams-born-free-equal.jpg",
     "images": [],
     "location": "Chiang Mai",
+    "place": "",
     "featured": true
   },
   {
@@ -277,6 +300,7 @@ const PROJECTS = [
     "image": "images/studio-sakse-cnx.jpg",
     "images": [],
     "location": "Chiang Mai",
+    "place": "",
     "featured": false
   },
   {
@@ -289,6 +313,7 @@ const PROJECTS = [
     "image": "",
     "images": [],
     "location": "",
+    "place": "",
     "featured": false
   },
   {
@@ -301,6 +326,7 @@ const PROJECTS = [
     "image": "",
     "images": [],
     "location": "",
+    "place": "",
     "featured": false
   },
   {
@@ -313,6 +339,7 @@ const PROJECTS = [
     "image": "",
     "images": [],
     "location": "",
+    "place": "",
     "featured": false
   },
   {
@@ -325,6 +352,7 @@ const PROJECTS = [
     "image": "",
     "images": [],
     "location": "",
+    "place": "",
     "featured": false
   },
   {
@@ -337,6 +365,7 @@ const PROJECTS = [
     "image": "",
     "images": [],
     "location": "",
+    "place": "",
     "featured": false
   },
   {
@@ -349,6 +378,7 @@ const PROJECTS = [
     "image": "",
     "images": [],
     "location": "",
+    "place": "",
     "featured": false
   },
   {
@@ -361,6 +391,7 @@ const PROJECTS = [
     "image": "",
     "images": [],
     "location": "",
+    "place": "",
     "featured": false
   },
   {
@@ -373,6 +404,7 @@ const PROJECTS = [
     "image": "",
     "images": [],
     "location": "",
+    "place": "",
     "featured": false
   },
   {
@@ -385,6 +417,7 @@ const PROJECTS = [
     "image": "",
     "images": [],
     "location": "",
+    "place": "",
     "featured": false
   },
   {
@@ -397,6 +430,7 @@ const PROJECTS = [
     "image": "",
     "images": [],
     "location": "",
+    "place": "",
     "featured": false
   },
   {
@@ -409,6 +443,7 @@ const PROJECTS = [
     "image": "",
     "images": [],
     "location": "",
+    "place": "",
     "featured": false
   },
   {
@@ -421,6 +456,7 @@ const PROJECTS = [
     "image": "",
     "images": [],
     "location": "",
+    "place": "",
     "featured": false
   },
   {
@@ -433,6 +469,7 @@ const PROJECTS = [
     "image": "",
     "images": [],
     "location": "",
+    "place": "",
     "featured": false
   },
   {
@@ -445,6 +482,7 @@ const PROJECTS = [
     "image": "",
     "images": [],
     "location": "",
+    "place": "",
     "featured": false
   },
   {
@@ -457,6 +495,7 @@ const PROJECTS = [
     "image": "images/filmmaking-workbook.jpg",
     "images": [],
     "location": "",
+    "place": "",
     "featured": true
   },
   {
@@ -469,6 +508,7 @@ const PROJECTS = [
     "image": "images/brighton-museum-exhibition.jpg",
     "images": [],
     "location": "Brighton UK",
+    "place": "",
     "featured": true
   },
   {
@@ -481,6 +521,7 @@ const PROJECTS = [
     "image": "images/frontiers.jpg",
     "images": ["images/frontiers-gallery-1.jpg"],
     "location": "Pingtung, Taiwan",
+    "place": "",
     "featured": true
   },
   {
@@ -493,6 +534,7 @@ const PROJECTS = [
     "image": "images/unfiltered-yangon-photo-festival.jpg",
     "images": [],
     "location": "Yangon",
+    "place": "",
     "featured": true
   },
   {
@@ -505,6 +547,7 @@ const PROJECTS = [
     "image": "images/kyotographie-portfolio-reviewer.jpg",
     "images": ["images/kyotographie-portfolio-reviewer-gallery-1.jpg"],
     "location": "Kyoto",
+    "place": "",
     "featured": true
   },
   {
@@ -517,6 +560,7 @@ const PROJECTS = [
     "image": "images/battle-for-burma.jpg",
     "images": [],
     "location": "",
+    "place": "",
     "featured": true
   },
   {
@@ -529,6 +573,7 @@ const PROJECTS = [
     "image": "images/origami-wallet.jpg",
     "images": [],
     "location": "",
+    "place": "",
     "featured": false
   },
   {
@@ -541,6 +586,7 @@ const PROJECTS = [
     "image": "images/adobe-cottage.jpg",
     "images": [],
     "location": "Chiang Mai",
+    "place": "",
     "featured": false
   },
   {
@@ -553,6 +599,7 @@ const PROJECTS = [
     "image": "images/self-portrait.jpg",
     "images": ["images/self-portrait-gallery-1.jpg", "images/self-portrait-gallery-2.jpg", "images/self-portrait-gallery-3.jpg"],
     "location": "",
+    "place": "",
     "featured": false
   },
   {
@@ -565,6 +612,7 @@ const PROJECTS = [
     "image": "images/sakse-logo.jpg",
     "images": [],
     "location": "",
+    "place": "",
     "featured": false
   },
   {
@@ -577,6 +625,7 @@ const PROJECTS = [
     "image": "images/shoulder-bag.jpg",
     "images": [],
     "location": "",
+    "place": "",
     "featured": false
   },
   {
@@ -589,6 +638,7 @@ const PROJECTS = [
     "image": "images/measure-tape-camera-strap.webp",
     "images": [],
     "location": "",
+    "place": "",
     "featured": false
   },
   {
@@ -601,6 +651,7 @@ const PROJECTS = [
     "image": "images/f28-chiang-mai-month-of-photography.jpg",
     "images": [],
     "location": "Chiang Mai",
+    "place": "",
     "featured": true
   },
   {
@@ -613,6 +664,7 @@ const PROJECTS = [
     "image": "images/interactive-learning-app.jpg",
     "images": [],
     "location": "Boulder, CO",
+    "place": "",
     "featured": true
   },
   {
@@ -625,6 +677,7 @@ const PROJECTS = [
     "image": "images/inside.jpg",
     "images": [],
     "location": "",
+    "place": "",
     "featured": true
   },
   {
@@ -637,6 +690,7 @@ const PROJECTS = [
     "image": "",
     "images": [],
     "location": "",
+    "place": "",
     "featured": true
   },
   {
@@ -649,6 +703,7 @@ const PROJECTS = [
     "image": "images/rebels-and-reform.jpg",
     "images": [],
     "location": "Boulder, CO",
+    "place": "",
     "featured": true
   },
   {
@@ -661,6 +716,7 @@ const PROJECTS = [
     "image": "images/tedxbkk-talk.jpg",
     "images": [],
     "location": "Bangkok",
+    "place": "",
     "featured": true
   },
   {
@@ -673,6 +729,7 @@ const PROJECTS = [
     "image": "images/kachin-times-photo-editor.jpg",
     "images": [],
     "location": "Myitkyina",
+    "place": "",
     "featured": true
   },
   {
@@ -685,6 +742,7 @@ const PROJECTS = [
     "image": "",
     "images": [],
     "location": "",
+    "place": "",
     "featured": true
   },
   {
@@ -697,6 +755,7 @@ const PROJECTS = [
     "image": "",
     "images": [],
     "location": "",
+    "place": "",
     "featured": true
   },
   {
@@ -709,6 +768,7 @@ const PROJECTS = [
     "image": "",
     "images": [],
     "location": "Myitkyina",
+    "place": "",
     "featured": false
   },
   {
@@ -721,6 +781,7 @@ const PROJECTS = [
     "image": "",
     "images": [],
     "location": "Kuala Lumpur",
+    "place": "",
     "featured": false
   }
 ];

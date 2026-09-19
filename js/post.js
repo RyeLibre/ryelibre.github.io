@@ -214,10 +214,10 @@ function renderPost() {
   }
   container.appendChild(headerRow);
 
-  if (project.date || project.location) {
+  if (project.date || project.location || project.place) {
     const meta = document.createElement("div");
     meta.className = "project-meta";
-    meta.textContent = [formatPostDate(project.date), project.location].filter(Boolean).join(" · ");
+    meta.textContent = [formatPostDate(project.date), project.location, project.place].filter(Boolean).join(" · ");
     container.appendChild(meta);
   }
 

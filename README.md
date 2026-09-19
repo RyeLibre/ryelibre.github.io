@@ -37,15 +37,19 @@ Open [`data/projects.js`](data/projects.js) and add an entry to the `PROJECTS` a
   "image": "",
   "images": [],
   "location": "",
+  "place": "",
   "featured": false
 }
 ```
 
 - `id` must be unique and shouldn't change once set — it's how the site remembers which photo(s) you picked for that post (see **Post images** below). It's also the post's URL: `post.html?id=post-title`.
 - `categories` matches (case-insensitively) against the hashtags in `data/tags.js`. A post can have any tags, including ones not in the sidebar — they just won't have a dedicated filter button yet.
-- `date` is used for sorting (newest first); any sortable string like `"2026-01"` works.
+- `date` is used for sorting (newest first); any sortable string like `"2026-01"` works. Displayed as
+  "MONTH 'YY" (e.g. "MARCH '25") wherever a post's date is shown.
 - `link` is an optional external URL (e.g. a live site or repo) — shown as "Visit external link" on the post's own page.
 - `location` is an optional city name (e.g. `"Tokyo"`) — see **Location map** below.
+- `place` is an optional venue name (e.g. `"The Nikon Salon"`) shown right after `location` — a post's
+  meta line reads "MONTH 'YY · City · Place" with both filled in.
 - `featured: true` moves a post to the top of "All Projects" (what a first-time visitor sees) and to
   the top of every tag view it belongs to, ahead of the normal newest-first order. Toggle it with the
   "Featured" checkbox in the "+ New post" / "Edit" dialog — it also gets a "Featured" badge on the card

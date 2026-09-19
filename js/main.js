@@ -311,10 +311,10 @@ function renderCard(project) {
     card.appendChild(badge);
   }
 
-  if (project.date || project.location) {
+  if (project.date || project.location || project.place) {
     const meta = document.createElement("div");
     meta.className = "project-meta";
-    meta.textContent = [formatPostDate(project.date), project.location].filter(Boolean).join(" · ");
+    meta.textContent = [formatPostDate(project.date), project.location, project.place].filter(Boolean).join(" · ");
     card.appendChild(meta);
   }
 
@@ -700,6 +700,7 @@ function openPostDialog(project) {
     : new Date().toISOString().slice(0, 10);
   document.getElementById("post-link").value = project ? project.link || "" : "";
   document.getElementById("post-location").value = project ? project.location || "" : "";
+  document.getElementById("post-place").value = project ? project.place || "" : "";
   document.getElementById("post-description").value = project ? project.description || "" : "";
   document.getElementById("post-tags-other").value = "";
   document.getElementById("post-featured").checked = project ? !!project.featured : false;
@@ -778,6 +779,7 @@ function bindDialogs() {
       description: document.getElementById("post-description").value.trim(),
       link: document.getElementById("post-link").value.trim(),
       location: document.getElementById("post-location").value.trim(),
+      place: document.getElementById("post-place").value.trim(),
       featured: document.getElementById("post-featured").checked,
     };
 
@@ -835,6 +837,7 @@ function showGeneratedPost(post) {
     image: "",
     images: [],
     location: post.location || "",
+    place: post.place || "",
     featured: !!post.featured,
   };
   const lines = JSON.stringify(snippet, null, 2).split("\n");
@@ -868,6 +871,7 @@ function showGeneratedEdit(project) {
     image: project.image || "",
     images: project.images || [],
     location: project.location || "",
+    place: project.place || "",
     featured: !!project.featured,
   };
   const lines = JSON.stringify(snippet, null, 2).split("\n");
