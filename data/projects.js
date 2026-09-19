@@ -178,5 +178,55 @@ const PROJECTS = [
     "link": "",
     "image": "",
     "images": []
+  },
+  {
+    "id": "portraits-of-independence",
+    "title": "Portraits of Independence",
+    "categories": ["Exhibitions", "Photography", "Kachin"],
+    "date": "2026-09-19",
+    "description": "Portraits of Independence\nat the Nikon Salon in Shinjuku, Tokyo",
+    "link": "",
+    "image": "images/portraits-of-independence.jpg",
+    "images": []
+  },
+  {
+    "id": "foundry-photojournalism-workshops",
+    "title": "Foundry Photojournalism Workshops",
+    "categories": ["Workshops", "Photography", "CNX"],
+    "date": "2026-09-19",
+    "description": "Foundry Photojournalism Workshops 2012",
+    "link": "",
+    "image": "images/foundry-photojournalism-workshops.jpg",
+    "images": []
+  },
+  {
+    "id": "everyday-kachin",
+    "title": "Everyday Kachin",
+    "categories": ["Kachin", "Curation", "Exhibitions"],
+    "date": "2026-09-19",
+    "description": "Everyday Kachin",
+    "link": "",
+    "image": "images/everyday-kachin.jpg",
+    "images": []
+  },
+  {
+    "id": "ansel-adams-born-free-equal",
+    "title": "Ansel Adams : Born Free & Equal",
+    "categories": ["Exhibitions", "Curation"],
+    "date": "2026-09-19",
+    "description": "Ansel Adams : Born Free & Equal",
+    "link": "",
+    "image": "images/ansel-adams-born-free-equal.jpg",
+    "images": []
+  },
+  {
+    "id": "studio-sakse-cnx",
+    "title": "Studio Sakse @ CNX",
+    "categories": ["Design", "Studios", "Sakse"],
+    "date": "2026-09-19",
+    "description": "Studio Sakse @ CNX",
+    "link": "",
+    "image": "images/studio-sakse-cnx.jpg",
+    "images": []
   }
 ];

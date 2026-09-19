@@ -19,4 +19,6 @@ const FEATURED_TAGS = [
   "Hokkaido",
   "CNX",
   "Production",
+  "Studios",
+  "Sakse",
 ];
