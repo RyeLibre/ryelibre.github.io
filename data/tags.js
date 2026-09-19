@@ -11,7 +11,7 @@ const FEATURED_TAGS = [
   "Mountains",
   "Peace-work",
   "Unicorn Liberation Front",
-  "lubecker hutchen global archivist",
+  "Lubecker Hutchen Archivist",
   "Exhibitions",
   "Workshops",
   "Books",
@@ -21,4 +21,5 @@ const FEATURED_TAGS = [
   "Production",
   "Studios",
   "Sakse",
+  "Bio",
 ];

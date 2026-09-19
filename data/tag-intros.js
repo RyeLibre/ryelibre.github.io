@@ -30,7 +30,7 @@ const TAG_INTROS = {
   "Unicorn Liberation Front":
     "The Unicorn Liberation Front is an ongoing, gloriously absurd art project — equal parts zine, performance, and inside joke that got out of hand.\n\nThis tag is where the sillier, more experimental work lives, on purpose.\n\n*Replace this intro with your own description of the Unicorn Liberation Front category.*",
 
-  "lubecker hutchen global archivist":
+  "Lubecker Hutchen Archivist":
     "An ongoing archival project tracing a specific thread across collections worldwide — part research, part obsession.\n\nPosts here document findings, dead ends, and the slow accumulation of a personal archive.\n\n*Replace this intro with your own description of this category.*",
 
   "Exhibitions":
@@ -53,4 +53,7 @@ const TAG_INTROS = {
 
   "Production":
     "Draft — the practical, unglamorous side of making things: schedules, gear, budgets, and the decisions made on set or in the studio.\n\nThis tag is a working log more than a highlight reel.\n\n*Replace this intro with your own description of the Production category.*",
+
+  "Bio":
+    "The background material — who's behind this site, how to reach them, and the paper trail that goes with the work.\n\nExpect a bio, artist statement, CV, education, press, and the influences that shaped the practice.\n\n*Replace this intro with your own description of the Bio category.*",
 };

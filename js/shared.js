@@ -201,21 +201,66 @@ function getImageSrc(project) {
   return placeholderImage(project.title);
 }
 
+const POST_EDITS_KEY = "portfolio.postEdits";
+
+function loadPostEdits() {
+  try {
+    return JSON.parse(localStorage.getItem(POST_EDITS_KEY) || "{}");
+  } catch {
+    return {};
+  }
+}
+
+function savePostEdits(edits) {
+  try {
+    localStorage.setItem(POST_EDITS_KEY, JSON.stringify(edits));
+  } catch {}
+}
+
+function setPostEdit(id, fields) {
+  const edits = loadPostEdits();
+  edits[id] = fields;
+  savePostEdits(edits);
+}
+
+function applyPostEdit(project) {
+  const edit = loadPostEdits()[project.id];
+  return edit ? { ...project, ...edit } : project;
+}
+
+// Edits a post's text fields regardless of whether it's a draft (updates the
+// draft object directly) or one already in data/projects.js (saved as a
+// local overlay applied on top of it — see applyPostEdit).
+function updatePost(id, fields) {
+  if (isDraftPostId(id)) {
+    const drafts = loadDraftPosts();
+    const idx = drafts.findIndex((p) => String(p.id) === String(id));
+    if (idx !== -1) {
+      drafts[idx] = { ...drafts[idx], ...fields };
+      saveDraftPosts(drafts);
+    }
+  } else {
+    setPostEdit(id, fields);
+  }
+}
+
 function getAllProjects() {
-  const projects = [...PROJECTS, ...loadDraftPosts()];
+  const projects = [...PROJECTS, ...loadDraftPosts()].map(applyPostEdit);
   projects.sort((a, b) => (b.date || "").localeCompare(a.date || ""));
   return projects;
 }
 
 // Bundles everything added through the site's own UI (draft posts, draft
-// tags, and every locally-chosen cover/gallery photo — including ones set on
-// posts that already exist in data/projects.js) into one downloadable file.
-// Hand that file to whoever maintains the code to make it all permanent.
+// tags, edits to existing posts, and every locally-chosen cover/gallery
+// photo — including ones set on posts that already exist in
+// data/projects.js) into one downloadable file. Hand that file to whoever
+// maintains the code to make it all permanent.
 function exportDrafts() {
   const data = {
     exportedAt: new Date().toISOString(),
     draftTags: loadDraftTags(),
     draftPosts: loadDraftPosts(),
+    postEdits: loadPostEdits(),
     imageOverrides: loadImageOverrides(),
     galleryOverrides: loadGalleryOverrides(),
   };

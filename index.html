@@ -14,13 +14,13 @@
 <body>
 
 <header class="site-header">
-  <div class="wrap">
-    <h1 class="site-title">Rye Libre</h1>
-    <p class="site-subtitle">Works, notes &amp; things</p>
+  <div class="wrap site-header-inner">
+    <div>
+      <h1 class="site-title">Rye Libre</h1>
+      <p class="site-subtitle">Works, notes &amp; things</p>
+    </div>
     <nav class="site-links">
-      <a href="https://github.com/ryelibre" target="_blank" rel="noopener">GitHub</a>
-      <a href="mailto:ryanlibre@gmail.com">Email</a>
-      <!-- Add more links: LinkedIn, resume PDF, etc. -->
+      <a href="index.html?tag=Bio" id="bio-nav-link" class="bio-link">Bio</a>
     </nav>
   </div>
 </header>
@@ -58,6 +58,16 @@
   <div id="tag-map" class="tag-map"></div>
 </section>
 
+<section class="location-map-section wrap" aria-label="Where these were made">
+  <h2 class="section-title">Where these were made</h2>
+  <p class="section-hint">One pin per city — bigger pins mean more posts from that place. Set a post's location from the "+ New post" / "Edit" dialog.</p>
+  <div id="location-map" class="location-map"></div>
+
+  <h2 class="section-title timeline-title">Timeline</h2>
+  <p class="section-hint">Every post plotted by month, starting January 2000 — click a dot to open that post.</p>
+  <div id="timeline" class="timeline"></div>
+</section>
+
 <dialog id="tag-dialog" class="dialog">
   <form id="tag-form" class="dialog-form">
     <h3>Add a tag</h3>
@@ -76,15 +86,21 @@
 
 <dialog id="post-dialog" class="dialog">
   <form id="post-form" class="dialog-form">
-    <h3>New post</h3>
+    <h3 id="post-dialog-title">New post</h3>
     <label for="post-title">Title</label>
     <input id="post-title" type="text" required autocomplete="off">
 
-    <label for="post-tags">Tags (comma-separated)</label>
-    <input id="post-tags" type="text" placeholder="Design, Film" autocomplete="off">
+    <label>Tags</label>
+    <div id="post-tag-checklist" class="tag-checklist"></div>
+
+    <label for="post-tags-other">Other tags (comma-separated)</label>
+    <input id="post-tags-other" type="text" placeholder="Add a tag not listed above" autocomplete="off">
 
     <label for="post-date">Date</label>
     <input id="post-date" type="date">
+
+    <label for="post-location">Location (city, optional)</label>
+    <input id="post-location" type="text" placeholder="e.g. Tokyo" autocomplete="off">
 
     <label for="post-link">Link (optional)</label>
     <input id="post-link" type="url" placeholder="https://..." autocomplete="off">
@@ -94,11 +110,11 @@
 
     <div class="dialog-actions">
       <button type="button" class="btn-secondary" data-close-dialog>Cancel</button>
-      <button type="submit" class="btn-primary">Add post</button>
+      <button type="submit" id="post-submit-btn" class="btn-primary">Add post</button>
     </div>
   </form>
   <div id="post-generated" class="generated-code" hidden>
-    <p>Paste this into the <code>PROJECTS</code> array in <code>data/projects.js</code> to make it permanent for everyone:</p>
+    <p id="post-generated-hint">Paste this into the <code>PROJECTS</code> array in <code>data/projects.js</code> to make it permanent for everyone:</p>
     <textarea readonly rows="9"></textarea>
   </div>
 </dialog>
@@ -112,6 +128,7 @@
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="data/tags.js"></script>
 <script src="data/tag-intros.js"></script>
+<script src="data/city-coords.js"></script>
 <script src="data/projects.js"></script>
 <script src="js/shared.js"></script>
 <script src="js/main.js"></script>

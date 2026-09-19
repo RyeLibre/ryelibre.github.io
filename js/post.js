@@ -10,7 +10,7 @@ function buildTagChip(tag) {
   const a = document.createElement("a");
   a.className = "tag tag-link";
   a.href = "index.html?tag=" + encodeURIComponent(tag);
-  a.textContent = "#" + tag;
+  a.textContent = tag;
   return a;
 }
 
@@ -207,10 +207,10 @@ function renderPost() {
   }
   container.appendChild(headerRow);
 
-  if (project.date) {
+  if (project.date || project.location) {
     const meta = document.createElement("div");
     meta.className = "project-meta";
-    meta.textContent = project.date;
+    meta.textContent = [project.date, project.location].filter(Boolean).join(" · ");
     container.appendChild(meta);
   }
 
@@ -220,6 +220,12 @@ function renderPost() {
     project.categories.forEach((c) => tags.appendChild(buildTagChip(c)));
     container.appendChild(tags);
   }
+
+  const editLink = document.createElement("a");
+  editLink.className = "view-post-link"; // shares link styling, not an "add" affordance
+  editLink.href = "index.html?edit=" + encodeURIComponent(project.id);
+  editLink.textContent = "Edit this post";
+  container.appendChild(editLink);
 
   container.appendChild(buildCoverMedia(project));
 

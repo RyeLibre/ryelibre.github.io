@@ -18,6 +18,7 @@ js/main.js            Renders the post grid and sidebar on index.html
 js/post.js            Renders one post's detail page on post.html
 data/tags.js          Featured hashtags shown in the left sidebar
 data/tag-intros.js    Intro text shown above the grid when one tag is selected
+data/city-coords.js   City name -> map position, used by the "Where these were made" pin map
 data/projects.js      Your posts — edit this to add/change posts
 ```
 
@@ -34,7 +35,8 @@ Open [`data/projects.js`](data/projects.js) and add an entry to the `PROJECTS` a
   "description": "Supports **Markdown** — bullet lists, `code`, links, etc.",
   "link": "https://example.com/your-work",
   "image": "",
-  "images": []
+  "images": [],
+  "location": ""
 }
 ```
 
@@ -42,6 +44,7 @@ Open [`data/projects.js`](data/projects.js) and add an entry to the `PROJECTS` a
 - `categories` matches (case-insensitively) against the hashtags in `data/tags.js`. A post can have any tags, including ones not in the sidebar — they just won't have a dedicated filter button yet.
 - `date` is used for sorting (newest first); any sortable string like `"2026-01"` works.
 - `link` is an optional external URL (e.g. a live site or repo) — shown as "Visit external link" on the post's own page.
+- `location` is an optional city name (e.g. `"Tokyo"`) — see **Location map** below.
 - `image` / `images` — see **Post images** below.
 
 ## Post pages
@@ -78,6 +81,29 @@ budget. If you keep hitting the storage-full alert even with photos under 10MB, 
 several images already — use the permanent `images/` folder option instead, or "Reset"/"Remove" some
 existing local photos to free up space.
 
+## Location map
+
+Below the tag mind map is a simple pin map ("Where these were made") — set a post's `location` (a
+city name) and it gets a pin, sized by how many posts share that city. It's **not real geocoding** —
+there's no address lookup or precise coordinates, just a small hand-picked table in
+[`data/city-coords.js`](data/city-coords.js) mapping city names to a position on a simplified,
+stylized world map (the outlines are illustrative, not surveyed).
+
+If you use a city that isn't in that table, the post still saves fine — it just won't get a pin, and
+shows up in a small note under the map ("Not shown on the map yet…") so you know to add it. To add a
+city, open `data/city-coords.js` and add an entry using the formula in its comments (based on the
+city's real latitude/longitude).
+
+The map itself is drawn as a "wireframe" — a dashed lat/long grid and dashed continent outlines,
+generated in `js/main.js` (`renderLocationMap`), not an image file.
+
+## Timeline
+
+Below the map is a horizontal timeline plotting every post by month (day is ignored) along an axis
+that always starts at **January 2000** and extends to whichever is later: today, or your
+furthest-future-dated post. Click a dot to open that post. It scrolls horizontally on narrow screens.
+Posts sharing the same month stack as multiple dots above that point rather than overlapping.
+
 ## Category intro text
 
 When exactly one tag is selected, a short intro appears above the grid — a few lines about that
@@ -106,16 +132,31 @@ To actually publish a draft:
 4. Commit and push — see **Deploying to GitHub Pages** below.
 
 Tagging a new post with a hashtag that isn't in the sidebar yet automatically adds it as a draft tag too.
+Tags are picked from a checklist of everything already in use, plus an "Other tags" text field for
+anything not listed yet.
+
+### Editing an existing post
+
+Click **"Edit"** on any post card (or **"Edit this post"** on a post's own page) to change its title,
+tags, date, link, or description — this works on *every* post, including the ones already in
+`data/projects.js`, not just drafts.
+
+- Editing a **draft** post updates it directly — nothing extra to do.
+- Editing a post that's **already in `data/projects.js`** saves your changes as a local overlay (same
+  idea as the photo overrides) and shows a ready-to-paste code snippet — paste it over that post's
+  existing entry (matched by `id`) in `data/projects.js` to make the edit permanent for everyone.
+
+Editing a post's cover/gallery photos still happens separately, via "Change photo" — see **Post images**.
 
 ### Publishing everything at once
 
-Doing the copy-paste above one item at a time gets tedious once you've added several drafts and
-photos. Instead, click **"Export my drafts & photos"** in the sidebar — it downloads one JSON file
-with every draft post, draft tag, and locally-chosen photo (cover and gallery, including photos set on
-posts that already exist in `data/projects.js`). Hand that file to whoever is editing the code (or to
-an AI assistant working in this project) and ask them to "bake it in" — it has everything needed to
-write real entries into `data/projects.js` / `data/tags.js` and save the embedded photos as real files
-under `images/`, without you re-entering anything by hand.
+Doing the copy-paste above one item at a time gets tedious once you've added several drafts, edits, and
+photos. Instead, click **"Export my drafts & photos"** in the sidebar — it downloads one JSON file with
+every draft post, draft tag, post edit, and locally-chosen photo (cover and gallery, including photos
+set on posts that already exist in `data/projects.js`). Hand that file to whoever is editing the code
+(or to an AI assistant working in this project) and ask them to "bake it in" — it has everything needed
+to write real entries into `data/projects.js` / `data/tags.js` and save the embedded photos as real
+files under `images/`, without you re-entering anything by hand.
 
 ## Customizing
 

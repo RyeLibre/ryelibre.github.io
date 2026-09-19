@@ -1,0 +1,53 @@
+// City name -> position on the 1000x500 map (see js/main.js renderLocationMap).
+// Keys are lowercase; matching against a post's `location` is case-insensitive.
+// x/y are plotted from real latitude/longitude (equirectangular projection),
+// but the map itself is a simplified/stylized outline, not a precise atlas —
+// pins land in roughly the right place, not surveyed accuracy.
+//
+// If a post's location isn't listed here, it just won't get a pin (and shows
+// up in a small list under the map so you know to add it). To add a city,
+// compute x = (longitude + 180) / 360 * 1000, y = (90 - latitude) / 180 * 500.
+const CITY_COORDS = {
+  "tokyo": { x: 888, y: 151 },
+  "sapporo": { x: 893, y: 130 },
+  "seoul": { x: 853, y: 146 },
+  "beijing": { x: 823, y: 139 },
+  "shanghai": { x: 837, y: 163 },
+  "hong kong": { x: 817, y: 188 },
+  "chiang mai": { x: 775, y: 198 },
+  "bangkok": { x: 779, y: 212 },
+  "yangon": { x: 767, y: 203 },
+  "myitkyina": { x: 771, y: 180 },
+  "hanoi": { x: 794, y: 192 },
+  "ho chi minh city": { x: 796, y: 220 },
+  "manila": { x: 836, y: 209 },
+  "singapore": { x: 788, y: 246 },
+  "jakarta": { x: 797, y: 267 },
+  "kathmandu": { x: 737, y: 173 },
+  "delhi": { x: 715, y: 171 },
+  "mumbai": { x: 702, y: 197 },
+  "dubai": { x: 654, y: 180 },
+  "istanbul": { x: 581, y: 136 },
+  "moscow": { x: 605, y: 95 },
+  "cairo": { x: 587, y: 167 },
+  "nairobi": { x: 602, y: 254 },
+  "lagos": { x: 509, y: 232 },
+  "cape town": { x: 551, y: 344 },
+  "london": { x: 500, y: 107 },
+  "paris": { x: 507, y: 114 },
+  "amsterdam": { x: 514, y: 104 },
+  "berlin": { x: 537, y: 104 },
+  "rome": { x: 535, y: 134 },
+  "madrid": { x: 490, y: 138 },
+  "sydney": { x: 920, y: 344 },
+  "melbourne": { x: 903, y: 355 },
+  "new york": { x: 294, y: 137 },
+  "chicago": { x: 257, y: 134 },
+  "toronto": { x: 280, y: 129 },
+  "san francisco": { x: 160, y: 145 },
+  "los angeles": { x: 172, y: 155 },
+  "mexico city": { x: 225, y: 196 },
+  "rio de janeiro": { x: 380, y: 314 },
+  "sao paulo": { x: 371, y: 315 },
+  "buenos aires": { x: 338, y: 346 },
+};
