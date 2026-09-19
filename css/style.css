@@ -317,6 +317,18 @@ button {
   object-fit: cover;
 }
 
+/* Grayscale-on-browse, full color on hover — grid cards only, not the
+   cover photo on a post's own page (post.html uses .post-cover, not
+   nested inside .project-card). */
+.project-card .project-media img {
+  filter: grayscale(100%);
+  transition: filter 0.3s ease;
+}
+
+.project-card:hover .project-media img {
+  filter: grayscale(0%);
+}
+
 .change-photo-btn,
 .reset-photo-btn {
   position: absolute;

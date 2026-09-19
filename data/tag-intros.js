@@ -18,9 +18,6 @@ const TAG_INTROS = {
   "Film":
     "Moving image work, from short documentaries to experimental clips and zine-adjacent films.\n\nPosts here include finished films, behind-the-scenes notes, and the occasional unfinished cut worth sharing anyway.\n\n*Replace this intro with your own description of the Film category.*",
 
-  "Earthen Abode":
-    "Earthen Abode follows experiments in building with earth — adobe, cob, rammed earth — as a low-impact alternative to conventional construction.\n\nPosts cover material tests, small structures, and the reasoning behind building this way.\n\n*Replace this intro with your own description of the Earthen Abode category.*",
-
   "Mountains":
     "Mountains show up again and again in this work — as subject, as backdrop, and as the terrain that shapes how people live.\n\nThis tag gathers posts shot or set in mountainous places, from high passes to the villages tucked beneath them.\n\n*Replace this intro with your own description of the Mountains category.*",
 
@@ -63,8 +60,8 @@ const TAG_INTROS = {
   "Sakse":
     "Sakse is a specific studio/collective this practice runs through — its own name, its own thread running across several other tags.\n\nPosts here are anything made under, with, or because of Sakse.\n\n*Replace this intro with your own description of the Sakse category.*",
 
-  "Recognitions":
-    "Draft — a running list of grants, awards, and other recognition for the work, kept mostly so it doesn't have to be reconstructed from memory later.\n\nExpect short entries rather than full write-ups.\n\n*Replace this intro with your own description of the Recognitions category.*",
+  "CV":
+    "Draft — a running list of grants, awards, and other recognition for the work, kept mostly so it doesn't have to be reconstructed from memory later.\n\nExpect short entries rather than full write-ups.\n\n*Replace this intro with your own description of the CV category.*",
 
   "Printmaking":
     "Work made by cutting, carving, and pressing rather than drawing straight onto a surface — block prints, stamps, and anything else that leaves an impression.\n\nThis tag covers the process as much as the finished print.\n\n*Replace this intro with your own description of the Printmaking category.*",
@@ -76,7 +73,7 @@ const TAG_INTROS = {
     "Half-finished ideas and open prompts, posted on purpose so someone else might run with them.\n\nNothing here is precious — take it, change it, make it better.\n\n*Replace this intro with your own description of the Steal this idea category.*",
 
   "Adobe Abode":
-    "A close relative of Earthen Abode — more experiments in earth-based building, kept as its own thread.\n\n*Replace this intro with your own description of the Adobe Abode category.*",
+    "Experiments in building with earth — adobe, cob, rammed earth — as a low-impact alternative to conventional construction.\n\nPosts cover material tests, small structures, and the reasoning behind building this way.\n\n*Replace this intro with your own description of the Adobe Abode category.*",
 
   "Scripts":
     "Writing meant to be performed or filmed rather than read straight through — screenplays, treatments, and story outlines.\n\nExpect works in progress more often than finished drafts.\n\n*Replace this intro with your own description of the Scripts category.*",

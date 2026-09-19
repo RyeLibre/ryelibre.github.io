@@ -78,7 +78,7 @@ const PROJECTS = [
   {
     "id": "earthen-abode",
     "title": "Earthen Abode",
-    "categories": ["Design", "Earthen Abode"],
+    "categories": ["Design", "Adobe Abode"],
     "date": "2026-09-19",
     "description": "A study of earthen/adobe building techniques and low-impact dwelling design.\n\n*Replace this with your own project description, image, and link.*",
     "link": "",
@@ -437,8 +437,8 @@ const PROJECTS = [
   },
   {
     "id": "recognitions",
-    "title": "Recognitions",
-    "categories": ["Recognitions"],
+    "title": "CV",
+    "categories": ["CV"],
     "date": "2026-01",
     "description": "Draft — a running list of grants, awards, and other recognition for the work.\n\n*Replace this with your own project description, image, and link.*",
     "link": "",
@@ -534,7 +534,7 @@ const PROJECTS = [
   {
     "id": "adobe-cottage",
     "title": "Adobe Cottage",
-    "categories": ["Earthen Abode"],
+    "categories": ["Adobe Abode"],
     "date": "2026-09-19",
     "description": "Adobe Cottage in Rural Chiang Mai",
     "link": "",
