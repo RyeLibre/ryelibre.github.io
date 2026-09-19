@@ -26,4 +26,5 @@ const FEATURED_TAGS = [
   "Steal this idea",
   "Adobe Abode",
   "Scripts",
+  "Talks",
 ];

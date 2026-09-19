@@ -595,7 +595,7 @@ const PROJECTS = [
     "id": "f28-chiang-mai-month-of-photography",
     "title": "F/28   Chiang Mai Month of Photography",
     "categories": ["Curation", "Photography", "Exhibitions", "Workshops", "Books", "CNX", "Production", "Screenings"],
-    "date": "2026-09-19",
+    "date": "2018-02-19",
     "description": "Annual photography festival",
     "link": "",
     "image": "images/f28-chiang-mai-month-of-photography.jpg",
@@ -649,6 +649,42 @@ const PROJECTS = [
     "image": "images/rebels-and-reform.jpg",
     "images": [],
     "location": "Boulder, CO",
+    "featured": true
+  },
+  {
+    "id": "tedxbkk-talk",
+    "title": "TEDxBKK talk",
+    "categories": ["Kachin", "Photography", "Peace-work", "Sakse", "Talks"],
+    "date": "2014-01-19",
+    "description": "Grassroots Photojournalism",
+    "link": "",
+    "image": "images/tedxbkk-talk.jpg",
+    "images": [],
+    "location": "Bangkok",
+    "featured": true
+  },
+  {
+    "id": "kachin-times-photo-editor",
+    "title": "Kachin Times - Photo Editor",
+    "categories": ["Kachin", "Curation", "Photography"],
+    "date": "2017-01-19",
+    "description": "",
+    "link": "",
+    "image": "images/kachin-times-photo-editor.jpg",
+    "images": [],
+    "location": "Myitkyina",
+    "featured": true
+  },
+  {
+    "id": "everyday-kachin-ig-feed",
+    "title": "Everyday Kachin",
+    "categories": ["Kachin", "Curation", "Photography", "Production", "Sakse"],
+    "date": "2026-09-19",
+    "description": "Curated IG feed with stories\nmostly from Sakse alumni",
+    "link": "",
+    "image": "",
+    "images": [],
+    "location": "",
     "featured": true
   }
 ];
