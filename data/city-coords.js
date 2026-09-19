@@ -50,4 +50,7 @@ const CITY_COORDS = {
   "rio de janeiro": { x: 380, y: 314 },
   "sao paulo": { x: 371, y: 315 },
   "buenos aires": { x: 338, y: 346 },
+  "kyoto": { x: 877, y: 153 },
+  "brighton uk": { x: 500, y: 109 },
+  "pingtung, taiwan": { x: 835, y: 187 },
 };

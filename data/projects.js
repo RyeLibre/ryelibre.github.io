@@ -78,14 +78,14 @@ const PROJECTS = [
   {
     "id": "earthen-abode",
     "title": "Earthen Abode",
-    "categories": ["Earthen Abode", "Design"],
-    "date": "2026-07",
+    "categories": ["Design", "Earthen Abode"],
+    "date": "2026-09-19",
     "description": "A study of earthen/adobe building techniques and low-impact dwelling design.\n\n*Replace this with your own project description, image, and link.*",
     "link": "",
     "image": "",
     "images": [],
     "location": "",
-    "featured": true
+    "featured": false
   },
   {
     "id": "mountain-passes",
@@ -234,14 +234,14 @@ const PROJECTS = [
   {
     "id": "foundry-photojournalism-workshops",
     "title": "Foundry Photojournalism Workshops",
-    "categories": ["Workshops", "Photography", "CNX"],
+    "categories": ["Photography", "Workshops", "CNX"],
     "date": "2026-09-19",
     "description": "Foundry Photojournalism Workshops 2012",
     "link": "",
     "image": "images/foundry-photojournalism-workshops.jpg",
     "images": [],
     "location": "Chiang Mai",
-    "featured": false
+    "featured": true
   },
   {
     "id": "everyday-kachin",
@@ -258,14 +258,14 @@ const PROJECTS = [
   {
     "id": "ansel-adams-born-free-equal",
     "title": "Ansel Adams : Born Free & Equal",
-    "categories": ["Exhibitions", "Curation"],
+    "categories": ["Curation", "Exhibitions"],
     "date": "2026-09-19",
     "description": "Ansel Adams : Born Free & Equal",
     "link": "",
     "image": "images/ansel-adams-born-free-equal.jpg",
     "images": [],
-    "location": "",
-    "featured": false
+    "location": "Chiang Mai",
+    "featured": true
   },
   {
     "id": "studio-sakse-cnx",
@@ -446,5 +446,65 @@ const PROJECTS = [
     "images": [],
     "location": "",
     "featured": false
+  },
+  {
+    "id": "filmmaking-workbook",
+    "title": "FilmMaking Workbook",
+    "categories": ["Design", "Film", "Learning media"],
+    "date": "2018-09-19",
+    "description": "",
+    "link": "",
+    "image": "images/filmmaking-workbook.jpg",
+    "images": [],
+    "location": "",
+    "featured": true
+  },
+  {
+    "id": "brighton-museum-exhibition",
+    "title": "Brighton Museum Exhibition",
+    "categories": ["Kachin", "Photography", "Exhibitions"],
+    "date": "2026-09-19",
+    "description": "Brighton Museum permenate exhibition",
+    "link": "",
+    "image": "images/brighton-museum-exhibition.jpg",
+    "images": [],
+    "location": "Brighton UK",
+    "featured": true
+  },
+  {
+    "id": "frontiers",
+    "title": "Frontiers",
+    "categories": ["Photography", "Exhibitions"],
+    "date": "2026-09-19",
+    "description": "Frontiers exhibition with Mali at the Pingtung City Museum",
+    "link": "",
+    "image": "images/frontiers.jpg",
+    "images": ["images/frontiers-gallery-1.jpg"],
+    "location": "Pingtung, Taiwan",
+    "featured": true
+  },
+  {
+    "id": "unfiltered-yangon-photo-festival",
+    "title": "Unfiltered @ Yangon Photo Festival",
+    "categories": ["Kachin", "Film"],
+    "date": "2020-03-19",
+    "description": "short experimental doc",
+    "link": "",
+    "image": "images/unfiltered-yangon-photo-festival.jpg",
+    "images": [],
+    "location": "Yangon",
+    "featured": true
+  },
+  {
+    "id": "kyotographie-portfolio-reviewer",
+    "title": "KYOTOGRAPHIE - Portfolio Reviewer",
+    "categories": ["Curation", "Photography"],
+    "date": "2026-09-19",
+    "description": "",
+    "link": "",
+    "image": "images/kyotographie-portfolio-reviewer.jpg",
+    "images": ["images/kyotographie-portfolio-reviewer-gallery-1.jpg"],
+    "location": "Kyoto",
+    "featured": true
   }
 ];
