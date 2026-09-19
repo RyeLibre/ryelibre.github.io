@@ -314,7 +314,7 @@ function renderCard(project) {
   if (project.date || project.location) {
     const meta = document.createElement("div");
     meta.className = "project-meta";
-    meta.textContent = [project.date, project.location].filter(Boolean).join(" · ");
+    meta.textContent = [formatPostDate(project.date), project.location].filter(Boolean).join(" · ");
     card.appendChild(meta);
   }
 
@@ -653,7 +653,7 @@ function renderTimeline() {
       const color = colorForProject(project);
       dots.push(`
         <a href="post.html?id=${encodeURIComponent(project.id)}" class="timeline-dot-link">
-          <circle cx="${x}" cy="${y}" r="5" class="timeline-dot" style="--dot-color:${color}"><title>${label} — ${escapeHtml(project.date)}</title></circle>
+          <circle cx="${x}" cy="${y}" r="5" class="timeline-dot" style="--dot-color:${color}"><title>${label} — ${escapeHtml(formatPostDate(project.date))}</title></circle>
         </a>`);
     });
   });

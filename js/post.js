@@ -217,7 +217,7 @@ function renderPost() {
   if (project.date || project.location) {
     const meta = document.createElement("div");
     meta.className = "project-meta";
-    meta.textContent = [project.date, project.location].filter(Boolean).join(" · ");
+    meta.textContent = [formatPostDate(project.date), project.location].filter(Boolean).join(" · ");
     container.appendChild(meta);
   }
 

@@ -156,6 +156,21 @@ function resizeImageForWeb(file, maxDim = 2200, quality = 0.85) {
   });
 }
 
+const MONTH_NAMES = [
+  "JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE",
+  "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER",
+];
+
+// A post's `date` may be stored as "YYYY-MM" or a full "YYYY-MM-DD" — either
+// way, only year and month are ever shown, e.g. "MARCH '25".
+function formatPostDate(dateStr) {
+  const m = /^(\d{4})-(\d{2})/.exec(dateStr || "");
+  if (!m) return dateStr || "";
+  const monthName = MONTH_NAMES[parseInt(m[2], 10) - 1];
+  if (!monthName) return dateStr;
+  return `${monthName} '${m[1].slice(-2)}`;
+}
+
 function hashString(str) {
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
