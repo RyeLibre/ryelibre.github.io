@@ -338,6 +338,30 @@ function buildIdeaActionRow(project) {
   return row;
 }
 
+function buildStealSupportDetails(project) {
+  const categories = (project.categories || []).map((c) => c.toLowerCase());
+  const wrap = document.createElement("div");
+  wrap.className = "steal-support-details";
+
+  if (categories.includes("all projects to steal")) {
+    const block = document.createElement("div");
+    block.className = "steal-support-detail-block steal";
+    block.innerHTML =
+      `<h4>Steal details</h4><p>${escapeHtml(project.stealDetails || "Details coming soon — check back later.")}</p>`;
+    wrap.appendChild(block);
+  }
+
+  if (categories.includes("all projects to support")) {
+    const block = document.createElement("div");
+    block.className = "steal-support-detail-block support";
+    block.innerHTML =
+      `<h4>Support details</h4><p>${escapeHtml(project.supportDetails || "Details coming soon — check back later.")}</p>`;
+    wrap.appendChild(block);
+  }
+
+  return wrap.childElementCount ? wrap : null;
+}
+
 function renderCard(project) {
   const isDraft = state.draftPostIds.has(project.id);
   const isStealIdea = isStealIdeaProject(project);
@@ -393,6 +417,8 @@ function renderCard(project) {
 
   if (isStealIdea) {
     card.appendChild(buildIdeaActionRow(project));
+    const details = buildStealSupportDetails(project);
+    if (details) card.appendChild(details);
   } else {
     const desc = document.createElement("div");
     desc.className = "project-description";
@@ -825,6 +851,17 @@ function renderTagChecklist(container, selectedKeys) {
     label.appendChild(document.createTextNode(tag));
     container.appendChild(label);
   });
+  updateStealSupportSectionVisibility();
+}
+
+function updateStealSupportSectionVisibility() {
+  const checklist = document.getElementById("post-tag-checklist");
+  const section = document.getElementById("post-steal-support-section");
+  if (!checklist || !section) return;
+  const stealIdeaChecked = [...checklist.querySelectorAll("input[type=checkbox]")].some(
+    (cb) => cb.value.toLowerCase() === "steal this idea" && cb.checked
+  );
+  section.hidden = !stealIdeaChecked;
 }
 
 function getCheckedTags(container) {
@@ -855,6 +892,12 @@ function openPostDialog(project) {
   const selected = new Set((project ? project.categories || [] : []).map((c) => c.toLowerCase()));
   renderTagChecklist(document.getElementById("post-tag-checklist"), selected);
 
+  document.getElementById("post-tag-steal").checked = selected.has("all projects to steal");
+  document.getElementById("post-tag-support").checked = selected.has("all projects to support");
+  document.getElementById("post-steal-details").value = project ? project.stealDetails || "" : "";
+  document.getElementById("post-support-details").value = project ? project.supportDetails || "" : "";
+  updateStealSupportSectionVisibility();
+
   postDialog.showModal();
 }
 
@@ -883,6 +926,8 @@ function bindDialogs() {
   document.getElementById("add-post-btn").addEventListener("click", () => {
     openPostDialog(null);
   });
+
+  document.getElementById("post-tag-checklist").addEventListener("change", updateStealSupportSectionVisibility);
 
   document.getElementById("export-drafts-btn").addEventListener("click", () => {
     exportDrafts();
@@ -973,17 +1018,22 @@ function bindDialogs() {
       .value.split(",")
       .map((t) => t.trim())
       .filter(Boolean);
-    const categories = [...new Set([...checked, ...otherTags])];
+    const categories = [...checked, ...otherTags];
+    if (document.getElementById("post-tag-steal").checked) categories.push("All Projects to Steal");
+    if (document.getElementById("post-tag-support").checked) categories.push("All Projects to Support");
+    const dedupedCategories = [...new Set(categories)];
 
     const fields = {
       title,
-      categories,
+      categories: dedupedCategories,
       date: document.getElementById("post-date").value || new Date().toISOString().slice(0, 10),
       description: document.getElementById("post-description").value.trim(),
       link: document.getElementById("post-link").value.trim(),
       location: document.getElementById("post-location").value.trim(),
       place: document.getElementById("post-place").value.trim(),
       featured: document.getElementById("post-featured").checked,
+      stealDetails: document.getElementById("post-steal-details").value.trim(),
+      supportDetails: document.getElementById("post-support-details").value.trim(),
     };
 
     categories.forEach((c) => addTagToState(c));
@@ -1043,6 +1093,8 @@ function showGeneratedPost(post) {
     place: post.place || "",
     featured: !!post.featured,
   };
+  if (post.stealDetails) snippet.stealDetails = post.stealDetails;
+  if (post.supportDetails) snippet.supportDetails = post.supportDetails;
   const lines = JSON.stringify(snippet, null, 2).split("\n");
   textarea.value = "  " + lines.join("\n  ") + ",";
   postGenerated.hidden = false;
@@ -1077,6 +1129,8 @@ function showGeneratedEdit(project) {
     place: project.place || "",
     featured: !!project.featured,
   };
+  if (project.stealDetails) snippet.stealDetails = project.stealDetails;
+  if (project.supportDetails) snippet.supportDetails = project.supportDetails;
   const lines = JSON.stringify(snippet, null, 2).split("\n");
   textarea.value = "  " + lines.join("\n  ") + ",";
   postGenerated.hidden = false;

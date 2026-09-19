@@ -413,6 +413,54 @@ button {
   color: #555;
 }
 
+.steal-support-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 4px 0 8px;
+}
+
+.steal-support-detail-block {
+  border-left: 3px solid;
+  padding: 4px 10px;
+  font-size: 0.8rem;
+}
+
+.steal-support-detail-block h4 {
+  margin: 0 0 2px;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.steal-support-detail-block p {
+  margin: 0;
+  opacity: 0.85;
+}
+
+.steal-support-detail-block.steal {
+  border-color: #b33a2e;
+}
+
+.steal-support-detail-block.support {
+  border-color: #3a6ea5;
+}
+
+.steal-support-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 12px;
+  margin: 4px 0;
+  border: 1px dashed rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+}
+
+.steal-support-section textarea {
+  width: 100%;
+  box-sizing: border-box;
+}
+
 .change-photo-btn,
 .reset-photo-btn {
   position: absolute;
