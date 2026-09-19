@@ -10,6 +10,7 @@ const state = {
   activeTags: new Set(), // lowercase tag names currently filtering
   activeSubtag: null, // lowercase sub-tag narrowing the grid without changing the heading
   mapZoom: 25, // 25/50/75/100 — 25 shows the whole (cropped) map, 100 is most zoomed in
+  pinningCity: false, // true while "+ Pin a city" mode is active
 };
 
 let editingProjectId = null; // set while the post dialog is in "edit" mode
@@ -27,6 +28,11 @@ const tagGenerated = document.getElementById("tag-generated");
 const postDialog = document.getElementById("post-dialog");
 const postForm = document.getElementById("post-form");
 const postGenerated = document.getElementById("post-generated");
+
+const cityPinDialog = document.getElementById("city-pin-dialog");
+const cityPinForm = document.getElementById("city-pin-form");
+const cityPinGenerated = document.getElementById("city-pin-generated");
+let pendingCityPin = null; // { x, y } captured from the last map click
 
 function init() {
   state.tags = [...FEATURED_TAGS];
@@ -496,15 +502,23 @@ function renderMapZoomControls() {
   const el = document.getElementById("map-zoom-controls");
   if (!el) return;
 
-  el.innerHTML = MAP_ZOOM_LEVELS.map(
+  const zoomBtns = MAP_ZOOM_LEVELS.map(
     (z) => `<button type="button" class="map-zoom-btn${z === state.mapZoom ? " active" : ""}" data-zoom="${z}">${z}%</button>`
   ).join("");
+  const pinBtn = `<button type="button" id="pin-city-btn" class="map-zoom-btn${state.pinningCity ? " active" : ""}">${state.pinningCity ? "Click the map to pin…" : "+ Pin a city"}</button>`;
 
-  el.querySelectorAll(".map-zoom-btn").forEach((btn) => {
+  el.innerHTML = zoomBtns + pinBtn;
+
+  el.querySelectorAll(".map-zoom-btn[data-zoom]").forEach((btn) => {
     btn.addEventListener("click", () => {
       state.mapZoom = parseInt(btn.getAttribute("data-zoom"), 10);
       renderLocationMap();
     });
+  });
+
+  document.getElementById("pin-city-btn").addEventListener("click", () => {
+    state.pinningCity = !state.pinningCity;
+    renderLocationMap();
   });
 }
 
@@ -526,7 +540,7 @@ function renderLocationMap() {
   const pins = [];
   const unmapped = [];
   counts.forEach(({ label, count }, key) => {
-    const coord = (typeof CITY_COORDS !== "undefined" && CITY_COORDS[key]) || null;
+    const coord = getCityCoord(key);
     if (coord) {
       pins.push({ label, count, x: coord.x, y: coord.y });
     } else {
@@ -559,16 +573,35 @@ function renderLocationMap() {
     ? `<p class="section-hint">Not shown on the map yet — add these to <code>data/city-coords.js</code>: ${unmapped.map(escapeHtml).join(", ")}</p>`
     : "";
 
+  const localOverrides = loadCityCoordOverrides();
+  const overrideKeys = Object.keys(localOverrides);
+  const overridesNote = overrideKeys.length
+    ? `<div class="section-hint">Local pins not yet published: ${overrideKeys
+        .map((key) => {
+          const label = escapeHtml(localOverrides[key].label || key);
+          return `${label} <button type="button" class="city-pin-remove" data-city-key="${escapeHtml(key)}">remove</button>`;
+        })
+        .join(" · ")}</div>`
+    : "";
+
   const scale = state.mapZoom / MAP_ZOOM_LEVELS[0];
 
   mapEl.innerHTML = `
-    <div class="location-map-inner">
+    <div class="location-map-inner${state.pinningCity ? " pinning" : ""}">
       <div class="location-map-crop" style="width:${(scale * 100).toFixed(0)}%;">
         <img src="images/world-map.png" alt="World map" class="location-map-img">
         <div class="location-pins-overlay">${pinEls}</div>
       </div>
     </div>
-    ${unmappedNote}`;
+    ${unmappedNote}
+    ${overridesNote}`;
+
+  mapEl.querySelectorAll(".city-pin-remove").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      removeCityCoordOverride(btn.getAttribute("data-city-key"));
+      renderLocationMap();
+    });
+  });
 
   const viewport = mapEl.querySelector(".location-map-inner");
   if (viewport && scale > 1) {
@@ -581,6 +614,17 @@ function renderLocationMap() {
   } else if (viewport) {
     viewport.scrollLeft = 0;
     viewport.scrollTop = 0;
+  }
+
+  const crop = mapEl.querySelector(".location-map-crop");
+  if (crop) {
+    crop.addEventListener("click", (e) => {
+      if (!state.pinningCity) return;
+      const rect = crop.getBoundingClientRect();
+      const x = Math.round(((e.clientX - rect.left) / rect.width) * 1000);
+      const y = Math.round(((e.clientY - rect.top) / rect.height) * MAP_VISIBLE_Y_MAX);
+      openCityPinDialog(x, y);
+    });
   }
 
   renderTimeline();
@@ -754,6 +798,13 @@ function openPostDialog(project) {
   postDialog.showModal();
 }
 
+function openCityPinDialog(x, y) {
+  pendingCityPin = { x, y };
+  cityPinForm.reset();
+  cityPinGenerated.hidden = true;
+  cityPinDialog.showModal();
+}
+
 function bindDialogs() {
   document.getElementById("add-tag-btn").addEventListener("click", () => {
     tagForm.reset();
@@ -790,6 +841,23 @@ function bindDialogs() {
 
   document.querySelectorAll("[data-close-dialog]").forEach((btn) => {
     btn.addEventListener("click", () => btn.closest("dialog").close());
+  });
+
+  cityPinForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (!pendingCityPin) return;
+    const name = document.getElementById("city-pin-name").value.trim();
+    if (!name) return;
+
+    setCityCoordOverride(name, pendingCityPin.x, pendingCityPin.y);
+
+    const textarea = cityPinGenerated.querySelector("textarea");
+    textarea.value = `  "${name.toLowerCase()}": { x: ${pendingCityPin.x}, y: ${pendingCityPin.y} },`;
+    cityPinGenerated.hidden = false;
+    textarea.focus();
+    textarea.select();
+
+    renderLocationMap();
   });
 
   tagForm.addEventListener("submit", (e) => {

@@ -134,6 +134,25 @@
   </div>
 </dialog>
 
+<dialog id="city-pin-dialog" class="dialog">
+  <form id="city-pin-form" class="dialog-form">
+    <h3>Name this pin</h3>
+    <p class="section-hint">This is where you clicked on the map — give it a city name (use the same
+      spelling as your posts' "Location" field, e.g. "Tokyo").</p>
+    <label for="city-pin-name">City name</label>
+    <input id="city-pin-name" type="text" placeholder="e.g. Tokyo" required autocomplete="off">
+    <div class="dialog-actions">
+      <button type="button" class="btn-secondary" data-close-dialog>Cancel</button>
+      <button type="submit" class="btn-primary">Save pin</button>
+    </div>
+  </form>
+  <div id="city-pin-generated" class="generated-code" hidden>
+    <p>Saved locally — the pin shows for you now. Paste this into <code>CITY_COORDS</code> in
+      <code>data/city-coords.js</code> to make it permanent for everyone:</p>
+    <textarea readonly rows="2"></textarea>
+  </div>
+</dialog>
+
 <footer class="site-footer">
   <div class="wrap">
     <p>Built with plain HTML/CSS/JS · Hosted on GitHub Pages</p>

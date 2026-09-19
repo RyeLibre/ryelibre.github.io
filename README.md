@@ -98,9 +98,20 @@ there's no address lookup or precise coordinates, just a small hand-picked table
 [`data/city-coords.js`](data/city-coords.js) mapping city names to a position on the map image.
 
 If you use a city that isn't in that table, the post still saves fine — it just won't get a pin, and
-shows up in a small note under the map ("Not shown on the map yet…") so you know to add it. To add a
-city, open `data/city-coords.js` and add an entry using the formula in its comments (based on the
-city's real latitude/longitude).
+shows up in a small note under the map ("Not shown on the map yet…") so you know to add it.
+
+The easiest way to add one: click **"+ Pin a city"** above the map, then click the spot on the map
+where that city actually is — a dialog opens asking for the city's name. Save it, and the pin appears
+immediately (saved locally in your browser, same model as drafts/edits elsewhere on the site) — a
+manually-placed pin always wins over the lat/lon-computed one if both exist, since it was placed by
+eye against this exact map image. A small list under the map lets you remove a local pin if you
+misclick. When you're happy with a batch of pins, paste the generated `CITY_COORDS` line(s) into
+`data/city-coords.js` to publish them for everyone (or use "Export my drafts & photos" if you also
+have other local changes to publish at the same time — city pins are included in that export).
+
+You can still add a city by hand instead: open `data/city-coords.js` and add an entry using the
+formula in its comments (based on the city's real latitude/longitude) — useful for a first rough pass
+before fine-tuning by eye with the pin tool.
 
 Use the **25% / 50% / 75% / 100%** buttons above the map to zoom in where pins overlap (Asia usually
 needs it most) — the map scrolls/pans within a fixed-size window at every zoom level, and jumping to

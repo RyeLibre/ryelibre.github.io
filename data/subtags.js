@@ -6,4 +6,5 @@
 const TAG_SUBTAGS = {
   "Design": ["Logos", "Bags", "Bikes", "Scarfs"],
   "Photography": ["Unicorn Liberation Front", "Lubecker Hutchen Archivist"],
+  "Exhibitions": ["Captured by Rye", "Curated by Rye", "Collaborations by Rye"],
 };

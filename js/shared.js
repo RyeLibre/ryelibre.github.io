@@ -259,6 +259,44 @@ function updatePost(id, fields) {
   }
 }
 
+const CITY_COORD_OVERRIDES_KEY = "portfolio.cityCoordOverrides";
+
+function loadCityCoordOverrides() {
+  try {
+    return JSON.parse(localStorage.getItem(CITY_COORD_OVERRIDES_KEY) || "{}");
+  } catch {
+    return {};
+  }
+}
+
+function saveCityCoordOverrides(overrides) {
+  try {
+    localStorage.setItem(CITY_COORD_OVERRIDES_KEY, JSON.stringify(overrides));
+  } catch {}
+}
+
+function setCityCoordOverride(name, x, y) {
+  const overrides = loadCityCoordOverrides();
+  overrides[name.toLowerCase()] = { label: name, x, y };
+  saveCityCoordOverrides(overrides);
+}
+
+function removeCityCoordOverride(key) {
+  const overrides = loadCityCoordOverrides();
+  delete overrides[key];
+  saveCityCoordOverrides(overrides);
+}
+
+// City coordinates: a manually-placed pin (from "+ Pin a city") always wins
+// over the built-in lat/lon-derived table, since it was placed by eye
+// against this exact map image.
+function getCityCoord(key) {
+  const overrides = loadCityCoordOverrides();
+  if (overrides[key]) return overrides[key];
+  if (typeof CITY_COORDS !== "undefined" && CITY_COORDS[key]) return CITY_COORDS[key];
+  return null;
+}
+
 // Featured posts sort first (within any tag, or in the unfiltered "All
 // Projects" view a new visitor lands on), then newest-first by date.
 function compareProjects(a, b) {
@@ -287,6 +325,7 @@ function exportDrafts() {
     postEdits: loadPostEdits(),
     imageOverrides: loadImageOverrides(),
     galleryOverrides: loadGalleryOverrides(),
+    cityCoordOverrides: loadCityCoordOverrides(),
   };
 
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });

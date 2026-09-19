@@ -636,6 +636,25 @@ button {
   height: auto;
 }
 
+.location-map-inner.pinning .location-map-crop {
+  cursor: crosshair;
+}
+
+.city-pin-remove {
+  border: none;
+  background: transparent;
+  color: var(--text-dim);
+  font-family: inherit;
+  font-size: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}
+
+.city-pin-remove:hover {
+  color: var(--text);
+}
+
 .location-pins-overlay {
   position: absolute;
   inset: 0;

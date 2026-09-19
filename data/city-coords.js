@@ -53,7 +53,7 @@ const CITY_COORDS = {
   "kyoto": { x: 877, y: 153 },
   "brighton uk": { x: 500, y: 109 },
   "pingtung, taiwan": { x: 835, y: 187 },
-  "boulder, co": { x: 208, y: 139 },
+  "boulder, co": { x: 238, y: 152 },
   "kuala lumpur": { x: 783, y: 241 },
   "battambang": { x: 787, y: 214 },
 };
