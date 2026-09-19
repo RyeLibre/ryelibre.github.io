@@ -5,4 +5,5 @@
 // up when that sub-tag is clicked, same as any other tag.
 const TAG_SUBTAGS = {
   "Design": ["Logos", "Bags", "Bikes", "Scarfs"],
+  "Photography": ["Unicorn Liberation Front", "Lubecker Hutchen Archivist"],
 };

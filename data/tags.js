@@ -10,8 +10,6 @@ const FEATURED_TAGS = [
   "Earthen Abode",
   "Mountains",
   "Peace-work",
-  "Unicorn Liberation Front",
-  "Lubecker Hutchen Archivist",
   "Exhibitions",
   "Workshops",
   "Books",
@@ -23,4 +21,6 @@ const FEATURED_TAGS = [
   "Sakse",
   "Bio",
   "Recognitions",
+  "Printmaking",
+  "Screenings",
 ];

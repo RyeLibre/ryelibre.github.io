@@ -114,7 +114,7 @@ const PROJECTS = [
   {
     "id": "unicorn-liberation-front-zine",
     "title": "Unicorn Liberation Front — Zine",
-    "categories": ["Unicorn Liberation Front", "Design", "Film"],
+    "categories": ["Unicorn Liberation Front", "Photography", "Design", "Film"],
     "date": "2025-08",
     "description": "A hand-designed zine and short film for an ongoing, gloriously absurd art project.\n\n*Replace this with your own project description, image, and link.*",
     "link": "",
@@ -126,7 +126,7 @@ const PROJECTS = [
   {
     "id": "lubecker-hutchen-global-archive-notes",
     "title": "Lubecker Hutchen: Global Archive Notes",
-    "categories": ["Lubecker Hutchen Archivist", "Curation", "Exhibitions"],
+    "categories": ["Lubecker Hutchen Archivist", "Photography", "Curation", "Exhibitions"],
     "date": "2025-05",
     "description": "Archival notes and curatorial research toward a touring exhibition.\n\n*Replace this with your own project description.*",
     "link": "",
@@ -247,12 +247,12 @@ const PROJECTS = [
     "id": "everyday-kachin",
     "title": "Everyday Kachin",
     "categories": ["Kachin", "Curation", "Exhibitions"],
-    "date": "2026-09-19",
-    "description": "Everyday Kachin",
+    "date": "2019-11-19",
+    "description": "Everyday Kachin exhibition at FreeBird \nWas also a well attended talk",
     "link": "",
     "image": "images/everyday-kachin.jpg",
     "images": [],
-    "location": "Myitkyina",
+    "location": "Chiang Mai",
     "featured": false
   },
   {
@@ -486,7 +486,7 @@ const PROJECTS = [
   {
     "id": "unfiltered-yangon-photo-festival",
     "title": "Unfiltered @ Yangon Photo Festival",
-    "categories": ["Kachin", "Film"],
+    "categories": ["Kachin", "Film", "Screenings"],
     "date": "2020-03-19",
     "description": "short experimental doc",
     "link": "",
@@ -505,6 +505,114 @@ const PROJECTS = [
     "image": "images/kyotographie-portfolio-reviewer.jpg",
     "images": ["images/kyotographie-portfolio-reviewer-gallery-1.jpg"],
     "location": "Kyoto",
+    "featured": true
+  },
+  {
+    "id": "battle-for-burma",
+    "title": "Battle for Burma",
+    "categories": ["Kachin", "Design", "Peace-work"],
+    "date": "2026-09-19",
+    "description": "A board game of strategy, civil war & state building\n\nImmerse yourself in the nuanced dynamics of Burma’s civil war. Engage with state building, history, strategy & the fight for self-determination.",
+    "link": "",
+    "image": "images/battle-for-burma.jpg",
+    "images": [],
+    "location": "",
+    "featured": false
+  },
+  {
+    "id": "origami-wallet",
+    "title": "Origami Wallet",
+    "categories": ["Design"],
+    "date": "2026-09-19",
+    "description": "Origami Wallet  \nfor sale 150 THB",
+    "link": "",
+    "image": "images/origami-wallet.jpg",
+    "images": [],
+    "location": "",
+    "featured": false
+  },
+  {
+    "id": "adobe-cottage",
+    "title": "Adobe Cottage",
+    "categories": ["Earthen Abode"],
+    "date": "2026-09-19",
+    "description": "Adobe Cottage in Rural Chiang Mai",
+    "link": "",
+    "image": "images/adobe-cottage.jpg",
+    "images": [],
+    "location": "Chiang Mai",
+    "featured": false
+  },
+  {
+    "id": "self-portrait",
+    "title": "Self Portrait",
+    "categories": ["Printmaking"],
+    "date": "2026-09-19",
+    "description": "Carved into my skateboard",
+    "link": "",
+    "image": "images/self-portrait.jpg",
+    "images": ["images/self-portrait-gallery-1.jpg", "images/self-portrait-gallery-2.jpg", "images/self-portrait-gallery-3.jpg"],
+    "location": "",
+    "featured": false
+  },
+  {
+    "id": "sakse-logo",
+    "title": "Sakse Logo",
+    "categories": ["Printmaking", "Design"],
+    "date": "2026-09-19",
+    "description": "Sakse Hornbill logo",
+    "link": "",
+    "image": "images/sakse-logo.jpg",
+    "images": [],
+    "location": "",
+    "featured": false
+  },
+  {
+    "id": "shoulder-bag",
+    "title": "Shoulder Bag",
+    "categories": ["Design"],
+    "date": "2026-09-19",
+    "description": "",
+    "link": "",
+    "image": "images/shoulder-bag.jpg",
+    "images": [],
+    "location": "",
+    "featured": false
+  },
+  {
+    "id": "measure-tape-camera-strap",
+    "title": "Measure tape camera strap",
+    "categories": ["Design"],
+    "date": "2026-09-19",
+    "description": "",
+    "link": "",
+    "image": "images/measure-tape-camera-strap.webp",
+    "images": [],
+    "location": "",
+    "featured": false
+  },
+  {
+    "id": "f28-chiang-mai-month-of-photography",
+    "title": "F/28   Chiang Mai Month of Photography",
+    "categories": ["Curation", "Photography", "Exhibitions", "Workshops", "Books", "CNX", "Production", "Screenings"],
+    "date": "2026-09-19",
+    "description": "Annual photography festival",
+    "link": "",
+    "image": "",
+    "images": [],
+    "location": "Chiang Mai",
+    "featured": true
+  },
+  {
+    "id": "interactive-learning-app",
+    "title": "Interactive learning app",
+    "categories": ["Kachin", "Design", "Learning media", "Production"],
+    "date": "2019-06-19",
+    "description": "",
+    "link": "",
+    "image": "images/interactive-learning-app.jpg",
+    "images": [],
+    "location": "Boulder, CO",
     "featured": true
   }
 ];
