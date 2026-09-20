@@ -411,26 +411,19 @@ button {
   font-weight: 600;
   text-decoration: none;
   border: 1px solid;
+  background: transparent;
+  font-family: inherit;
+  cursor: pointer;
 }
 
-.idea-action-btn.steal {
-  color: #b33a2e;
-  border-color: #b33a2e;
-}
-
+.idea-action-btn.steal,
 .idea-action-btn.support {
-  color: #3a6ea5;
-  border-color: #3a6ea5;
+  color: #5c6370;
+  border-color: #b7bcc5;
 }
 
 .idea-action-btn:hover {
   opacity: 0.75;
-}
-
-/* Makes the "Steal this idea" tag visually distinct wherever it shows up. */
-.tag.tag-steal-idea {
-  background: #fff;
-  color: #555;
 }
 
 .steal-support-details {
