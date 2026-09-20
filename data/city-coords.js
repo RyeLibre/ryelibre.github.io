@@ -54,6 +54,7 @@ const CITY_COORDS = {
   "brighton uk": { x: 500, y: 109 },
   "pingtung, taiwan": { x: 835, y: 187 },
   "boulder, co": { x: 238, y: 152 },
+  "boulder": { x: 125, y: 157 },
   "kuala lumpur": { x: 783, y: 241 },
   "battambang": { x: 787, y: 214 },
 };

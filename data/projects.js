@@ -63,13 +63,13 @@ const PROJECTS = [
     "id": "ansel-adams-born-free-equal",
     "title": "Ansel Adams : Born Free & Equal",
     "categories": ["Curation", "Exhibitions"],
-    "date": "2026-09-19",
+    "date": "2012-10-19",
     "description": "Ansel Adams : Born Free & Equal",
     "link": "",
     "image": "images/ansel-adams-born-free-equal.jpg",
     "images": [],
     "location": "Chiang Mai",
-    "place": "",
+    "place": "DocArtsAsia 1",
     "featured": true
   },
   {
@@ -339,7 +339,7 @@ const PROJECTS = [
     "date": "2026-09-19",
     "description": "Curated IG feed with stories\nmostly from Sakse alumni",
     "link": "",
-    "image": "",
+    "image": "images/pool/everyday-kachin-website.jpg",
     "images": [],
     "location": "",
     "place": "",
@@ -369,7 +369,7 @@ const PROJECTS = [
     "image": "images/the-opium-war.jpg",
     "images": [],
     "location": "Myitkyina",
-    "place": "",
+    "place": "The Humanity Institute",
     "featured": false
   },
   {
@@ -435,7 +435,7 @@ const PROJECTS = [
     "images": [],
     "location": "",
     "place": "",
-    "featured": false
+    "featured": true
   },
   {
     "id": "forbidden-forest",
@@ -459,7 +459,8 @@ const PROJECTS = [
     "link": "",
     "image": "images/maran.jpg",
     "images": [],
-    "location": "",
+    "imagePosition": "center 75%",
+    "location": "Laiza",
     "place": "",
     "featured": false
   },
@@ -488,5 +489,84 @@ const PROJECTS = [
     "location": "",
     "place": "",
     "featured": false
+  },
+  {
+    "id": "teach-in",
+    "title": "Teach-in",
+    "categories": ["Kachin", "Workshops", "Talks"],
+    "date": "2022-06-09",
+    "description": "",
+    "link": "",
+    "image": "images/pool/kachin-micro-nation-teach-in.jpg",
+    "images": [],
+    "location": "Chiang Mai",
+    "place": "Studio Sakse 2",
+    "featured": false
+  },
+  {
+    "id": "documentary-arts-asia-2",
+    "title": "Documentary Arts Asia 2",
+    "categories": ["Design", "CNX", "Studios", "Adobe Abode"],
+    "date": "2015-01-20",
+    "description": "All adobe photo gallery",
+    "link": "",
+    "image": "images/pool/seeds-are-life-exhibition.jpg",
+    "images": [],
+    "location": "Chiang Mai",
+    "place": "",
+    "featured": true
+  },
+  {
+    "id": "chiang-mai-documentatry-arts-festival-2012",
+    "title": "Chiang Mai Documentatry Arts Festival 2012",
+    "categories": ["Curation", "Photography", "CNX", "Production", "Screenings"],
+    "date": "2012-02-20",
+    "description": "",
+    "link": "",
+    "image": "",
+    "images": [],
+    "location": "Chiang Mai",
+    "place": "",
+    "featured": true
+  },
+  {
+    "id": "chiang-mai-documentatry-arts-festival-2013",
+    "title": "Chiang Mai Documentatry Arts Festival 2013",
+    "categories": ["Curation", "Production"],
+    "date": "2013-02-20",
+    "description": "",
+    "link": "",
+    "image": "images/pool/photobook-exhibition-tables.jpg",
+    "images": [],
+    "location": "Chiang Mai",
+    "place": "",
+    "featured": false
+  },
+  {
+    "id": "masters-of-fine-arts-program",
+    "title": "Masters of Fine Arts program",
+    "categories": ["Books", "CV"],
+    "date": "2018-09-20",
+    "description": "",
+    "link": "",
+    "image": "images/pool/photobook-archive-library.jpg",
+    "images": [],
+    "location": "Boulder",
+    "place": "the University of Colorado",
+    "featured": false
+  },
+  {
+    "id": "space-invaders",
+    "title": "Space Invaders",
+    "categories": ["Photography", "Exhibitions"],
+    "date": "2018-01-20",
+    "description": "",
+    "link": "",
+    "image": "images/pool/space-invaders-project.jpg",
+    "images": ["images/pool/blank-billboards-plaza.jpg", "images/pool/lightstrip-building-night.jpg", "images/pool/green-street-myanmar-night.jpg"],
+    "imagePosition": "center 75%",
+    "location": "Chiang Mai",
+    "place": "Fringe Fest",
+    "featured": true
   }
 ];
