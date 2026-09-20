@@ -425,6 +425,19 @@ const PROJECTS = [
     "featured": false
   },
   {
+    "id": "songs-of-self-determination",
+    "title": "Songs of Self-Determination",
+    "categories": ["Kachin"],
+    "date": "2026-09-20",
+    "description": "",
+    "link": "",
+    "image": "images/songs-of-self-determination.avif",
+    "images": [],
+    "location": "",
+    "place": "",
+    "featured": false
+  },
+  {
     "id": "forbidden-forest",
     "title": "Forbidden Forest",
     "categories": ["Curation", "Exhibitions", "CNX"],
