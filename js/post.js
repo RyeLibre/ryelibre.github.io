@@ -59,11 +59,6 @@ function buildGallery(project) {
   const section = document.createElement("section");
   section.className = "post-gallery";
 
-  const heading = document.createElement("h2");
-  heading.className = "section-title";
-  heading.textContent = "Gallery";
-  section.appendChild(heading);
-
   if (dataImages.length === 0 && overrides.length === 0) {
     const hint = document.createElement("p");
     hint.className = "section-hint";
