@@ -61,4 +61,8 @@ const STATIC_MEDIA_POOL = [
   { id: "static-street-interview-documentation", dataUrl: "images/pool/street-interview-documentation.jpg", name: "Street interview / documentation" },
   { id: "static-full-of-grace-exhibition-banner", dataUrl: "images/pool/full-of-grace-exhibition-banner.jpg", name: "Full of Grace (exhibition banner)" },
   { id: "static-kia-soldier-viewing-exhibit", dataUrl: "images/pool/kia-soldier-viewing-exhibit.jpg", name: "KIA soldier viewing exhibit" },
+  { id: "static-cdaf-dial-logo", dataUrl: "images/pool/cdaf-dial-logo.gif", name: "CDAF dial logo" },
+  { id: "static-f28-logo", dataUrl: "images/pool/f28-logo.jpg", name: "F/28 logo" },
+  { id: "static-cdaf-venues-map-2012", dataUrl: "images/pool/cdaf-venues-map-2012.png", name: "CDAF venues map 2012" },
+  { id: "static-cdaf-2012-schedule", dataUrl: "images/pool/cdaf-2012-schedule.jpg", name: "CDAF 2012 schedule" },
 ];
