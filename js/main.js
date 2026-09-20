@@ -310,32 +310,6 @@ function renderMedia(project) {
   if (project.imagePosition) img.style.objectPosition = project.imagePosition;
   media.appendChild(img);
 
-  const changeBtn = document.createElement("button");
-  changeBtn.type = "button";
-  changeBtn.className = "change-photo-btn";
-  changeBtn.textContent = "Change photo";
-  changeBtn.addEventListener("click", () => {
-    openPhotoPicker("Choose a cover photo", (dataUrl) => {
-      setImageOverride(project.id, dataUrl);
-      renderProjects();
-    });
-  });
-  media.appendChild(changeBtn);
-
-  const overrides = loadImageOverrides();
-  if (overrides[project.id]) {
-    const resetBtn = document.createElement("button");
-    resetBtn.type = "button";
-    resetBtn.className = "reset-photo-btn";
-    resetBtn.textContent = "Reset";
-    resetBtn.title = "Remove your chosen photo and go back to the default";
-    resetBtn.addEventListener("click", () => {
-      clearImageOverride(project.id);
-      renderProjects();
-    });
-    media.appendChild(resetBtn);
-  }
-
   return media;
 }
 

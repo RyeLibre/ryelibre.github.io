@@ -80,12 +80,6 @@ function setImageOverride(id, dataUrl) {
   saveImageOverrides(overrides);
 }
 
-function clearImageOverride(id) {
-  const overrides = loadImageOverrides();
-  delete overrides[id];
-  saveImageOverrides(overrides);
-}
-
 function loadGalleryOverrides() {
   try {
     return JSON.parse(localStorage.getItem(GALLERY_OVERRIDES_KEY) || "{}");

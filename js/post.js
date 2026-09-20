@@ -37,20 +37,6 @@ function buildCoverMedia(project) {
   });
   media.appendChild(changeBtn);
 
-  const overrides = loadImageOverrides();
-  if (overrides[project.id]) {
-    const resetBtn = document.createElement("button");
-    resetBtn.type = "button";
-    resetBtn.className = "reset-photo-btn";
-    resetBtn.textContent = "Reset";
-    resetBtn.title = "Remove your chosen photo and go back to the default";
-    resetBtn.addEventListener("click", () => {
-      clearImageOverride(project.id);
-      renderPost();
-    });
-    media.appendChild(resetBtn);
-  }
-
   return media;
 }
 
