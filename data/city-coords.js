@@ -52,6 +52,7 @@ const CITY_COORDS = {
   "buenos aires": { x: 338, y: 346 },
   "kyoto": { x: 877, y: 153 },
   "brighton uk": { x: 500, y: 109 },
+  "brighton": { x: 433, y: 114 },
   "pingtung, taiwan": { x: 835, y: 187 },
   "boulder, co": { x: 238, y: 152 },
   "boulder": { x: 125, y: 157 },

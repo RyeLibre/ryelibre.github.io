@@ -120,8 +120,8 @@ const PROJECTS = [
     "link": "",
     "image": "images/frontiers.jpg",
     "images": ["images/frontiers-gallery-1.jpg"],
-    "location": "Pingtung, Taiwan",
-    "place": "",
+    "location": "Pingtung",
+    "place": "The Pingtung Art Museum",
     "featured": true
   },
   {
@@ -291,7 +291,7 @@ const PROJECTS = [
     "images": [],
     "location": "",
     "place": "",
-    "featured": true
+    "featured": false
   },
   {
     "id": "rebels-and-reform",
@@ -518,13 +518,13 @@ const PROJECTS = [
   },
   {
     "id": "chiang-mai-documentatry-arts-festival-2012",
-    "title": "Chiang Mai Documentatry Arts Festival 2012",
-    "categories": ["Curation", "Photography", "CNX", "Production", "Screenings"],
+    "title": "Chiang Mai Documentary Arts Festival 2012",
+    "categories": ["Curation", "Photography", "Production", "Screenings"],
     "date": "2012-02-20",
     "description": "",
     "link": "",
-    "image": "",
-    "images": [],
+    "image": "images/pool/thai-house-gallery-dusk.jpg",
+    "images": ["images/pool/laptop-feedback-session.jpg"],
     "location": "Chiang Mai",
     "place": "",
     "featured": true
@@ -567,6 +567,71 @@ const PROJECTS = [
     "imagePosition": "center 75%",
     "location": "Chiang Mai",
     "place": "Fringe Fest",
+    "featured": true
+  },
+  {
+    "id": "biker-bar-full-design",
+    "title": "Biker Bar Full Design",
+    "categories": ["Design", "Production", "Collaborations"],
+    "date": "2026-09-19",
+    "description": "Full design of chairs,   coffee dyed pillow cases and more",
+    "link": "",
+    "image": "",
+    "images": [],
+    "location": "Chiang Mai",
+    "place": "",
+    "featured": false
+  },
+  {
+    "id": "welcome-to-free-kachin",
+    "title": "Welcome to Free Kachin",
+    "categories": ["Kachin", "Film", "Production"],
+    "date": "2009-08-20",
+    "description": "",
+    "link": "",
+    "image": "images/pool/welcome-to-free-kachin-poster.jpg",
+    "images": [],
+    "location": "",
+    "place": "",
+    "featured": false
+  },
+  {
+    "id": "hybrid-film-school",
+    "title": "Hybrid Film School",
+    "categories": ["Learning media", "Sakse", "All Projects to Support"],
+    "date": "2026-09-20",
+    "description": "",
+    "link": "",
+    "image": "images/pool/open-film-school-ecosystem.jpg",
+    "images": [],
+    "location": "",
+    "place": "",
+    "featured": false
+  },
+  {
+    "id": "goodbye-my-chechnya",
+    "title": "Goodbye My Chechnya",
+    "categories": ["Exhibitions", "Workshops"],
+    "date": "2026-09-20",
+    "description": "",
+    "link": "",
+    "image": "images/pool/goodbye-my-chechnya-poster.jpg",
+    "images": [],
+    "location": "Chiang Mai",
+    "place": "DocArtsAsia 1",
+    "featured": false
+  },
+  {
+    "id": "f28-the-chiang-mai-month-of-photography-2016",
+    "title": "F/28 the Chiang Mai Month of Photography  2016",
+    "categories": ["Curation", "Exhibitions", "Production"],
+    "date": "2016-02-20",
+    "description": "",
+    "link": "",
+    "image": "images/pool/f28-chiang-mai-2016-poster.jpg",
+    "images": [],
+    "location": "Chiang Mai",
+    "place": "",
     "featured": true
   }
 ];
