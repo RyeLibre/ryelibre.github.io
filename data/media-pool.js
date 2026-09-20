@@ -50,4 +50,9 @@ const STATIC_MEDIA_POOL = [
   { id: "static-tao-te-ching-notebook", dataUrl: "images/pool/tao-te-ching-notebook.jpg", name: "Tao Te Ching notebook" },
   { id: "static-kashmir-exhibit-corner-2", dataUrl: "images/pool/kashmir-exhibit-corner-2.jpg", name: "Kashmir exhibit, viewer with photos" },
   { id: "static-monk-portrait-exhibition-print", dataUrl: "images/pool/monk-portrait-exhibition-print.jpg", name: "Monk portrait, exhibition print" },
+  { id: "static-kia-soldiers-book-cover", dataUrl: "images/pool/kia-soldiers-book-cover.jpg", name: "KIA soldiers (book cover)" },
+  { id: "static-ethnic-groups-textbook-page", dataUrl: "images/pool/ethnic-groups-textbook-page.jpg", name: "Ethnic groups textbook page" },
+  { id: "static-the-deep-north-poster", dataUrl: "images/pool/the-deep-north-poster.jpg", name: "The Deep North (poster)" },
+  { id: "static-gallery-photobook-browsing", dataUrl: "images/pool/gallery-photobook-browsing.jpg", name: "Gallery, browsing a photobook" },
+  { id: "static-sathirakoses-nagapradipa-logo", dataUrl: "images/pool/sathirakoses-nagapradipa-logo.jpg", name: "Sathirakoses-Nagapradipa Foundation logo" },
 ];
