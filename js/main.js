@@ -190,13 +190,28 @@ function renderProjects() {
   });
 
   renderCategoryIntro();
-  shuffleGridFrom(previousRects);
+
+  // Card shuffle and the category-intro fade are prepared here, then both
+  // kicked off together in the same animation frame so they stay in sync
+  // instead of the fade (a CSS class) racing ahead of the shuffle (JS transitions).
+  const moves = prepareShuffle(previousRects);
+  categoryIntroEl.classList.remove("fade-in");
+  void categoryIntroEl.offsetWidth; // restart the CSS animation on every tag switch
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      playShuffle(moves);
+      categoryIntroEl.classList.add("fade-in");
+    });
+  });
 }
 
 // FLIP-animates cards from their previous grid position to their new one,
 // so filtering by tag reads as a shuffle rather than an instant swap.
-function shuffleGridFrom(previousRects) {
-  if (previousRects.size === 0) return;
+// Split into prepare (runs synchronously, before layout settles) and play
+// (runs a couple of frames later) so the caller can line it up with other animations.
+function prepareShuffle(previousRects) {
+  if (previousRects.size === 0) return [];
 
   const cards = [...gridEl.querySelectorAll(".project-card")];
   const moves = [];
@@ -210,27 +225,25 @@ function shuffleGridFrom(previousRects) {
     if (dx || dy) moves.push({ card, dx, dy });
   });
 
-  if (moves.length === 0) return;
-
   moves.forEach(({ card, dx, dy }) => {
     card.style.transition = "none";
     card.style.transform = `translate(${dx}px, ${dy}px)`;
   });
 
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      moves.forEach(({ card }) => {
-        card.style.transition = "transform 3s ease";
-        card.style.transform = "";
-        card.addEventListener(
-          "transitionend",
-          () => {
-            card.style.transition = "";
-          },
-          { once: true }
-        );
-      });
-    });
+  return moves;
+}
+
+function playShuffle(moves) {
+  moves.forEach(({ card }) => {
+    card.style.transition = "transform 3s ease";
+    card.style.transform = "";
+    card.addEventListener(
+      "transitionend",
+      () => {
+        card.style.transition = "";
+      },
+      { once: true }
+    );
   });
 }
 
@@ -274,10 +287,6 @@ function renderCategoryIntro() {
     `<h2 class="category-intro-title">${escapeHtml(activeTag)}</h2>` +
     subtagsHtml +
     `<div class="category-intro-text">${window.marked ? marked.parse(intro) : intro}</div>`;
-
-  categoryIntroEl.classList.remove("fade-in");
-  void categoryIntroEl.offsetWidth; // restart the CSS animation on every tag switch
-  categoryIntroEl.classList.add("fade-in");
 
   if (subtags && subtags.length) {
     categoryIntroEl.querySelectorAll(".subtag-btn").forEach((btn) => {
