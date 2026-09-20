@@ -235,7 +235,7 @@ function prepareShuffle(previousRects) {
 
 function playShuffle(moves) {
   moves.forEach(({ card }) => {
-    card.style.transition = "transform 3s ease";
+    card.style.transition = "transform 2s ease";
     card.style.transform = "";
     card.addEventListener(
       "transitionend",
