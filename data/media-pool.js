@@ -32,4 +32,10 @@ const STATIC_MEDIA_POOL = [
   { id: "static-gallery-book-signing", dataUrl: "images/pool/gallery-book-signing.jpg", name: "Gallery book signing" },
   { id: "static-90-days-exhibition-poster", dataUrl: "images/pool/90-days-exhibition-poster.jpg", name: "90 days (exhibition poster)" },
   { id: "static-gallery-conversation-laptop", dataUrl: "images/pool/gallery-conversation-laptop.jpg", name: "Gallery conversation with laptop" },
+  { id: "static-exhibition-banner-students", dataUrl: "images/pool/exhibition-banner-students.jpg", name: "Exhibition banner, students viewing" },
+  { id: "static-ipa-juror-badge-2022", dataUrl: "images/pool/ipa-juror-badge-2022.webp", name: "IPA Juror badge 2022" },
+  { id: "static-installing-exhibition-panels", dataUrl: "images/pool/installing-exhibition-panels.jpg", name: "Installing exhibition panels" },
+  { id: "static-tv-news-interview-exhibition", dataUrl: "images/pool/tv-news-interview-exhibition.jpg", name: "TV news interview at exhibition" },
+  { id: "static-kachin-youth-group-selfie", dataUrl: "images/pool/kachin-youth-group-selfie.jpg", name: "Kachin youth group selfie" },
+  { id: "static-pulitzer-center-office", dataUrl: "images/pool/pulitzer-center-office.jpg", name: "Pulitzer Center office" },
 ];
