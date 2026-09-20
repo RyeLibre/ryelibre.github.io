@@ -312,6 +312,10 @@ button {
   transition: transform 0.15s, border-color 0.15s;
 }
 
+.project-card-clickable {
+  cursor: pointer;
+}
+
 .project-card:hover {
   border-color: var(--accent);
 }

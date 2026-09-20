@@ -416,8 +416,12 @@ function renderCard(project) {
   const isStealIdea = isStealIdeaProject(project);
 
   const card = document.createElement("article");
-  card.className = "project-card";
+  card.className = "project-card project-card-clickable";
   card.dataset.id = project.id;
+  card.addEventListener("click", (e) => {
+    if (e.target.closest("a, button, input, textarea, label")) return;
+    window.location.href = "post.html?id=" + encodeURIComponent(project.id);
+  });
 
   card.appendChild(isStealIdea ? renderIndexCard(project) : renderMedia(project));
 
@@ -478,12 +482,6 @@ function renderCard(project) {
 
   const linkRow = document.createElement("div");
   linkRow.className = "card-link-row";
-
-  const viewLink = document.createElement("a");
-  viewLink.className = "view-post-link";
-  viewLink.href = "post.html?id=" + encodeURIComponent(project.id);
-  viewLink.textContent = "View post →";
-  linkRow.appendChild(viewLink);
 
   const editLink = document.createElement("button");
   editLink.type = "button";
