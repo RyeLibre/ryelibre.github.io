@@ -127,6 +127,7 @@ function renderTagList() {
 
   state.tags.forEach((tag) => {
     const key = tag.toLowerCase();
+    if (key === "bio") return; // Bio has its own link in the header, not the tag cloud
     const row = document.createElement("div");
     row.className = "tag-row";
 
