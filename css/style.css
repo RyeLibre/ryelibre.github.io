@@ -227,7 +227,7 @@ button {
 }
 
 .category-intro.fade-in {
-  animation: category-intro-fade 350ms ease;
+  animation: category-intro-fade 1s ease;
 }
 
 .category-intro-title {
