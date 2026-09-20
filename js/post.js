@@ -19,6 +19,7 @@ function buildCoverMedia(project) {
   media.className = "project-media post-cover";
 
   const img = document.createElement("img");
+  img.id = "post-cover-img";
   img.src = getImageSrc(project);
   img.alt = project.title;
   if (project.imagePosition) img.style.objectPosition = project.imagePosition;
@@ -53,6 +54,18 @@ function buildCoverMedia(project) {
   return media;
 }
 
+function showInCover(fig, src) {
+  const img = document.getElementById("post-cover-img");
+  if (!img) return;
+  img.src = src;
+  img.style.objectPosition = "";
+  document.querySelectorAll(".gallery-item-selectable.active-in-cover").forEach((el) => {
+    el.classList.remove("active-in-cover");
+  });
+  fig.classList.add("active-in-cover");
+  img.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
 function buildGallery(project) {
   const dataImages = project.images || [];
   const overrides = loadGalleryOverrides()[project.id] || [];
@@ -78,23 +91,27 @@ function buildGallery(project) {
 
   dataImages.forEach((src) => {
     const fig = document.createElement("figure");
-    fig.className = "gallery-item";
+    fig.className = "gallery-item gallery-item-selectable";
     const img = document.createElement("img");
     img.src = src;
     img.alt = project.title;
     img.loading = "lazy";
+    img.title = "Show this photo as the cover";
+    img.addEventListener("click", () => showInCover(fig, src));
     fig.appendChild(img);
     grid.appendChild(fig);
   });
 
   overrides.forEach((src, index) => {
     const fig = document.createElement("figure");
-    fig.className = "gallery-item";
+    fig.className = "gallery-item gallery-item-selectable";
 
     const img = document.createElement("img");
     img.src = src;
     img.alt = project.title;
     img.loading = "lazy";
+    img.title = "Show this photo as the cover";
+    img.addEventListener("click", () => showInCover(fig, src));
     fig.appendChild(img);
 
     const removeBtn = document.createElement("button");

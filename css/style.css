@@ -518,10 +518,7 @@ button {
   font-size: 0.65rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--accent-text);
-  background: var(--accent);
-  border-radius: 999px;
-  padding: 2px 8px;
+  color: var(--text-dim);
 }
 
 .featured-badge-corner {
@@ -1131,6 +1128,20 @@ button {
 }
 
 .media-pool-grid-selectable .media-pool-item img:hover {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.gallery-item-selectable img {
+  cursor: pointer;
+}
+
+.gallery-item-selectable img:hover {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.gallery-item-selectable.active-in-cover img {
   outline: 2px solid var(--accent);
   outline-offset: -2px;
 }
