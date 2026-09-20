@@ -38,4 +38,10 @@ const STATIC_MEDIA_POOL = [
   { id: "static-tv-news-interview-exhibition", dataUrl: "images/pool/tv-news-interview-exhibition.jpg", name: "TV news interview at exhibition" },
   { id: "static-kachin-youth-group-selfie", dataUrl: "images/pool/kachin-youth-group-selfie.jpg", name: "Kachin youth group selfie" },
   { id: "static-pulitzer-center-office", dataUrl: "images/pool/pulitzer-center-office.jpg", name: "Pulitzer Center office" },
+  { id: "static-life-in-the-front-line-zine", dataUrl: "images/pool/life-in-the-front-line-zine.jpg", name: "Life in the Front Line (Kachin State zine)" },
+  { id: "static-ft-wood-platoon-1996", dataUrl: "images/pool/ft-wood-platoon-1996.jpg", name: "Ft Wood platoon, 1996" },
+  { id: "static-anti-selfies-project", dataUrl: "images/pool/anti-selfies-project.png", name: "Anti-Selfies (project)" },
+  { id: "static-monk-at-exhibition-wall", dataUrl: "images/pool/monk-at-exhibition-wall.png", name: "Monk at exhibition wall" },
+  { id: "static-children-on-stairwell", dataUrl: "images/pool/children-on-stairwell.jpg", name: "Children on stairwell" },
+  { id: "static-bride-under-veil-portrait", dataUrl: "images/pool/bride-under-veil-portrait.jpg", name: "Bride under veil (portrait)" },
 ];
