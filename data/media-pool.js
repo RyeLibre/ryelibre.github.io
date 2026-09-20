@@ -26,4 +26,10 @@ const STATIC_MEDIA_POOL = [
   { id: "static-gallery-hallway-portraits", dataUrl: "images/pool/gallery-hallway-portraits.jpg", name: "Gallery hallway, portrait prints" },
   { id: "static-computer-training-workshop", dataUrl: "images/pool/computer-training-workshop.jpg", name: "Computer training workshop" },
   { id: "static-thai-house-gallery-dusk", dataUrl: "images/pool/thai-house-gallery-dusk.jpg", name: "Thai house gallery at dusk" },
+  { id: "static-goodbye-my-chechnya-poster", dataUrl: "images/pool/goodbye-my-chechnya-poster.jpg", name: "Goodbye My Chechnya (poster)" },
+  { id: "static-lucie-foundation-logo", dataUrl: "images/pool/lucie-foundation-logo.jpg", name: "Lucie Foundation logo" },
+  { id: "static-kachin-award-recipients", dataUrl: "images/pool/kachin-award-recipients.jpg", name: "Kachin award recipients" },
+  { id: "static-gallery-book-signing", dataUrl: "images/pool/gallery-book-signing.jpg", name: "Gallery book signing" },
+  { id: "static-90-days-exhibition-poster", dataUrl: "images/pool/90-days-exhibition-poster.jpg", name: "90 days (exhibition poster)" },
+  { id: "static-gallery-conversation-laptop", dataUrl: "images/pool/gallery-conversation-laptop.jpg", name: "Gallery conversation with laptop" },
 ];
