@@ -170,6 +170,11 @@ function makeTagButton(label, active) {
 }
 
 function renderProjects() {
+  const previousRects = new Map();
+  gridEl.querySelectorAll(".project-card").forEach((card) => {
+    previousRects.set(card.dataset.id, card.getBoundingClientRect());
+  });
+
   const filtered = state.projects.filter((p) => {
     const categories = (p.categories || []).map((c) => c.toLowerCase());
     if (state.activeSubtag) return categories.includes(state.activeSubtag);
@@ -185,6 +190,48 @@ function renderProjects() {
   });
 
   renderCategoryIntro();
+  shuffleGridFrom(previousRects);
+}
+
+// FLIP-animates cards from their previous grid position to their new one,
+// so filtering by tag reads as a shuffle rather than an instant swap.
+function shuffleGridFrom(previousRects) {
+  if (previousRects.size === 0) return;
+
+  const cards = [...gridEl.querySelectorAll(".project-card")];
+  const moves = [];
+
+  cards.forEach((card) => {
+    const oldRect = previousRects.get(card.dataset.id);
+    if (!oldRect) return;
+    const newRect = card.getBoundingClientRect();
+    const dx = oldRect.left - newRect.left;
+    const dy = oldRect.top - newRect.top;
+    if (dx || dy) moves.push({ card, dx, dy });
+  });
+
+  if (moves.length === 0) return;
+
+  moves.forEach(({ card, dx, dy }) => {
+    card.style.transition = "none";
+    card.style.transform = `translate(${dx}px, ${dy}px)`;
+  });
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      moves.forEach(({ card }) => {
+        card.style.transition = "transform 400ms ease";
+        card.style.transform = "";
+        card.addEventListener(
+          "transitionend",
+          () => {
+            card.style.transition = "";
+          },
+          { once: true }
+        );
+      });
+    });
+  });
 }
 
 function renderCategoryIntro() {
@@ -357,6 +404,7 @@ function renderCard(project) {
 
   const card = document.createElement("article");
   card.className = "project-card";
+  card.dataset.id = project.id;
 
   card.appendChild(isStealIdea ? renderIndexCard(project) : renderMedia(project));
 
