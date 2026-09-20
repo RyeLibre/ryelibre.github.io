@@ -44,4 +44,10 @@ const STATIC_MEDIA_POOL = [
   { id: "static-monk-at-exhibition-wall", dataUrl: "images/pool/monk-at-exhibition-wall.png", name: "Monk at exhibition wall" },
   { id: "static-children-on-stairwell", dataUrl: "images/pool/children-on-stairwell.jpg", name: "Children on stairwell" },
   { id: "static-bride-under-veil-portrait", dataUrl: "images/pool/bride-under-veil-portrait.jpg", name: "Bride under veil (portrait)" },
+  { id: "static-gallery-wall-grid-viewers", dataUrl: "images/pool/gallery-wall-grid-viewers.jpg", name: "Gallery wall grid, viewers" },
+  { id: "static-kashmir-exhibit-corner-1", dataUrl: "images/pool/kashmir-exhibit-corner-1.jpg", name: "Kashmir exhibit, corner install" },
+  { id: "static-gallery-hall-wide-pillars", dataUrl: "images/pool/gallery-hall-wide-pillars.jpg", name: "Gallery hall, wide with pillars" },
+  { id: "static-tao-te-ching-notebook", dataUrl: "images/pool/tao-te-ching-notebook.jpg", name: "Tao Te Ching notebook" },
+  { id: "static-kashmir-exhibit-corner-2", dataUrl: "images/pool/kashmir-exhibit-corner-2.jpg", name: "Kashmir exhibit, viewer with photos" },
+  { id: "static-monk-portrait-exhibition-print", dataUrl: "images/pool/monk-portrait-exhibition-print.jpg", name: "Monk portrait, exhibition print" },
 ];
