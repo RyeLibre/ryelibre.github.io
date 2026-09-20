@@ -220,7 +220,7 @@ function shuffleGridFrom(previousRects) {
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
       moves.forEach(({ card }) => {
-        card.style.transition = "transform 400ms ease";
+        card.style.transition = "transform 3s ease";
         card.style.transform = "";
         card.addEventListener(
           "transitionend",
