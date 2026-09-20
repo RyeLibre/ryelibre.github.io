@@ -366,7 +366,7 @@ const PROJECTS = [
     "date": "2019-01-19",
     "description": "",
     "link": "",
-    "image": "",
+    "image": "images/the-opium-war.jpg",
     "images": [],
     "location": "Myitkyina",
     "place": "",
@@ -422,6 +422,19 @@ const PROJECTS = [
     "images": [],
     "location": "Sapporo",
     "place": "The Fuji Film Salon",
+    "featured": false
+  },
+  {
+    "id": "maran",
+    "title": "Maran",
+    "categories": ["Kachin", "Film", "Production"],
+    "date": "2020-01-20",
+    "description": "Feature fiction film\n\nProduction shut down 70% through shooting due to the lockdown",
+    "link": "",
+    "image": "images/maran.jpg",
+    "images": [],
+    "location": "",
+    "place": "",
     "featured": false
   },
   {
