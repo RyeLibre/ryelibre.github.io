@@ -43,7 +43,7 @@ function init() {
   loadDraftTags().forEach((t) => addTagToState(t, { persist: false }));
 
   state.projects = getAllProjects();
-  loadDraftPosts().forEach((p) => state.draftPostIds.add(p.id));
+  pruneStaleDraftPosts().forEach((p) => state.draftPostIds.add(p.id));
 
   const params = new URLSearchParams(window.location.search);
 
@@ -274,6 +274,10 @@ function renderCategoryIntro() {
     `<h2 class="category-intro-title">${escapeHtml(activeTag)}</h2>` +
     subtagsHtml +
     `<div class="category-intro-text">${window.marked ? marked.parse(intro) : intro}</div>`;
+
+  categoryIntroEl.classList.remove("fade-in");
+  void categoryIntroEl.offsetWidth; // restart the CSS animation on every tag switch
+  categoryIntroEl.classList.add("fade-in");
 
   if (subtags && subtags.length) {
     categoryIntroEl.querySelectorAll(".subtag-btn").forEach((btn) => {

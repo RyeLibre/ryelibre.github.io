@@ -40,6 +40,20 @@ function removeDraftPostStorage(id) {
   saveDraftPosts(loadDraftPosts().filter((p) => String(p.id) !== String(id)));
 }
 
+// Once a draft post gets published for real (added to data/projects.js under
+// its own id), the original browser-local draft is never automatically
+// deleted — it just sits in localStorage under its old numeric id and shows
+// up as a duplicate copy alongside the real post. This clears out any draft
+// whose title matches an already-published post, so publishing a draft is
+// enough to make the duplicate disappear next time the site loads.
+function pruneStaleDraftPosts() {
+  const drafts = loadDraftPosts();
+  const publishedTitles = new Set(PROJECTS.map((p) => (p.title || "").trim().toLowerCase()));
+  const fresh = drafts.filter((d) => !publishedTitles.has((d.title || "").trim().toLowerCase()));
+  if (fresh.length !== drafts.length) saveDraftPosts(fresh);
+  return fresh;
+}
+
 function isDraftPostId(id) {
   return loadDraftPosts().some((p) => String(p.id) === String(id));
 }
@@ -439,7 +453,7 @@ function compareProjects(a, b) {
 }
 
 function getAllProjects() {
-  const projects = [...PROJECTS, ...loadDraftPosts()].map(applyPostEdit);
+  const projects = [...PROJECTS, ...pruneStaleDraftPosts()].map(applyPostEdit);
   projects.sort(compareProjects);
   return projects;
 }
