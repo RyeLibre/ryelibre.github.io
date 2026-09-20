@@ -24,27 +24,16 @@ function buildCoverMedia(project) {
   if (project.imagePosition) img.style.objectPosition = project.imagePosition;
   media.appendChild(img);
 
-  const fileInput = document.createElement("input");
-  fileInput.type = "file";
-  fileInput.accept = "image/*";
-  fileInput.hidden = true;
-  fileInput.addEventListener("change", () => {
-    const file = fileInput.files[0];
-    if (!file) return;
-    resizeImageForWeb(file)
-      .then((dataUrl) => {
-        setImageOverride(project.id, dataUrl);
-        renderPost();
-      })
-      .catch((err) => alert(err.message || "Couldn't process that image."));
-  });
-  media.appendChild(fileInput);
-
   const changeBtn = document.createElement("button");
   changeBtn.type = "button";
   changeBtn.className = "change-photo-btn";
   changeBtn.textContent = "Change cover photo";
-  changeBtn.addEventListener("click", () => fileInput.click());
+  changeBtn.addEventListener("click", () => {
+    openPhotoPicker("Choose a cover photo", (dataUrl) => {
+      setImageOverride(project.id, dataUrl);
+      renderPost();
+    });
+  });
   media.appendChild(changeBtn);
 
   const overrides = loadImageOverrides();
@@ -126,27 +115,16 @@ function buildGallery(project) {
   const addWrap = document.createElement("div");
   addWrap.className = "gallery-add";
 
-  const fileInput = document.createElement("input");
-  fileInput.type = "file";
-  fileInput.accept = "image/*";
-  fileInput.hidden = true;
-  fileInput.addEventListener("change", () => {
-    const file = fileInput.files[0];
-    if (!file) return;
-    resizeImageForWeb(file)
-      .then((dataUrl) => {
-        addGalleryImage(project.id, dataUrl);
-        renderPost();
-      })
-      .catch((err) => alert(err.message || "Couldn't process that image."));
-  });
-  addWrap.appendChild(fileInput);
-
   const addBtn = document.createElement("button");
   addBtn.type = "button";
   addBtn.className = "add-btn";
   addBtn.textContent = "+ Add photo to gallery";
-  addBtn.addEventListener("click", () => fileInput.click());
+  addBtn.addEventListener("click", () => {
+    openPhotoPicker("Choose a photo for the gallery", (dataUrl) => {
+      addGalleryImage(project.id, dataUrl);
+      renderPost();
+    });
+  });
   addWrap.appendChild(addBtn);
 
   section.appendChild(addWrap);
@@ -270,3 +248,5 @@ function renderPost() {
 }
 
 renderPost();
+bindPhotoPickerUpload();
+bindDialogCloseButtons();

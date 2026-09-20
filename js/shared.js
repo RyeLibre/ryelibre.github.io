@@ -6,6 +6,7 @@ const DRAFT_TAGS_KEY = "portfolio.draftTags";
 const DRAFT_POSTS_KEY = "portfolio.draftPosts";
 const IMAGE_OVERRIDES_KEY = "portfolio.imageOverrides";
 const GALLERY_OVERRIDES_KEY = "portfolio.galleryOverrides";
+const MEDIA_POOL_KEY = "portfolio.mediaPool";
 
 function loadDraftTags() {
   try {
@@ -105,6 +106,137 @@ function removeGalleryImage(id, index) {
 function getGalleryImages(project) {
   const overrides = loadGalleryOverrides()[project.id] || [];
   return [...(project.images || []), ...overrides];
+}
+
+// A pool of uploaded photos, kept independent of any one post, so a photo
+// can be uploaded once and then picked for a cover or gallery slot on any
+// post via the shared "photo picker" dialog (see openPhotoPicker below).
+function loadMediaPool() {
+  try {
+    return JSON.parse(localStorage.getItem(MEDIA_POOL_KEY) || "[]");
+  } catch {
+    return [];
+  }
+}
+
+function saveMediaPool(pool) {
+  try {
+    localStorage.setItem(MEDIA_POOL_KEY, JSON.stringify(pool));
+  } catch {
+    alert("Couldn't save that photo — it may be too large for browser storage. Try a smaller image.");
+  }
+}
+
+function addToMediaPool(dataUrl, name) {
+  const pool = loadMediaPool();
+  const item = {
+    id: Date.now() + "-" + Math.random().toString(36).slice(2, 8),
+    dataUrl,
+    name: name || "",
+    addedAt: new Date().toISOString(),
+  };
+  pool.unshift(item);
+  saveMediaPool(pool);
+  return item;
+}
+
+function removeFromMediaPool(id) {
+  saveMediaPool(loadMediaPool().filter((item) => item.id !== id));
+}
+
+let photoPickerCallback = null;
+
+function renderPhotoPickerGrid() {
+  const grid = document.getElementById("photo-picker-grid");
+  if (!grid) return;
+  const staticPool = typeof STATIC_MEDIA_POOL !== "undefined" ? STATIC_MEDIA_POOL : [];
+  const pool = [...staticPool, ...loadMediaPool()];
+  grid.innerHTML = "";
+  grid.classList.toggle("media-pool-grid-selectable", !!photoPickerCallback);
+
+  if (pool.length === 0) {
+    const empty = document.createElement("p");
+    empty.className = "section-hint";
+    empty.textContent = "No photos in your pool yet — upload one above.";
+    grid.appendChild(empty);
+    return;
+  }
+
+  pool.forEach((item) => {
+    const fig = document.createElement("figure");
+    fig.className = "gallery-item media-pool-item";
+
+    const img = document.createElement("img");
+    img.src = item.dataUrl;
+    img.alt = item.name || "";
+    img.loading = "lazy";
+    if (photoPickerCallback) {
+      img.title = "Use this photo";
+      img.addEventListener("click", () => {
+        photoPickerCallback(item.dataUrl);
+        document.getElementById("photo-picker-dialog").close();
+      });
+    }
+    fig.appendChild(img);
+
+    if (staticPool.includes(item)) {
+      const badge = document.createElement("span");
+      badge.className = "media-pool-builtin-badge";
+      badge.textContent = "Built-in";
+      fig.appendChild(badge);
+    } else {
+      const removeBtn = document.createElement("button");
+      removeBtn.type = "button";
+      removeBtn.className = "reset-photo-btn gallery-remove";
+      removeBtn.textContent = "Delete";
+      removeBtn.title = "Remove this photo from your media pool (posts already using it keep it)";
+      removeBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        removeFromMediaPool(item.id);
+        renderPhotoPickerGrid();
+      });
+      fig.appendChild(removeBtn);
+    }
+
+    grid.appendChild(fig);
+  });
+}
+
+// Opens the shared photo-picker dialog. Pass onSelect to let the user pick a
+// pool photo (or upload a new one) for a specific slot; omit it to open the
+// dialog purely for managing the pool (upload/delete, nothing gets applied).
+function openPhotoPicker(title, onSelect) {
+  photoPickerCallback = onSelect || null;
+  document.getElementById("photo-picker-title").textContent = title;
+  renderPhotoPickerGrid();
+  document.getElementById("photo-picker-dialog").showModal();
+}
+
+function bindPhotoPickerUpload() {
+  const uploadInput = document.getElementById("photo-picker-upload");
+  if (!uploadInput) return;
+  uploadInput.addEventListener("change", () => {
+    const file = uploadInput.files[0];
+    if (!file) return;
+    resizeImageForWeb(file)
+      .then((dataUrl) => {
+        const item = addToMediaPool(dataUrl, file.name);
+        if (photoPickerCallback) {
+          photoPickerCallback(item.dataUrl);
+          document.getElementById("photo-picker-dialog").close();
+        } else {
+          renderPhotoPickerGrid();
+        }
+        uploadInput.value = "";
+      })
+      .catch((err) => alert(err.message || "Couldn't process that image."));
+  });
+}
+
+function bindDialogCloseButtons() {
+  document.querySelectorAll("[data-close-dialog]").forEach((btn) => {
+    btn.addEventListener("click", () => btn.closest("dialog").close());
+  });
 }
 
 const MAX_UPLOAD_BYTES = 10 * 1024 * 1024; // 10MB
@@ -326,6 +458,7 @@ function exportDrafts() {
     imageOverrides: loadImageOverrides(),
     galleryOverrides: loadGalleryOverrides(),
     cityCoordOverrides: loadCityCoordOverrides(),
+    mediaPool: loadMediaPool(),
   };
 
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });

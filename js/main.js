@@ -250,27 +250,16 @@ function renderMedia(project) {
   if (project.imagePosition) img.style.objectPosition = project.imagePosition;
   media.appendChild(img);
 
-  const fileInput = document.createElement("input");
-  fileInput.type = "file";
-  fileInput.accept = "image/*";
-  fileInput.hidden = true;
-  fileInput.addEventListener("change", () => {
-    const file = fileInput.files[0];
-    if (!file) return;
-    resizeImageForWeb(file)
-      .then((dataUrl) => {
-        setImageOverride(project.id, dataUrl);
-        renderProjects();
-      })
-      .catch((err) => alert(err.message || "Couldn't process that image."));
-  });
-  media.appendChild(fileInput);
-
   const changeBtn = document.createElement("button");
   changeBtn.type = "button";
   changeBtn.className = "change-photo-btn";
   changeBtn.textContent = "Change photo";
-  changeBtn.addEventListener("click", () => fileInput.click());
+  changeBtn.addEventListener("click", () => {
+    openPhotoPicker("Choose a cover photo", (dataUrl) => {
+      setImageOverride(project.id, dataUrl);
+      renderProjects();
+    });
+  });
   media.appendChild(changeBtn);
 
   const overrides = loadImageOverrides();
@@ -932,6 +921,12 @@ function bindDialogs() {
   document.getElementById("export-drafts-btn").addEventListener("click", () => {
     exportDrafts();
   });
+
+  document.getElementById("media-pool-btn").addEventListener("click", () => {
+    openPhotoPicker("Media pool", null);
+  });
+
+  bindPhotoPickerUpload();
 
   const bioLink = document.getElementById("bio-nav-link");
   if (bioLink) {

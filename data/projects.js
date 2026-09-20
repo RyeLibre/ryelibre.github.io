@@ -425,6 +425,19 @@ const PROJECTS = [
     "featured": false
   },
   {
+    "id": "forbidden-forest",
+    "title": "Forbidden Forest",
+    "categories": ["Curation", "Exhibitions", "CNX"],
+    "date": "2015-02-01",
+    "description": "Photography by Jongwoo Park, shown at the 3 Kings Monument as part of the Chiang Mai Documentary Arts Festival, 1st–8th Feb 2015.",
+    "link": "",
+    "image": "images/forbidden-forest.jpg",
+    "images": ["images/forbidden-forest-poster.jpg"],
+    "location": "Chiang Mai",
+    "place": "3 Kings Monument",
+    "featured": true
+  },
+  {
     "id": "maran",
     "title": "Maran",
     "categories": ["Kachin", "Film", "Production"],

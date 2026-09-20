@@ -33,6 +33,7 @@
       <!-- Tag buttons injected by js/main.js -->
     </nav>
     <button id="add-tag-btn" type="button" class="add-btn">+ Add tag</button>
+    <button id="media-pool-btn" type="button" class="add-btn">Media pool</button>
     <button id="export-drafts-btn" type="button" class="add-btn">Export my drafts &amp; photos</button>
   </aside>
 
@@ -187,6 +188,20 @@
   </form>
 </dialog>
 
+<dialog id="photo-picker-dialog" class="dialog">
+  <div class="dialog-form">
+    <h3 id="photo-picker-title">Choose a photo</h3>
+    <p class="section-hint">Pick a photo already in your media pool, or upload a new one — new uploads are added to
+      the pool so you can reuse them later.</p>
+    <label for="photo-picker-upload" class="add-btn photo-picker-upload-label">+ Upload new photo</label>
+    <input id="photo-picker-upload" type="file" accept="image/*" hidden>
+    <div id="photo-picker-grid" class="media-pool-grid gallery-grid"></div>
+    <div class="dialog-actions">
+      <button type="button" class="btn-secondary" data-close-dialog>Close</button>
+    </div>
+  </div>
+</dialog>
+
 <footer class="site-footer">
   <div class="wrap">
     <p>Built with plain HTML/CSS/JS · Hosted on GitHub Pages</p>
@@ -198,6 +213,7 @@
 <script src="data/tag-intros.js"></script>
 <script src="data/subtags.js"></script>
 <script src="data/city-coords.js"></script>
+<script src="data/media-pool.js"></script>
 <script src="data/projects.js"></script>
 <script src="js/shared.js"></script>
 <script src="js/main.js"></script>
