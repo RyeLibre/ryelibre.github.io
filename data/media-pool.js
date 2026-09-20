@@ -14,4 +14,10 @@ const STATIC_MEDIA_POOL = [
   { id: "static-school-of-arts-sciences-talk", dataUrl: "images/pool/school-of-arts-sciences-talk.jpg", name: "School of Arts & Sciences talk" },
   { id: "static-photobook-archive-library", dataUrl: "images/pool/photobook-archive-library.jpg", name: "Photobook archive library" },
   { id: "static-photobook-exhibition-tables", dataUrl: "images/pool/photobook-exhibition-tables.jpg", name: "Photobook exhibition tables" },
+  { id: "static-space-invaders-project", dataUrl: "images/pool/space-invaders-project.jpg", name: "Space Invaders (visual art project)" },
+  { id: "static-blank-billboards-plaza", dataUrl: "images/pool/blank-billboards-plaza.jpg", name: "Blank billboards, plaza at night" },
+  { id: "static-lightstrip-building-night", dataUrl: "images/pool/lightstrip-building-night.jpg", name: "Light-strip building at night" },
+  { id: "static-green-street-myanmar-night", dataUrl: "images/pool/green-street-myanmar-night.jpg", name: "Green-lit street at night" },
+  { id: "static-welcome-to-free-kachin-poster", dataUrl: "images/pool/welcome-to-free-kachin-poster.jpg", name: "Welcome to Free Kachin (poster)" },
+  { id: "static-open-film-school-ecosystem", dataUrl: "images/pool/open-film-school-ecosystem.jpg", name: "Sakse's Open Film School ecosystem" },
 ];
