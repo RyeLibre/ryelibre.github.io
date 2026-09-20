@@ -55,4 +55,10 @@ const STATIC_MEDIA_POOL = [
   { id: "static-the-deep-north-poster", dataUrl: "images/pool/the-deep-north-poster.jpg", name: "The Deep North (poster)" },
   { id: "static-gallery-photobook-browsing", dataUrl: "images/pool/gallery-photobook-browsing.jpg", name: "Gallery, browsing a photobook" },
   { id: "static-sathirakoses-nagapradipa-logo", dataUrl: "images/pool/sathirakoses-nagapradipa-logo.jpg", name: "Sathirakoses-Nagapradipa Foundation logo" },
+  { id: "static-bookshelf-dvds-library", dataUrl: "images/pool/bookshelf-dvds-library.jpg", name: "Bookshelf, DVDs and books" },
+  { id: "static-sika-deer-hillside-night", dataUrl: "images/pool/sika-deer-hillside-night.jpg", name: "Sika deer, hillside at night" },
+  { id: "static-coal-workers-night-rain", dataUrl: "images/pool/coal-workers-night-rain.jpg", name: "Coal workers, night rain" },
+  { id: "static-street-interview-documentation", dataUrl: "images/pool/street-interview-documentation.jpg", name: "Street interview / documentation" },
+  { id: "static-full-of-grace-exhibition-banner", dataUrl: "images/pool/full-of-grace-exhibition-banner.jpg", name: "Full of Grace (exhibition banner)" },
+  { id: "static-kia-soldier-viewing-exhibit", dataUrl: "images/pool/kia-soldier-viewing-exhibit.jpg", name: "KIA soldier viewing exhibit" },
 ];
