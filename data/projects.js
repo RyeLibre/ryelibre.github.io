@@ -752,7 +752,7 @@ const PROJECTS = [
     "link": "https://pulitzercenter.org/",
     "image": "images/pool/pulitzer-center-icon-white.webp",
     "imageFit": "contain-dark",
-    "images": [],
+    "images": ["images/pool/pulitzer-center-office.jpg"],
     "location": "",
     "place": "",
     "featured": false
