@@ -823,5 +823,18 @@ const PROJECTS = [
     "location": "Dali",
     "place": "",
     "featured": false
+  },
+  {
+    "id": "fcct-curated-exhibition-hkum-li",
+    "title": "Curated Exhibition of Hkum Li",
+    "categories": ["Curation", "Exhibitions", "Kachin", "Photography"],
+    "date": "2026-09-30",
+    "description": "Curated exhibition of Hkum Li's photography at the Foreign Correspondents' Club of Thailand (FCCT).",
+    "link": "",
+    "image": "",
+    "images": [],
+    "location": "Bangkok",
+    "place": "FCCT",
+    "featured": false
   }
 ];
