@@ -836,5 +836,18 @@ const PROJECTS = [
     "location": "Bangkok",
     "place": "FCCT",
     "featured": false
+  },
+  {
+    "id": "let-my-voice-be-heard-kbc",
+    "title": "Curated Exhibition: Let My Voice Be Heard",
+    "categories": ["Curation", "Exhibitions", "Kachin", "Photography"],
+    "date": "2026-09-30",
+    "description": "Curated exhibition, *Let My Voice Be Heard*, at the KBC (Kachin Baptist Convention) headquarters in Myitkyina.",
+    "link": "",
+    "image": "images/let-my-voice-be-heard-kbc.jpg",
+    "images": [],
+    "location": "Myitkyina",
+    "place": "KBC HQ",
+    "featured": false
   }
 ];
