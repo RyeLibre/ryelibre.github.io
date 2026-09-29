@@ -68,4 +68,8 @@ const STATIC_MEDIA_POOL = [
   { id: "static-kia-book-pink-text", dataUrl: "images/pool/kia-book-pink-text.jpg", name: "KIA book title (pink text)" },
   { id: "static-kia-book-pink-edge", dataUrl: "images/pool/kia-book-pink-edge.jpg", name: "Pink edge texture" },
   { id: "static-cord-keller-teaching", dataUrl: "images/pool/cord-keller-teaching.jpg", name: "Cord Keller teaching, Laiza" },
+  { id: "static-ipa-org-logo", dataUrl: "images/pool/ipa-org-logo.jpg", name: "International Photography Awards logo" },
+  { id: "static-photolucida-critical-mass-logo", dataUrl: "images/pool/photolucida-critical-mass-logo.svg", name: "Photolucida Critical Mass logo" },
+  { id: "static-world-press-photo-logo", dataUrl: "images/pool/world-press-photo-logo.svg", name: "World Press Photo logo" },
+  { id: "static-prix-pictet-logo", dataUrl: "images/pool/prix-pictet-logo.svg", name: "Prix Pictet logo" },
 ];

@@ -4,6 +4,7 @@
 const FEATURED_TAGS = [
   "Kachin",
   "Curation",
+  "Juror",
   "Design",
   "Photography",
   "Film",

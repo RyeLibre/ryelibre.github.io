@@ -140,7 +140,7 @@ const PROJECTS = [
   {
     "id": "kyotographie-portfolio-reviewer",
     "title": "KYOTOGRAPHIE - Portfolio Reviewer",
-    "categories": ["Curation", "Photography"],
+    "categories": ["Juror", "Curation", "Photography"],
     "date": "2026-09-19",
     "description": "",
     "link": "",
@@ -670,6 +670,58 @@ const PROJECTS = [
     "image": "images/benefit-auction.jpg",
     "images": [],
     "location": "Chiang Mai",
+    "place": "",
+    "featured": false
+  },
+  {
+    "id": "juror-international-photography-awards",
+    "title": "International Photography Awards",
+    "categories": ["Juror", "Photography"],
+    "date": "2022-01-01",
+    "description": "Juror for the International Photography Awards (IPA).",
+    "link": "https://www.photoawards.com/",
+    "image": "images/pool/ipa-org-logo.jpg",
+    "images": [],
+    "location": "",
+    "place": "",
+    "featured": false
+  },
+  {
+    "id": "juror-photolucida-critical-mass",
+    "title": "Photolucida — Critical Mass",
+    "categories": ["Juror", "Photography"],
+    "date": "2026-09-30",
+    "description": "Juror / reviewer for Photolucida's Critical Mass.",
+    "link": "https://www.photolucida.org/critical-mass",
+    "image": "images/pool/photolucida-critical-mass-logo.svg",
+    "images": [],
+    "location": "",
+    "place": "",
+    "featured": false
+  },
+  {
+    "id": "juror-world-press-photo-6x6",
+    "title": "World Press Photo — 6x6 Program",
+    "categories": ["Juror", "Photography"],
+    "date": "2026-09-30",
+    "description": "Nominator for World Press Photo's 6x6 program.",
+    "link": "https://www.worldpressphoto.org/",
+    "image": "images/pool/world-press-photo-logo.svg",
+    "images": [],
+    "location": "",
+    "place": "",
+    "featured": false
+  },
+  {
+    "id": "juror-prix-pictet",
+    "title": "Prix Pictet",
+    "categories": ["Juror", "Photography"],
+    "date": "2026-09-30",
+    "description": "Nominator for the Prix Pictet.",
+    "link": "https://prix.pictet.com/",
+    "image": "images/pool/prix-pictet-logo.svg",
+    "images": [],
+    "location": "",
     "place": "",
     "featured": false
   }
