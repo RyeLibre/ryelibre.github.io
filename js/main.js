@@ -302,7 +302,7 @@ function renderCategoryIntro() {
 
 function renderMedia(project) {
   const media = document.createElement("div");
-  media.className = "project-media";
+  media.className = "project-media" + (project.imageFit === "contain" ? " project-media-contain" : "");
 
   const img = document.createElement("img");
   img.src = getImageSrc(project);

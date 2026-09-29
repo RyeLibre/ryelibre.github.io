@@ -335,6 +335,18 @@ button {
   object-fit: cover;
 }
 
+/* For logos/wordmarks that shouldn't be cropped to fill the grid box —
+   set a post's `imageFit: "contain"` to opt in. */
+.project-media-contain {
+  background: #fff;
+}
+
+.project-media-contain img {
+  object-fit: contain;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
 /* Grayscale-on-browse, full color on hover — grid cards only, not the
    cover photo on a post's own page (post.html uses .post-cover, not
    nested inside .project-card). */
