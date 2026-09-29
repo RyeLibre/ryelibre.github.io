@@ -724,5 +724,44 @@ const PROJECTS = [
     "location": "",
     "place": "",
     "featured": false
+  },
+  {
+    "id": "nikon-salon-miki-jun-inspiration-award",
+    "title": "Nikon Salon — Miki Jun Inspiration Award",
+    "categories": ["CV", "Kachin", "Photography"],
+    "date": "2010-01-01",
+    "description": "Miki Jun Inspiration Award, Nikon Salon, for *Portraits of Independence: Inside the Kachin Independence Army*.",
+    "link": "",
+    "image": "images/pool/nikon-salon-logo.png",
+    "images": [],
+    "location": "",
+    "place": "",
+    "featured": false
+  },
+  {
+    "id": "pulitzer-center-grant",
+    "title": "Pulitzer Center Grant",
+    "categories": ["CV"],
+    "date": "2026-09-30",
+    "description": "Reporting grant from the Pulitzer Center on Crisis Reporting.",
+    "link": "https://pulitzercenter.org/",
+    "image": "images/pool/pulitzer-center-logo.svg",
+    "images": [],
+    "location": "",
+    "place": "",
+    "featured": false
+  },
+  {
+    "id": "eugene-smith-fund-chapnick-grant",
+    "title": "W. Eugene Smith Fund — Howard Chapnick Grant",
+    "categories": ["CV"],
+    "date": "2026-09-30",
+    "description": "Howard Chapnick Grant, W. Eugene Smith Fund.",
+    "link": "https://www.smithfund.org/",
+    "image": "images/pool/smith-fund-logo.jpg",
+    "images": [],
+    "location": "",
+    "place": "",
+    "featured": false
   }
 ];

@@ -72,4 +72,7 @@ const STATIC_MEDIA_POOL = [
   { id: "static-photolucida-critical-mass-logo", dataUrl: "images/pool/photolucida-critical-mass-logo.svg", name: "Photolucida Critical Mass logo" },
   { id: "static-world-press-photo-logo", dataUrl: "images/pool/world-press-photo-logo.svg", name: "World Press Photo logo" },
   { id: "static-prix-pictet-logo", dataUrl: "images/pool/prix-pictet-logo.svg", name: "Prix Pictet logo" },
+  { id: "static-nikon-salon-logo", dataUrl: "images/pool/nikon-salon-logo.png", name: "Nikon Salon logo" },
+  { id: "static-pulitzer-center-logo", dataUrl: "images/pool/pulitzer-center-logo.svg", name: "Pulitzer Center logo" },
+  { id: "static-smith-fund-logo", dataUrl: "images/pool/smith-fund-logo.jpg", name: "W. Eugene Smith Fund logo" },
 ];
