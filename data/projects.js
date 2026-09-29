@@ -646,5 +646,18 @@ const PROJECTS = [
     "location": "Laiza",
     "place": "DocArtsAsia Center",
     "featured": false
+  },
+  {
+    "id": "first-media-workshop-laiza",
+    "title": "First Media Workshop in Laiza",
+    "categories": ["Kachin", "Workshops", "Learning media"],
+    "date": "2008-01-01",
+    "description": "First media workshop in Laiza — a one week workshop with writer Tim Patterson. I was in Laiza on a reporting grant from the Pulitzer Center on Crisis Reporting.",
+    "link": "",
+    "image": "images/first-media-workshop-laiza.jpg",
+    "images": [],
+    "location": "Laiza",
+    "place": "",
+    "featured": false
   }
 ];
