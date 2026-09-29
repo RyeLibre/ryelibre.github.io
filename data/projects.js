@@ -797,5 +797,31 @@ const PROJECTS = [
     "location": "Chiang Mai",
     "place": "DocArtsAsia 2",
     "featured": false
+  },
+  {
+    "id": "portfolio-reviews-foundry-photojournalism-workshop",
+    "title": "Portfolio Reviews — Foundry Photojournalism Workshop",
+    "categories": ["Juror", "Photography", "Workshops"],
+    "date": "2026-09-30",
+    "description": "Portfolio reviewer at the Foundry Photojournalism Workshop.",
+    "link": "",
+    "image": "images/pool/gallery-conversation-laptop.jpg",
+    "images": [],
+    "location": "",
+    "place": "",
+    "featured": false
+  },
+  {
+    "id": "portfolio-reviews-dali-photo-festival",
+    "title": "Portfolio Reviews — Dali Photo Festival",
+    "categories": ["Juror", "Photography"],
+    "date": "2026-09-30",
+    "description": "Portfolio reviewer at the Dali Photo Festival.",
+    "link": "",
+    "image": "",
+    "images": [],
+    "location": "Dali",
+    "place": "",
+    "featured": false
   }
 ];
