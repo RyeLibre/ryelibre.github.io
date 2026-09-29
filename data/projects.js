@@ -638,7 +638,7 @@ const PROJECTS = [
     "id": "cord-keller-teaching-filmmaking-laiza",
     "title": "Cord Keller Teaching Filmmaking in Laiza",
     "categories": ["Kachin", "Film", "Workshops"],
-    "date": "2026-09-30",
+    "date": "2013-10-07",
     "description": "Cord Keller — director/producer of *Survivor* — teaching a filmmaking workshop in Laiza at the DocArtsAsia center.",
     "link": "",
     "image": "images/pool/cord-keller-teaching.jpg",
