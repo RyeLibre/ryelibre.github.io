@@ -659,5 +659,18 @@ const PROJECTS = [
     "location": "Laiza",
     "place": "",
     "featured": false
+  },
+  {
+    "id": "benefit-auction",
+    "title": "Benefit Auction",
+    "categories": ["Curation", "Production"],
+    "date": "2013-04-12",
+    "description": "The Chiang Mai Documentary Arts Festival was funded without embassies or foundations — our annual benefit auction covered all hard costs, run by a 100% volunteer team.\n\nHossein Farmani of the International Photography Awards came to host the auction every year.",
+    "link": "",
+    "image": "images/benefit-auction.jpg",
+    "images": [],
+    "location": "Chiang Mai",
+    "place": "",
+    "featured": false
   }
 ];
