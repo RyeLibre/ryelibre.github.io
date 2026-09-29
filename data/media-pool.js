@@ -79,4 +79,5 @@ const STATIC_MEDIA_POOL = [
   { id: "static-pulitzer-center-icon", dataUrl: "images/pool/pulitzer-center-icon.png", name: "Pulitzer Center icon (square)" },
   { id: "static-ineb-icon", dataUrl: "images/pool/ineb-icon.png", name: "INEB icon" },
   { id: "static-pulitzer-center-icon-white", dataUrl: "images/pool/pulitzer-center-icon-white.webp", name: "Pulitzer Center icon, white (high-res)" },
+  { id: "static-asia-pacific-photoforum-logo", dataUrl: "images/pool/asia-pacific-photoforum-logo.png", name: "Asia Pacific PhotoForum logo" },
 ];

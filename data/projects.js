@@ -862,5 +862,19 @@ const PROJECTS = [
     "location": "Chiang Mai",
     "place": "CMU",
     "featured": false
+  },
+  {
+    "id": "asia-pacific-photoforum",
+    "title": "Asia Pacific PhotoForum",
+    "categories": ["CV"],
+    "date": "2026-09-30",
+    "description": "Member for several years, as director of CDAF (Chiang Mai Documentary Arts Festival).",
+    "link": "https://asiapacificphotoforum.com/",
+    "image": "images/pool/asia-pacific-photoforum-logo.png",
+    "imageFit": "contain",
+    "images": [],
+    "location": "",
+    "place": "",
+    "featured": false
   }
 ];
