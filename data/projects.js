@@ -849,5 +849,18 @@ const PROJECTS = [
     "location": "Myitkyina",
     "place": "KBC HQ",
     "featured": false
+  },
+  {
+    "id": "journalism-challenges-burma-cmu",
+    "title": "Talk: Challenges of Doing Journalism in Burma",
+    "categories": ["Talks", "Kachin"],
+    "date": "2026-09-30",
+    "description": "Talk on the challenges of doing journalism in Burma, at CMU (Chiang Mai University).",
+    "link": "",
+    "image": "images/journalism-challenges-burma-cmu.jpg",
+    "images": [],
+    "location": "Chiang Mai",
+    "place": "CMU",
+    "featured": false
   }
 ];
