@@ -347,6 +347,18 @@ button {
   box-sizing: border-box;
 }
 
+/* Same idea, but for white/light logos meant for a dark backing —
+   set `imageFit: "contain-dark"`. */
+.project-media-contain-dark {
+  background: #14150f;
+}
+
+.project-media-contain-dark img {
+  object-fit: contain;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
 /* Grayscale-on-browse, full color on hover — grid cards only, not the
    cover photo on a post's own page (post.html uses .post-cover, not
    nested inside .project-card). */
