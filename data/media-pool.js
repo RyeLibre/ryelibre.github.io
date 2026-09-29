@@ -75,4 +75,7 @@ const STATIC_MEDIA_POOL = [
   { id: "static-nikon-salon-logo", dataUrl: "images/pool/nikon-salon-logo.png", name: "Nikon Salon logo" },
   { id: "static-pulitzer-center-logo", dataUrl: "images/pool/pulitzer-center-logo.svg", name: "Pulitzer Center logo" },
   { id: "static-smith-fund-logo", dataUrl: "images/pool/smith-fund-logo.jpg", name: "W. Eugene Smith Fund logo" },
+  { id: "static-ipa-icon", dataUrl: "images/pool/ipa-icon.png", name: "IPA icon (square)" },
+  { id: "static-pulitzer-center-icon", dataUrl: "images/pool/pulitzer-center-icon.png", name: "Pulitzer Center icon (square)" },
+  { id: "static-ineb-icon", dataUrl: "images/pool/ineb-icon.png", name: "INEB icon" },
 ];
