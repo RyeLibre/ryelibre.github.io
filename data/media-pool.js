@@ -66,4 +66,5 @@ const STATIC_MEDIA_POOL = [
   { id: "static-cdaf-venues-map-2012", dataUrl: "images/pool/cdaf-venues-map-2012.png", name: "CDAF venues map 2012" },
   { id: "static-cdaf-2012-schedule", dataUrl: "images/pool/cdaf-2012-schedule.jpg", name: "CDAF 2012 schedule" },
   { id: "static-kia-book-pink-text", dataUrl: "images/pool/kia-book-pink-text.jpg", name: "KIA book title (pink text)" },
+  { id: "static-kia-book-pink-edge", dataUrl: "images/pool/kia-book-pink-edge.jpg", name: "Pink edge texture" },
 ];
