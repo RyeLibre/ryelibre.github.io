@@ -18,6 +18,7 @@ const CITY_COORDS = {
   "bangkok": { x: 779, y: 212 },
   "yangon": { x: 767, y: 203 },
   "myitkyina": { x: 771, y: 180 },
+  "laiza": { x: 776, y: 172 },
   "hanoi": { x: 794, y: 192 },
   "ho chi minh city": { x: 796, y: 220 },
   "manila": { x: 836, y: 209 },

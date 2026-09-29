@@ -633,5 +633,18 @@ const PROJECTS = [
     "location": "Chiang Mai",
     "place": "",
     "featured": true
+  },
+  {
+    "id": "cord-keller-teaching-filmmaking-laiza",
+    "title": "Cord Keller Teaching Filmmaking in Laiza",
+    "categories": ["Kachin", "Film", "Workshops"],
+    "date": "2026-09-30",
+    "description": "Cord Keller — director/producer of *Survivor* — teaching a filmmaking workshop in Laiza at the DocArtsAsia center.",
+    "link": "",
+    "image": "images/pool/cord-keller-teaching.jpg",
+    "images": [],
+    "location": "Laiza",
+    "place": "DocArtsAsia Center",
+    "featured": false
   }
 ];

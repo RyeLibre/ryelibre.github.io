@@ -67,4 +67,5 @@ const STATIC_MEDIA_POOL = [
   { id: "static-cdaf-2012-schedule", dataUrl: "images/pool/cdaf-2012-schedule.jpg", name: "CDAF 2012 schedule" },
   { id: "static-kia-book-pink-text", dataUrl: "images/pool/kia-book-pink-text.jpg", name: "KIA book title (pink text)" },
   { id: "static-kia-book-pink-edge", dataUrl: "images/pool/kia-book-pink-edge.jpg", name: "Pink edge texture" },
+  { id: "static-cord-keller-teaching", dataUrl: "images/pool/cord-keller-teaching.jpg", name: "Cord Keller teaching, Laiza" },
 ];

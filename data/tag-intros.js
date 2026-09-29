@@ -37,7 +37,7 @@ const TAG_INTROS = {
     "Notes from workshops facilitated or attended — the format, what worked, what didn't, and what to change next time.\n\nThis tag is as much a working log as a portfolio section.\n\n*Replace this intro with your own description of the Workshops category.*",
 
   "Books":
-    "A running, opinionated reading list — books that shaped a project, changed an opinion, or just wouldn't leave me alone.\n\nEntries here are short and annotated rather than full reviews.\n\n*Replace this intro with your own description of the Books category.*",
+    "A collection of books.\n\nSome with my images or words.\n\nSome about my projects.",
 
   "Learning media":
     "Beyond books: documentaries, courses, podcasts, and other media that taught me something worth keeping.\n\nThis tag rounds up recommendations alongside notes on why each one mattered.\n\n*Replace this intro with your own description of the Learning media category.*",
