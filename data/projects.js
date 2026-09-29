@@ -784,5 +784,18 @@ const PROJECTS = [
     "location": "",
     "place": "",
     "featured": false
+  },
+  {
+    "id": "unorthodox-inside-the-asoke",
+    "title": "Unorthodox: Inside the Asoke",
+    "categories": ["Curation", "Exhibitions"],
+    "date": "2026-09-30",
+    "description": "Photo exhibition by Note.",
+    "link": "",
+    "image": "images/pool/monk-at-exhibition-wall.png",
+    "images": ["images/pool/ipa-juror-badge-2022.webp"],
+    "location": "Chiang Mai",
+    "place": "DocArtsAsia 2",
+    "featured": false
   }
 ];
