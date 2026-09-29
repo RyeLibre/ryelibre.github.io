@@ -184,7 +184,7 @@ const PROJECTS = [
     "description": "Adobe Cottage in Rural Chiang Mai",
     "link": "",
     "image": "images/adobe-cottage.jpg",
-    "images": [],
+    "images": ["images/adobe-cottage-construction.jpg"],
     "location": "Chiang Mai",
     "place": "",
     "featured": false
