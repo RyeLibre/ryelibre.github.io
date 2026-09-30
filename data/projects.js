@@ -505,6 +505,20 @@ const PROJECTS = [
     "featured": false
   },
   {
+    "id": "documentary-arts-asia-1",
+    "title": "Documentary Arts Asia 1",
+    "categories": ["Curation", "Exhibitions", "Photography", "CNX", "Studios"],
+    "date": "2013-01-02",
+    "description": "Exhibitions at the DocArtsAsia 1 studio, including *Nomads No More* (Taylor Weidman, Sept–Oct 2013) and *In Search of a Job* (John Hulme, Jan 2013).",
+    "link": "",
+    "image": "images/nomads-no-more-poster.jpg",
+    "imageFit": "contain",
+    "images": ["images/pool/in-search-of-a-job-poster.jpg"],
+    "location": "Chiang Mai",
+    "place": "DocArtsAsia 1",
+    "featured": false
+  },
+  {
     "id": "documentary-arts-asia-2",
     "title": "Documentary Arts Asia 2",
     "categories": ["Design", "CNX", "Studios", "Adobe Abode"],
