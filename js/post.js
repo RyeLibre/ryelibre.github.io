@@ -56,12 +56,39 @@ let flashOverlay = null;
 let flashTimer = null;
 const FLASH_DURATION_MS = 1750; // 2500ms, reduced 30%
 
+let flashItems = []; // [{ type: "image", src, alt } | { type: "text", content }]
+let flashIndex = -1;
+
 function ensureFlashOverlay() {
   if (flashOverlay) return flashOverlay;
   flashOverlay = document.createElement("div");
   flashOverlay.className = "flash-overlay";
+
   const img = document.createElement("img");
   flashOverlay.appendChild(img);
+
+  const prevBtn = document.createElement("button");
+  prevBtn.type = "button";
+  prevBtn.className = "flash-nav flash-nav-prev";
+  prevBtn.textContent = "‹";
+  prevBtn.setAttribute("aria-label", "Previous");
+  prevBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    showFlashAt(flashIndex - 1);
+  });
+  flashOverlay.appendChild(prevBtn);
+
+  const nextBtn = document.createElement("button");
+  nextBtn.type = "button";
+  nextBtn.className = "flash-nav flash-nav-next";
+  nextBtn.textContent = "›";
+  nextBtn.setAttribute("aria-label", "Next");
+  nextBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    showFlashAt(flashIndex + 1);
+  });
+  flashOverlay.appendChild(nextBtn);
+
   flashOverlay.addEventListener("click", hideFlash);
   document.body.appendChild(flashOverlay);
   return flashOverlay;
@@ -76,28 +103,31 @@ function hideFlash() {
   }
 }
 
-function showFlash(src, alt) {
-  const overlay = ensureFlashOverlay();
-  overlay.classList.remove("flash-overlay-text");
-  const img = overlay.querySelector("img");
-  img.src = src;
-  img.alt = alt;
-  overlay.classList.add("visible");
-  if (flashTimer) clearTimeout(flashTimer);
-  flashTimer = setTimeout(hideFlash, FLASH_DURATION_MS);
-}
+function showFlashAt(index) {
+  if (flashItems.length === 0) return;
+  flashIndex = (index + flashItems.length) % flashItems.length;
+  const item = flashItems[flashIndex];
 
-function showFlashText(text) {
   const overlay = ensureFlashOverlay();
-  overlay.classList.add("flash-overlay-text");
-  overlay.querySelector("img").src = "";
+  overlay.classList.toggle("flash-overlay-text", item.type === "text");
+
+  const img = overlay.querySelector("img");
+  if (item.type === "image") {
+    img.src = item.src;
+    img.alt = item.alt || "";
+  } else {
+    img.src = "";
+  }
+
   let textEl = overlay.querySelector(".flash-overlay-text-content");
   if (!textEl) {
     textEl = document.createElement("div");
     textEl.className = "flash-overlay-text-content";
     overlay.appendChild(textEl);
   }
-  textEl.innerHTML = window.marked ? marked.parse(text || "") : text || "";
+  textEl.innerHTML = item.type === "text" ? (window.marked ? marked.parse(item.content || "") : item.content || "") : "";
+
+  overlay.classList.toggle("flash-nav-hidden", flashItems.length < 2);
   overlay.classList.add("visible");
   if (flashTimer) clearTimeout(flashTimer);
   flashTimer = setTimeout(hideFlash, FLASH_DURATION_MS);
@@ -122,16 +152,27 @@ function buildGallery(project) {
   const grid = document.createElement("div");
   grid.className = isFlash ? "gallery-grid gallery-grid-flash" : "gallery-grid";
 
+  if (isFlash) {
+    flashItems = [];
+    if (project.description) {
+      flashItems.push({ type: "text", content: project.description });
+    }
+    dataImages.forEach((src) => flashItems.push({ type: "image", src, alt: project.title }));
+    overrides.forEach((src) => flashItems.push({ type: "image", src, alt: project.title }));
+  }
+
   if (isFlash && project.description) {
     const introFig = document.createElement("figure");
     introFig.className = "gallery-item gallery-item-intro";
     introFig.textContent = "Intro";
     introFig.title = "View description";
-    introFig.addEventListener("click", () => showFlashText(project.description));
+    introFig.addEventListener("click", () => showFlashAt(0));
     grid.appendChild(introFig);
   }
 
-  dataImages.forEach((src) => {
+  const introOffset = isFlash && project.description ? 1 : 0;
+
+  dataImages.forEach((src, i) => {
     const fig = document.createElement("figure");
     fig.className = "gallery-item gallery-item-selectable";
     const img = document.createElement("img");
@@ -140,7 +181,7 @@ function buildGallery(project) {
     img.loading = "lazy";
     if (isFlash) {
       img.title = "View full screen";
-      img.addEventListener("click", () => showFlash(src, project.title));
+      img.addEventListener("click", () => showFlashAt(introOffset + i));
     } else {
       img.title = "Show this photo as the cover";
       img.addEventListener("click", () => showInCover(fig, src));
@@ -159,7 +200,7 @@ function buildGallery(project) {
     img.loading = "lazy";
     if (isFlash) {
       img.title = "View full screen";
-      img.addEventListener("click", () => showFlash(src, project.title));
+      img.addEventListener("click", () => showFlashAt(introOffset + dataImages.length + index));
     } else {
       img.title = "Show this photo as the cover";
       img.addEventListener("click", () => showInCover(fig, src));
