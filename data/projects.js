@@ -248,8 +248,9 @@ const PROJECTS = [
     "date": "2018-02-19",
     "description": "Annual photography festival",
     "link": "",
-    "image": "images/f28-chiang-mai-month-of-photography.jpg",
-    "images": ["images/pool/f28-website-stats.jpg"],
+    "image": "images/pool/f28-logo.jpg",
+    "imageFit": "contain",
+    "images": ["images/f28-chiang-mai-month-of-photography.jpg", "images/pool/f28-website-stats.jpg"],
     "location": "Chiang Mai",
     "place": "",
     "featured": true
