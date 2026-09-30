@@ -1193,7 +1193,13 @@ const PROJECTS = [
       "images/pool/unicorn-liberation-front/unicorn-17.jpg",
       "images/pool/unicorn-liberation-front/unicorn-18.jpg",
       "images/pool/unicorn-liberation-front/unicorn-19.jpg",
-      "images/pool/unicorn-liberation-front/unicorn-20.jpg"
+      "images/pool/unicorn-liberation-front/unicorn-20.jpg",
+      "images/pool/unicorn-liberation-front/unicorn-21.jpg",
+      "images/pool/unicorn-liberation-front/unicorn-22.jpg",
+      "images/pool/unicorn-liberation-front/unicorn-23.jpg",
+      "images/pool/unicorn-liberation-front/unicorn-24.jpg",
+      "images/pool/unicorn-liberation-front/unicorn-25.jpg",
+      "images/pool/unicorn-liberation-front/unicorn-26.jpg"
     ],
     "location": "",
     "place": "",
