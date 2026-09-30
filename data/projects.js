@@ -1113,6 +1113,19 @@ const PROJECTS = [
     "featured": false
   },
   {
+    "id": "documentary-arts-asia-laiza",
+    "title": "Documentary Arts Asia Laiza",
+    "categories": ["Curation", "Kachin", "Studios"],
+    "date": "2026-10-01",
+    "description": "DocArtsAsia studio in Laiza.",
+    "link": "",
+    "image": "images/docartsasia-laiza-rooftop-screening.jpg",
+    "images": ["images/pool/docartsasia-laiza-kids-reading-books.jpg", "images/pool/docartsasia-laiza-center-visit.jpg"],
+    "location": "Laiza",
+    "place": "",
+    "featured": false
+  },
+  {
     "id": "chiang-mai-documentary-arts-festival-2015",
     "title": "Chiang Mai Documentary Arts Festival 2015",
     "categories": ["Festivals", "Curation", "Photography"],
