@@ -680,12 +680,12 @@ const PROJECTS = [
     "date": "2022-01-01",
     "description": "Juror for the International Photography Awards (IPA).",
     "link": "https://www.photoawards.com/",
-    "image": "images/pool/ipa-icon.png",
+    "image": "images/pool/ipa-logo-full.png",
     "imageFit": "contain",
     "images": [],
     "location": "",
     "place": "",
-    "featured": false
+    "featured": true
   },
   {
     "id": "juror-photolucida-critical-mass",

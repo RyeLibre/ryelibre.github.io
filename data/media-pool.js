@@ -83,4 +83,5 @@ const STATIC_MEDIA_POOL = [
   { id: "static-everyday-kachin-logo", dataUrl: "images/pool/everyday-kachin-logo.webp", name: "Everyday Kachin logo" },
   { id: "static-docartsasia-logo", dataUrl: "images/pool/docartsasia-logo.jpg", name: "DocArtsAsia logo" },
   { id: "static-cdaf-logo", dataUrl: "images/pool/cdaf-logo.jpg", name: "CDAF (Chiang Mai Documentary Arts Festival) logo" },
+  { id: "static-ipa-logo-full", dataUrl: "images/pool/ipa-logo-full.png", name: "IPA (International Photography Awards) logo, full" },
 ];
