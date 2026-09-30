@@ -1006,8 +1006,9 @@ const PROJECTS = [
     "date": "2026-09-30",
     "description": "Peace & media workshop in Sri Lanka, connected to the Olympic Truce.",
     "link": "https://www.olympics.com/ioc/olympic-truce",
-    "image": "images/peace-media-workshop-sri-lanka.jpg",
-    "images": ["images/pool/olympic-truce-logo.png"],
+    "image": "images/pool/olympic-truce-logo.png",
+    "imageFit": "contain",
+    "images": ["images/peace-media-workshop-sri-lanka.jpg"],
     "location": "Sri Lanka",
     "place": "",
     "featured": false
