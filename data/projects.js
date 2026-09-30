@@ -1171,7 +1171,7 @@ const PROJECTS = [
     "date": "2026-10-01",
     "description": "A survey of unicorns spotted in the wild, in stores everywhere.",
     "link": "",
-    "image": "images/pool/unicorn-liberation-front/unicorn-1.jpg",
+    "image": "images/pool/unicorn-liberation-front/unicorn-7.jpg",
     "gallerySlideshow": true,
     "images": [
       "images/pool/unicorn-liberation-front/unicorn-1.jpg",
