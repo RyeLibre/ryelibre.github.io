@@ -998,5 +998,18 @@ const PROJECTS = [
     "location": "Bangkok",
     "place": "FCCT",
     "featured": false
+  },
+  {
+    "id": "peace-media-workshop-sri-lanka",
+    "title": "Peace & Media Workshop in Sri Lanka",
+    "categories": ["Peace-work", "Workshops", "CV", "Learning media"],
+    "date": "2026-09-30",
+    "description": "Peace & media workshop in Sri Lanka, connected to the Olympic Truce.",
+    "link": "https://www.olympics.com/ioc/olympic-truce",
+    "image": "images/peace-media-workshop-sri-lanka.jpg",
+    "images": ["images/pool/olympic-truce-logo.png"],
+    "location": "Sri Lanka",
+    "place": "",
+    "featured": false
   }
 ];
