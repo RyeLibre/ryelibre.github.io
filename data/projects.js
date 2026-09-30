@@ -1038,5 +1038,18 @@ const PROJECTS = [
     "location": "Chiang Mai",
     "place": "DocArtsAsia 2",
     "featured": false
+  },
+  {
+    "id": "let-my-voice-be-heard-workshop",
+    "title": "Workshop: Let My Voice Be Heard",
+    "categories": ["Workshops", "Kachin", "Peace-work", "Photography"],
+    "date": "2026-09-30",
+    "description": "Multi-month workshop series for displaced people in Kachin.",
+    "link": "",
+    "image": "images/let-my-voice-be-heard-workshop-group.jpg",
+    "images": [],
+    "location": "Kachin",
+    "place": "",
+    "featured": false
   }
 ];
