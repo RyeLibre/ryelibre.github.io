@@ -903,5 +903,19 @@ const PROJECTS = [
     "location": "",
     "place": "",
     "featured": false
+  },
+  {
+    "id": "docartsasia-project",
+    "title": "DocArtsAsia",
+    "categories": ["Projects"],
+    "date": "2026-09-30",
+    "description": "Non profit galleries & learning ecosystem.",
+    "link": "https://doc-arts.asia",
+    "image": "images/pool/docartsasia-logo.jpg",
+    "imageFit": "contain",
+    "images": [],
+    "location": "",
+    "place": "",
+    "featured": false
   }
 ];

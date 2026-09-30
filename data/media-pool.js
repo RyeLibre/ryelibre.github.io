@@ -81,4 +81,5 @@ const STATIC_MEDIA_POOL = [
   { id: "static-pulitzer-center-icon-white", dataUrl: "images/pool/pulitzer-center-icon-white.webp", name: "Pulitzer Center icon, white (high-res)" },
   { id: "static-asia-pacific-photoforum-logo", dataUrl: "images/pool/asia-pacific-photoforum-logo.png", name: "Asia Pacific PhotoForum logo" },
   { id: "static-everyday-kachin-logo", dataUrl: "images/pool/everyday-kachin-logo.webp", name: "Everyday Kachin logo" },
+  { id: "static-docartsasia-logo", dataUrl: "images/pool/docartsasia-logo.jpg", name: "DocArtsAsia logo" },
 ];
