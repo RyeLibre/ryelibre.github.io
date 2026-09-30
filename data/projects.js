@@ -51,10 +51,10 @@ const PROJECTS = [
     "title": "Everyday Kachin",
     "categories": ["Kachin", "Curation", "Exhibitions"],
     "date": "2019-11-19",
-    "description": "Everyday Kachin exhibition at FreeBird \nWas also a well attended talk",
+    "description": "Everyday Kachin exhibition at FreeBird \nWas also a well attended talk\n\nAlso exhibited in Myitkyina and Suwon, South Korea.",
     "link": "",
     "image": "images/everyday-kachin.jpg",
-    "images": [],
+    "images": ["images/pool/everyday-kachin-suwon-rooftop-banners.jpg", "images/pool/everyday-kachin-myitkyina-banner.jpg", "images/pool/everyday-kachin-gallery-wall.jpg"],
     "location": "Chiang Mai",
     "place": "Free Bird",
     "featured": false
