@@ -1012,5 +1012,18 @@ const PROJECTS = [
     "location": "Sri Lanka",
     "place": "",
     "featured": false
+  },
+  {
+    "id": "website-workshop-nawng-nang-myitkyina",
+    "title": "Website Workshop for Media Makers and NGOs",
+    "categories": ["Workshops", "Learning media", "Kachin"],
+    "date": "2018-02-01",
+    "description": "Website workshop for media makers and NGOs in Myitkyina, Kachin State. Feb/Mar '18 at the Nawng Nang Center.",
+    "link": "",
+    "image": "images/website-workshop-nawng-nang-myitkyina.jpg",
+    "images": [],
+    "location": "Myitkyina, Kachin",
+    "place": "Nawng Nang Center",
+    "featured": false
   }
 ];
