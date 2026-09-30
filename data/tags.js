@@ -10,6 +10,7 @@ const FEATURED_TAGS = [
   "Film",
   "Peace-work",
   "Exhibitions",
+  "Festivals",
   "Workshops",
   "Books",
   "Learning media",

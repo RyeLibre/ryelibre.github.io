@@ -244,7 +244,7 @@ const PROJECTS = [
   {
     "id": "f28-chiang-mai-month-of-photography",
     "title": "F/28   Chiang Mai Month of Photography",
-    "categories": ["Projects", "Curation", "Photography", "Exhibitions", "Workshops", "Books", "CNX", "Production", "Screenings"],
+    "categories": ["Projects", "Festivals", "Curation", "Photography", "Exhibitions", "Workshops", "Books", "CNX", "Production", "Screenings"],
     "date": "2018-02-19",
     "description": "Annual photography festival",
     "link": "",
@@ -520,7 +520,7 @@ const PROJECTS = [
   {
     "id": "chiang-mai-documentatry-arts-festival-2012",
     "title": "Chiang Mai Documentary Arts Festival 2012",
-    "categories": ["Curation", "Photography", "Production", "Screenings"],
+    "categories": ["Festivals", "Curation", "Photography", "Production", "Screenings"],
     "date": "2012-02-20",
     "description": "",
     "link": "",
@@ -533,7 +533,7 @@ const PROJECTS = [
   {
     "id": "chiang-mai-documentatry-arts-festival-2013",
     "title": "Chiang Mai Documentatry Arts Festival 2013",
-    "categories": ["Curation", "Production"],
+    "categories": ["Festivals", "Curation", "Production"],
     "date": "2013-02-20",
     "description": "",
     "link": "",
@@ -815,7 +815,7 @@ const PROJECTS = [
   {
     "id": "portfolio-reviews-dali-photo-festival",
     "title": "Curator & Portfolio Reviews — Dali Photo Festival",
-    "categories": ["Juror", "Curation", "Photography"],
+    "categories": ["Festivals", "Juror", "Curation", "Photography"],
     "date": "2026-09-30",
     "description": "Curator and portfolio reviewer at the Dali Photo Festival.",
     "link": "",
@@ -922,7 +922,7 @@ const PROJECTS = [
   {
     "id": "cdaf-project",
     "title": "Chiang Mai Documentary Arts Festival (CDAF)",
-    "categories": ["Projects", "Photography"],
+    "categories": ["Projects", "Festivals", "Photography"],
     "date": "2026-09-30",
     "description": "Bi-annual documentary photography and film festival in Chiang Mai. First documentary photo festival in Thailand.",
     "link": "https://www.facebook.com/TheCDAF/",
