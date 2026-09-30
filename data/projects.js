@@ -931,5 +931,18 @@ const PROJECTS = [
     "location": "Chiang Mai",
     "place": "",
     "featured": false
+  },
+  {
+    "id": "rohingya-greg-constantine-opening",
+    "title": "Opening Exhibition: Statelessness — Greg Constantine",
+    "categories": ["Curation", "Exhibitions", "Photography"],
+    "date": "2026-09-30",
+    "description": "The very first opening exhibition of the DocArtsAsia Chiang Mai center, on the stateless Rohingya by photographer and DocArtsAsia board member Greg Constantine.",
+    "link": "",
+    "image": "images/rohingya-greg-constantine-opening.jpg",
+    "images": [],
+    "location": "Chiang Mai",
+    "place": "DocArtsAsia",
+    "featured": false
   }
 ];
