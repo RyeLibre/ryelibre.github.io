@@ -1051,5 +1051,24 @@ const PROJECTS = [
     "location": "Kachin",
     "place": "",
     "featured": false
+  },
+  {
+    "id": "rye-revolutions-cycles",
+    "title": "Rye Revolutions — 1st Class 2nd Hand Cycles",
+    "categories": ["Design", "Projects"],
+    "date": "2021-01-03",
+    "description": "Design and bikes.",
+    "link": "",
+    "image": "images/rye-revolutions-bikes.jpg",
+    "images": [
+      "images/pool/rye-revolutions-headlight.jpg",
+      "images/pool/rye-revolutions-leather-saddle.jpg",
+      "images/pool/rye-revolutions-side-profile.jpg",
+      "images/pool/rye-revolutions-night-profile.jpg",
+      "images/pool/rye-revolutions-basket.jpg"
+    ],
+    "location": "",
+    "place": "",
+    "featured": false
   }
 ];
