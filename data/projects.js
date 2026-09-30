@@ -525,7 +525,7 @@ const PROJECTS = [
     "description": "",
     "link": "",
     "image": "images/pool/thai-house-gallery-dusk.jpg",
-    "images": ["images/pool/laptop-feedback-session.jpg"],
+    "images": ["images/pool/laptop-feedback-session.jpg", "images/pool/cdaf-2012-wooden-gallery-hallway.jpg"],
     "location": "Chiang Mai",
     "place": "",
     "featured": true
