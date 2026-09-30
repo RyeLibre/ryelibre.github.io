@@ -54,6 +54,7 @@ function showInCover(fig, src) {
 
 let flashOverlay = null;
 let flashTimer = null;
+const FLASH_DURATION_MS = 1750; // 2500ms, reduced 30%
 
 function ensureFlashOverlay() {
   if (flashOverlay) return flashOverlay;
@@ -83,7 +84,7 @@ function showFlash(src, alt) {
   img.alt = alt;
   overlay.classList.add("visible");
   if (flashTimer) clearTimeout(flashTimer);
-  flashTimer = setTimeout(hideFlash, 2500);
+  flashTimer = setTimeout(hideFlash, FLASH_DURATION_MS);
 }
 
 function showFlashText(text) {
@@ -99,7 +100,7 @@ function showFlashText(text) {
   textEl.innerHTML = window.marked ? marked.parse(text || "") : text || "";
   overlay.classList.add("visible");
   if (flashTimer) clearTimeout(flashTimer);
-  flashTimer = setTimeout(hideFlash, 2500);
+  flashTimer = setTimeout(hideFlash, FLASH_DURATION_MS);
 }
 
 function buildGallery(project) {
