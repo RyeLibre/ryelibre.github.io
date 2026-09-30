@@ -21,6 +21,7 @@ const FEATURED_TAGS = [
   "CV",
   "Printmaking",
   "Screenings",
+  "Tearsheets",
   "Steal this idea",
   "Adobe Abode",
   "Scripts",

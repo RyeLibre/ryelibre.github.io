@@ -876,5 +876,18 @@ const PROJECTS = [
     "location": "",
     "place": "",
     "featured": false
+  },
+  {
+    "id": "letter-from-laiza-irrawaddy",
+    "title": "Letter from Laiza: High Spirits at the Kachin Rebel Headquarters",
+    "categories": ["Tearsheets", "Kachin"],
+    "date": "2011-06-21",
+    "description": "Article and photo for The Irrawaddy.",
+    "link": "",
+    "image": "images/letter-from-laiza-irrawaddy.jpg",
+    "images": [],
+    "location": "Laiza",
+    "place": "",
+    "featured": false
   }
 ];
