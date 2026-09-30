@@ -1137,5 +1137,31 @@ const PROJECTS = [
     "location": "Chiang Mai",
     "place": "",
     "featured": false
+  },
+  {
+    "id": "wrench-roll",
+    "title": "Wrench Roll",
+    "categories": ["Design"],
+    "date": "2026-10-01",
+    "description": "Handmade fabric roll for wrenches.",
+    "link": "",
+    "image": "images/wrench-roll.jpg",
+    "images": [],
+    "location": "",
+    "place": "",
+    "featured": false
+  },
+  {
+    "id": "red-pattern-pouch",
+    "title": "Red Pattern Pouch",
+    "categories": ["Design"],
+    "date": "2026-10-01",
+    "description": "Handmade pouch.",
+    "link": "",
+    "image": "images/red-pattern-pouch.jpg",
+    "images": [],
+    "location": "",
+    "place": "",
+    "featured": false
   }
 ];
