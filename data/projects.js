@@ -1025,5 +1025,18 @@ const PROJECTS = [
     "location": "Myitkyina, Kachin",
     "place": "Nawng Nang Center",
     "featured": false
+  },
+  {
+    "id": "story-style-workshop-cord-keller",
+    "title": "Story & Style Workshop — Cord Keller",
+    "categories": ["Workshops", "Curation", "Photography"],
+    "date": "2026-09-30",
+    "description": "Full house for the Story & Style workshop by Cord Keller at DocArtsAsia 2, Chiang Mai.",
+    "link": "",
+    "image": "images/story-style-workshop-cord-keller.jpg",
+    "images": [],
+    "location": "Chiang Mai",
+    "place": "DocArtsAsia 2",
+    "featured": false
   }
 ];
