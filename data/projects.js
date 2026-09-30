@@ -538,8 +538,8 @@ const PROJECTS = [
     "date": "2012-02-20",
     "description": "",
     "link": "",
-    "image": "images/pool/thai-house-gallery-dusk.jpg",
-    "images": ["images/pool/laptop-feedback-session.jpg", "images/pool/cdaf-2012-wooden-gallery-hallway.jpg"],
+    "image": "images/pool/cdaf-gallery-viewer.jpg",
+    "images": ["images/pool/thai-house-gallery-dusk.jpg", "images/pool/laptop-feedback-session.jpg", "images/pool/cdaf-2012-wooden-gallery-hallway.jpg"],
     "location": "Chiang Mai",
     "place": "",
     "featured": true
