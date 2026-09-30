@@ -957,5 +957,19 @@ const PROJECTS = [
     "location": "Chiang Mai",
     "place": "DocArtsAsia",
     "featured": false
+  },
+  {
+    "id": "lucie-foundation-grants",
+    "title": "Lucie Foundation",
+    "categories": ["CV", "Curation"],
+    "date": "2026-09-30",
+    "description": "Lucie Foundation has given many small grants for exhibitions I curated.",
+    "link": "https://www.luciefoundation.org/",
+    "image": "images/pool/lucie-foundation-logo.jpg",
+    "imageFit": "contain",
+    "images": [],
+    "location": "",
+    "place": "",
+    "featured": false
   }
 ];
