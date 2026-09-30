@@ -255,7 +255,9 @@ function renderPost() {
   editLink.textContent = "Edit this post";
   container.appendChild(editLink);
 
-  container.appendChild(buildCoverMedia(project));
+  if (!project.gallerySlideshow) {
+    container.appendChild(buildCoverMedia(project));
+  }
 
   if (project.link) {
     const linkPara = document.createElement("p");
