@@ -244,7 +244,7 @@ const PROJECTS = [
   {
     "id": "f28-chiang-mai-month-of-photography",
     "title": "F/28   Chiang Mai Month of Photography",
-    "categories": ["Curation", "Photography", "Exhibitions", "Workshops", "Books", "CNX", "Production", "Screenings"],
+    "categories": ["Projects", "Curation", "Photography", "Exhibitions", "Workshops", "Books", "CNX", "Production", "Screenings"],
     "date": "2018-02-19",
     "description": "Annual photography festival",
     "link": "",
