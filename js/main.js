@@ -132,11 +132,20 @@ function renderTagList() {
     row.className = "tag-row";
 
     const btn = makeTagButton(tag, state.activeTags.has(key));
-    btn.addEventListener("click", () => {
-      if (state.activeTags.has(key)) {
-        state.activeTags.delete(key);
+    btn.addEventListener("click", (e) => {
+      if (e.shiftKey) {
+        if (state.activeTags.has(key)) {
+          state.activeTags.delete(key);
+        } else {
+          state.activeTags.add(key);
+        }
       } else {
-        state.activeTags.add(key);
+        if (state.activeTags.has(key) && state.activeTags.size === 1) {
+          state.activeTags.clear();
+        } else {
+          state.activeTags.clear();
+          state.activeTags.add(key);
+        }
       }
       state.activeSubtag = null;
       renderTagList();

@@ -19,6 +19,7 @@ const FEATURED_TAGS = [
   "Sakse",
   "Bio",
   "CV",
+  "Projects",
   "Printmaking",
   "Screenings",
   "Tearsheets",

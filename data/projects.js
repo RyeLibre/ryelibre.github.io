@@ -889,5 +889,19 @@ const PROJECTS = [
     "location": "Laiza",
     "place": "",
     "featured": false
+  },
+  {
+    "id": "everyday-kachin-project",
+    "title": "Everyday Kachin",
+    "categories": ["Projects", "Kachin"],
+    "date": "2026-09-30",
+    "description": "Project founded by Ryan Libre.",
+    "link": "",
+    "image": "images/pool/everyday-kachin-logo.webp",
+    "imageFit": "contain",
+    "images": [],
+    "location": "",
+    "place": "",
+    "featured": false
   }
 ];
