@@ -28,7 +28,7 @@ const PROJECTS = [
     "description": "Portraits of Independence\nat the Nikon Salon in Shinjuku, Tokyo",
     "link": "",
     "image": "images/portraits-of-independence.jpg",
-    "images": [],
+    "images": ["images/pool/portraits-of-independence-wall.jpg"],
     "location": "Tokyo",
     "place": "The Nikon Salon",
     "featured": true
