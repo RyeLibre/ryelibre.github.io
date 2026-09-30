@@ -971,5 +971,19 @@ const PROJECTS = [
     "location": "",
     "place": "",
     "featured": false
+  },
+  {
+    "id": "photography-ethics-centre",
+    "title": "Photography Ethics Centre",
+    "categories": ["CV"],
+    "date": "2026-09-30",
+    "description": "Founding advisor, workshop presenter & event host.",
+    "link": "",
+    "image": "images/pool/photography-ethics-centre-logo.png",
+    "imageFit": "contain-dark",
+    "images": [],
+    "location": "",
+    "place": "",
+    "featured": false
   }
 ];
