@@ -1097,5 +1097,18 @@ const PROJECTS = [
     "location": "Suwon, South Korea",
     "place": "DocArtsAsia Mini Gallery",
     "featured": false
+  },
+  {
+    "id": "chiang-mai-documentary-arts-festival-2015",
+    "title": "Chiang Mai Documentary Arts Festival 2015",
+    "categories": ["Festivals", "Curation", "Photography"],
+    "date": "2015-02-01",
+    "description": "Year unconfirmed — best guess, not verified.",
+    "link": "",
+    "image": "images/cdaf-2015-farmani-smiling.jpg",
+    "images": ["images/pool/cdaf-2015-color-block-exhibit.jpg", "images/pool/cdaf-2015-speaker-podium.jpg"],
+    "location": "Chiang Mai",
+    "place": "",
+    "featured": false
   }
 ];
