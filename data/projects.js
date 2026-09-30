@@ -985,5 +985,18 @@ const PROJECTS = [
     "location": "",
     "place": "",
     "featured": false
+  },
+  {
+    "id": "kachin-exhibition-fcct",
+    "title": "Kachin Exhibition at FCCT",
+    "categories": ["Exhibitions", "Kachin", "Photography"],
+    "date": "2010-04-05",
+    "description": "My Kachin exhibition at the Foreign Correspondents' Club of Thailand (FCCT).",
+    "link": "",
+    "image": "images/kachin-exhibition-fcct.jpg",
+    "images": [],
+    "location": "Bangkok",
+    "place": "FCCT",
+    "featured": false
   }
 ];
