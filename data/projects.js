@@ -944,5 +944,18 @@ const PROJECTS = [
     "location": "Chiang Mai",
     "place": "DocArtsAsia",
     "featured": false
+  },
+  {
+    "id": "life-on-the-front-line-hkun-li",
+    "title": "Life on the Front Line: Through the Lens of a Kachin Youth",
+    "categories": ["Curation", "Exhibitions", "Kachin", "Photography"],
+    "date": "2012-06-29",
+    "description": "Photo exhibition by Hkun Li. 29th June – 31st July 2012, opening night 29th June, 7pm.",
+    "link": "",
+    "image": "images/life-on-the-front-line-hkun-li-docartsasia.jpg",
+    "images": ["images/pool/life-on-the-front-line-crowd.jpg", "images/pool/life-on-the-front-line-necklace.jpg"],
+    "location": "Chiang Mai",
+    "place": "DocArtsAsia",
+    "featured": false
   }
 ];
