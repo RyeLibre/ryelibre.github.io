@@ -52,9 +52,43 @@ function showInCover(fig, src) {
   img.scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
+let flashOverlay = null;
+let flashTimer = null;
+
+function ensureFlashOverlay() {
+  if (flashOverlay) return flashOverlay;
+  flashOverlay = document.createElement("div");
+  flashOverlay.className = "flash-overlay";
+  const img = document.createElement("img");
+  flashOverlay.appendChild(img);
+  flashOverlay.addEventListener("click", hideFlash);
+  document.body.appendChild(flashOverlay);
+  return flashOverlay;
+}
+
+function hideFlash() {
+  if (!flashOverlay) return;
+  flashOverlay.classList.remove("visible");
+  if (flashTimer) {
+    clearTimeout(flashTimer);
+    flashTimer = null;
+  }
+}
+
+function showFlash(src, alt) {
+  const overlay = ensureFlashOverlay();
+  const img = overlay.querySelector("img");
+  img.src = src;
+  img.alt = alt;
+  overlay.classList.add("visible");
+  if (flashTimer) clearTimeout(flashTimer);
+  flashTimer = setTimeout(hideFlash, 2500);
+}
+
 function buildGallery(project) {
   const dataImages = project.images || [];
   const overrides = loadGalleryOverrides()[project.id] || [];
+  const isFlash = !!project.gallerySlideshow;
 
   const section = document.createElement("section");
   section.className = "post-gallery";
@@ -68,7 +102,7 @@ function buildGallery(project) {
   }
 
   const grid = document.createElement("div");
-  grid.className = "gallery-grid";
+  grid.className = isFlash ? "gallery-grid gallery-grid-flash" : "gallery-grid";
 
   dataImages.forEach((src) => {
     const fig = document.createElement("figure");
@@ -77,8 +111,13 @@ function buildGallery(project) {
     img.src = src;
     img.alt = project.title;
     img.loading = "lazy";
-    img.title = "Show this photo as the cover";
-    img.addEventListener("click", () => showInCover(fig, src));
+    if (isFlash) {
+      img.title = "View full screen";
+      img.addEventListener("click", () => showFlash(src, project.title));
+    } else {
+      img.title = "Show this photo as the cover";
+      img.addEventListener("click", () => showInCover(fig, src));
+    }
     fig.appendChild(img);
     grid.appendChild(fig);
   });
@@ -91,8 +130,13 @@ function buildGallery(project) {
     img.src = src;
     img.alt = project.title;
     img.loading = "lazy";
-    img.title = "Show this photo as the cover";
-    img.addEventListener("click", () => showInCover(fig, src));
+    if (isFlash) {
+      img.title = "View full screen";
+      img.addEventListener("click", () => showFlash(src, project.title));
+    } else {
+      img.title = "Show this photo as the cover";
+      img.addEventListener("click", () => showInCover(fig, src));
+    }
     fig.appendChild(img);
 
     const removeBtn = document.createElement("button");

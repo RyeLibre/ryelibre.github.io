@@ -1163,5 +1163,40 @@ const PROJECTS = [
     "location": "",
     "place": "",
     "featured": false
+  },
+  {
+    "id": "unicorn-liberation-front",
+    "title": "Unicorn Liberation Front",
+    "categories": ["Photography"],
+    "date": "2026-10-01",
+    "description": "A survey of unicorns spotted in the wild, in stores everywhere.",
+    "link": "",
+    "image": "images/pool/unicorn-liberation-front/unicorn-1.jpg",
+    "gallerySlideshow": true,
+    "images": [
+      "images/pool/unicorn-liberation-front/unicorn-1.jpg",
+      "images/pool/unicorn-liberation-front/unicorn-2.jpg",
+      "images/pool/unicorn-liberation-front/unicorn-3.jpg",
+      "images/pool/unicorn-liberation-front/unicorn-4.jpg",
+      "images/pool/unicorn-liberation-front/unicorn-5.jpg",
+      "images/pool/unicorn-liberation-front/unicorn-6.jpg",
+      "images/pool/unicorn-liberation-front/unicorn-7.jpg",
+      "images/pool/unicorn-liberation-front/unicorn-8.jpg",
+      "images/pool/unicorn-liberation-front/unicorn-9.jpg",
+      "images/pool/unicorn-liberation-front/unicorn-10.jpg",
+      "images/pool/unicorn-liberation-front/unicorn-11.jpg",
+      "images/pool/unicorn-liberation-front/unicorn-12.jpg",
+      "images/pool/unicorn-liberation-front/unicorn-13.jpg",
+      "images/pool/unicorn-liberation-front/unicorn-14.jpg",
+      "images/pool/unicorn-liberation-front/unicorn-15.jpg",
+      "images/pool/unicorn-liberation-front/unicorn-16.jpg",
+      "images/pool/unicorn-liberation-front/unicorn-17.jpg",
+      "images/pool/unicorn-liberation-front/unicorn-18.jpg",
+      "images/pool/unicorn-liberation-front/unicorn-19.jpg",
+      "images/pool/unicorn-liberation-front/unicorn-20.jpg"
+    ],
+    "location": "",
+    "place": "",
+    "featured": false
   }
 ];

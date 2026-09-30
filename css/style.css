@@ -1193,6 +1193,40 @@ button {
   color: #fff;
 }
 
+.gallery-grid-flash {
+  grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+  gap: 4px;
+}
+
+.gallery-grid-flash .gallery-item img {
+  cursor: pointer;
+}
+
+.flash-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.94);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+  z-index: 1000;
+  cursor: pointer;
+}
+
+.flash-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.flash-overlay img {
+  max-width: 92vw;
+  max-height: 92vh;
+  object-fit: contain;
+}
+
 .gallery-remove {
   position: absolute;
   bottom: 6px;
