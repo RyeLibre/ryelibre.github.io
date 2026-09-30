@@ -493,91 +493,13 @@ function renderTagMap() {
   if (!tagMapEl) return;
 
   const tags = state.tags;
-  const n = tags.length;
-  if (n === 0) {
+  if (tags.length === 0) {
     tagMapEl.innerHTML = "";
     return;
   }
 
-  const size = 760;
-  const cx = size / 2;
-  const cy = size / 2;
-  const radius = size / 2 - 130;
-
-  const positions = tags.map((tag, i) => {
-    const angle = (i / n) * Math.PI * 2 - Math.PI / 2;
-    return {
-      tag,
-      key: tag.toLowerCase(),
-      x: cx + radius * Math.cos(angle),
-      y: cy + radius * Math.sin(angle),
-      angle,
-    };
-  });
-
-  const posByKey = new Map(positions.map((p) => [p.key, p]));
-
-  const postCounts = new Map();
-  const edgeCounts = new Map();
-
-  state.projects.forEach((p) => {
-    const cats = [...new Set((p.categories || []).map((c) => c.toLowerCase()))];
-    cats.forEach((c) => postCounts.set(c, (postCounts.get(c) || 0) + 1));
-    for (let i = 0; i < cats.length; i++) {
-      for (let j = i + 1; j < cats.length; j++) {
-        const key = [cats[i], cats[j]].sort().join("|");
-        edgeCounts.set(key, (edgeCounts.get(key) || 0) + 1);
-      }
-    }
-  });
-
   const activeKeys = state.activeTags;
-
-  const edgeLines = [];
-  edgeCounts.forEach((count, key) => {
-    const [a, b] = key.split("|");
-    const pa = posByKey.get(a);
-    const pb = posByKey.get(b);
-    if (!pa || !pb) return;
-    const highlighted = activeKeys.has(a) || activeKeys.has(b);
-    const width = Math.min(1.5 + count * 1.2, 6);
-    edgeLines.push(
-      `<line class="tag-edge${highlighted ? " active" : ""}" x1="${pa.x.toFixed(1)}" y1="${pa.y.toFixed(1)}" x2="${pb.x.toFixed(1)}" y2="${pb.y.toFixed(1)}" style="--edge-w:${width}"></line>`
-    );
-  });
-
-  const nodeEls = positions.map((p) => {
-    const count = postCounts.get(p.key) || 0;
-    const r = 7 + Math.min(count * 2.5, 12);
-    const isActive = activeKeys.has(p.key);
-
-    const deg = (p.angle * 180) / Math.PI;
-    let anchor = "middle";
-    let dx = 0;
-    let dy = -r - 8;
-    if (deg > -75 && deg < 75) {
-      anchor = "start";
-      dx = r + 8;
-      dy = 4;
-    } else if (deg > 105 || deg < -105) {
-      anchor = "end";
-      dx = -(r + 8);
-      dy = 4;
-    }
-
-    const label = escapeHtml(p.tag);
-    return `
-      <g class="tag-node${isActive ? " active" : ""}" data-tag="${label}" tabindex="0" role="button" aria-pressed="${isActive}" aria-label="Filter by ${label}">
-        <circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${r}"></circle>
-        <text x="${(p.x + dx).toFixed(1)}" y="${(p.y + dy).toFixed(1)}" text-anchor="${anchor}">${label}</text>
-      </g>`;
-  });
-
-  tagMapEl.innerHTML = `
-    <svg viewBox="0 0 ${size} ${size}" class="tag-map-svg" xmlns="http://www.w3.org/2000/svg">
-      <g class="tag-map-edges">${edgeLines.join("")}</g>
-      <g class="tag-map-nodes">${nodeEls.join("")}</g>
-    </svg>`;
+  tagMapEl.innerHTML = buildTagMapSvgMarkup(tags, state.projects, activeKeys);
 
   tagMapEl.querySelectorAll(".tag-node").forEach((g) => {
     const key = g.getAttribute("data-tag").toLowerCase();

@@ -680,6 +680,17 @@ button {
   overflow-x: auto;
 }
 
+.tag-map-section-hover {
+  padding-top: 8px;
+  opacity: 0.06;
+  transition: opacity 0.35s ease;
+}
+
+.tag-map-section-hover:hover,
+.tag-map-section-hover:focus-within {
+  opacity: 1;
+}
+
 .tag-map-svg {
   display: block;
   width: 100%;

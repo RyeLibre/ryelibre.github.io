@@ -291,6 +291,30 @@ function renderPost() {
   }
 }
 
+function renderPostTagMap() {
+  const tagMapEl = document.getElementById("tag-map");
+  if (!tagMapEl) return;
+
+  const tags = [...FEATURED_TAGS];
+  const projects = getAllProjects();
+  tagMapEl.innerHTML = buildTagMapSvgMarkup(tags, projects, new Set());
+
+  tagMapEl.querySelectorAll(".tag-node").forEach((g) => {
+    const tag = g.getAttribute("data-tag");
+    const go = () => {
+      window.location.href = "index.html?tag=" + encodeURIComponent(tag);
+    };
+    g.addEventListener("click", go);
+    g.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        go();
+      }
+    });
+  });
+}
+
 renderPost();
+renderPostTagMap();
 bindPhotoPickerUpload();
 bindDialogCloseButtons();
