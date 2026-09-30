@@ -119,7 +119,7 @@ const PROJECTS = [
     "description": "Frontiers exhibition with Mali at the Pingtung City Museum",
     "link": "",
     "image": "images/frontiers.jpg",
-    "images": ["images/frontiers-gallery-1.jpg"],
+    "images": ["images/frontiers-gallery-1.jpg", "images/pool/frontiers-gallery-2.jpg", "images/pool/frontiers-signed-poster.jpg"],
     "location": "Pingtung",
     "place": "The Pingtung Art Museum",
     "featured": true
