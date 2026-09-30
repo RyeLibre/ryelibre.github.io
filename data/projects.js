@@ -1070,5 +1070,18 @@ const PROJECTS = [
     "location": "",
     "place": "",
     "featured": false
+  },
+  {
+    "id": "dirt-dyed",
+    "title": "Dirt Dyed",
+    "categories": ["Design"],
+    "date": "2026-09-30",
+    "description": "Fabric dyed with dirt.",
+    "link": "",
+    "image": "images/dirt-dyed-fabric.jpg",
+    "images": ["images/pool/dirt-dyed-fabric-gradient.jpg", "images/pool/dirt-dyed-fabric-edge.jpg"],
+    "location": "",
+    "place": "",
+    "featured": false
   }
 ];
