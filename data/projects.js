@@ -526,7 +526,7 @@ const PROJECTS = [
     "description": "All adobe photo gallery",
     "link": "",
     "image": "images/pool/seeds-are-life-exhibition.jpg",
-    "images": [],
+    "images": ["images/story-style-workshop-cord-keller.jpg"],
     "location": "Chiang Mai",
     "place": "",
     "featured": true
