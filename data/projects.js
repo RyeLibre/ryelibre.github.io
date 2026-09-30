@@ -565,7 +565,7 @@ const PROJECTS = [
     "description": "",
     "link": "",
     "image": "images/pool/photobook-archive-library.jpg",
-    "images": [],
+    "images": ["images/pool/mfa-rebels-and-reform-caption-wall.jpg"],
     "location": "Boulder",
     "place": "the University of Colorado",
     "featured": false
