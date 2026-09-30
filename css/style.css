@@ -1238,6 +1238,42 @@ button {
   object-fit: contain;
 }
 
+.flash-overlay:not(.flash-overlay-text) .flash-overlay-text-content {
+  display: none;
+}
+
+.flash-overlay.flash-overlay-text img {
+  display: none;
+}
+
+.flash-overlay-text-content {
+  max-width: 640px;
+  padding: 0 24px;
+  color: #fff;
+  font-size: 1.15rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.gallery-item-intro {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1 / 1;
+  cursor: pointer;
+  background: var(--surface-hover);
+  border: 1px dashed var(--border);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.gallery-item-intro:hover {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
 .gallery-remove {
   position: absolute;
   bottom: 6px;

@@ -77,9 +77,26 @@ function hideFlash() {
 
 function showFlash(src, alt) {
   const overlay = ensureFlashOverlay();
+  overlay.classList.remove("flash-overlay-text");
   const img = overlay.querySelector("img");
   img.src = src;
   img.alt = alt;
+  overlay.classList.add("visible");
+  if (flashTimer) clearTimeout(flashTimer);
+  flashTimer = setTimeout(hideFlash, 2500);
+}
+
+function showFlashText(text) {
+  const overlay = ensureFlashOverlay();
+  overlay.classList.add("flash-overlay-text");
+  overlay.querySelector("img").src = "";
+  let textEl = overlay.querySelector(".flash-overlay-text-content");
+  if (!textEl) {
+    textEl = document.createElement("div");
+    textEl.className = "flash-overlay-text-content";
+    overlay.appendChild(textEl);
+  }
+  textEl.innerHTML = window.marked ? marked.parse(text || "") : text || "";
   overlay.classList.add("visible");
   if (flashTimer) clearTimeout(flashTimer);
   flashTimer = setTimeout(hideFlash, 2500);
@@ -103,6 +120,15 @@ function buildGallery(project) {
 
   const grid = document.createElement("div");
   grid.className = isFlash ? "gallery-grid gallery-grid-flash" : "gallery-grid";
+
+  if (isFlash && project.description) {
+    const introFig = document.createElement("figure");
+    introFig.className = "gallery-item gallery-item-intro";
+    introFig.textContent = "Intro";
+    introFig.title = "View description";
+    introFig.addEventListener("click", () => showFlashText(project.description));
+    grid.appendChild(introFig);
+  }
 
   dataImages.forEach((src) => {
     const fig = document.createElement("figure");
@@ -235,18 +261,20 @@ function renderPost() {
   }
   container.appendChild(headerRow);
 
-  if (project.date || project.location || project.place) {
-    const meta = document.createElement("div");
-    meta.className = "project-meta";
-    meta.textContent = [formatPostDate(project.date), project.location, project.place].filter(Boolean).join(" · ");
-    container.appendChild(meta);
-  }
+  if (!project.gallerySlideshow) {
+    if (project.date || project.location || project.place) {
+      const meta = document.createElement("div");
+      meta.className = "project-meta";
+      meta.textContent = [formatPostDate(project.date), project.location, project.place].filter(Boolean).join(" · ");
+      container.appendChild(meta);
+    }
 
-  if (project.categories && project.categories.length) {
-    const tags = document.createElement("div");
-    tags.className = "project-tags";
-    project.categories.forEach((c) => tags.appendChild(buildTagChip(c)));
-    container.appendChild(tags);
+    if (project.categories && project.categories.length) {
+      const tags = document.createElement("div");
+      tags.className = "project-tags";
+      project.categories.forEach((c) => tags.appendChild(buildTagChip(c)));
+      container.appendChild(tags);
+    }
   }
 
   const editLink = document.createElement("a");
@@ -257,24 +285,24 @@ function renderPost() {
 
   if (!project.gallerySlideshow) {
     container.appendChild(buildCoverMedia(project));
-  }
 
-  if (project.link) {
-    const linkPara = document.createElement("p");
-    const a = document.createElement("a");
-    a.href = project.link;
-    a.target = "_blank";
-    a.rel = "noopener";
-    a.className = "post-external-link";
-    a.textContent = "Visit external link →";
-    linkPara.appendChild(a);
-    container.appendChild(linkPara);
-  }
+    if (project.link) {
+      const linkPara = document.createElement("p");
+      const a = document.createElement("a");
+      a.href = project.link;
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.className = "post-external-link";
+      a.textContent = "Visit external link →";
+      linkPara.appendChild(a);
+      container.appendChild(linkPara);
+    }
 
-  const desc = document.createElement("div");
-  desc.className = "project-description post-description";
-  desc.innerHTML = window.marked ? marked.parse(project.description || "") : (project.description || "");
-  container.appendChild(desc);
+    const desc = document.createElement("div");
+    desc.className = "project-description post-description";
+    desc.innerHTML = window.marked ? marked.parse(project.description || "") : (project.description || "");
+    container.appendChild(desc);
+  }
 
   container.appendChild(buildGallery(project));
 
