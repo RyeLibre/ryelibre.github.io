@@ -82,4 +82,5 @@ const STATIC_MEDIA_POOL = [
   { id: "static-asia-pacific-photoforum-logo", dataUrl: "images/pool/asia-pacific-photoforum-logo.png", name: "Asia Pacific PhotoForum logo" },
   { id: "static-everyday-kachin-logo", dataUrl: "images/pool/everyday-kachin-logo.webp", name: "Everyday Kachin logo" },
   { id: "static-docartsasia-logo", dataUrl: "images/pool/docartsasia-logo.jpg", name: "DocArtsAsia logo" },
+  { id: "static-cdaf-logo", dataUrl: "images/pool/cdaf-logo.jpg", name: "CDAF (Chiang Mai Documentary Arts Festival) logo" },
 ];

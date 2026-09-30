@@ -917,5 +917,19 @@ const PROJECTS = [
     "location": "",
     "place": "",
     "featured": false
+  },
+  {
+    "id": "cdaf-project",
+    "title": "Chiang Mai Documentary Arts Festival (CDAF)",
+    "categories": ["Projects", "Photography"],
+    "date": "2026-09-30",
+    "description": "Bi-annual documentary photography and film festival in Chiang Mai. First documentary photo festival in Thailand.",
+    "link": "https://www.facebook.com/TheCDAF/",
+    "image": "images/pool/cdaf-logo.jpg",
+    "imageFit": "contain",
+    "images": [],
+    "location": "Chiang Mai",
+    "place": "",
+    "featured": false
   }
 ];
