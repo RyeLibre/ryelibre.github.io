@@ -1084,5 +1084,18 @@ const PROJECTS = [
     "location": "",
     "place": "",
     "featured": false
+  },
+  {
+    "id": "docartsasia-mini-gallery-suwon",
+    "title": "DocArtsAsia Mini Gallery",
+    "categories": ["Curation", "Exhibitions"],
+    "date": "2026-10-01",
+    "description": "DocArtsAsia Mini Gallery in Suwon, South Korea.",
+    "link": "",
+    "image": "",
+    "images": [],
+    "location": "Suwon, South Korea",
+    "place": "DocArtsAsia Mini Gallery",
+    "featured": false
   }
 ];
