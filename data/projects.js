@@ -682,7 +682,7 @@ const PROJECTS = [
     "link": "https://www.photoawards.com/",
     "image": "images/pool/ipa-logo-full.png",
     "imageFit": "contain",
-    "images": [],
+    "images": ["images/pool/ipa-juror-badge-2022.webp", "images/pool/ipa-juror-badge-2024.jpg"],
     "location": "",
     "place": "",
     "featured": true
