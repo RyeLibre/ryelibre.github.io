@@ -2,7 +2,6 @@
 // Add more here as you tag new posts — matching is case-insensitive
 // against each post's `categories` array in data/projects.js.
 const FEATURED_TAGS = [
-  "Kachin",
   "Curation",
   "Juror",
   "Design",
@@ -11,6 +10,7 @@ const FEATURED_TAGS = [
   "Peace-work",
   "Exhibitions",
   "Festivals",
+  "Kachin",
   "Workshops",
   "Books",
   "Learning media",
