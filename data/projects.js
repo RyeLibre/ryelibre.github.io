@@ -927,7 +927,7 @@ const PROJECTS = [
     "link": "https://www.facebook.com/TheCDAF/",
     "image": "images/pool/cdaf-logo.jpg",
     "imageFit": "contain",
-    "images": ["images/pool/cdaf-gallery-viewer.jpg"],
+    "images": ["images/pool/cdaf-gallery-viewer.jpg", "images/pool/cdaf-2012-schedule.jpg", "images/pool/cdaf-2012-venue-map.png"],
     "location": "Chiang Mai",
     "place": "",
     "featured": false

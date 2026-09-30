@@ -84,4 +84,5 @@ const STATIC_MEDIA_POOL = [
   { id: "static-docartsasia-logo", dataUrl: "images/pool/docartsasia-logo.jpg", name: "DocArtsAsia logo" },
   { id: "static-cdaf-logo", dataUrl: "images/pool/cdaf-logo.jpg", name: "CDAF (Chiang Mai Documentary Arts Festival) logo" },
   { id: "static-ipa-logo-full", dataUrl: "images/pool/ipa-logo-full.png", name: "IPA (International Photography Awards) logo, full" },
+  { id: "static-cdaf-2012-venue-map", dataUrl: "images/pool/cdaf-2012-venue-map.png", name: "CDAF 2012 venue map" },
 ];
