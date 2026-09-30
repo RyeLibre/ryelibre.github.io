@@ -80,7 +80,7 @@ const PROJECTS = [
     "description": "Studio Sakse @ CNX",
     "link": "",
     "image": "images/studio-sakse-cnx.jpg",
-    "images": [],
+    "images": ["images/pool/studio-sakse-book-nook.jpg", "images/pool/studio-sakse-work-desk.jpg", "images/pool/studio-sakse-dinner-gallery.jpg"],
     "location": "Chiang Mai",
     "place": "",
     "featured": false
