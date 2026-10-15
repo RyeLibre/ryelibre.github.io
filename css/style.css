@@ -1130,6 +1130,19 @@ button {
   text-decoration: underline;
 }
 
+.post-embed {
+  margin: 24px 0;
+}
+
+.post-embed iframe {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border: 0;
+  background: #000;
+  margin-bottom: 8px;
+}
+
 .post-description {
   font-size: 1rem;
   line-height: 1.75;

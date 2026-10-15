@@ -1090,6 +1090,7 @@ function showGeneratedEdit(project) {
     place: project.place || "",
     featured: !!project.featured,
   };
+  if (project.embed) snippet.embed = project.embed;
   if (project.stealDetails) snippet.stealDetails = project.stealDetails;
   if (project.supportDetails) snippet.supportDetails = project.supportDetails;
   const lines = JSON.stringify(snippet, null, 2).split("\n");

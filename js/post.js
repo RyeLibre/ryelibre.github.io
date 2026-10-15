@@ -328,6 +328,25 @@ function renderPost() {
   if (!project.gallerySlideshow) {
     container.appendChild(buildCoverMedia(project));
 
+    if (project.embed) {
+      const embed = document.createElement("div");
+      embed.className = "post-embed";
+      const frame = document.createElement("iframe");
+      frame.src = project.embed;
+      frame.title = project.title;
+      frame.allow = "fullscreen; gamepad";
+      frame.allowFullscreen = true;
+      embed.appendChild(frame);
+      const full = document.createElement("a");
+      full.href = project.embed;
+      full.target = "_blank";
+      full.rel = "noopener";
+      full.className = "post-external-link";
+      full.textContent = "Open full screen →";
+      embed.appendChild(full);
+      container.appendChild(embed);
+    }
+
     if (project.link) {
       const linkPara = document.createElement("p");
       const a = document.createElement("a");

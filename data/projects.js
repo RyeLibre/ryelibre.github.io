@@ -17,6 +17,8 @@
 // missing.
 // `place` is an optional venue name (e.g. "The Nikon Salon") shown after
 // `location` in the post's meta line: "MONTH 'YY · City · Place".
+// `embed` is an optional page path (e.g. "games/my-game/index.html") shown in
+// a frame on the post's own page — used for playable pieces.
 // `featured: true` pins a post to the top of "All Projects" and to the top
 // of every tag view it belongs to (before the normal newest-first sort).
 const PROJECTS = [
@@ -575,11 +577,12 @@ const PROJECTS = [
     "title": "Space Invaders",
     "categories": ["Photography", "Exhibitions"],
     "date": "2018-01-20",
-    "description": "",
+    "description": "A visual art project about the 3D space invaded by back-lit ads.\n\n**Play it above:** click the game, then use ← → to move and Space to fire. Shoot the logos before their bombs get you. Press F for full screen.",
     "link": "",
     "image": "images/pool/space-invaders-project.jpg",
     "images": ["images/pool/blank-billboards-plaza.jpg", "images/pool/lightstrip-building-night.jpg", "images/pool/green-street-myanmar-night.jpg"],
     "imagePosition": "center 75%",
+    "embed": "games/space-invaders/index.html",
     "location": "Chiang Mai",
     "place": "Fringe Fest",
     "featured": true
