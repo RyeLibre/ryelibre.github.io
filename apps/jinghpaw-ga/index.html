@@ -383,6 +383,9 @@ function alphaItems(){
   var ex = ['apple','ball','cat','dog','egg','fish','goat','hat','ice','jar','kite','lamp','moon','nest','orange','pen','queen','rain','sun','tree','umbrella','van','water','box','yellow','zebra'];
   return L.map(function(l,i){ return EW('ea_'+l.toLowerCase(), l+' '+l.toLowerCase(), ex[i]); });
 }
+function topicCat(id, pre, title, blurb, words){
+  return {id:id, title:title, blurb:blurb, items: words.map(function(w,i){ return W(pre+(i+1), '', w); })};
+}
 function seedCategories(){
   return [
     {id:'en-alphabet', course:'en', title:'English Alphabet', blurb:'', items: alphaItems()},
@@ -479,6 +482,21 @@ function seedCategories(){
       blurb:'Not filled in yet — add the words you know and they will show up in lessons and quizzes right away.',
       items:[]
     },
+    /* topics added in the second round: English filled in, Jinghpaw left blank for the editor */
+    topicCat('weather','wea',"Weather","Words for the weather and the seasons.",["weather", "sky", "sun", "moon", "cloud", "rain", "wind", "storm", "thunder", "lightning", "fog", "snow", "ice", "hot", "cold", "warm", "cool", "wet", "dry", "flood", "rainy season", "dry season", "cold season", "It is raining.", "It is hot today.", "Will it rain tomorrow?"]),
+    topicCat('government','gov',"Government","Words about government, law and public life.",["government", "country", "state", "capital", "village", "president", "minister", "leader", "parliament", "council", "law", "constitution", "court", "judge", "police", "election", "vote", "party", "citizen", "tax", "flag", "border", "identity card", "rights", "federal union", "public service"]),
+    topicCat('revolution','rev',"Revolutionary Vocabulary","Words used in the struggle for freedom and democracy.",["revolution", "resistance", "freedom", "independence", "democracy", "justice", "equality", "human rights", "self-determination", "unity", "struggle", "peace", "ceasefire", "protest", "strike", "civil disobedience", "military coup", "dictatorship", "oppression", "junta", "soldier", "army", "volunteer", "comrade", "martyr", "refugee", "displaced person", "victory", "people's defence", "federal democracy"]),
+    topicCat('home','hom',"Home & Household","Jinghpaw words still to be added.",["house", "room", "door", "window", "roof", "floor", "wall", "bed", "blanket", "pillow", "mat", "table", "chair", "kitchen", "kitchen tools", "pot", "pan", "knife", "spoon", "plate", "bowl", "cup", "basket", "water", "fire", "firewood", "lamp", "electricity", "broom", "key", "toilet", "bathroom"]),
+    topicCat('places','pla',"Places","Jinghpaw words still to be added.",["village", "town", "city", "church", "school", "market", "shop", "road", "bridge", "hospital", "office", "house", "home", "field", "garden", "camp", "border", "airport", "bus station", "harbour"]),
+    topicCat('nature','nat',"Nature","Jinghpaw words still to be added.",["river", "mountain", "hill", "valley", "lake", "stream", "waterfall", "forest", "tree", "flower", "grass", "leaf", "rock", "stone", "sand", "soil", "sun", "moon", "star", "sky", "fire", "water", "air", "jungle", "cave", "path"]),
+    topicCat('land','lan',"Land & Farming","Jinghpaw words still to be added.",["rice field", "rice", "seeds", "plant", "harvest", "farmer", "buffalo", "cow", "pig", "chicken", "horse", "plough", "hoe", "knife", "axe", "basket", "tools", "forest", "shifting cultivation", "garden", "vegetables", "fruit", "orchard", "fence", "irrigation", "fertiliser", "season", "crop"]),
+    topicCat('clothing','clo',"Clothing","Jinghpaw words still to be added.",["clothes", "sarong", "headband", "bag", "jewelry", "Kachin dress", "shirt", "jacket", "trousers", "skirt", "shoes", "sandals", "hat", "scarf", "belt", "necklace", "earrings", "bracelet", "silver", "weaving", "cloth", "thread", "traditional dress", "dress for festivals", "meaning of the patterns"]),
+    topicCat('health','hea',"Health","Useful in a war and displacement setting.",["sick", "healthy", "fever", "pain", "headache", "stomachache", "cough", "cold", "wound", "blood", "bandage", "hospital", "clinic", "medicine", "doctor", "nurse", "first aid", "injection", "pregnant", "baby", "clean water", "hunger", "malaria", "emergency", "I need help.", "Where does it hurt?", "Call a doctor."]),
+    topicCat('travel','tra',"Travel","Jinghpaw words still to be added.",["left", "right", "straight", "near", "far", "here", "there", "north", "south", "east", "west", "car", "motorbike", "bicycle", "bus", "boat", "train", "plane", "ticket", "road", "map", "border crossing", "passport", "checkpoint", "Where is…?", "How far is it?", "I am lost.", "Stop here."]),
+    topicCat('shopping','sho',"Shopping","Jinghpaw words still to be added.",["how much", "money", "price", "expensive", "cheap", "buy", "sell", "pay", "change", "discount", "market", "shop", "bag", "weight", "too much", "a little", "more", "less", "Do you have…?", "I want this.", "I do not want this.", "Too expensive.", "Can you lower the price?", "It is free."]),
+    topicCat('verbs','ver',"Verbs","Jinghpaw words still to be added.",["go", "come", "eat", "drink", "sleep", "work", "speak", "give", "take", "learn", "see", "hear", "know", "want", "like", "have", "be", "make", "sit", "stand", "walk", "run", "read", "write", "buy", "sell", "wait", "help", "ask", "answer", "live", "die", "love", "cook", "wash", "open", "close", "think", "laugh", "cry"]),
+    topicCat('adjectives','adj',"Adjectives","Jinghpaw words still to be added.",["big", "small", "good", "bad", "new", "old", "fast", "slow", "many", "few", "long", "short", "tall", "high", "low", "heavy", "light", "hot", "cold", "young", "beautiful", "clean", "dirty", "easy", "difficult", "full", "empty", "same", "different"]),
+    topicCat('culture','cul',"Culture & Festivals","Jinghpaw words still to be added.",["Manau festival", "Manau pole", "Kachin clans", "Jinghpaw", "Maru", "Lashi", "Zaiwa", "Rawang", "Lisu", "traditional songs", "dance", "drum", "community life", "elder", "ancestors", "wedding", "funeral", "church", "hymn", "Christmas", "Easter", "Kachin State Day", "storytelling", "village chief", "custom"]),
     {
       id:'en-days', course:'en', title:'Days of the Week', blurb:'',
       items:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'].map(function(d){ return EW('ed_'+d.toLowerCase(), d); })
