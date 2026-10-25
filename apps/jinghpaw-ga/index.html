@@ -618,12 +618,28 @@ function loadContent(){
     }
     return 'EMPTY';
   }).catch(function(){ return 'EMPTY'; }).then(function(found){
-    if(found!=='EMPTY') return found;
+    if(found!=='EMPTY'){
+      if(EDITOR || !storageAvailable) return found;
+      /* visitor with saved copy: pick up a newer pack published on the site (visitors cannot edit, so nothing of theirs is lost; progress is stored separately) */
+      return fetchStarterPack().then(function(pack){
+        if(!pack || !pack.exported) return found;
+        return window.storage.get('packStamp', false).then(function(r){ return r && r.value; }).catch(function(){ return null; }).then(function(stamp){
+          if(stamp===pack.exported) return found;
+          return applyPack(pack).then(function(r){
+            starterUi = r.ui;
+            return window.storage.set('packStamp', pack.exported, false).catch(function(){})
+              .then(function(){ return window.storage.set('content', JSON.stringify(r.categories), false).catch(function(){}); })
+              .then(function(){ return r.categories; });
+          });
+        });
+      }).catch(function(){ return found; });
+    }
     /* nothing saved yet: use the starter pack shipped next to the app (website), else the built-in lessons */
     return fetchStarterPack().then(function(pack){
       if(pack){
         return applyPack(pack).then(function(r){
           starterUi = r.ui;
+          if(pack.exported) window.storage.set('packStamp', pack.exported, false).catch(function(){});
           return window.storage.set('content', JSON.stringify(r.categories), false).then(function(){ return r.categories; }).catch(function(){ return r.categories; });
         });
       }
@@ -1805,8 +1821,8 @@ Promise.all([loadContent(), sGet('progress', {}), sGet('settings', {mode:null}),
   state.categories = res[0];
   state.progress = res[1] || {};
   state.mode = (res[2] && (res[2].mode==='en2jp' || res[2].mode==='jp2en')) ? res[2].mode : null;
-  state.ui = (res[3] && Object.keys(res[3]).length) ? res[3] : (starterUi || {});
-  if(starterUi && !(res[3] && Object.keys(res[3]).length)) saveUi();
+  state.ui = (starterUi && !EDITOR) ? starterUi : ((res[3] && Object.keys(res[3]).length) ? res[3] : (starterUi || {}));
+  if(starterUi && (!EDITOR || !(res[3] && Object.keys(res[3]).length))) saveUi();
   state.loaded = true;
   render();
 }).catch(function(){
@@ -1818,6 +1834,4 @@ Promise.all([loadContent(), sGet('progress', {}), sGet('settings', {mode:null}),
 render();
 })();
 
-</script>
-</body>
-</html>
+</script></body></html>
