@@ -1,0 +1,1823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jinghpaw ga — Learn Jinghpaw</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#F1E9DC;
+    --paper:#F8F3EA;
+    --ink:#221B16;
+    --red:#9C2B2B;
+    --red-dim:#C3A6A0;
+    --jade:#3E6259;
+    --brass:#B4863B;
+    --line:rgba(34,27,22,0.16);
+    --line-strong:rgba(34,27,22,0.3);
+    --radius:3px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;height:100%;}
+  body{
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Public Sans', sans-serif;
+    font-size:16px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.serif{font-family:'Fraunces', serif;}
+  h1,h2,h3{margin:0 0 8px 0; font-weight:600; letter-spacing:-0.01em;}
+  p{margin:0 0 12px 0;}
+  button{font-family:inherit; cursor:pointer;}
+  input,textarea{font-family:inherit; font-size:16px;}
+  .app{display:flex; min-height:100vh;}
+
+  /* ---- Sidebar / nav ---- */
+  .rail{
+    width:236px; flex:none; background:var(--ink); color:var(--paper);
+    padding:22px 0 16px 0; display:flex; flex-direction:column;
+    position:sticky; top:0; height:100vh; overflow-y:auto;
+  }
+  .rail-brand{padding:0 20px 18px 20px; border-bottom:1px solid rgba(248,243,234,0.14); margin-bottom:6px;}
+  .rail-brand .jp{font-family:'Fraunces', serif; font-size:22px; font-weight:600; color:var(--paper); display:block; white-space:nowrap;}
+  .rail-brand .en{font-size:12.5px; color:rgba(248,243,234,0.6); display:block; margin-top:2px;}
+  .rail-stripe{height:4px; width:100%; background:linear-gradient(90deg, var(--red) 0 33%, var(--paper) 33% 66%, var(--jade) 66% 100%); opacity:0.9;}
+  .rail-section-label{font-size:11.5px; color:rgba(248,243,234,0.45); padding:14px 20px 4px 20px;}
+  .rail-nav{display:flex; flex-direction:column; padding:0 8px;}
+  .rail-btn{
+    display:flex; align-items:center; gap:9px; text-align:left; background:none; border:none;
+    color:rgba(248,243,234,0.82); padding:9px 12px; border-radius:var(--radius); font-size:14.5px;
+  }
+  .rail-btn:hover{background:rgba(248,243,234,0.08);}
+  .rail-btn.active{background:rgba(248,243,234,0.14); color:#fff; font-weight:600;}
+  .rail-btn .dot{width:6px; height:6px; border-radius:50%; background:currentColor; opacity:0.5; flex:none;}
+  .rail-btn.active .dot{opacity:1; background:var(--brass);}
+  .rail-foot{margin-top:auto; padding:14px 20px 4px 20px; font-size:11.5px; color:rgba(248,243,234,0.4); border-top:1px solid rgba(248,243,234,0.14);}
+
+  /* ---- Mobile top bar ---- */
+  .topbar{display:none; align-items:center; justify-content:space-between; background:var(--ink); color:var(--paper); padding:12px 16px;}
+  .topbar .jp{font-family:'Fraunces', serif; font-size:19px; font-weight:600;}
+  .topbar button{background:none; border:1px solid rgba(248,243,234,0.4); color:var(--paper); padding:6px 10px; border-radius:var(--radius); font-size:13px;}
+  .rail-backdrop{display:none;}
+
+  /* ---- Main ---- */
+  .main{flex:1; min-width:0; padding:36px 40px 80px 40px;}
+  .content{max-width:760px; margin:0 auto;}
+  .eyebrow{color:var(--red); font-size:13px; font-weight:600; margin-bottom:6px;}
+  .lede{font-size:17px; color:#4a3f36; max-width:60ch;}
+
+  .card{background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); padding:20px;}
+  .card + .card{margin-top:14px;}
+  .divider{height:1px; background:var(--line); margin:26px 0;}
+  .stripe-rule{height:3px; width:64px; background:linear-gradient(90deg, var(--red), var(--jade)); margin:18px 0 22px 0; border-radius:2px;}
+
+  /* fact grid on intro */
+  .facts{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:18px 0 8px 0;}
+  .fact{border:1px solid var(--line); border-radius:var(--radius); padding:14px 16px; background:var(--paper);}
+  .fact .num{font-family:'Fraunces', serif; font-size:26px; font-weight:600; color:var(--red); display:block;}
+  .fact .lbl{font-size:13px; color:#5a4d42;}
+
+  .example-sentence{border-left:3px solid var(--jade); padding:6px 0 6px 16px; margin:14px 0;}
+  .example-sentence .jp{font-family:'Fraunces', serif; font-size:19px; font-style:italic;}
+  .example-sentence .gloss{font-size:13.5px; color:#5a4d42; margin-top:4px;}
+
+  /* ---- Word list ---- */
+  .lesson-head{display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap;}
+  .word-list{list-style:none; margin:18px 0 0 0; padding:0; display:flex; flex-direction:column; gap:8px;}
+  .word-row{
+    display:flex; align-items:center; justify-content:space-between; gap:14px;
+    border:1px solid var(--line); border-radius:var(--radius); padding:13px 16px; background:var(--paper);
+  }
+  .word-row .jp{font-family:'Fraunces', serif; font-size:18px; font-weight:600;}
+  .word-row .en{font-size:14.5px; color:#4a3f36; margin-top:2px;}
+  .word-row .note{font-size:12.5px; color:var(--brass); margin-top:3px; font-style:italic;}
+  .word-actions{display:flex; gap:6px; flex:none;}
+  .icon-btn{
+    background:none; border:1px solid var(--line); border-radius:var(--radius); width:30px; height:30px;
+    display:flex; align-items:center; justify-content:center; color:#5a4d42; font-size:14px;
+  }
+  .icon-btn:hover{border-color:var(--line-strong); color:var(--ink);}
+  .empty-state{border:1px dashed var(--line-strong); border-radius:var(--radius); padding:26px 20px; text-align:center; color:#5a4d42; margin-top:18px;}
+  .empty-state strong{display:block; color:var(--ink); font-family:'Fraunces', serif; font-size:18px; margin-bottom:6px;}
+
+  .btn{
+    border:1px solid var(--ink); background:var(--ink); color:var(--paper); padding:10px 16px;
+    border-radius:var(--radius); font-size:14px; font-weight:600;
+  }
+  .btn:hover{opacity:0.88;}
+  .btn.secondary{background:none; color:var(--ink); border:1px solid var(--line-strong);}
+  .btn.secondary:hover{border-color:var(--ink);}
+  .btn.small{padding:7px 12px; font-size:13px;}
+  .btn.danger{background:var(--red); border-color:var(--red);}
+  .audio-btn{
+    border:1px solid var(--line-strong); background:var(--paper); border-radius:var(--radius);
+    padding:8px 13px; font-size:13.5px; color:var(--ink); display:inline-flex; align-items:center; gap:7px;
+  }
+  .audio-btn:hover{border-color:var(--ink);}
+  .fs-btn{background:none; border:1px solid rgba(248,243,234,0.4); color:var(--paper); border-radius:var(--radius); width:32px; height:32px; font-size:15px; display:flex; align-items:center; justify-content:center; flex:none;}
+  .fs-btn:hover{background:rgba(248,243,234,0.12);}
+  .file-hint{font-size:12px; color:#8a7a6c; margin-top:5px;}
+
+  /* ---- Alphabet ---- */
+  .letter-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; margin-top:16px;}
+  .letter-card{border:1px solid var(--line); border-radius:var(--radius); padding:14px; background:var(--paper);}
+  .letter-card .glyph{font-family:'Fraunces', serif; font-size:24px; font-weight:700; color:var(--red);}
+  .letter-card .desc{font-size:13px; color:#5a4d42; margin-top:5px;}
+  .letter-card .ex{font-size:12.5px; margin-top:6px; color:var(--jade);}
+
+  /* ---- Practice / quiz picker ---- */
+  .quiz-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:12px; margin-top:16px;}
+  .quiz-type-card{border:1px solid var(--line); border-radius:var(--radius); padding:16px; background:var(--paper); text-align:left;}
+  .quiz-type-card:hover{border-color:var(--line-strong);}
+  .quiz-type-card .t{font-family:'Fraunces', serif; font-size:17px; font-weight:600;}
+  .quiz-type-card .d{font-size:13px; color:#5a4d42; margin-top:4px;}
+  select.lesson-select{
+    width:100%; padding:10px 12px; border:1px solid var(--line-strong); border-radius:var(--radius);
+    background:var(--paper); color:var(--ink); font-size:14.5px; margin-top:6px;
+  }
+
+  /* ---- Active quiz ---- */
+  .quiz-shell{max-width:640px;}
+  .quiz-progress{font-size:13px; color:#5a4d42; margin-bottom:10px;}
+  .quiz-prompt{font-family:'Fraunces', serif; font-size:15px; color:#5a4d42; margin-bottom:6px;}
+  .quiz-word{font-family:'Fraunces', serif; font-size:32px; font-weight:600; margin-bottom:4px;}
+  .quiz-note{font-size:13px; color:var(--brass); font-style:italic; margin-bottom:18px;}
+  .mc-options{display:flex; flex-direction:column; gap:9px;}
+  .mc-opt{
+    text-align:left; padding:13px 16px; border:1px solid var(--line-strong); border-radius:var(--radius);
+    background:var(--paper); font-size:15px;
+  }
+  .mc-opt:hover{border-color:var(--ink);}
+  .mc-opt.correct{border-color:var(--jade); background:#e7efe9; color:#204036;}
+  .mc-opt.wrong{border-color:var(--red); background:#f6e6e6; color:#6e2323;}
+  .mc-opt[disabled]{cursor:default;}
+
+  .type-input-row{display:flex; gap:8px; margin-top:6px;}
+  .type-input-row input{flex:1; padding:12px 14px; border:1px solid var(--line-strong); border-radius:var(--radius);}
+  .type-feedback{margin-top:14px; padding:12px 14px; border-radius:var(--radius); font-size:14.5px;}
+  .type-feedback.good{background:#e7efe9; color:#204036; border:1px solid var(--jade);}
+  .type-feedback.bad{background:#f6e6e6; color:#6e2323; border:1px solid var(--red);}
+
+  .flash-card{
+    border:1px solid var(--line-strong); border-radius:var(--radius); background:var(--paper);
+    min-height:180px; display:flex; align-items:center; justify-content:center; text-align:center;
+    padding:26px; cursor:pointer; flex-direction:column;
+  }
+  .flash-card .main-txt{font-family:'Fraunces', serif; font-size:28px; font-weight:600;}
+  .flash-card .sub-txt{font-size:14px; color:#5a4d42; margin-top:8px;}
+  .flash-card .hint{font-size:12px; color:var(--brass); margin-top:14px;}
+  .flash-controls{display:flex; justify-content:space-between; align-items:center; margin-top:14px;}
+
+  .match-grid{display:grid; grid-template-columns:1fr 1fr; gap:22px; margin-top:16px;}
+  .match-col{display:flex; flex-direction:column; gap:8px;}
+  .match-item{
+    border:1px solid var(--line-strong); border-radius:var(--radius); padding:12px 14px;
+    background:var(--paper); font-size:14.5px; text-align:left;
+  }
+  .match-item.selected{border-color:var(--brass); background:#f2e6cf;}
+  .match-item.locked{border-color:var(--jade); background:#e7efe9; color:#204036; opacity:0.75;}
+  .match-item.shake{animation:shake 0.32s;}
+  @keyframes shake{
+    0%,100%{transform:translateX(0);}
+    25%{transform:translateX(-4px);}
+    75%{transform:translateX(4px);}
+  }
+  .match-item.jp-txt{font-family:'Fraunces', serif; font-weight:600; font-size:16px;}
+
+  .quiz-summary{text-align:center; padding:30px 10px;}
+  .quiz-summary .score{font-family:'Fraunces', serif; font-size:44px; font-weight:700; color:var(--red);}
+
+  /* ---- Modal ---- */
+  .modal-backdrop{
+    position:fixed; inset:0; background:rgba(34,27,22,0.5); display:flex; align-items:center; justify-content:center;
+    padding:20px; z-index:50;
+  }
+  .modal{background:var(--paper); border-radius:var(--radius); max-width:420px; width:100%; padding:22px; border:1px solid var(--line-strong);}
+  .modal h3{margin-bottom:4px;}
+  .modal .field{margin-top:14px;}
+  .modal label{display:block; font-size:13px; color:#5a4d42; margin-bottom:5px;}
+  .modal input, .modal textarea{
+    width:100%; padding:10px 12px; border:1px solid var(--line-strong); border-radius:var(--radius); background:#fff;
+  }
+  .modal-actions{display:flex; justify-content:flex-end; gap:8px; margin-top:20px;}
+
+  .toast{
+    position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:var(--ink); color:var(--paper);
+    padding:10px 18px; border-radius:var(--radius); font-size:13.5px; z-index:60; opacity:0; transition:opacity .2s;
+  }
+  .toast.show{opacity:1;}
+
+  .loading-note{color:#5a4d42; font-size:14px; padding:40px 0;}
+
+  @media (max-width:820px){
+    .rail{position:fixed; left:0; top:0; transform:translateX(-100%); transition:transform .18s ease; z-index:40; width:250px;}
+    .rail.open{transform:translateX(0);}
+    .rail-backdrop.open{display:block; position:fixed; inset:0; background:rgba(0,0,0,0.35); z-index:39;}
+    .topbar{display:flex; position:sticky; top:0; z-index:20;}
+    .main{padding:22px 16px 70px 16px;}
+    .facts{grid-template-columns:1fr 1fr;}
+    .match-grid{gap:10px;}
+  }
+
+  .muted{color:#8a7a6c; font-style:italic;}
+  .muted-strong{color:#5a4d42; font-size:14px;}
+  .mode-switch{display:flex; gap:6px; padding:12px 12px 2px 12px;}
+  .mode-btn{flex:1; background:none; border:1px solid rgba(248,243,234,0.28); color:rgba(248,243,234,0.8); padding:8px 6px; border-radius:var(--radius); font-size:13px; font-weight:600;}
+  .mode-btn:hover{border-color:rgba(248,243,234,0.6);}
+  .mode-btn.on{background:var(--paper); color:var(--ink); border-color:var(--paper);}
+  .rail-link{background:none; border:none; color:rgba(248,243,234,0.8); text-decoration:underline; padding:0; font-size:12.5px; text-align:left;}
+  .rail-link.active{color:#fff; font-weight:600;}
+  .welcome{min-height:100vh; display:flex; align-items:center; justify-content:center; padding:30px; background:var(--cream);}
+  .welcome-inner{max-width:640px; width:100%; text-align:center;}
+  .welcome-brand{font-family:'Fraunces', serif; font-size:44px; font-weight:700; letter-spacing:-0.02em;}
+  .welcome-stripe{height:6px; width:120px; margin:14px auto 0; background:linear-gradient(90deg, var(--red) 0 40%, var(--paper) 40% 60%, var(--jade) 60% 100%); border-radius:2px; border:1px solid var(--line);}
+  .choice-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  .choice{background:var(--paper); border:1px solid var(--line-strong); border-radius:var(--radius); padding:28px 18px; text-align:center; display:flex; flex-direction:column; gap:6px; color:var(--ink);}
+  .choice:hover{border-color:var(--ink);}
+  .choice .c-title{font-family:'Fraunces', serif; font-size:22px; font-weight:600;}
+  .choice .c-sub{font-size:13.5px; color:#5a4d42;}
+  .tr-bar{display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:6px;}
+  .tr-row{display:grid; grid-template-columns:1fr 1fr; gap:14px; align-items:start; padding:10px 0; border-bottom:1px solid var(--line);}
+  .tr-en{font-size:14.5px; color:#4a3f36; padding-top:9px;}
+  .tr-row input,.tr-row textarea{width:100%; padding:9px 11px; border:1px solid var(--line-strong); border-radius:var(--radius); background:#fff; font-family:inherit; font-size:15px;}
+  @media (max-width:820px){ .choice-grid{grid-template-columns:1fr;} .tr-row{grid-template-columns:1fr; gap:6px;} .tr-en{padding-top:0;} }
+
+  .lesson-actions{display:flex; gap:8px; flex-wrap:wrap;}
+  .icon-btn.rec{color:var(--red);}
+  .rec-row{display:flex; align-items:center; gap:12px; margin:10px 0;}
+  .rec-btn{min-width:110px;}
+  .rec-btn.live{background:var(--red); border-color:var(--red); color:#fff;}
+  .rec-time{font-variant-numeric:tabular-nums; color:var(--red); font-weight:600; font-size:14px;}
+  .rec-word{font-family:'Fraunces', serif; font-size:34px; font-weight:600; margin:10px 0 2px 0;}
+  .rec-sub{color:#5a4d42; margin-bottom:10px;}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script>
+/* Local storage for the desktop app: same interface the app already uses, backed by IndexedDB */
+(function(){
+  if(window.storage) return;
+  var dbp=null;
+  function open(){
+    if(dbp) return dbp;
+    dbp = new Promise(function(res,rej){
+      var r = indexedDB.open('jinghpaw',1);
+      r.onupgradeneeded = function(){ r.result.createObjectStore('kv'); };
+      r.onsuccess = function(){ res(r.result); };
+      r.onerror = function(){ rej(r.error); };
+    });
+    return dbp;
+  }
+  function tx(mode, fn){
+    return open().then(function(db){
+      return new Promise(function(res,rej){
+        var t = db.transaction('kv', mode);
+        var req = fn(t.objectStore('kv'));
+        t.oncomplete = function(){ res(req.result); };
+        t.onerror = function(){ rej(t.error); };
+      });
+    });
+  }
+  window.storage = {
+    get:function(k){ return tx('readonly', function(s){ return s.get(k); }).then(function(v){ if(v===undefined) throw new Error('not found'); return {key:k, value:v}; }); },
+    set:function(k,v){ return tx('readwrite', function(s){ return s.put(v,k); }).then(function(){ return {key:k, value:v}; }); },
+    delete:function(k){ return tx('readwrite', function(s){ return s.delete(k); }).then(function(){ return {key:k, deleted:true}; }); }
+  };
+})();
+</script>
+<script>
+(function(){
+"use strict";
+
+/* =====================================================================
+   INTERFACE STRINGS (learner-facing). English defaults here.
+   When someone learns English, each string can be replaced with Jinghpaw
+   from the "Edit Jinghpaw interface text" screen.
+   ===================================================================== */
+var UI = {
+  'nav.lessons':'Lessons',
+  'nav.practice':'Practice',
+  'nav.intro':'Intro',
+  'nav.alphabet':'Alphabet',
+  'nav.quizzes':'Quizzes',
+  'nav.menu':'Menu',
+  'mode.jinghpaw':'Learn Jinghpaw',
+  'mode.english':'Learn English',
+  'brand.taglineEn':'Learn English',
+  'intro.en.eyebrow':'Welcome',
+  'intro.en.title':'Learn English',
+  'intro.en.lede':'English is spoken in many countries around the world. Start with the alphabet, then learn words by topic.',
+  'intro.en.how':'Choose a lesson on the left. When you are ready, test yourself in Quizzes.',
+  'intro.en.count':'{n} words ready to practice',
+  'lesson.label':'Lesson',
+  'lesson.empty.title':'No words here yet',
+  'lesson.empty.body':'Words will appear here soon.',
+  'lesson.noGloss':'(Jinghpaw meaning not added yet)',
+  'practice.eyebrow':'Practice',
+  'practice.title':'Quizzes',
+  'practice.lede':'Pick a lesson and a quiz type. A lesson needs at least 3 words to practice.',
+  'practice.lessonLabel':'Lesson',
+  'practice.all':'All lessons mixed together',
+  'practice.words':'words',
+  'practice.needsMore':'needs more',
+  'qt.mc.title':'Multiple choice',
+  'qt.mc.desc':'Pick the right meaning from four options.',
+  'qt.match.title':'Pair matching',
+  'qt.match.desc':'Tap a word, then its match.',
+  'qt.flash.title':'Flashcards',
+  'qt.flash.desc':'Flip through cards and check yourself.',
+  'qt.type.title':'Type the word',
+  'qt.type.desc':'Type the word from its meaning.',
+  'quiz.word':'Word',
+  'quiz.of':'of',
+  'quiz.score':'Score',
+  'quiz.whatMean':'What does this mean?',
+  'quiz.howSayJp':'How do you say this in Jinghpaw?',
+  'quiz.howSayEn':'How do you say this in English?',
+  'quiz.typePromptJp':'Type the Jinghpaw word for:',
+  'quiz.typePromptEn':'Type the English word for:',
+  'quiz.placeholder':'Type here…',
+  'quiz.check':'Check',
+  'quiz.correct':'Correct!',
+  'quiz.notQuite':'Not quite — the answer is',
+  'quiz.next':'Next',
+  'quiz.tapReveal':'Tap to see the meaning',
+  'quiz.tapBack':'Tap to go back',
+  'quiz.knew':'I knew it ✓',
+  'quiz.learning':'Still learning →',
+  'quiz.matched':'Matched',
+  'quiz.done':'Done',
+  'quiz.niceWork':'Nice work.',
+  'quiz.allMatched':'All {n} pairs matched in {m} tries.',
+  'quiz.again':'Go again',
+  'quiz.choose':'Choose another',
+  'quiz.back':'Back to Quizzes',
+  'quiz.play':'Play',
+  'quiz.hear':'Hear it',
+  'toast.needThree':'This lesson needs at least 3 words first.'
+};
+
+/* =====================================================================
+   SEED CONTENT
+   course: 'both' (default) | 'jp' (only when learning Jinghpaw) | 'en' (only when learning English)
+   ===================================================================== */
+function W(id, jp, en, note, course){
+  var o = {id:id, jp:jp, en:en};
+  if(note) o.note = note;
+  if(course) o.course = course;
+  return o;
+}
+function EW(id, en, noteEn){
+  var o = {id:id, jp:'', en:en};
+  if(noteEn) o.noteEn = noteEn;
+  return o;
+}
+function alphaItems(){
+  var L = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+  var ex = ['apple','ball','cat','dog','egg','fish','goat','hat','ice','jar','kite','lamp','moon','nest','orange','pen','queen','rain','sun','tree','umbrella','van','water','box','yellow','zebra'];
+  return L.map(function(l,i){ return EW('ea_'+l.toLowerCase(), l+' '+l.toLowerCase(), ex[i]); });
+}
+function seedCategories(){
+  return [
+    {id:'en-alphabet', course:'en', title:'English Alphabet', blurb:'', items: alphaItems()},
+    {
+      id:'greetings', title:'Greetings & Everyday Phrases',
+      blurb:'Jinghpaw does not really use a word for "hello" — people greet each other with questions instead.',
+      items:[
+        W('g1','Kaja ai i?','How are you?','Literally: "Is it good?"'),
+        W('g2','Shat sha ngut sai i?','Have you eaten?'),
+        W('g3','N sha shi ai.',"I haven't eaten yet."),
+        W('g4','Gara de sa na rai?','Where are you going?'),
+        W('g5','Chyeju kaba sai.','Thank you.'),
+        W('g6','N ra ai.',"You're welcome."),
+        W('g7','Bai hkrum ga.','See you (again).')
+      ]
+    },
+    {
+      id:'numbers', title:'Numbers',
+      blurb:'The confirmed set below runs 1–10, plus 20 and 100. The numbers in between (11–19, 21–99, and other tens) still need to be added — this is a good one for you to help fill in.',
+      items:[
+        W('n1','langai','one (1)'), W('n2','lahkawng','two (2)'), W('n3','masum','three (3)'),
+        W('n4','mali','four (4)'), W('n5','manga','five (5)'), W('n6','kru','six (6)'),
+        W('n7','sanit','seven (7)'), W('n8','matsat','eight (8)'), W('n9','jahku','nine (9)'),
+        W('n10','shi','ten (10)','same spelling as "shi" (he/she) — tone tells them apart'),
+        W('n20','hkun','twenty (20)'), W('n100','latsa','one hundred (100)')
+      ]
+    },
+    {
+      id:'colors', title:'Colors', blurb:'',
+      items:[
+        W('c1','hpraw','white'), W('c2','chyang','black'), W('c3','hkyeng','red'),
+        W('c4','tsit','green'), W('c5','htoi','yellow'), W('c6','mut','blue / brown / grey')
+      ]
+    },
+    {
+      id:'people', title:'People & Pronouns', blurb:'',
+      items:[
+        W('p1','ngai','I'), W('p2','nang','you (singular)'),
+        W('p3','shi','he / she','same spelling as "shi" (ten) — tone tells them apart'),
+        W('p4','an','we two',null,'jp'), W('p5','nan','you two',null,'jp'), W('p6','shan','they two',null,'jp'),
+        W('p7','anhte','we (all of us)'), W('p8','nanhte','you (plural)'), W('p9','shanhte','they (all of them)')
+      ]
+    },
+    {
+      id:'family', title:'Family', blurb:'',
+      items:[
+        W('f1','nu','mother'),
+        W('f2','wa','father','also means "pig" — tone tells them apart'),
+        W('f3','hpu','elder brother'), W('f4','na','elder sister'), W('f5','nau','elder siblings'),
+        W('f6','sha','child'), W('f7','ji','grandfather'), W('f8','dwi','grandmother'),
+        W('f9','shu','grandchild','also means "frog" — tone tells them apart')
+      ]
+    },
+    {
+      id:'body', title:'Body Parts', blurb:'',
+      items:[
+        W('b1','baw','head'), W('b2','myi','eye'),
+        W('b3','na','ear','also means "elder sister" — tone tells them apart'),
+        W('b4','ladi','nose'), W('b5','n-gup','mouth'), W('b6','nten','lips'),
+        W('b7','shabyi','cheek'), W('b8','myi man','face'), W('b9','du','neck'),
+        W('b10','hkum','body'), W('b11','kan','belly'), W('b12','lata','hand(s)'),
+        W('b13','lagaw','feet'), W('b14','kara','hair'), W('b15','sai','blood')
+      ]
+    },
+    {
+      id:'animals', title:'Animals & Nature', blurb:'',
+      items:[
+        W('a1','u','bird'),
+        W('a2','wa','pig','also means "father" — tone tells them apart'),
+        W('a3','nga','cow'), W('a4','gwi','dog'), W('a5','lanyau','cat'), W('a6','gumra','horse'),
+        W('a7','sharaw','tiger'), W('a8','yu','rat'), W('a9','hpun','tree'), W('a10','tsing','grass'),
+        W('a11','nampan','flower'), W('a12','kawa','bamboo'), W('a13','namsi','fruit')
+      ]
+    },
+    {
+      id:'questions', title:'Question Words', blurb:'',
+      items:[
+        W('q1','hpa','what'), W('q2','kadai','who'), W('q3','gara','where'), W('q4','galoi','when'),
+        W('q5','gade','how many'), W('q6','ganing','how'), W('q7','ndai','this'), W('q8','dai','that')
+      ]
+    },
+    {
+      id:'food', title:'Food',
+      blurb:'Not filled in yet — add the words you know and they will show up in lessons and quizzes right away.',
+      items:[ W('fd1','shat','rice / food (cooked)','from "sha" (eat) — shat is literally "the eaten thing"') ]
+    },
+    {
+      id:'cooking', title:'Cooking',
+      blurb:'Not filled in yet — add the words you know and they will show up in lessons and quizzes right away.',
+      items:[ W('ck1','sha','to eat','root of "shat," food') ]
+    },
+    {
+      id:'time', title:'Time of Day',
+      blurb:'Not filled in yet — add the words you know and they will show up in lessons and quizzes right away.',
+      items:[]
+    },
+    {
+      id:'en-days', course:'en', title:'Days of the Week', blurb:'',
+      items:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'].map(function(d){ return EW('ed_'+d.toLowerCase(), d); })
+    },
+    {
+      id:'en-months', course:'en', title:'Months of the Year', blurb:'',
+      items:['January','February','March','April','May','June','July','August','September','October','November','December'].map(function(m){ return EW('em_'+m.toLowerCase(), m); })
+    },
+    {
+      id:'en-phrases', course:'en', title:'Useful English Phrases', blurb:'',
+      items:[
+        EW('ep1','Hello.'), EW('ep2','Good morning.'), EW('ep3','Good evening.'), EW('ep4','Goodbye.'),
+        EW('ep5','Please.'), EW('ep6','Excuse me.'), EW('ep7','Sorry.'),
+        EW('ep8','My name is ___.'), EW('ep9','What is your name?'),
+        EW('ep10',"I don't understand."), EW('ep11','Please say it again.'),
+        EW('ep12','How do you say ___ in English?'), EW('ep13','Where is the toilet?'),
+        EW('ep14','How much is this?'), EW('ep15','I need help.')
+      ]
+    }
+  ];
+}
+
+/* Bring older saved content up to date WITHOUT overwriting the user's edits */
+function migrate(stored){
+  var seed = seedCategories();
+  var byId = {};
+  stored.forEach(function(c){ byId[c.id] = c; });
+  var result = [];
+  seed.forEach(function(sc){
+    var ex = byId[sc.id];
+    if(ex){
+      if(!ex.course && sc.course) ex.course = sc.course;
+      ex.items.forEach(function(it){
+        var si = null;
+        sc.items.forEach(function(s){ if(s.id===it.id) si = s; });
+        if(si && si.course && !it.course) it.course = si.course;
+      });
+      result.push(ex);
+      delete byId[sc.id];
+    } else {
+      result.push(sc);
+    }
+  });
+  Object.keys(byId).forEach(function(id){ result.push(byId[id]); });
+  result.forEach(function(c){
+    if(c.id==='greetings'){
+      c.items.forEach(function(it){
+        if(it.id==='g1' && it.en==='How are you? (lit. "Is it good?")'){
+          it.en = 'How are you?';
+          it.note = 'Literally: "Is it good?"';
+        }
+      });
+    }
+  });
+  return result;
+}
+
+var ALPHABET = {
+  intro:'Jinghpaw is written with a Latin-based alphabet created by missionary linguist Ola Hanson in the 1890s, later reformed in 1965. It uses ordinary Roman letters plus a set of two- and three-letter combinations for sounds English doesn\'t mark separately. Tones — which change a word\'s meaning — are not written at all, which is why you\'ll spot several "homographs" in the lessons.',
+  vowels:[
+    {letter:'a', desc:'like "a" in father', ex:{jp:'baw', en:'head'}},
+    {letter:'e', desc:'like "e" in bed', ex:{jp:'nten', en:'lips'}},
+    {letter:'i', desc:'like "ee" in see', ex:{jp:'myi', en:'eye'}},
+    {letter:'aw', desc:'like "aw" in law', ex:{jp:'baw', en:'head'}},
+    {letter:'u', desc:'like "oo" in food', ex:{jp:'u', en:'bird'}},
+    {letter:'ă', desc:'a short, unstressed schwa sound; rarely written', ex:null}
+  ],
+  diphthongs:[
+    {letter:'ai', desc:'like "eye"', ex:{jp:'kadai', en:'who'}},
+    {letter:'au', desc:'like "ow" in how', ex:null},
+    {letter:'oi', desc:'like "oy" in boy', ex:null},
+    {letter:'wi', desc:'like "wee"', ex:null}
+  ],
+  consonants:[
+    {letter:'b', desc:'as in English "b"', ex:{jp:'baw', en:'head'}},
+    {letter:'p', desc:'unaspirated p, softer than English p', ex:null},
+    {letter:'hp', desc:'aspirated p, with a puff of air', ex:{jp:'hpu', en:'elder brother'}},
+    {letter:'t', desc:'unaspirated t', ex:null},
+    {letter:'d', desc:'as in English "d"', ex:{jp:'dai', en:'that'}},
+    {letter:'ht', desc:'aspirated t, with a puff of air', ex:{jp:'htoi', en:'yellow'}},
+    {letter:'ts', desc:'like "ts" in cats', ex:{jp:'tsit', en:'green'}},
+    {letter:'z', desc:'as in English "z"', ex:null},
+    {letter:'chy', desc:'like a soft "ch"', ex:{jp:'chyang', en:'black'}},
+    {letter:'j', desc:'as in English "j"', ex:{jp:'ji', en:'grandfather'}},
+    {letter:'k', desc:'unaspirated k', ex:{jp:'kara', en:'hair'}},
+    {letter:'g', desc:'as in English "g"', ex:{jp:'gara', en:'where'}},
+    {letter:'hk', desc:'aspirated k, with a puff of air', ex:{jp:'hkum', en:'body'}},
+    {letter:'s', desc:'as in English "s"', ex:{jp:'sai', en:'blood'}},
+    {letter:'sh', desc:'as in English "sh"', ex:{jp:'shi', en:'ten / he,she'}},
+    {letter:'m', desc:'as in English "m"', ex:{jp:'myi', en:'eye'}},
+    {letter:'n', desc:'as in English "n"', ex:{jp:'nu', en:'mother'}},
+    {letter:'ng', desc:'like "ng" in singer, used at the start of a word', ex:{jp:'ngai', en:'I'}},
+    {letter:'r', desc:'a light, often trilled r', ex:null},
+    {letter:'l', desc:'as in English "l"', ex:{jp:'lata', en:'hand(s)'}},
+    {letter:'w', desc:'as in English "w"', ex:{jp:'wa', en:'father / pig'}},
+    {letter:'y', desc:'as in English "y"', ex:{jp:'yu', en:'rat'}}
+  ]
+};
+
+/* =====================================================================
+   STORAGE (window.storage is provided by the host, or by the IndexedDB
+   shim included at the top of the page)
+   ===================================================================== */
+var storageAvailable = !!(window.storage && window.storage.get && window.storage.set);
+
+/* Editing tools (add/edit/delete/record/backup) are shown in the desktop app and on localhost.
+   On a public website they are hidden for visitors; open the page with ?edit=1 to turn them on
+   in your own browser (?edit=0 turns them off again). */
+function computeEditor(){
+  try{
+    var q = location.search || '';
+    if(/[?&]edit=0(&|$)/.test(q)){ try{ localStorage.removeItem('jg_editor'); }catch(e){} return false; }
+    if(/[?&]edit(=1)?(&|$)/.test(q)){ try{ localStorage.setItem('jg_editor','1'); }catch(e){} return true; }
+    if(location.protocol!=='http:' && location.protocol!=='https:') return true;
+    if(location.hostname==='localhost' || location.hostname==='127.0.0.1') return true;
+    return localStorage.getItem('jg_editor')==='1';
+  }catch(e){ return false; }
+}
+var EDITOR = computeEditor();
+
+function sGet(key, fallback){
+  if(!storageAvailable) return Promise.resolve(fallback);
+  return window.storage.get(key, false).then(function(res){
+    if(res && res.value){ try{ return JSON.parse(res.value); }catch(e){ return fallback; } }
+    return fallback;
+  }).catch(function(){ return fallback; });
+}
+function sSet(key, obj){
+  if(!storageAvailable) return Promise.resolve(null);
+  return window.storage.set(key, JSON.stringify(obj), false).catch(function(){ return null; });
+}
+function loadContent(){
+  if(!storageAvailable) return Promise.resolve(seedCategories());
+  return window.storage.get('content', false).then(function(res){
+    if(res && res.value){
+      try{ return migrate(JSON.parse(res.value)); }catch(e){ return seedCategories(); }
+    }
+    return 'EMPTY';
+  }).catch(function(){ return 'EMPTY'; }).then(function(found){
+    if(found!=='EMPTY') return found;
+    /* nothing saved yet: use the starter pack shipped next to the app (website), else the built-in lessons */
+    return fetchStarterPack().then(function(pack){
+      if(pack){
+        return applyPack(pack).then(function(r){
+          starterUi = r.ui;
+          return window.storage.set('content', JSON.stringify(r.categories), false).then(function(){ return r.categories; }).catch(function(){ return r.categories; });
+        });
+      }
+      var seed = seedCategories();
+      return window.storage.set('content', JSON.stringify(seed), false).then(function(){ return seed; }).catch(function(){ return seed; });
+    });
+  });
+}
+function saveContent(c){ return sSet('content', c); }
+function saveProgress(p){ return sSet('progress', p); }
+function saveSettings(){ return sSet('settings', {mode: state.mode}); }
+function saveUi(){ return sSet('ui_jp', state.ui); }
+
+function audioFlag(){ return learningEn() ? 'hasAudioEn' : 'hasAudio'; }
+function audioKey(id){ return (learningEn() ? 'audioEn_' : 'audio_') + id; }
+function setAudio(itemId, dataUrl){
+  if(!storageAvailable) return Promise.resolve(null);
+  return window.storage.set(audioKey(itemId), dataUrl, false).catch(function(){ return null; });
+}
+function deleteAudio(itemId){
+  if(!storageAvailable) return Promise.resolve(null);
+  return window.storage.delete(audioKey(itemId), false).catch(function(){ return null; });
+}
+function deleteAllAudio(itemId){
+  if(!storageAvailable) return Promise.resolve(null);
+  return Promise.all([
+    window.storage.delete('audio_'+itemId, false).catch(function(){ return null; }),
+    window.storage.delete('audioEn_'+itemId, false).catch(function(){ return null; })
+  ]);
+}
+var audioCache = {};
+var sharedAudioEl = null;
+function getAudioEl(){
+  if(!sharedAudioEl){
+    sharedAudioEl = document.createElement('audio');
+    sharedAudioEl.id = 'sharedAudioPlayer';
+    document.body.appendChild(sharedAudioEl);
+  }
+  return sharedAudioEl;
+}
+function playSrc(src){
+  var el = getAudioEl();
+  el.src = src;
+  var pr = el.play();
+  if(pr && pr.catch) pr.catch(function(){ showToast("Couldn't play that clip."); });
+}
+function playAudioFor(itemId){
+  var key = audioKey(itemId);
+  if(audioCache[key]){ playSrc(audioCache[key]); return; }
+  if(!storageAvailable){ showToast('Audio storage is not available here.'); return; }
+  window.storage.get(key, false).then(function(res){
+    if(res && res.value){ audioCache[key] = res.value; playSrc(res.value); }
+    else showToast('No audio saved for this word yet.');
+  }).catch(function(){ showToast('No audio saved for this word yet.'); });
+}
+function readFileAsDataURL(file){
+  return new Promise(function(resolve, reject){
+    var reader = new FileReader();
+    reader.onload = function(){ resolve(reader.result); };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+function downloadText(name, text){
+  var blob = new Blob([text], {type:'application/json'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = name;
+  document.body.appendChild(a); a.click();
+  setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 500);
+}
+
+/* ===================== fullscreen ===================== */
+function toggleFullscreen(){
+  var el = document.documentElement;
+  var isFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
+  var msg = "Fullscreen isn't available here — try the expand icon on the panel instead.";
+  try{
+    if(!isFs){
+      var req = el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen || el.msRequestFullscreen;
+      if(req){ Promise.resolve(req.call(el)).catch(function(){ showToast(msg); }); } else { showToast(msg); }
+    } else {
+      var exit = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
+      if(exit) exit.call(document);
+    }
+  }catch(e){ showToast(msg); }
+}
+function updateFsButtons(){
+  var isFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
+  ['fsToggleMobile','fsToggleDesktop'].forEach(function(id){
+    var b = document.getElementById(id);
+    if(b){ b.textContent = isFs ? '⤡' : '⛶'; b.title = isFs ? 'Exit fullscreen' : 'Fullscreen'; }
+  });
+}
+document.addEventListener('fullscreenchange', updateFsButtons);
+document.addEventListener('webkitfullscreenchange', updateFsButtons);
+
+/* =====================================================================
+   STATE + HELPERS
+   ===================================================================== */
+var state = {
+  loaded:false,
+  categories:[],
+  progress:{},
+  mode:null,          // 'en2jp' = English speaker learning Jinghpaw, 'jp2en' = Jinghpaw speaker learning English
+  ui:{},              // Jinghpaw interface text overrides
+  view:{ name:'intro' },
+  railOpen:false,
+  modal:null
+};
+
+function esc(s){
+  return String(s==null?'':s).replace(/[&<>"']/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+  });
+}
+function uid(prefix){ return (prefix||'id') + '_' + Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+function shuffle(arr){
+  var a = arr.slice();
+  for(var i=a.length-1;i>0;i--){
+    var j = Math.floor(Math.random()*(i+1));
+    var tmp=a[i]; a[i]=a[j]; a[j]=tmp;
+  }
+  return a;
+}
+
+/* translation: English default, or Jinghpaw override when learning English */
+function t(key, vars){
+  var s = UI[key];
+  if(state.mode==='jp2en' && state.ui[key]) s = state.ui[key];
+  if(s===undefined) s = key;
+  if(vars){ Object.keys(vars).forEach(function(k){ s = s.split('{'+k+'}').join(vars[k]); }); }
+  return s;
+}
+function catTitle(c){
+  if(state.mode==='jp2en' && state.ui['cat.'+c.id]) return state.ui['cat.'+c.id];
+  return c.title;
+}
+
+/* direction helpers: "target" = the language being learned */
+function learningEn(){ return state.mode==='jp2en'; }
+function tgt(it){ return learningEn() ? it.en : it.jp; }
+function nat(it){ return learningEn() ? it.jp : it.en; }
+function noteOf(it){ return learningEn() ? it.noteEn : it.note; }
+function audioOk(it){ return !!it[audioFlag()]; }
+
+function courseOk(cr){
+  cr = cr || 'both';
+  return cr==='both' || (learningEn() ? cr==='en' : cr==='jp');
+}
+function catVisible(c){ return courseOk(c.course); }
+function itemVisible(it){ return courseOk(it.course); }
+function visibleCats(){ return state.categories.filter(function(c){ return catVisible(c) && (EDITOR || visibleItems(c).length>0); }); }
+function visibleItems(c){ return c.items.filter(itemVisible); }
+function usable(it){ return itemVisible(it) && !!it.jp && !!it.en; }
+function usableItems(c){ return c.items.filter(usable); }
+function allItemsPool(){
+  var pool = [];
+  visibleCats().forEach(function(c){ usableItems(c).forEach(function(it){ pool.push(it); }); });
+  return pool;
+}
+function catById(id){
+  for(var i=0;i<state.categories.length;i++) if(state.categories[i].id===id) return state.categories[i];
+  return null;
+}
+
+/* answer checking: ignores case, spacing, end punctuation, "(1)" notes, and "a / b" alternatives */
+function norm(s){
+  return String(s).toLowerCase().replace(/\s+/g,' ').replace(/[.!?]+$/,'').trim();
+}
+function acceptedAnswers(s){
+  var full = norm(s);
+  var base = norm(String(s).replace(/\([^)]*\)/g,''));
+  var list = [full, base];
+  base.split('/').forEach(function(a){ var x = norm(a); if(x) list.push(x); });
+  return list;
+}
+
+var toastTimer=null;
+function showToast(msg){
+  var el = document.getElementById('toast');
+  if(!el) return;
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ el.classList.remove('show'); }, 2200);
+}
+
+function navKeyForView(){
+  var v = state.view;
+  if(v.name==='intro') return 'intro';
+  if(v.name==='alphabet') return 'alphabet';
+  if(v.name==='category') return 'cat:'+v.id;
+  if(v.name==='practice-home' || v.name==='quiz') return 'practice';
+  if(v.name==='translate') return 'translate';
+  if(v.name==='pack') return 'pack';
+  return '';
+}
+function goTo(view){
+  state.view = view;
+  state.railOpen = false;
+  render();
+  window.scrollTo(0,0);
+}
+function rerender(){ render(); }
+
+function setMode(m){
+  state.mode = m;
+  quizSession = null;
+  saveSettings();
+  state.view = {name:'intro'};
+  state.railOpen = false;
+  render();
+  window.scrollTo(0,0);
+}
+
+/* =====================================================================
+   RENDER: SHELL
+   ===================================================================== */
+function render(){
+  var root = document.getElementById('root');
+  if(!state.loaded){
+    root.innerHTML = '<div class="loading-note" style="padding:60px; text-align:center;">Loading your lessons…</div>';
+    return;
+  }
+  ensureToast();
+
+  if(!state.mode){
+    root.innerHTML = viewWelcome();
+    Array.prototype.forEach.call(root.querySelectorAll('[data-mode]'), function(b){
+      b.addEventListener('click', function(){ setMode(b.getAttribute('data-mode')); });
+    });
+    return;
+  }
+
+  var activeKey = navKeyForView();
+  var navItems = [{id:'intro', label:t('nav.intro')}];
+  if(!learningEn()) navItems.push({id:'alphabet', label:t('nav.alphabet')});
+  visibleCats().forEach(function(c){ navItems.push({id:'cat:'+c.id, label:catTitle(c)}); });
+
+  var navHtml = navItems.map(function(n){
+    return '<button class="rail-btn'+(activeKey===n.id?' active':'')+'" data-nav="'+esc(n.id)+'"><span class="dot"></span>'+esc(n.label)+'</button>';
+  }).join('');
+
+  var tagline = learningEn() ? t('brand.taglineEn') : 'Learn the Kachin language';
+
+  var h = '';
+  h += '<div class="topbar"><span class="jp">Jinghpaw ga</span><div style="display:flex; gap:8px;"><button class="fs-btn" id="fsToggleMobile" title="Fullscreen">⛶</button><button id="menuBtn">'+esc(t('nav.menu'))+'</button></div></div>';
+  h += '<div class="rail-backdrop'+(state.railOpen?' open':'')+'" id="railBackdrop"></div>';
+  h += '<div class="app">';
+  h += '<div class="rail'+(state.railOpen?' open':'')+'">';
+  h += '  <div class="rail-brand" style="display:flex; align-items:flex-start; justify-content:space-between; gap:10px;">';
+  h += '    <div><span class="jp">Jinghpaw ga</span><span class="en">'+esc(tagline)+'</span></div>';
+  h += '    <button class="fs-btn" id="fsToggleDesktop" title="Fullscreen">⛶</button>';
+  h += '  </div>';
+  h += '  <div class="rail-stripe"></div>';
+  h += '  <div class="mode-switch">';
+  h += '    <button class="mode-btn'+(!learningEn()?' on':'')+'" data-mode="en2jp">'+esc(t('mode.jinghpaw'))+'</button>';
+  h += '    <button class="mode-btn'+(learningEn()?' on':'')+'" data-mode="jp2en">'+esc(t('mode.english'))+'</button>';
+  h += '  </div>';
+  h += '  <div class="rail-section-label">'+esc(t('nav.lessons'))+'</div>';
+  h += '  <div class="rail-nav">'+navHtml+'</div>';
+  h += '  <div class="rail-section-label">'+esc(t('nav.practice'))+'</div>';
+  h += '  <div class="rail-nav"><button class="rail-btn'+(activeKey==='practice'?' active':'')+'" data-nav="practice"><span class="dot"></span>'+esc(t('nav.quizzes'))+'</button></div>';
+  if(EDITOR){
+    h += '  <div class="rail-foot">';
+    h += '    <button class="rail-link'+(activeKey==='pack'?' active':'')+'" data-nav="pack">Backup &amp; content pack</button><br>';
+    h += '    <button class="rail-link'+(activeKey==='translate'?' active':'')+'" data-nav="translate" style="margin-top:6px;">Edit Jinghpaw interface text</button>';
+    if(!learningEn()) h += '    <div style="margin-top:8px;">Add or correct any word from inside a lesson.</div>';
+    h += '  </div>';
+  }
+  h += '</div>';
+  h += '<div class="main"><div class="content" id="viewMount"></div></div>';
+  h += '</div>';
+
+  root.innerHTML = h;
+  document.getElementById('viewMount').innerHTML = renderView();
+
+  Array.prototype.forEach.call(root.querySelectorAll('[data-nav]'), function(btn){
+    btn.addEventListener('click', function(){
+      var key = btn.getAttribute('data-nav');
+      if(key==='intro') goTo({name:'intro'});
+      else if(key==='alphabet') goTo({name:'alphabet'});
+      else if(key==='practice') goTo({name:'practice-home'});
+      else if(key==='translate') goTo({name:'translate'});
+      else if(key==='pack') goTo({name:'pack'});
+      else if(key.indexOf('cat:')===0) goTo({name:'category', id:key.slice(4)});
+    });
+  });
+  Array.prototype.forEach.call(root.querySelectorAll('.mode-btn'), function(b){
+    b.addEventListener('click', function(){
+      var m = b.getAttribute('data-mode');
+      if(m!==state.mode) setMode(m);
+    });
+  });
+  var menuBtn = document.getElementById('menuBtn');
+  if(menuBtn) menuBtn.addEventListener('click', function(){ state.railOpen=true; rerender(); });
+  var backdrop = document.getElementById('railBackdrop');
+  if(backdrop) backdrop.addEventListener('click', function(){ state.railOpen=false; rerender(); });
+  var fsM = document.getElementById('fsToggleMobile'); if(fsM) fsM.addEventListener('click', toggleFullscreen);
+  var fsD = document.getElementById('fsToggleDesktop'); if(fsD) fsD.addEventListener('click', toggleFullscreen);
+  updateFsButtons();
+
+  bindViewEvents();
+  renderModal();
+}
+
+function ensureToast(){
+  if(!document.getElementById('toast')){
+    var el = document.createElement('div');
+    el.id='toast'; el.className='toast';
+    document.body.appendChild(el);
+  }
+}
+
+function renderView(){
+  if(!EDITOR && (state.view.name==='translate' || state.view.name==='pack')) state.view = {name:'intro'};
+  switch(state.view.name){
+    case 'intro': return learningEn() ? viewIntroEn() : viewIntroJp();
+    case 'alphabet': return viewAlphabet();
+    case 'category': return viewCategory(state.view.id);
+    case 'practice-home': return viewPracticeHome();
+    case 'quiz': return viewQuiz();
+    case 'translate': return viewTranslate();
+    case 'pack': return viewPack();
+    default: return learningEn() ? viewIntroEn() : viewIntroJp();
+  }
+}
+
+/* ===================== WELCOME (first run) ===================== */
+function viewWelcome(){
+  return '<div class="welcome"><div class="welcome-inner">' +
+    '<div class="welcome-brand">Jinghpaw ga</div>' +
+    '<div class="welcome-stripe"></div>' +
+    '<p class="lede" style="margin:16px auto 24px;">What would you like to learn?</p>' +
+    '<div class="choice-grid">' +
+      '<button class="choice" data-mode="en2jp"><span class="c-title">Learn Jinghpaw</span><span class="c-sub">For English speakers</span></button>' +
+      '<button class="choice" data-mode="jp2en"><span class="c-title">Learn English</span><span class="c-sub">For Jinghpaw speakers</span></button>' +
+    '</div></div></div>';
+}
+
+/* ===================== INTRO ===================== */
+function countWords(){
+  var n = 0;
+  visibleCats().forEach(function(c){ n += usableItems(c).length; });
+  return n;
+}
+function viewIntroJp(){
+  var total = 0;
+  visibleCats().forEach(function(c){ total += visibleItems(c).length; });
+  var h = '';
+  h += '<div class="eyebrow">Welcome</div>';
+  h += '<h1>Jinghpaw ga — the Jinghpaw language</h1>';
+  h += '<p class="lede">Jinghpaw (also called Kachin) is a Tibeto-Burman language spoken by the Kachin people, mainly in Kachin State in northern Myanmar, with speakers across the border in Yunnan, China, and northeast India.</p>';
+  h += '<div class="stripe-rule"></div>';
+  h += '<div class="facts">';
+  h += '  <div class="fact"><span class="num">600k+</span><span class="lbl">speakers, spread across Myanmar, China, and India</span></div>';
+  h += '  <div class="fact"><span class="num">SOV</span><span class="lbl">word order: subject, then object, then verb</span></div>';
+  h += '  <div class="fact"><span class="num">1890s</span><span class="lbl">the current Latin alphabet was devised</span></div>';
+  h += '</div>';
+  h += '<h3 style="margin-top:26px;">A tonal language</h3>';
+  h += '<p>Pitch changes meaning in Jinghpaw, but tones are usually left unmarked in ordinary writing. That is why you will run into pairs like <em>wa</em> ("father") and <em>wa</em> ("pig"), or <em>shi</em> ("ten") and <em>shi</em> ("he/she") — same spelling, different word, distinguished by tone when spoken. Lessons flag these with a small note.</p>';
+  h += '<h3 style="margin-top:22px;">Word order</h3>';
+  h += '<p>Jinghpaw sentences put the verb last. A simple example:</p>';
+  h += '<div class="example-sentence"><div class="jp">Ngai shat sha ai.</div><div class="gloss">I &nbsp;·&nbsp; food &nbsp;·&nbsp; eat &nbsp;→&nbsp; "I eat / ate."</div></div>';
+  h += '<h3 style="margin-top:22px;">How this app works</h3>';
+  h += '<p>Work through the lessons in the sidebar — alphabet first, then vocabulary by topic. '+(EDITOR?'Every word list has an <strong>Add word</strong> button, and you can edit or delete any entry, including the starter words, so you can correct anything that is not quite right. Once you have a few words down, head to':'When you are ready, head to')+' <strong>Quizzes</strong> to practice with multiple choice, matching, flashcards, or typing.</p>';
+  h += '<div class="card" style="margin-top:22px;">';
+  h += '  <strong style="font-family:\'Fraunces\',serif; font-size:16px;">Your word bank so far</strong>';
+  h += '  <p style="margin-top:6px; margin-bottom:0; color:#5a4d42;">'+total+' words and phrases across '+visibleCats().length+' lessons.'+(EDITOR?' Food, Cooking, and Time of Day are still mostly empty — good ones to start adding to.':'')+'</p>';
+  h += '</div>';
+  return h;
+}
+function viewIntroEn(){
+  var h = '';
+  h += '<div class="eyebrow">'+esc(t('intro.en.eyebrow'))+'</div>';
+  h += '<h1>'+esc(t('intro.en.title'))+'</h1>';
+  h += '<p class="lede">'+esc(t('intro.en.lede'))+'</p>';
+  h += '<div class="stripe-rule"></div>';
+  h += '<p>'+esc(t('intro.en.how'))+'</p>';
+  h += '<div class="card" style="margin-top:22px;"><strong style="font-family:\'Fraunces\',serif; font-size:16px;">'+esc(t('intro.en.count',{n:countWords()}))+'</strong></div>';
+  return h;
+}
+
+/* ===================== ALPHABET (Jinghpaw) ===================== */
+function viewAlphabet(){
+  var h='';
+  h += '<div class="eyebrow">Lesson</div>';
+  h += '<h1>The Jinghpaw alphabet</h1>';
+  h += '<p class="lede">'+esc(ALPHABET.intro)+'</p>';
+  h += '<div class="stripe-rule"></div>';
+  h += letterSection('Vowels', ALPHABET.vowels);
+  h += letterSection('Diphthongs', ALPHABET.diphthongs);
+  h += letterSection('Consonants & consonant clusters', ALPHABET.consonants);
+  return h;
+}
+function letterSection(title, letters){
+  var h = '<h3 style="margin-top:26px;">'+esc(title)+'</h3><div class="letter-grid">';
+  letters.forEach(function(l){
+    h += '<div class="letter-card"><div class="glyph">'+esc(l.letter)+'</div><div class="desc">'+esc(l.desc)+'</div>';
+    if(l.ex) h += '<div class="ex">'+esc(l.ex.jp)+' — '+esc(l.ex.en)+'</div>';
+    h += '</div>';
+  });
+  return h + '</div>';
+}
+
+/* ===================== CATEGORY ===================== */
+function viewCategory(id){
+  var cat = catById(id);
+  if(!cat || !catVisible(cat)) return '<p>Lesson not found.</p>';
+  var items = visibleItems(cat);
+  var h = '';
+  h += '<div class="eyebrow">'+esc(t('lesson.label'))+'</div>';
+  h += '<div class="lesson-head"><h1>'+esc(catTitle(cat))+'</h1><div class="lesson-actions">';
+  if(EDITOR && items.length) h += '<button class="btn secondary small" data-action="record-all" data-cat="'+esc(cat.id)+'"><span style="color:var(--red)">●</span> Record words</button>';
+  if(EDITOR) h += '<button class="btn small" data-action="add-word" data-cat="'+esc(cat.id)+'">Add word</button>';
+  h += '</div></div>';
+  if(cat.blurb && !learningEn() && EDITOR) h += '<p class="lede">'+esc(cat.blurb)+'</p>';
+  h += '<div class="stripe-rule"></div>';
+
+  if(items.length===0){
+    h += '<div class="empty-state"><strong>'+esc(t('lesson.empty.title'))+'</strong>';
+    h += learningEn() ? esc(t('lesson.empty.body')) : 'Add the first one — every word you add here will also appear in quizzes.';
+    h += '<div style="margin-top:14px;"><button class="btn small" data-action="add-word" data-cat="'+esc(cat.id)+'">Add word</button></div></div>';
+    return h;
+  }
+
+  h += '<ul class="word-list">';
+  items.forEach(function(it){
+    var sub = nat(it), n = noteOf(it);
+    h += '<li class="word-row">';
+    h += '  <div><div class="jp">'+esc(tgt(it))+'</div>';
+    h += '  <div class="en">'+(sub ? esc(sub) : (EDITOR ? '<span class="muted">'+esc(t('lesson.noGloss'))+'</span>' : ''))+'</div>';
+    if(n) h += '  <div class="note">'+esc(n)+'</div>';
+    h += '  </div>';
+    h += '  <div class="word-actions">';
+    if(audioOk(it)) h += '    <button class="icon-btn" title="Play" data-action="play-audio" data-item="'+esc(it.id)+'">▶</button>';
+    if(EDITOR) h += '    <button class="icon-btn rec" title="Record pronunciation" data-action="record-word" data-cat="'+esc(cat.id)+'" data-item="'+esc(it.id)+'">●</button>';
+    if(EDITOR) h += '    <button class="icon-btn" title="Edit" data-action="edit-word" data-cat="'+esc(cat.id)+'" data-item="'+esc(it.id)+'">✎</button>';
+    if(EDITOR) h += '    <button class="icon-btn" title="Delete" data-action="delete-word" data-cat="'+esc(cat.id)+'" data-item="'+esc(it.id)+'">✕</button>';
+    h += '  </div>';
+    h += '</li>';
+  });
+  return h + '</ul>';
+}
+
+/* ===================== INTERFACE TEXT EDITOR ===================== */
+function trKeys(){
+  var keys = Object.keys(UI).map(function(k){ return {key:k, en:UI[k], group:'Buttons and messages'}; });
+  state.categories.forEach(function(c){
+    if((c.course||'both')!=='jp') keys.push({key:'cat.'+c.id, en:c.title, group:'Lesson titles'});
+  });
+  return keys;
+}
+function viewTranslate(){
+  var keys = trKeys();
+  var filled = keys.filter(function(k){ return !!state.ui[k.key]; }).length;
+  var h = '';
+  h += '<div class="eyebrow">Editor</div>';
+  h += '<h1>Jinghpaw interface text</h1>';
+  h += '<p class="lede">This is the text Jinghpaw speakers see when they use the app to learn English. Type the Jinghpaw for each line. Anything left blank shows in English until it is filled in.</p>';
+  h += '<div class="stripe-rule"></div>';
+  h += '<div class="tr-bar"><span id="trCount" class="muted-strong">'+filled+' of '+keys.length+' filled in</span>';
+  h += '<span style="display:flex; gap:8px; flex-wrap:wrap;"><button class="btn secondary small" id="trExport">Export to a file</button>';
+  h += '<button class="btn secondary small" id="trImportBtn">Import from a file</button><input type="file" id="trImport" accept=".json,application/json" style="display:none"></span></div>';
+  h += '<p class="file-hint" style="margin:0 0 14px 0;">Export gives you a file you can send to a Jinghpaw speaker to fill in; import loads it back.</p>';
+  var lastGroup = '';
+  keys.forEach(function(k){
+    if(k.group!==lastGroup){ h += '<h3 style="margin-top:22px;">'+esc(k.group)+'</h3>'; lastGroup = k.group; }
+    var val = state.ui[k.key] || '';
+    var long = k.en.length > 60;
+    h += '<div class="tr-row"><div class="tr-en">'+esc(k.en)+'</div><div>';
+    if(long) h += '<textarea rows="2" data-tr="'+esc(k.key)+'" placeholder="Jinghpaw">'+esc(val)+'</textarea>';
+    else h += '<input type="text" data-tr="'+esc(k.key)+'" value="'+esc(val)+'" placeholder="Jinghpaw">';
+    h += '</div></div>';
+  });
+  return h;
+}
+
+/* ===================== BACKUP & CONTENT PACK ===================== */
+function countRecordings(){
+  var n = 0;
+  state.categories.forEach(function(c){ c.items.forEach(function(it){ if(it.hasAudio) n++; if(it.hasAudioEn) n++; }); });
+  return n;
+}
+function countAllWords(){
+  var n = 0;
+  state.categories.forEach(function(c){ n += c.items.length; });
+  return n;
+}
+function viewPack(){
+  var h = '';
+  h += '<div class="eyebrow">Editor</div>';
+  h += '<h1>Backup &amp; content pack</h1>';
+  h += '<p class="lede">Save everything you have added — words, your voice recordings and the Jinghpaw interface text — into one file. Use it as a backup, to move to another device, or to hand to the people who publish the app.</p>';
+  h += '<div class="stripe-rule"></div>';
+  h += '<div class="card"><strong style="font-family:\'Fraunces\',serif; font-size:16px;">What is in the app right now</strong>';
+  h += '<p style="margin:6px 0 0 0; color:#5a4d42;">'+countAllWords()+' words and phrases · '+countRecordings()+' voice recordings · '+Object.keys(state.ui).length+' lines of Jinghpaw interface text</p></div>';
+  h += '<div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:16px;">';
+  h += '<button class="btn" id="packExport">Export content pack</button>';
+  h += '<button class="btn secondary" id="packImportBtn">Import a content pack</button>';
+  h += '<input type="file" id="packImport" accept=".json,application/json" style="display:none"></div>';
+  h += '<p class="file-hint" style="margin-top:10px;">The file grows with every recording. Importing replaces what is in this app, so export first if you are unsure.</p>';
+  return h;
+}
+function packValid(p){ return !!(p && p.format==='jinghpaw-ga-pack' && Array.isArray(p.content)); }
+function buildPack(){
+  var keys = [];
+  state.categories.forEach(function(c){
+    c.items.forEach(function(it){
+      if(it.hasAudio) keys.push('audio_'+it.id);
+      if(it.hasAudioEn) keys.push('audioEn_'+it.id);
+    });
+  });
+  var reads = keys.map(function(k){
+    if(!storageAvailable) return Promise.resolve([k,null]);
+    return window.storage.get(k, false).then(function(r){ return [k, r && r.value]; }).catch(function(){ return [k, null]; });
+  });
+  return Promise.all(reads).then(function(pairs){
+    var audio = {};
+    pairs.forEach(function(pr){ if(pr[1]) audio[pr[0]] = pr[1]; });
+    return {format:'jinghpaw-ga-pack', version:1, exported:new Date().toISOString(), content:state.categories, ui:state.ui, audio:audio};
+  });
+}
+function applyPack(pack){
+  var cats = migrate(pack.content);
+  var audio = pack.audio || {};
+  var writes = [];
+  Object.keys(audio).forEach(function(k){
+    if(storageAvailable && typeof audio[k]==='string' && /^(audio|audioEn)_/.test(k)){
+      writes.push(window.storage.set(k, audio[k], false).catch(function(){ return null; }));
+    }
+  });
+  return Promise.all(writes).then(function(){ return {categories:cats, ui:pack.ui || {}}; });
+}
+var starterUi = null;
+function fetchStarterPack(){
+  if(typeof fetch!=='function' || location.protocol==='file:') return Promise.resolve(null);
+  return fetch('content-pack.json', {cache:'no-store'}).then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(p){ return packValid(p) ? p : null; }).catch(function(){ return null; });
+}
+
+/* ===================== PRACTICE HOME ===================== */
+var QUIZ_TYPES = ['mc','match','flash','type'];
+function viewPracticeHome(){
+  var h='';
+  h += '<div class="eyebrow">'+esc(t('practice.eyebrow'))+'</div>';
+  h += '<h1>'+esc(t('practice.title'))+'</h1>';
+  h += '<p class="lede">'+esc(t('practice.lede'))+'</p>';
+  h += '<div class="stripe-rule"></div>';
+  h += '<div class="card">';
+  h += '  <label style="font-size:13px; color:#5a4d42; display:block; margin-bottom:4px;">'+esc(t('practice.lessonLabel'))+'</label>';
+  h += '  <select class="lesson-select" id="quizLessonSelect">';
+  h += '    <option value="__all__">'+esc(t('practice.all'))+'</option>';
+  visibleCats().forEach(function(c){
+    var n = usableItems(c).length;
+    h += '<option value="'+esc(c.id)+'"'+(n<3?' disabled':'')+'>'+esc(catTitle(c))+' ('+n+' '+esc(t('practice.words'))+(n<3?' — '+esc(t('practice.needsMore')):'')+')</option>';
+  });
+  h += '  </select>';
+  h += '</div>';
+  h += '<div class="quiz-grid">';
+  QUIZ_TYPES.forEach(function(id){
+    h += '<button class="quiz-type-card" data-quiz-type="'+id+'"><div class="t">'+esc(t('qt.'+id+'.title'))+'</div><div class="d">'+esc(t('qt.'+id+'.desc'))+'</div></button>';
+  });
+  return h + '</div>';
+}
+
+/* =====================================================================
+   QUIZ ENGINE
+   ===================================================================== */
+var quizSession = null;
+
+function startQuiz(type, lessonId){
+  var pool;
+  if(lessonId==='__all__') pool = allItemsPool();
+  else { var c = catById(lessonId); pool = c ? usableItems(c) : []; }
+  if(pool.length<3){ showToast(t('toast.needThree')); return; }
+  pool = shuffle(pool);
+  var n = type==='match' ? Math.min(6,pool.length) : Math.min(8,pool.length);
+  quizSession = {type:type, lessonId:lessonId, items:pool.slice(0,n), index:0, score:0, cur:null, matchState:null, _recorded:false};
+  if(type==='match') setupMatchRound(); else prepQuestion();
+  goTo({name:'quiz'});
+}
+
+function prepQuestion(){
+  var qs = quizSession;
+  if(qs.index >= qs.items.length){ qs.cur = null; return; }
+  var item = qs.items[qs.index];
+  qs.cur = {answered:false, flipped:false, typeChecked:false, typeCorrect:false};
+  if(qs.type==='mc'){
+    var askTarget = Math.random() < 0.5;
+    var labelOf = function(x){ return askTarget ? nat(x) : tgt(x); };
+    var correctLabel = labelOf(item);
+    var seen = {}; seen[correctLabel.toLowerCase()] = 1;
+    var cand = shuffle(allItemsPool().filter(function(p){ return p.id!==item.id; }));
+    var distract = [];
+    for(var i=0; i<cand.length && distract.length<3; i++){
+      var l = labelOf(cand[i]).toLowerCase();
+      if(!seen[l]){ seen[l] = 1; distract.push(cand[i]); }
+    }
+    qs.cur.askTarget = askTarget;
+    qs.cur.correctLabel = correctLabel;
+    qs.cur.options = shuffle([item].concat(distract));
+  }
+}
+function advance(){
+  quizSession.index += 1;
+  prepQuestion();
+  goTo({name:'quiz'});
+}
+
+function recordProgress(lessonId, type, correct, total){
+  if(!state.progress[lessonId]) state.progress[lessonId] = {};
+  if(!state.progress[lessonId][type]) state.progress[lessonId][type] = {attempts:0, correct:0, total:0};
+  var s = state.progress[lessonId][type];
+  s.attempts += 1; s.correct += correct; s.total += total;
+  saveProgress(state.progress);
+}
+
+function viewQuiz(){
+  if(!quizSession) return '<p><button class="btn small" data-action="back-practice">'+esc(t('quiz.back'))+'</button></p>';
+  if(quizSession.type==='mc') return renderMC();
+  if(quizSession.type==='match') return renderMatch();
+  if(quizSession.type==='flash') return renderFlash();
+  if(quizSession.type==='type') return renderType();
+  return '';
+}
+function quizHeader(label){
+  var qs = quizSession;
+  return '<div class="eyebrow">'+esc(label)+'</div><div class="quiz-shell"><div class="quiz-progress">'+esc(t('quiz.word'))+' '+(qs.index+1)+' '+esc(t('quiz.of'))+' '+qs.items.length+' &nbsp;·&nbsp; '+esc(t('quiz.score'))+' '+qs.score+'</div>';
+}
+function audioBtn(item, label){
+  return '<button type="button" class="audio-btn" data-action="play-audio" data-item="'+esc(item.id)+'">▶ '+esc(label)+'</button>';
+}
+
+function renderMC(){
+  var qs = quizSession;
+  if(qs.index >= qs.items.length) return quizSummary();
+  var item = qs.items[qs.index], c = qs.cur;
+  var shown = c.askTarget ? tgt(item) : nat(item);
+  var prompt = c.askTarget ? t('quiz.whatMean') : (learningEn() ? t('quiz.howSayEn') : t('quiz.howSayJp'));
+  var h = quizHeader(t('qt.mc.title'));
+  h += '<div class="quiz-prompt">'+esc(prompt)+'</div>';
+  h += '<div class="quiz-word">'+esc(shown)+'</div>';
+  if(c.askTarget && !learningEn() && item.note) h += '<div class="quiz-note">'+esc(item.note)+'</div>';
+  if(c.askTarget && audioOk(item)) h += '<div style="margin-bottom:14px;">'+audioBtn(item, t('quiz.play'))+'</div>';
+  h += '<div class="mc-options">';
+  c.options.forEach(function(o,i){
+    h += '<button class="mc-opt" data-mc-index="'+i+'">'+esc(c.askTarget ? nat(o) : tgt(o))+'</button>';
+  });
+  return h + '</div></div>';
+}
+function handleMC(idx){
+  var qs = quizSession, c = qs.cur;
+  if(c.answered) return;
+  c.answered = true;
+  var labelOf = function(x){ return c.askTarget ? nat(x) : tgt(x); };
+  var correct = labelOf(c.options[idx]).toLowerCase() === c.correctLabel.toLowerCase();
+  if(correct) qs.score += 1;
+  Array.prototype.forEach.call(document.querySelectorAll('.mc-opt'), function(btn, i){
+    btn.setAttribute('disabled','disabled');
+    if(labelOf(c.options[i]).toLowerCase() === c.correctLabel.toLowerCase()) btn.classList.add('correct');
+    else if(i===idx) btn.classList.add('wrong');
+  });
+  setTimeout(advance, 900);
+}
+
+function renderType(){
+  var qs = quizSession;
+  if(qs.index >= qs.items.length) return quizSummary();
+  var item = qs.items[qs.index], c = qs.cur;
+  var h = quizHeader(t('qt.type.title'));
+  h += '<div class="quiz-prompt">'+esc(learningEn() ? t('quiz.typePromptEn') : t('quiz.typePromptJp'))+'</div>';
+  h += '<div class="quiz-word">'+esc(nat(item))+'</div>';
+  h += '<div class="type-input-row"><input type="text" id="typeInput" autocomplete="off" autocapitalize="none" placeholder="'+esc(t('quiz.placeholder'))+'" '+(c.typeChecked?'disabled':'')+'><button class="btn" id="typeSubmit" '+(c.typeChecked?'disabled':'')+'>'+esc(t('quiz.check'))+'</button></div>';
+  if(c.typeChecked){
+    h += '<div class="type-feedback '+(c.typeCorrect?'good':'bad')+'">'+(c.typeCorrect ? esc(t('quiz.correct')) : esc(t('quiz.notQuite'))+' "'+esc(tgt(item))+'".')+'</div>';
+    if(audioOk(item)) h += '<div style="margin-top:12px;">'+audioBtn(item, t('quiz.hear'))+'</div>';
+    h += '<div style="margin-top:16px;"><button class="btn" id="nextBtn">'+esc(t('quiz.next'))+'</button></div>';
+  }
+  return h + '</div>';
+}
+function handleTypeSubmit(){
+  var qs = quizSession, c = qs.cur;
+  if(c.typeChecked) return;
+  var input = document.getElementById('typeInput');
+  var item = qs.items[qs.index];
+  var val = norm(input.value || '');
+  var ok = val.length>0 && acceptedAnswers(tgt(item)).indexOf(val) > -1;
+  if(ok) qs.score += 1;
+  c.typeChecked = true; c.typeCorrect = ok;
+  rerender();
+}
+
+function renderFlash(){
+  var qs = quizSession;
+  if(qs.index >= qs.items.length) return quizSummary();
+  var item = qs.items[qs.index], c = qs.cur;
+  var h = quizHeader(t('qt.flash.title'));
+  h += '<div class="flash-card" id="flashCard">';
+  if(!c.flipped){
+    h += '<div class="main-txt">'+esc(tgt(item))+'</div>';
+    if(!learningEn() && item.note) h += '<div class="sub-txt">'+esc(item.note)+'</div>';
+    h += '<div class="hint">'+esc(t('quiz.tapReveal'))+'</div>';
+  } else {
+    h += '<div class="main-txt">'+esc(nat(item))+'</div>';
+    h += '<div class="hint">'+esc(t('quiz.tapBack'))+'</div>';
+  }
+  h += '</div><div class="flash-controls">';
+  if(audioOk(item)) h += audioBtn(item, t('quiz.play'));
+  h += '<button class="btn secondary small" id="flashKnew">'+esc(t('quiz.knew'))+'</button>';
+  h += '<button class="btn secondary small" id="flashSkip">'+esc(t('quiz.learning'))+'</button>';
+  return h + '</div></div>';
+}
+
+function setupMatchRound(){
+  var qs = quizSession;
+  var left = qs.items.map(function(it){ return {id:it.id, text:tgt(it), hasAudio:audioOk(it)}; });
+  var right = qs.items.map(function(it){ return {id:it.id, text:nat(it)}; });
+  qs.matchState = {left:shuffle(left), right:shuffle(right), selectedLeft:null, selectedRight:null, lockedIds:[], wrongFlash:null, attempts:0};
+}
+function renderMatch(){
+  var qs = quizSession, ms = qs.matchState;
+  var total = qs.items.length;
+  if(ms.lockedIds.length === total) return quizSummary();
+  var h = '<div class="eyebrow">'+esc(t('qt.match.title'))+'</div><div class="quiz-shell">';
+  h += '<div class="quiz-progress">'+esc(t('quiz.matched'))+' '+ms.lockedIds.length+' '+esc(t('quiz.of'))+' '+total+'</div>';
+  h += '<div class="match-grid"><div class="match-col">';
+  ms.left.forEach(function(l){
+    var locked = ms.lockedIds.indexOf(l.id)>-1;
+    var cls = 'match-item jp-txt' + (locked?' locked':(ms.selectedLeft===l.id?' selected':'')) + (ms.wrongFlash && ms.wrongFlash.left===l.id ? ' shake':'');
+    h += '<div style="display:flex; align-items:center; gap:6px;">';
+    h += '<button class="'+cls+'" style="flex:1;" data-match-left="'+esc(l.id)+'" '+(locked?'disabled':'')+'>'+esc(l.text)+'</button>';
+    if(l.hasAudio) h += '<button type="button" class="icon-btn" title="Play" data-action="play-audio" data-item="'+esc(l.id)+'">▶</button>';
+    h += '</div>';
+  });
+  h += '</div><div class="match-col">';
+  ms.right.forEach(function(r){
+    var locked = ms.lockedIds.indexOf(r.id)>-1;
+    var cls = 'match-item' + (locked?' locked':(ms.selectedRight===r.id?' selected':'')) + (ms.wrongFlash && ms.wrongFlash.right===r.id ? ' shake':'');
+    h += '<button class="'+cls+'" data-match-right="'+esc(r.id)+'" '+(locked?'disabled':'')+'>'+esc(r.text)+'</button>';
+  });
+  return h + '</div></div></div>';
+}
+function handleMatchClick(side, id){
+  var ms = quizSession.matchState;
+  if(ms.lockedIds.indexOf(id)>-1) return;
+  ms.wrongFlash = null;
+  if(side==='l') ms.selectedLeft = (ms.selectedLeft===id) ? null : id;
+  else ms.selectedRight = (ms.selectedRight===id) ? null : id;
+  if(ms.selectedLeft && ms.selectedRight){
+    ms.attempts += 1;
+    if(ms.selectedLeft === ms.selectedRight){
+      ms.lockedIds.push(ms.selectedLeft);
+      ms.selectedLeft = null; ms.selectedRight = null;
+      rerender();
+    } else {
+      ms.wrongFlash = {left:ms.selectedLeft, right:ms.selectedRight};
+      rerender();
+      setTimeout(function(){
+        if(quizSession && quizSession.matchState && state.view.name==='quiz'){
+          var m = quizSession.matchState;
+          m.selectedLeft = null; m.selectedRight = null; m.wrongFlash = null;
+          rerender();
+        }
+      }, 500);
+    }
+  } else {
+    rerender();
+  }
+}
+
+function quizSummary(){
+  var qs = quizSession;
+  var isMatch = qs.type==='match';
+  var total = isMatch ? qs.matchState.attempts : qs.items.length;
+  var score = isMatch ? qs.items.length : qs.score;
+  var h = '<div class="eyebrow">'+esc(t('quiz.done'))+'</div><div class="quiz-shell quiz-summary">';
+  h += '<div class="score">'+score+' / '+total+'</div>';
+  h += '<p style="margin-top:10px;">'+esc(isMatch ? t('quiz.allMatched',{n:qs.items.length, m:total}) : t('quiz.niceWork'))+'</p>';
+  h += '<div style="display:flex; gap:10px; justify-content:center; margin-top:18px;">';
+  h += '<button class="btn" data-action="quiz-again">'+esc(t('quiz.again'))+'</button>';
+  h += '<button class="btn secondary" data-action="back-practice">'+esc(t('quiz.choose'))+'</button>';
+  h += '</div></div>';
+  if(!qs._recorded){
+    recordProgress(qs.lessonId, qs.type, score, total);
+    qs._recorded = true;
+  }
+  return h;
+}
+
+/* =====================================================================
+   EVENT BINDING FOR THE CURRENT VIEW
+   ===================================================================== */
+function on(root, sel, fn){
+  Array.prototype.forEach.call(root.querySelectorAll(sel), function(el){ fn(el); });
+}
+function bindViewEvents(){
+  var mount = document.getElementById('viewMount');
+  if(!mount) return;
+
+  on(mount,'[data-action="add-word"]', function(b){ b.addEventListener('click', function(){ openWordModal(b.getAttribute('data-cat'), null); }); });
+  on(mount,'[data-action="edit-word"]', function(b){ b.addEventListener('click', function(){ openWordModal(b.getAttribute('data-cat'), b.getAttribute('data-item')); }); });
+  on(mount,'[data-action="delete-word"]', function(b){ b.addEventListener('click', function(){ openDeleteModal(b.getAttribute('data-cat'), b.getAttribute('data-item')); }); });
+  on(mount,'[data-action="play-audio"]', function(b){ b.addEventListener('click', function(e){ e.stopPropagation(); playAudioFor(b.getAttribute('data-item')); }); });
+
+  var sel = document.getElementById('quizLessonSelect');
+  on(mount,'[data-quiz-type]', function(b){
+    b.addEventListener('click', function(){ startQuiz(b.getAttribute('data-quiz-type'), sel ? sel.value : '__all__'); });
+  });
+
+  on(mount,'[data-mc-index]', function(b){ b.addEventListener('click', function(){ handleMC(parseInt(b.getAttribute('data-mc-index'),10)); }); });
+
+  var typeSubmit = document.getElementById('typeSubmit');
+  if(typeSubmit) typeSubmit.addEventListener('click', handleTypeSubmit);
+  var typeInput = document.getElementById('typeInput');
+  if(typeInput){
+    typeInput.addEventListener('keydown', function(e){ if(e.key==='Enter') handleTypeSubmit(); });
+    if(!typeInput.disabled) setTimeout(function(){ try{ typeInput.focus(); }catch(e){} }, 30);
+  }
+  var nextBtn = document.getElementById('nextBtn');
+  if(nextBtn){ nextBtn.addEventListener('click', advance); }
+
+  var flashCard = document.getElementById('flashCard');
+  if(flashCard) flashCard.addEventListener('click', function(){ quizSession.cur.flipped = !quizSession.cur.flipped; rerender(); });
+  var fk = document.getElementById('flashKnew');
+  if(fk) fk.addEventListener('click', function(){ quizSession.score += 1; advance(); });
+  var fs = document.getElementById('flashSkip');
+  if(fs) fs.addEventListener('click', function(){ advance(); });
+
+  on(mount,'[data-match-left]', function(b){ b.addEventListener('click', function(){ handleMatchClick('l', b.getAttribute('data-match-left')); }); });
+  on(mount,'[data-match-right]', function(b){ b.addEventListener('click', function(){ handleMatchClick('r', b.getAttribute('data-match-right')); }); });
+
+  on(mount,'[data-action="quiz-again"]', function(b){ b.addEventListener('click', function(){ startQuiz(quizSession.type, quizSession.lessonId); }); });
+  on(mount,'[data-action="back-practice"]', function(b){ b.addEventListener('click', function(){ quizSession = null; goTo({name:'practice-home'}); }); });
+
+  on(mount,'[data-action="record-word"]', function(b){ b.addEventListener('click', function(){ openRecordModal(b.getAttribute('data-cat'), b.getAttribute('data-item')); }); });
+  on(mount,'[data-action="record-all"]', function(b){ b.addEventListener('click', function(){ openRecordModal(b.getAttribute('data-cat'), null); }); });
+
+  /* backup & content pack */
+  var pe = document.getElementById('packExport');
+  if(pe) pe.addEventListener('click', function(){
+    buildPack().then(function(pack){
+      downloadText('jinghpaw-ga-content-pack.json', JSON.stringify(pack));
+      showToast('Content pack saved to your downloads.');
+    });
+  });
+  var pib = document.getElementById('packImportBtn'), pif = document.getElementById('packImport');
+  if(pib && pif){
+    pib.addEventListener('click', function(){ pif.click(); });
+    pif.addEventListener('change', function(){
+      var f = pif.files[0]; if(!f) return;
+      var reader = new FileReader();
+      reader.onload = function(){
+        try{
+          var pack = JSON.parse(reader.result);
+          if(!packValid(pack)){ showToast("That isn't a Jinghpaw ga content pack."); return; }
+          var words = 0; pack.content.forEach(function(c){ words += (c.items||[]).length; });
+          openImportModal({pack:pack, words:words, recordings:Object.keys(pack.audio||{}).length, ui:Object.keys(pack.ui||{}).length});
+        }catch(e){ showToast("That file couldn't be read."); }
+      };
+      reader.readAsText(f);
+    });
+  }
+
+  /* interface text editor */
+  if(state.view.name==='translate'){
+    var keysCount = trKeys().length;
+    on(mount,'[data-tr]', function(inp){
+      inp.addEventListener('change', function(){
+        var k = inp.getAttribute('data-tr'), v = inp.value.trim();
+        if(v) state.ui[k] = v; else delete state.ui[k];
+        saveUi();
+        var c = document.getElementById('trCount');
+        if(c) c.textContent = Object.keys(state.ui).filter(function(x){ return trKeys().some(function(tk){ return tk.key===x; }); }).length + ' of ' + keysCount + ' filled in';
+      });
+    });
+    var ex = document.getElementById('trExport');
+    if(ex) ex.addEventListener('click', function(){
+      var data = trKeys().map(function(k){ return {key:k.key, english:k.en, jinghpaw: state.ui[k.key] || ''}; });
+      downloadText('jinghpaw-interface-text.json', JSON.stringify(data, null, 2));
+      showToast('File saved to your downloads.');
+    });
+    var ib = document.getElementById('trImportBtn'), inf = document.getElementById('trImport');
+    if(ib && inf){
+      ib.addEventListener('click', function(){ inf.click(); });
+      inf.addEventListener('change', function(){
+        var f = inf.files[0]; if(!f) return;
+        var reader = new FileReader();
+        reader.onload = function(){
+          try{
+            var data = JSON.parse(reader.result), known = {}, n = 0;
+            trKeys().forEach(function(k){ known[k.key] = 1; });
+            if(Array.isArray(data)){
+              data.forEach(function(row){
+                if(row && known[row.key] && typeof row.jinghpaw==='string' && row.jinghpaw.trim()){ state.ui[row.key] = row.jinghpaw.trim(); n++; }
+              });
+            }
+            saveUi();
+            showToast(n+' lines imported.');
+            rerender();
+          }catch(e){ showToast("That file couldn't be read."); }
+        };
+        reader.readAsText(f);
+      });
+    }
+  }
+}
+
+/* ---------- microphone recording ---------- */
+var rec = {stream:null, mr:null, chunks:[], timer:null, t0:0, cancelled:false};
+function micAvailable(){
+  return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && typeof MediaRecorder!=='undefined');
+}
+function stopRec(){ if(rec.mr && rec.mr.state!=='inactive') rec.mr.stop(); }
+function cancelRec(){
+  rec.cancelled = true;
+  stopRec();
+  if(rec.stream) rec.stream.getTracks().forEach(function(t){ t.stop(); });
+  clearInterval(rec.timer);
+}
+function startRec(onDone, onTick){
+  navigator.mediaDevices.getUserMedia({audio:true}).then(function(stream){
+    var mr = new MediaRecorder(stream);
+    rec.stream = stream; rec.mr = mr; rec.chunks = []; rec.t0 = Date.now(); rec.cancelled = false;
+    mr.ondataavailable = function(e){ if(e.data && e.data.size) rec.chunks.push(e.data); };
+    mr.onstop = function(){
+      stream.getTracks().forEach(function(t){ t.stop(); });
+      clearInterval(rec.timer);
+      rec.mr = null;
+      if(rec.cancelled) return;
+      var blob = new Blob(rec.chunks, {type: mr.mimeType || 'audio/webm'});
+      readFileAsDataURL(blob).then(onDone);
+    };
+    mr.start();
+    rec.timer = setInterval(function(){
+      var sec = (Date.now() - rec.t0) / 1000;
+      onTick(sec);
+      if(sec >= 15) stopRec();
+    }, 200);
+    onTick(0);
+  }).catch(function(){
+    showToast("Couldn't use the microphone. Check that it is allowed, or choose a file instead.");
+    onTick(-1);
+  });
+}
+function recTick(btnId, timeId){
+  return function(sec){
+    var b = document.getElementById(btnId), tm = document.getElementById(timeId);
+    if(!b) return;
+    if(sec < 0){ b.textContent = '● Record'; b.classList.remove('live'); if(tm) tm.textContent = ''; return; }
+    b.textContent = '■ Stop'; b.classList.add('live');
+    if(tm) tm.textContent = sec.toFixed(1) + ' s';
+  };
+}
+function toggleRec(btnId, timeId, onDone){
+  if(rec.mr && rec.mr.state==='recording'){ stopRec(); return; }
+  if(!micAvailable()){ showToast("Recording isn't available in this window — choose a file instead."); return; }
+  startRec(onDone, recTick(btnId, timeId));
+}
+
+/* ---------- modals ---------- */
+function audioLabel(){ return learningEn() ? 'English pronunciation (your voice)' : 'Jinghpaw pronunciation (optional)'; }
+
+function openWordModal(catId, itemId){
+  var cat = catById(catId);
+  var item = itemId ? cat.items.filter(function(i){ return i.id===itemId; })[0] : null;
+  var noteField = learningEn() ? 'noteEn' : 'note';
+  state.modal = {
+    kind:'word', catId:catId, itemId:itemId, noteField:noteField,
+    jp: item?item.jp:'', en: item?item.en:'', note: item&&item[noteField]?item[noteField]:'',
+    hasAudio: item ? !!item[audioFlag()] : false,
+    pendingAudioDataUrl:null, removeAudioFlag:false,
+    newId: itemId ? null : uid('w')
+  };
+  renderModal();
+}
+function openDeleteModal(catId, itemId){
+  var cat = catById(catId);
+  var item = cat.items.filter(function(i){ return i.id===itemId; })[0];
+  var label = item ? ((item.jp ? item.jp+' — ' : '') + item.en) : '';
+  state.modal = {kind:'delete', catId:catId, itemId:itemId, label:label};
+  renderModal();
+}
+function openRecordModal(catId, startItemId){
+  var cat = catById(catId);
+  var items = visibleItems(cat);
+  if(!items.length) return;
+  var start = 0;
+  if(startItemId){
+    items.forEach(function(it, i){ if(it.id===startItemId) start = i; });
+  } else {
+    for(var i=0; i<items.length; i++){ if(!audioOk(items[i])){ start = i; break; } }
+  }
+  state.modal = {kind:'record', catId:catId, queue:items.map(function(it){ return it.id; }), pos:start, pending:null};
+  renderModal();
+}
+function openImportModal(info){ state.modal = {kind:'import', info:info}; renderModal(); }
+
+function captureModalFields(){
+  var m = state.modal;
+  if(!m || m.kind!=='word') return;
+  var a = document.getElementById('mJp'), b = document.getElementById('mEn'), c = document.getElementById('mNote');
+  if(a) m.jp = a.value;
+  if(b) m.en = b.value;
+  if(c) m.note = c.value;
+}
+function closeModal(){
+  var was = state.modal && state.modal.kind;
+  cancelRec();
+  state.modal = null;
+  renderModal();
+  if(was==='record') render();
+}
+
+function renderModal(){
+  var existing = document.getElementById('modalHost');
+  if(existing) existing.remove();
+  if(!state.modal) return;
+  var m = state.modal;
+  var host = document.createElement('div');
+  host.id = 'modalHost';
+  var html = '<div class="modal-backdrop" id="modalBackdrop"><div class="modal">';
+  var recItem = null;
+
+  if(m.kind==='word'){
+    var cat = catById(m.catId);
+    var enOnly = cat && cat.course==='en';
+    html += '<h3>'+(m.itemId ? 'Edit word' : 'Add word')+'</h3>';
+    html += '<div class="field"><label>Jinghpaw'+(enOnly?' (optional for now)':'')+'</label><input id="mJp" type="text" value="'+esc(m.jp)+'" placeholder="e.g. shat"></div>';
+    html += '<div class="field"><label>English</label><input id="mEn" type="text" value="'+esc(m.en)+'" placeholder="e.g. rice / food"></div>';
+    html += '<div class="field"><label>Note (optional)'+(learningEn()?' — shown in the English course':' — shown in the Jinghpaw course')+'</label><input id="mNote" type="text" value="'+esc(m.note)+'" placeholder="usage note, tone note, example word…"></div>';
+    html += '<div class="field"><label>'+esc(audioLabel())+'</label>';
+    if(m.hasAudio && !m.removeAudioFlag){
+      html += '<div style="display:flex; gap:8px; margin-bottom:8px;"><button type="button" class="audio-btn" id="mPlayAudio">▶ Play current recording</button><button type="button" class="btn secondary small" id="mRemoveAudio">Remove</button></div>';
+    }
+    if(m.pendingAudioDataUrl){
+      html += '<div style="margin-bottom:8px;"><button type="button" class="audio-btn" id="mPlayPending">▶ Play new recording</button> <span style="font-size:12.5px; color:var(--jade);">will save with this word</span></div>';
+    }
+    html += '<div class="rec-row"><button type="button" class="btn small rec-btn" id="mRec">● Record</button><span class="rec-time" id="mRecTime"></span></div>';
+    html += '<div class="file-hint">or choose a recorded file: <input type="file" accept="audio/*" id="mAudioFile"></div>';
+    html += '</div>';
+    html += '<div class="modal-actions"><button class="btn secondary" id="modalCancel">Cancel</button><button class="btn" id="modalSave">Save</button></div>';
+  } else if(m.kind==='delete'){
+    html += '<h3>Delete word?</h3><p style="margin-top:6px; color:#5a4d42;">'+esc(m.label)+'</p>';
+    html += '<div class="modal-actions"><button class="btn secondary" id="modalCancel">Cancel</button><button class="btn danger" id="modalDelete">Delete</button></div>';
+  } else if(m.kind==='record'){
+    var rc = catById(m.catId);
+    recItem = rc.items.filter(function(i){ return i.id===m.queue[m.pos]; })[0];
+    var more = m.pos < m.queue.length - 1;
+    html += '<h3>Record pronunciation</h3>';
+    html += '<div class="muted-strong">'+(m.pos+1)+' of '+m.queue.length+'</div>';
+    html += '<div class="rec-word">'+esc(tgt(recItem))+'</div>';
+    html += '<div class="rec-sub">'+esc(nat(recItem) || '')+'</div>';
+    html += '<p class="file-hint" style="margin:0 0 10px 0;">'+(learningEn() ? 'Say the English word clearly, in your own voice.' : 'Say the Jinghpaw word clearly.')+'</p>';
+    if(audioOk(recItem)) html += '<div style="margin-bottom:8px;"><button type="button" class="audio-btn" id="rPlayCur">▶ Play current recording</button></div>';
+    html += '<div class="rec-row"><button type="button" class="btn rec-btn" id="rRec">● Record</button><span class="rec-time" id="rRecTime"></span></div>';
+    if(m.pending) html += '<div style="margin:10px 0;"><button type="button" class="audio-btn" id="rPlayNew">▶ Play new recording</button> <span style="font-size:12.5px; color:var(--jade);">ready to save</span></div>';
+    html += '<div class="modal-actions"><button class="btn secondary" id="modalCancel">Close</button><button class="btn secondary" id="rSkip">'+(more?'Skip':'Finish')+'</button><button class="btn" id="rSave"'+(m.pending?'':' disabled')+'>'+(more?'Save &amp; next':'Save')+'</button></div>';
+  } else if(m.kind==='import'){
+    html += '<h3>Replace everything with this file?</h3>';
+    html += '<p style="margin-top:6px; color:#5a4d42;">This pack has '+m.info.words+' words and phrases, '+m.info.recordings+' recordings and '+m.info.ui+' lines of interface text. Importing replaces what is in this app now.</p>';
+    html += '<div class="modal-actions"><button class="btn secondary" id="modalCancel">Cancel</button><button class="btn danger" id="mImport">Replace</button></div>';
+  }
+  html += '</div></div>';
+  host.innerHTML = html;
+  document.body.appendChild(host);
+
+  document.getElementById('modalCancel').addEventListener('click', closeModal);
+  var backdrop = document.getElementById('modalBackdrop');
+  backdrop.addEventListener('click', function(e){ if(e.target===backdrop) closeModal(); });
+
+  if(m.kind==='word'){
+    var af = document.getElementById('mAudioFile');
+    if(af) af.addEventListener('change', function(){
+      var f = af.files[0]; if(!f) return;
+      if(f.size > 4.5*1024*1024){ showToast('That clip is a bit large — try something under ~4MB.'); return; }
+      captureModalFields();
+      readFileAsDataURL(f).then(function(d){ m.pendingAudioDataUrl = d; m.removeAudioFlag = false; renderModal(); });
+    });
+    var pa = document.getElementById('mPlayAudio');
+    if(pa) pa.addEventListener('click', function(){ playAudioFor(m.itemId); });
+    var pp = document.getElementById('mPlayPending');
+    if(pp) pp.addEventListener('click', function(){ playSrc(m.pendingAudioDataUrl); });
+    var ra = document.getElementById('mRemoveAudio');
+    if(ra) ra.addEventListener('click', function(){ captureModalFields(); m.removeAudioFlag = true; renderModal(); });
+    var mr = document.getElementById('mRec');
+    if(mr) mr.addEventListener('click', function(){
+      toggleRec('mRec', 'mRecTime', function(d){ captureModalFields(); m.pendingAudioDataUrl = d; m.removeAudioFlag = false; renderModal(); });
+    });
+
+    document.getElementById('modalSave').addEventListener('click', function(){
+      if(rec.mr && rec.mr.state==='recording'){ showToast('Stop the recording first.'); return; }
+      var jp = document.getElementById('mJp').value.trim();
+      var en = document.getElementById('mEn').value.trim();
+      var note = document.getElementById('mNote').value.trim();
+      var c = catById(m.catId);
+      var needJp = !(c && c.course==='en');
+      if(!en || (needJp && !jp)){ showToast(needJp ? 'Please fill in both the Jinghpaw word and its English meaning.' : 'Please fill in the English word.'); return; }
+      var targetId = m.itemId || m.newId;
+      var it;
+      if(m.itemId){
+        it = c.items.filter(function(i){ return i.id===m.itemId; })[0];
+        it.jp = jp; it.en = en;
+      } else {
+        it = {id:targetId, jp:jp, en:en};
+        if(c && c.course) it.course = c.course;
+        c.items.push(it);
+      }
+      if(note) it[m.noteField] = note; else delete it[m.noteField];
+
+      var flag = audioFlag();
+      var step = Promise.resolve();
+      if(m.pendingAudioDataUrl){
+        step = setAudio(targetId, m.pendingAudioDataUrl).then(function(){ it[flag] = true; delete audioCache[audioKey(targetId)]; });
+      } else if(m.removeAudioFlag){
+        step = deleteAudio(targetId).then(function(){ it[flag] = false; delete audioCache[audioKey(targetId)]; });
+      }
+      step.then(function(){ return saveContent(state.categories); }).then(function(){
+        showToast(m.itemId ? 'Word updated.' : 'Word added.');
+        state.modal = null;
+        render();
+      });
+    });
+  } else if(m.kind==='delete'){
+    document.getElementById('modalDelete').addEventListener('click', function(){
+      var c = catById(m.catId);
+      c.items = c.items.filter(function(i){ return i.id!==m.itemId; });
+      deleteAllAudio(m.itemId).then(function(){
+        delete audioCache['audio_'+m.itemId]; delete audioCache['audioEn_'+m.itemId];
+        return saveContent(state.categories);
+      }).then(function(){
+        showToast('Word deleted.');
+        state.modal = null;
+        render();
+      });
+    });
+  } else if(m.kind==='record'){
+    function nextWord(){
+      m.pos += 1; m.pending = null;
+      if(m.pos >= m.queue.length){ closeModal(); showToast('All done.'); }
+      else renderModal();
+    }
+    document.getElementById('rRec').addEventListener('click', function(){
+      toggleRec('rRec', 'rRecTime', function(d){ m.pending = d; renderModal(); });
+    });
+    var pc = document.getElementById('rPlayCur');
+    if(pc) pc.addEventListener('click', function(){ playAudioFor(recItem.id); });
+    var pn = document.getElementById('rPlayNew');
+    if(pn) pn.addEventListener('click', function(){ playSrc(m.pending); });
+    document.getElementById('rSkip').addEventListener('click', function(){ cancelRec(); nextWord(); });
+    document.getElementById('rSave').addEventListener('click', function(){
+      if(!m.pending) return;
+      var flag = audioFlag();
+      setAudio(recItem.id, m.pending).then(function(){
+        recItem[flag] = true;
+        delete audioCache[audioKey(recItem.id)];
+        return saveContent(state.categories);
+      }).then(function(){ showToast('Saved.'); nextWord(); });
+    });
+  } else if(m.kind==='import'){
+    document.getElementById('mImport').addEventListener('click', function(){
+      applyPack(m.info.pack).then(function(r){
+        state.categories = r.categories; state.ui = r.ui; audioCache = {};
+        return Promise.all([saveContent(state.categories), saveUi()]);
+      }).then(function(){
+        state.modal = null;
+        showToast('Content pack imported.');
+        goTo({name:'intro'});
+      });
+    });
+  }
+}
+
+/* =====================================================================
+   BOOT
+   ===================================================================== */
+Promise.all([loadContent(), sGet('progress', {}), sGet('settings', {mode:null}), sGet('ui_jp', {})]).then(function(res){
+  state.categories = res[0];
+  state.progress = res[1] || {};
+  state.mode = (res[2] && (res[2].mode==='en2jp' || res[2].mode==='jp2en')) ? res[2].mode : null;
+  state.ui = (res[3] && Object.keys(res[3]).length) ? res[3] : (starterUi || {});
+  if(starterUi && !(res[3] && Object.keys(res[3]).length)) saveUi();
+  state.loaded = true;
+  render();
+}).catch(function(){
+  state.categories = seedCategories();
+  state.loaded = true;
+  render();
+});
+
+render();
+})();
+
+</script>
+</body>
+</html>

@@ -23,6 +23,20 @@
 // of every tag view it belongs to (before the normal newest-first sort).
 const PROJECTS = [
   {
+    "id": "jinghpaw-ga",
+    "title": "Jinghpaw ga — learn Jinghpaw and English",
+    "categories": ["Kachin", "Learning media", "Projects"],
+    "date": "2026-10",
+    "description": "A two-way language-learning app for Jinghpaw (Kachin) and English. English speakers can learn Jinghpaw, and Jinghpaw speakers can learn English.\n\n**Try it above:** choose *Learn Jinghpaw* or *Learn English*, work through the lessons, then test yourself in Quizzes.\n\n- Lessons: alphabet, greetings, numbers, colors, family, body parts, animals and more\n- Quizzes: multiple choice, pair matching, flashcards and typing\n- Voice recordings for pronunciation are being added\n- Works offline on Windows; a Google Play version is planned\n\nThe vocabulary is a work in progress. Corrections from Jinghpaw speakers are welcome.",
+    "link": "",
+    "image": "images/jinghpaw-ga.jpg",
+    "images": [],
+    "embed": "apps/jinghpaw-ga/index.html",
+    "location": "",
+    "place": "",
+    "featured": false
+  },
+  {
     "id": "portraits-of-independence",
     "title": "Portraits of Independence",
     "categories": ["Exhibitions", "Photography", "Kachin"],
