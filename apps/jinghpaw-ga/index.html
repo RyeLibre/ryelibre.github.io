@@ -793,7 +793,10 @@ function courseOk(cr){
 function catVisible(c){ return courseOk(c.course); }
 function itemVisible(it){ return courseOk(it.course); }
 function visibleCats(){ return state.categories.filter(function(c){ return catVisible(c) && (EDITOR || visibleItems(c).length>0); }); }
-function visibleItems(c){ return c.items.filter(itemVisible); }
+function visibleItems(c){
+  /* visitors only see words that are filled in; the editor also sees blanks so they can be completed */
+  return c.items.filter(function(it){ return itemVisible(it) && (EDITOR || (it.jp && it.en) || c.course==='en' || it.course==='en'); });
+}
 function usable(it){ return itemVisible(it) && !!it.jp && !!it.en; }
 function usableItems(c){ return c.items.filter(usable); }
 function allItemsPool(){
