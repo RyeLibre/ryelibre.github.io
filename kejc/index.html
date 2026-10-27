@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" href="img/favicon.png">
 <title>Kachin Environmental Justice Center (KEJC)</title>
 <meta name="description" content="KEJC documents environmental and human rights harms, supports affected communities, and advocates for environmental justice in Kachin State, Myanmar.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -121,7 +122,12 @@
   .approach h4{font-size:1.15rem;margin-bottom:8px}
   .approach p{font-size:1rem;opacity:.9}
   .approach-title{margin-top:72px;font-size:1.5rem}
-  .approach-title + .approach{margin-top:20px}
+  .approach-wrap{display:grid;grid-template-columns:3fr 1fr;gap:24px;margin-top:20px}
+  .approach-wrap .approach{margin-top:0;grid-template-columns:repeat(3,1fr);height:calc(100% - 40px)}
+  .approach.future{grid-template-columns:1fr;background:transparent;color:var(--ink);border:2px dashed var(--forest)}
+  .phase{font-size:1rem;font-weight:500;margin-bottom:12px}
+  .logo-full{width:min(260px,70%);height:auto;display:block;margin-bottom:32px}
+  .mark img{flex:none;display:block}
 
   .join{background:var(--forest);color:var(--stone)}
   .join .wrap{display:grid;grid-template-columns:1.2fr 1fr;gap:64px}
@@ -145,7 +151,7 @@
     .report{grid-template-columns:72px 1fr}
     .report .btn{grid-column:2;justify-self:start}
     .vm div,.vm div+div{padding:28px 0 0;border-left:0}
-    .approach{grid-template-columns:1fr 1fr}
+    .approach,.approach-wrap,.approach-wrap .approach{grid-template-columns:1fr}
     .approach li+li{border-left:0}
     .about-grid{gap:32px}
     section{padding:64px 0}
@@ -157,7 +163,7 @@
 <header>
   <div class="wrap bar">
     <a class="mark" href="#top" aria-label="KEJC home">
-      <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" fill="#A3201F"/><path d="M20 5 35 20 20 35 5 20Z" fill="none" stroke="#E9EBE4" stroke-width="3"/><path d="M20 13 27 20 20 27 13 20Z" fill="#C9A23A"/></svg>
+      <img src="img/kejc-mark-white.png" alt="" width="62" height="46">
       <span>Kachin Environmental<br>Justice Center</span>
     </a>
     <ul class="nav">
@@ -272,6 +278,7 @@
       <h2>About Us</h2>
       <div class="about-grid">
         <div>
+          <img class="logo-full" src="img/kejc-logo.png" alt="KEJC logo: Kachin Environmental Justice Center">
           <div class="founded">2023</div>
           <p class="founded-note">Founded in Myitkyina Township, Kachin State, by three young environmental defenders.</p>
         </div>
@@ -294,12 +301,22 @@
       </div>
 
       <h3 class="approach-title">Our approach</h3>
-      <ul class="approach">
-        <li><h4>Community empowerment</h4><p>Supporting affected communities to defend their rights.</p></li>
-        <li><h4>Legal advocacy</h4><p>Upholding the rule of law and seeking justice.</p></li>
-        <li><h4>Documentation</h4><p>Recording environmental and human rights harms.</p></li>
-        <li><h4>Collaboration</h4><p>Working with national and international partners.</p></li>
-      </ul>
+      <div class="approach-wrap">
+        <div>
+          <h4 class="phase">Current activities</h4>
+          <ul class="approach">
+            <li><h4>Documentation</h4><p>Recording environmental and human rights harms.</p></li>
+            <li><h4>Community empowerment</h4><p>Supporting affected communities to defend their rights.</p></li>
+            <li><h4>Collaborations</h4><p>Working with national and international partners.</p></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="phase">Future plans</h4>
+          <ul class="approach future">
+            <li><h4>Legal advocacy</h4><p>Upholding the rule of law and seeking justice.</p></li>
+          </ul>
+        </div>
+      </div>
     </div>
   </section>
 
