@@ -1226,14 +1226,14 @@ const PROJECTS = [
     "id": "educator-university-of-colorado-boulder",
     "title": "University of Colorado Boulder",
     "categories": ["Educator"],
-    "date": "2026-11-05",
-    "description": "",
+    "date": "2017-08-01",
+    "description": "MFA graduate student, 2017–2019.",
     "link": "https://www.colorado.edu/",
     "image": "images/pool/university-of-colorado-boulder-logo.png",
     "imageFit": "contain",
     "images": [],
-    "location": "",
-    "place": "",
+    "location": "Boulder",
+    "place": "University of Colorado Boulder",
     "featured": false
   },
   {
