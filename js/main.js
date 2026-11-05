@@ -195,7 +195,36 @@ function renderProjects() {
   gridEl.innerHTML = "";
   emptyStateEl.hidden = filtered.length !== 0;
 
-  filtered.forEach((p) => {
+  // With a single category selected that defines a group (e.g. Educator →
+  // Organized), list the group's posts below a labelled break.
+  let ordered = filtered;
+  let groupBreakAt = -1;
+  let group = null;
+  if (!state.activeSubtag && state.activeTags.size === 1 && typeof TAG_GROUPS !== "undefined") {
+    const activeKey = [...state.activeTags][0];
+    const groupKey = Object.keys(TAG_GROUPS).find((k) => k.toLowerCase() === activeKey);
+    if (groupKey) {
+      group = TAG_GROUPS[groupKey];
+      const gKey = group.tag.toLowerCase();
+      const inGroup = (p) => (p.categories || []).some((c) => c.toLowerCase() === gKey);
+      const rest = filtered.filter((p) => !inGroup(p));
+      const grouped = filtered.filter(inGroup);
+      if (grouped.length > 0) {
+        ordered = [...rest, ...grouped];
+        groupBreakAt = rest.length;
+      }
+    }
+  }
+
+  ordered.forEach((p, i) => {
+    if (i === groupBreakAt) {
+      const divider = document.createElement("div");
+      divider.className = "grid-group-break";
+      divider.innerHTML =
+        `<h3 class="grid-group-title">${escapeHtml(group.heading)}</h3>` +
+        (group.note ? `<p class="grid-group-note">${escapeHtml(group.note)}</p>` : "");
+      gridEl.appendChild(divider);
+    }
     gridEl.appendChild(renderCard(p));
   });
 
