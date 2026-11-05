@@ -27,7 +27,7 @@ const PROJECTS = [
     "title": "Jinghpaw ga — learn Jinghpaw and English",
     "categories": ["Kachin", "Learning media", "Projects"],
     "date": "2026-10",
-    "description": "A two-way language-learning app for Jinghpaw (Kachin) and English. English speakers can learn Jinghpaw, and Jinghpaw speakers can learn English.\n\n**Try it above:** choose *Learn Jinghpaw* or *Learn English*, work through the lessons, then test yourself in Quizzes.\n\n- Lessons: alphabet, greetings, numbers, colors, family, body parts, animals and more\n- Quizzes: multiple choice, pair matching, flashcards and typing\n- Voice recordings for pronunciation are being added\n- Works offline on Windows; a Google Play version is planned\n\nThe vocabulary is a work in progress. Corrections from Jinghpaw speakers are welcome.",
+    "description": "A two-way language-learning app for Jinghpaw (Kachin) and English. English speakers can learn Jinghpaw, and Jinghpaw speakers can learn English.",
     "link": "",
     "image": "images/jinghpaw-ga.jpg",
     "images": [],
