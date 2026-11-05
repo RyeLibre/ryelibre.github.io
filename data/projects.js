@@ -1313,7 +1313,7 @@ const PROJECTS = [
     "description": "Studio Sakse II @ CNX",
     "link": "",
     "image": "images/studio-sakse-ii-cnx.jpg",
-    "images": [],
+    "images": ["images/pool/studio-sakse-ii-book-table.jpg"],
     "location": "Chiang Mai",
     "place": "",
     "featured": false
