@@ -1143,11 +1143,11 @@ const PROJECTS = [
     "id": "documentary-arts-asia-laiza",
     "title": "Documentary Arts Asia Laiza",
     "categories": ["Curation", "Kachin", "Studios"],
-    "date": "2026-10-01",
+    "date": "2013-10",
     "description": "DocArtsAsia studio in Laiza.",
     "link": "",
     "image": "images/docartsasia-laiza-rooftop-screening.jpg",
-    "images": ["images/pool/docartsasia-laiza-kids-reading-books.jpg", "images/pool/docartsasia-laiza-center-visit.jpg"],
+    "images": ["images/pool/docartsasia-laiza-kids-reading-books.jpg", "images/pool/docartsasia-laiza-center-visit.jpg", "images/pool/laiza-center-photobook-israeli-soldiers.jpg", "images/pool/laiza-center-children-reading-photo-books.jpg", "images/pool/laiza-center-student-with-canon-camera.jpg", "images/pool/laiza-center-mounting-print-on-frame.jpg", "images/pool/laiza-center-workshop-classroom.jpg", "images/pool/laiza-center-students-checking-camera.jpg"],
     "location": "Laiza",
     "place": "",
     "featured": false
