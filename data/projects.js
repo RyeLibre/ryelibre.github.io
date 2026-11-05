@@ -1317,5 +1317,19 @@ const PROJECTS = [
     "location": "Chiang Mai",
     "place": "",
     "featured": false
+  },
+  {
+    "id": "ukraine-in-focus-sakse",
+    "title": "Ukraine in Focus",
+    "categories": ["Exhibitions", "Curation", "Photography", "Sakse"],
+    "date": "2022-03-24",
+    "description": "Photo exhibition & installation from Ukrainian photo artist Maxim Dondyuk, at Studio Sakse II just after the war began.\n\nMarch 24th, Thursday, 7pm.",
+    "link": "",
+    "image": "images/ukraine-in-focus-sakse.jpg",
+    "imageFit": "contain",
+    "images": [],
+    "location": "Chiang Mai",
+    "place": "Studio Sakse II",
+    "featured": true
   }
 ];
