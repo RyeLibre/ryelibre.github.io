@@ -111,9 +111,46 @@ function removeGalleryImage(id, index) {
   }
 }
 
+// Published gallery photos (from data/projects.js) can't be deleted from the
+// browser, so "Remove" hides them on this browser and records the removal;
+// "Copy removed photos" (or the export) hands the list over to be made
+// permanent in data/projects.js.
+const HIDDEN_GALLERY_KEY = "portfolio.hiddenGallery";
+
+function loadHiddenGallery() {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(HIDDEN_GALLERY_KEY) || "{}");
+    return parsed && typeof parsed === "object" ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+function hideGalleryImage(id, src) {
+  const hidden = loadHiddenGallery();
+  if (!hidden[id]) hidden[id] = [];
+  if (!hidden[id].includes(src)) hidden[id].push(src);
+  try {
+    localStorage.setItem(HIDDEN_GALLERY_KEY, JSON.stringify(hidden));
+  } catch {}
+}
+
+function unhideGalleryImages(id) {
+  const hidden = loadHiddenGallery();
+  delete hidden[id];
+  try {
+    localStorage.setItem(HIDDEN_GALLERY_KEY, JSON.stringify(hidden));
+  } catch {}
+}
+
+function getVisibleDataImages(project) {
+  const hidden = loadHiddenGallery()[project.id] || [];
+  return (project.images || []).filter((src) => !hidden.includes(src));
+}
+
 function getGalleryImages(project) {
   const overrides = loadGalleryOverrides()[project.id] || [];
-  return [...(project.images || []), ...overrides];
+  return [...getVisibleDataImages(project), ...overrides];
 }
 
 // A pool of uploaded photos, kept independent of any one post, so a photo
@@ -614,6 +651,7 @@ function exportDrafts() {
     featuredOrder: loadFeaturedOrder(),
     imageOverrides: loadImageOverrides(),
     galleryOverrides: loadGalleryOverrides(),
+    hiddenGallery: loadHiddenGallery(),
     cityCoordOverrides: loadCityCoordOverrides(),
     mediaPool: loadMediaPool(),
   };

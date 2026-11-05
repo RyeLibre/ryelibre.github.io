@@ -134,7 +134,8 @@ function showFlashAt(index) {
 }
 
 function buildGallery(project) {
-  const dataImages = project.images || [];
+  const dataImages = getVisibleDataImages(project);
+  const hiddenCount = (loadHiddenGallery()[project.id] || []).length;
   const overrides = loadGalleryOverrides()[project.id] || [];
   const isFlash = !!project.gallerySlideshow;
 
@@ -187,6 +188,18 @@ function buildGallery(project) {
       img.addEventListener("click", () => showInCover(fig, src));
     }
     fig.appendChild(img);
+
+    const hideBtn = document.createElement("button");
+    hideBtn.type = "button";
+    hideBtn.className = "reset-photo-btn gallery-remove";
+    hideBtn.textContent = "Remove";
+    hideBtn.title = "Remove this photo from the gallery";
+    hideBtn.addEventListener("click", () => {
+      hideGalleryImage(project.id, src);
+      renderPost();
+    });
+    fig.appendChild(hideBtn);
+
     grid.appendChild(fig);
   });
 
@@ -236,6 +249,35 @@ function buildGallery(project) {
     });
   });
   addWrap.appendChild(addBtn);
+
+  if (hiddenCount > 0) {
+    const copyBtn = document.createElement("button");
+    copyBtn.type = "button";
+    copyBtn.className = "add-btn";
+    copyBtn.textContent = "Copy removed photos (" + hiddenCount + ")";
+    copyBtn.title = "Copy the list of removed photos so the removal can be made permanent for everyone";
+    copyBtn.addEventListener("click", () => {
+      const text =
+        "Remove from post " + project.id + ":\n" + (loadHiddenGallery()[project.id] || []).join("\n");
+      const done = () => {
+        copyBtn.textContent = "Copied!";
+        setTimeout(() => { copyBtn.textContent = "Copy removed photos (" + hiddenCount + ")"; }, 1500);
+      };
+      if (navigator.clipboard) navigator.clipboard.writeText(text).then(done, () => window.prompt("Copy this:", text));
+      else window.prompt("Copy this:", text);
+    });
+    addWrap.appendChild(copyBtn);
+
+    const undoBtn = document.createElement("button");
+    undoBtn.type = "button";
+    undoBtn.className = "add-btn";
+    undoBtn.textContent = "Restore removed photos";
+    undoBtn.addEventListener("click", () => {
+      unhideGalleryImages(project.id);
+      renderPost();
+    });
+    addWrap.appendChild(undoBtn);
+  }
 
   section.appendChild(addWrap);
 

@@ -829,13 +829,13 @@ const PROJECTS = [
   },
   {
     "id": "unorthodox-inside-the-asoke",
-    "title": "Unorthodox: Inside the Asoke",
+    "title": "Unorthodox : Inside the Asoke",
     "categories": ["Curation", "Exhibitions"],
     "date": "2015-06",
     "description": "Photo exhibition by Note.",
     "link": "",
     "image": "images/pool/monk-at-exhibition-wall.png",
-    "images": ["images/pool/ipa-juror-badge-2022.webp", "images/pool/unorthodox-opening-night-docartsasia.jpg", "images/pool/unorthodox-visitors-before-monk-portrait.jpg", "images/pool/unorthodox-volunteer-talking-to-visitors.jpg", "images/pool/unorthodox-guests-before-portraits.jpg", "images/pool/unorthodox-wall-and-dvd-shelf.jpg"],
+    "images": ["images/pool/unorthodox-opening-night-docartsasia.jpg", "images/pool/unorthodox-visitors-before-monk-portrait.jpg", "images/pool/unorthodox-volunteer-talking-to-visitors.jpg", "images/pool/unorthodox-guests-before-portraits.jpg", "images/pool/unorthodox-wall-and-dvd-shelf.jpg"],
     "location": "Chiang Mai",
     "place": "DocArtsAsia 2",
     "featured": false
