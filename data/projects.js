@@ -1035,7 +1035,7 @@ const PROJECTS = [
     "id": "peace-media-workshop-sri-lanka",
     "title": "Peace & Media Workshop in Sri Lanka",
     "categories": ["Peace-work", "Educator", "CV", "Learning media"],
-    "date": "2026-09-30",
+    "date": "2015-10-01",
     "description": "Peace & media workshop in Sri Lanka, connected to the Olympic Truce.",
     "link": "https://www.olympics.com/ioc/olympic-truce",
     "image": "images/pool/olympic-truce-logo.png",
