@@ -52,7 +52,7 @@ const PROJECTS = [
   {
     "id": "foundry-photojournalism-workshops",
     "title": "Foundry Photojournalism Workshops",
-    "categories": ["Photography", "Educator", "CNX"],
+    "categories": ["Photography", "Educator", "CNX", "Organized"],
     "date": "2026-09-19",
     "description": "Foundry Photojournalism Workshops 2012",
     "link": "",
