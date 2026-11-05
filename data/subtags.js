@@ -7,5 +7,6 @@ const TAG_SUBTAGS = {
   "Design": ["Logos", "Bags", "Bikes", "Scarfs"],
   "Photography": ["Unicorn Liberation Front", "Lubecker Hutchen Archivist"],
   "Exhibitions": ["Photo works", "Curated works", "Collaborated works"],
+  "Educator": ["Organized"],
   "Steal this idea": ["Rye's Ideas", "All Projects to Steal", "All Projects to Support"],
 };

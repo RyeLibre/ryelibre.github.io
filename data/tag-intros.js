@@ -33,8 +33,8 @@ const TAG_INTROS = {
   "Exhibitions":
     "A running record of exhibitions — curated, designed, or exhibited in — from small pop-ups to larger group shows.\n\nEach post usually covers the concept, the install, and a few lessons learned along the way.\n\n*Replace this intro with your own description of the Exhibitions category.*",
 
-  "Workshops":
-    "Notes from workshops facilitated or attended — the format, what worked, what didn't, and what to change next time.\n\nThis tag is as much a working log as a portfolio section.\n\n*Replace this intro with your own description of the Workshops category.*",
+  "Educator":
+    "Workshops and training I've taught — the format, what worked, what didn't, and what to change next time.\n\nThe *Organized* group below collects workshops I set up and hosted but didn't teach myself.",
 
   "Books":
     "A collection of books.\n\nSome with my images or words.\n\nSome about my projects.",

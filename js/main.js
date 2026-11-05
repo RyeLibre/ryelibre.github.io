@@ -689,7 +689,7 @@ const TIMELINE_TAG_COLORS = [
   ["Design", "#eab308"],
   ["Photography", "#22c55e"],
   ["Film", "#14b8a6"],
-  ["Workshops", "#3b82f6"],
+  ["Educator", "#3b82f6"],
   ["Production", "#8b5cf6"],
   ["Studios", "#ec4899"],
   ["CV", "#06b6d4"],

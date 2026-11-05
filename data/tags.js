@@ -11,7 +11,7 @@ const FEATURED_TAGS = [
   "Exhibitions",
   "Festivals",
   "Kachin",
-  "Workshops",
+  "Educator",
   "Books",
   "Learning media",
   "Hokkaido",

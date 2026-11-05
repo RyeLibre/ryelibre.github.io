@@ -52,7 +52,7 @@ const PROJECTS = [
   {
     "id": "foundry-photojournalism-workshops",
     "title": "Foundry Photojournalism Workshops",
-    "categories": ["Photography", "Workshops", "CNX"],
+    "categories": ["Photography", "Educator", "CNX"],
     "date": "2026-09-19",
     "description": "Foundry Photojournalism Workshops 2012",
     "link": "",
@@ -260,7 +260,7 @@ const PROJECTS = [
   {
     "id": "f28-chiang-mai-month-of-photography",
     "title": "F/28   Chiang Mai Month of Photography",
-    "categories": ["Projects", "Festivals", "Curation", "Photography", "Exhibitions", "Workshops", "Books", "CNX", "Production", "Screenings"],
+    "categories": ["Projects", "Festivals", "Curation", "Photography", "Exhibitions", "Educator", "Books", "CNX", "Production", "Screenings"],
     "date": "2018-02-19",
     "description": "Annual photography festival",
     "link": "",
@@ -418,7 +418,7 @@ const PROJECTS = [
   {
     "id": "photography-trainner",
     "title": "Photography Trainner",
-    "categories": ["Photography", "Workshops", "CV"],
+    "categories": ["Photography", "Educator", "CV"],
     "date": "2026-09-19",
     "description": "Photography Trainner",
     "link": "",
@@ -510,7 +510,7 @@ const PROJECTS = [
   {
     "id": "teach-in",
     "title": "Teach-in",
-    "categories": ["Kachin", "Workshops", "Talks"],
+    "categories": ["Kachin", "Educator", "Talks"],
     "date": "2022-06-09",
     "description": "",
     "link": "",
@@ -643,7 +643,7 @@ const PROJECTS = [
   {
     "id": "goodbye-my-chechnya",
     "title": "Goodbye My Chechnya",
-    "categories": ["Exhibitions", "Workshops"],
+    "categories": ["Exhibitions", "Educator"],
     "date": "2026-09-20",
     "description": "",
     "link": "",
@@ -669,7 +669,7 @@ const PROJECTS = [
   {
     "id": "cord-keller-teaching-filmmaking-laiza",
     "title": "Cord Keller Teaching Filmmaking in Laiza",
-    "categories": ["Kachin", "Film", "Workshops"],
+    "categories": ["Kachin", "Film", "Educator", "Organized"],
     "date": "2013-10-07",
     "description": "Cord Keller — director/producer of *Survivor* — teaching a filmmaking workshop in Laiza at the DocArtsAsia center.",
     "link": "",
@@ -682,7 +682,7 @@ const PROJECTS = [
   {
     "id": "first-media-workshop-laiza",
     "title": "First Media Workshop in Laiza",
-    "categories": ["Kachin", "Workshops", "Learning media"],
+    "categories": ["Kachin", "Educator", "Learning media"],
     "date": "2008-01-01",
     "description": "First media workshop in Laiza — a one week workshop with writer Tim Patterson. I was in Laiza on a reporting grant from the Pulitzer Center on Crisis Reporting.",
     "link": "",
@@ -833,7 +833,7 @@ const PROJECTS = [
   {
     "id": "portfolio-reviews-foundry-photojournalism-workshop",
     "title": "Portfolio Reviews — Foundry Photojournalism Workshop",
-    "categories": ["Juror", "Photography", "Workshops"],
+    "categories": ["Juror", "Photography", "Educator"],
     "date": "2026-09-30",
     "description": "Portfolio reviewer at the Foundry Photojournalism Workshop.",
     "link": "",
@@ -1034,7 +1034,7 @@ const PROJECTS = [
   {
     "id": "peace-media-workshop-sri-lanka",
     "title": "Peace & Media Workshop in Sri Lanka",
-    "categories": ["Peace-work", "Workshops", "CV", "Learning media"],
+    "categories": ["Peace-work", "Educator", "CV", "Learning media"],
     "date": "2026-09-30",
     "description": "Peace & media workshop in Sri Lanka, connected to the Olympic Truce.",
     "link": "https://www.olympics.com/ioc/olympic-truce",
@@ -1048,7 +1048,7 @@ const PROJECTS = [
   {
     "id": "website-workshop-nawng-nang-myitkyina",
     "title": "Website Workshop for Media Makers and NGOs",
-    "categories": ["Workshops", "Learning media", "Kachin"],
+    "categories": ["Educator", "Learning media", "Kachin"],
     "date": "2018-02-01",
     "description": "Website workshop for media makers and NGOs in Myitkyina, Kachin State. Feb/Mar '18 at the Nawng Nang Center.",
     "link": "",
@@ -1061,7 +1061,7 @@ const PROJECTS = [
   {
     "id": "story-style-workshop-cord-keller",
     "title": "Story & Style Workshop — Cord Keller",
-    "categories": ["Workshops", "Curation", "Photography"],
+    "categories": ["Educator", "Curation", "Photography", "Organized"],
     "date": "2026-09-30",
     "description": "Full house for the Story & Style workshop by Cord Keller at DocArtsAsia 2, Chiang Mai.",
     "link": "",
@@ -1074,7 +1074,7 @@ const PROJECTS = [
   {
     "id": "let-my-voice-be-heard-workshop",
     "title": "Workshop: Let My Voice Be Heard",
-    "categories": ["Workshops", "Kachin", "Peace-work", "Photography"],
+    "categories": ["Educator", "Kachin", "Peace-work", "Photography"],
     "date": "2026-09-30",
     "description": "Multi-month workshop series for displaced people in Kachin.",
     "link": "",
