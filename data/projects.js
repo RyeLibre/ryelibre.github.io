@@ -1340,5 +1340,18 @@ const PROJECTS = [
     "location": "Chiang Mai",
     "place": "Studio Sakse II",
     "featured": true
+  },
+  {
+    "id": "three-line-slippers-blues",
+    "title": "Three-line Slippers Blues",
+    "categories": ["Curation", "Exhibitions", "CNX"],
+    "date": "2015-02-01",
+    "description": "Photography by Seokjin Kim, shown at the 3 Kings Monument as part of the Chiang Mai Documentary Arts Festival, 1st–8th Feb 2015. Festival grand opening party: 1st Feb 2015, 5:30 PM.",
+    "link": "",
+    "image": "images/three-line-slippers-blues.jpg",
+    "images": ["images/pool/three-line-slippers-blues-opening-talk.jpg"],
+    "location": "Chiang Mai",
+    "place": "3 Kings Monument",
+    "featured": false
   }
 ];
