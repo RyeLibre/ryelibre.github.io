@@ -403,6 +403,59 @@ function buildStealSupportDetails(project) {
   return wrap.childElementCount ? wrap : null;
 }
 
+// Featured cards can be dragged onto each other to set their order.
+let draggedFeaturedId = null;
+
+function bindFeaturedDrag(card, id) {
+  card.draggable = true;
+  card.classList.add("featured-draggable");
+  card.addEventListener("dragstart", (e) => {
+    draggedFeaturedId = id;
+    card.classList.add("dragging");
+    e.dataTransfer.effectAllowed = "move";
+    try { e.dataTransfer.setData("text/plain", id); } catch {}
+  });
+  card.addEventListener("dragend", () => {
+    draggedFeaturedId = null;
+    gridEl.querySelectorAll(".dragging, .drag-over").forEach((el) => el.classList.remove("dragging", "drag-over"));
+  });
+  card.addEventListener("dragover", (e) => {
+    if (!draggedFeaturedId || draggedFeaturedId === id) return;
+    e.preventDefault();
+    card.classList.add("drag-over");
+  });
+  card.addEventListener("dragleave", () => card.classList.remove("drag-over"));
+  card.addEventListener("drop", (e) => {
+    e.preventDefault();
+    if (!draggedFeaturedId || draggedFeaturedId === id) return;
+    const ids = state.projects.filter((p) => p.featured).map((p) => p.id);
+    const from = ids.indexOf(draggedFeaturedId);
+    const to = ids.indexOf(id);
+    if (from === -1 || to === -1) return;
+    ids.splice(from, 1);
+    ids.splice(to, 0, draggedFeaturedId);
+    saveFeaturedOrder(ids);
+    state.projects.sort(compareProjects);
+    draggedFeaturedId = null;
+    renderProjects();
+  });
+}
+
+function copyFeaturedOrder() {
+  const ids = state.projects.filter((p) => p.featured).map((p) => p.id);
+  const text = "const FEATURED_ORDER = " + JSON.stringify(ids, null, 2) + ";";
+  const btn = document.getElementById("copy-featured-order-btn");
+  const done = () => {
+    const old = btn.textContent;
+    btn.textContent = "Copied!";
+    setTimeout(() => { btn.textContent = old; }, 1500);
+  };
+  if (navigator.clipboard) navigator.clipboard.writeText(text).then(done, () => window.prompt("Copy this:", text));
+  else window.prompt("Copy this:", text);
+}
+
+document.getElementById("copy-featured-order-btn").addEventListener("click", copyFeaturedOrder);
+
 function renderCard(project) {
   const isDraft = state.draftPostIds.has(project.id);
   const isStealIdea = isStealIdeaProject(project);
@@ -414,6 +467,8 @@ function renderCard(project) {
     if (e.target.closest("a, button, input, textarea, label")) return;
     window.location.href = "post.html?id=" + encodeURIComponent(project.id);
   });
+
+  if (project.featured) bindFeaturedDrag(card, project.id);
 
   card.appendChild(isStealIdea ? renderIndexCard(project) : renderMedia(project));
 

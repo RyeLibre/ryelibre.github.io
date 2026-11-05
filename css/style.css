@@ -1352,3 +1352,8 @@ button {
 .post-not-found a {
   color: var(--accent);
 }
+
+/* Featured cards can be dragged to reorder */
+.featured-draggable { cursor: grab; }
+.featured-draggable.dragging { opacity: 0.4; }
+.featured-draggable.drag-over { outline: 2px dashed currentColor; outline-offset: 4px; }

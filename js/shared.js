@@ -469,10 +469,42 @@ function getCityCoord(key) {
 
 // Featured posts sort first (within any tag, or in the unfiltered "All
 // Projects" view a new visitor lands on), then newest-first by date.
+// Featured posts can be hand-ordered by drag and drop (see FEATURED_ORDER in
+// data/featured-order.js, plus a per-browser override saved while dragging);
+// featured posts not in the list follow it, newest first.
+const FEATURED_ORDER_KEY = "portfolio.featuredOrder";
+
+function loadFeaturedOrder() {
+  try {
+    const raw = localStorage.getItem(FEATURED_ORDER_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) return parsed;
+    }
+  } catch {}
+  return typeof FEATURED_ORDER !== "undefined" && Array.isArray(FEATURED_ORDER) ? FEATURED_ORDER : [];
+}
+
+function saveFeaturedOrder(ids) {
+  try {
+    localStorage.setItem(FEATURED_ORDER_KEY, JSON.stringify(ids));
+  } catch {}
+}
+
 function compareProjects(a, b) {
   const fa = a.featured ? 1 : 0;
   const fb = b.featured ? 1 : 0;
   if (fa !== fb) return fb - fa;
+  if (fa) {
+    const order = loadFeaturedOrder();
+    const ia = order.indexOf(a.id);
+    const ib = order.indexOf(b.id);
+    if (ia !== -1 || ib !== -1) {
+      if (ia === -1) return 1;
+      if (ib === -1) return -1;
+      return ia - ib;
+    }
+  }
   return (b.date || "").localeCompare(a.date || "");
 }
 
@@ -579,6 +611,7 @@ function exportDrafts() {
     draftPosts: loadDraftPosts(),
     postEdits: loadPostEdits(),
     tagIntroEdits: loadTagIntroEdits(),
+    featuredOrder: loadFeaturedOrder(),
     imageOverrides: loadImageOverrides(),
     galleryOverrides: loadGalleryOverrides(),
     cityCoordOverrides: loadCityCoordOverrides(),
