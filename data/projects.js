@@ -326,7 +326,8 @@ const PROJECTS = [
       "images/pool/rebels-reform-freedom-from-fear.jpg",
       "images/pool/rebels-reform-burma-moon-collage.jpg",
       "images/pool/rebels-reform-poster-detail.jpg",
-      "images/pool/rebels-reform-magnet-rail.jpg"
+      "images/pool/rebels-reform-magnet-rail.jpg",
+      "images/pool/rebels-reform-speaker-panel.jpg"
     ],
     "location": "Boulder, CO",
     "place": "",
