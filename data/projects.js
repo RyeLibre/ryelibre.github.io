@@ -318,7 +318,16 @@ const PROJECTS = [
     "description": "Showcase of photography exhibitions",
     "link": "",
     "image": "images/rebels-and-reform.jpg",
-    "images": [],
+    "images": [
+      "images/pool/rebels-reform-myanmar-photo-archive-plinths.jpg",
+      "images/pool/rebels-reform-posters-curators-intro.jpg",
+      "images/pool/rebels-reform-everyday-kachin-wall.jpg",
+      "images/pool/rebels-reform-let-my-voice-be-heard-prints.jpg",
+      "images/pool/rebels-reform-freedom-from-fear.jpg",
+      "images/pool/rebels-reform-burma-moon-collage.jpg",
+      "images/pool/rebels-reform-poster-detail.jpg",
+      "images/pool/rebels-reform-magnet-rail.jpg"
+    ],
     "location": "Boulder, CO",
     "place": "",
     "featured": true
