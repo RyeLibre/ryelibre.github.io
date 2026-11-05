@@ -230,6 +230,17 @@ button {
   animation: category-intro-fade 3s ease;
 }
 
+.category-intro-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin: 0 0 6px;
+}
+
+.category-intro-header .category-intro-title {
+  margin: 0;
+}
+
 .category-intro-title {
   margin: 0 0 6px;
   font-size: 1.15rem;

@@ -399,6 +399,36 @@ function updatePost(id, fields) {
   }
 }
 
+// Locally edited category intros, keyed by lowercase tag name. Applied on top
+// of data/tag-intros.js the same way post edits are applied on top of projects.js.
+const TAG_INTRO_EDITS_KEY = "portfolio.tagIntroEdits";
+
+function loadTagIntroEdits() {
+  try {
+    return JSON.parse(localStorage.getItem(TAG_INTRO_EDITS_KEY) || "{}");
+  } catch {
+    return {};
+  }
+}
+
+function saveTagIntroEdits(edits) {
+  try {
+    localStorage.setItem(TAG_INTRO_EDITS_KEY, JSON.stringify(edits));
+  } catch {}
+}
+
+function setTagIntroEdit(key, text) {
+  const edits = loadTagIntroEdits();
+  edits[key.toLowerCase()] = text;
+  saveTagIntroEdits(edits);
+}
+
+function clearTagIntroEdit(key) {
+  const edits = loadTagIntroEdits();
+  delete edits[key.toLowerCase()];
+  saveTagIntroEdits(edits);
+}
+
 const CITY_COORD_OVERRIDES_KEY = "portfolio.cityCoordOverrides";
 
 function loadCityCoordOverrides() {
@@ -548,6 +578,7 @@ function exportDrafts() {
     draftTags: loadDraftTags(),
     draftPosts: loadDraftPosts(),
     postEdits: loadPostEdits(),
+    tagIntroEdits: loadTagIntroEdits(),
     imageOverrides: loadImageOverrides(),
     galleryOverrides: loadGalleryOverrides(),
     cityCoordOverrides: loadCityCoordOverrides(),

@@ -92,6 +92,24 @@
   </div>
 </dialog>
 
+<dialog id="intro-dialog" class="dialog">
+  <form id="intro-form" class="dialog-form">
+    <h3 id="intro-dialog-title">Edit intro</h3>
+    <p class="section-hint">Shown above the posts when only this tag is selected. Markdown supported.</p>
+    <label for="intro-text">Intro text</label>
+    <textarea id="intro-text" rows="10" required></textarea>
+    <div class="dialog-actions">
+      <button type="button" id="intro-reset-btn" class="btn-secondary" hidden>Reset to published</button>
+      <button type="button" class="btn-secondary" data-close-dialog>Cancel</button>
+      <button type="submit" class="btn-primary">Save intro</button>
+    </div>
+  </form>
+  <div id="intro-generated" class="generated-code" hidden>
+    <p>Saved on this browser. Paste this into <code>TAG_INTROS</code> in <code>data/tag-intros.js</code> (replacing the old entry) to make it permanent for everyone:</p>
+    <textarea readonly rows="6"></textarea>
+  </div>
+</dialog>
+
 <dialog id="post-dialog" class="dialog">
   <form id="post-form" class="dialog-form">
     <h3 id="post-dialog-title">New post</h3>

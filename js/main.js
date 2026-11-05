@@ -269,7 +269,9 @@ function renderCategoryIntro() {
   const activeKey = [...state.activeTags][0];
   const activeTag = state.tags.find((t) => t.toLowerCase() === activeKey);
   const introKey = Object.keys(TAG_INTROS || {}).find((k) => k.toLowerCase() === activeKey);
-  const intro = introKey ? TAG_INTROS[introKey] : null;
+  const publishedIntro = introKey ? TAG_INTROS[introKey] : null;
+  const introEdits = loadTagIntroEdits();
+  const intro = Object.prototype.hasOwnProperty.call(introEdits, activeKey) ? introEdits[activeKey] : publishedIntro;
 
   if (!intro || !activeTag) {
     categoryIntroEl.hidden = true;
@@ -294,9 +296,14 @@ function renderCategoryIntro() {
 
   categoryIntroEl.hidden = false;
   categoryIntroEl.innerHTML =
-    `<h2 class="category-intro-title">${escapeHtml(activeTag)}</h2>` +
+    `<div class="category-intro-header"><h2 class="category-intro-title">${escapeHtml(activeTag)}</h2>` +
+    `<button type="button" class="view-post-link intro-edit-btn">Edit intro</button></div>` +
     subtagsHtml +
     `<div class="category-intro-text">${window.marked ? marked.parse(intro) : intro}</div>`;
+
+  categoryIntroEl.querySelector(".intro-edit-btn").addEventListener("click", () => {
+    openIntroDialog({ tag: activeTag, key: activeKey, publishedKey: introKey, text: intro });
+  });
 
   if (subtags && subtags.length) {
     categoryIntroEl.querySelectorAll(".subtag-btn").forEach((btn) => {
@@ -871,7 +878,50 @@ function openIdeaActionDialog(project, action) {
   ideaActionDialog.showModal();
 }
 
+let editingIntro = null; // { tag, key, publishedKey } while the intro dialog is open
+
+function openIntroDialog({ tag, key, publishedKey, text }) {
+  editingIntro = { tag, key, publishedKey };
+  document.getElementById("intro-dialog-title").textContent = `Edit intro — ${tag}`;
+  document.getElementById("intro-text").value = text;
+  document.getElementById("intro-generated").hidden = true;
+  document.getElementById("intro-reset-btn").hidden = !(key in loadTagIntroEdits());
+  document.getElementById("intro-dialog").showModal();
+}
+
+function bindIntroDialog() {
+  const dialog = document.getElementById("intro-dialog");
+  const generated = document.getElementById("intro-generated");
+  const resetBtn = document.getElementById("intro-reset-btn");
+
+  document.getElementById("intro-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const text = document.getElementById("intro-text").value.trim();
+    if (!text || !editingIntro) return;
+
+    setTagIntroEdit(editingIntro.key, text);
+    renderCategoryIntro();
+
+    const name = editingIntro.publishedKey || editingIntro.tag;
+    const textarea = generated.querySelector("textarea");
+    textarea.value = `  ${JSON.stringify(name)}:\n    ${JSON.stringify(text)},`;
+    generated.hidden = false;
+    resetBtn.hidden = false;
+    textarea.focus();
+    textarea.select();
+  });
+
+  resetBtn.addEventListener("click", () => {
+    if (!editingIntro) return;
+    clearTagIntroEdit(editingIntro.key);
+    renderCategoryIntro();
+    dialog.close();
+  });
+}
+
 function bindDialogs() {
+  bindIntroDialog();
+
   document.getElementById("add-tag-btn").addEventListener("click", () => {
     tagForm.reset();
     tagGenerated.hidden = true;
