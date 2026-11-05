@@ -87,4 +87,5 @@ const STATIC_MEDIA_POOL = [
   { id: "static-cdaf-2012-venue-map", dataUrl: "images/pool/cdaf-2012-venue-map.png", name: "CDAF 2012 venue map" },
   { id: "static-docartsasia-laiza-center-visit", dataUrl: "images/pool/docartsasia-laiza-center-visit.jpg", name: "DocArtsAsia Laiza center visit" },
   { id: "static-studio-interior-photo-collage", dataUrl: "images/pool/studio-interior-photo-collage.jpg", name: "Studio interior with photo collage" },
+  { id: "static-print-review-table-japan", dataUrl: "images/pool/print-review-table-japan.jpg", name: "Print review at a table (Japan)" },
 ];
