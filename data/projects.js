@@ -367,7 +367,7 @@ const PROJECTS = [
     "description": "Curated IG feed with stories\nmostly from Sakse alumni",
     "link": "https://www.instagram.com/everydaykachin/",
     "image": "images/pool/everyday-kachin-website.jpg",
-    "images": [],
+    "images": ["images/pool/everyday-kachin-freebird-wall-purpose-banner.jpg", "images/pool/everyday-kachin-freebird-talk.jpg", "images/pool/everyday-kachin-print-strips-angle.jpg", "images/pool/everyday-kachin-print-strips-close.jpg"],
     "location": "",
     "place": "",
     "featured": true
