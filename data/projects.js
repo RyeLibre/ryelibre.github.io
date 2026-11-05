@@ -1304,5 +1304,18 @@ const PROJECTS = [
     "location": "",
     "place": "",
     "featured": false
+  },
+  {
+    "id": "studio-sakse-ii-cnx",
+    "title": "Studio Sakse II @ CNX",
+    "categories": ["Studios", "Sakse"],
+    "date": "2026-11-05",
+    "description": "Studio Sakse II @ CNX",
+    "link": "",
+    "image": "images/studio-sakse-ii-cnx.jpg",
+    "images": [],
+    "location": "Chiang Mai",
+    "place": "",
+    "featured": false
   }
 ];
