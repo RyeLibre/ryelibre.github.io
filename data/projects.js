@@ -834,7 +834,7 @@ const PROJECTS = [
     "description": "Photo exhibition by Note.",
     "link": "",
     "image": "images/pool/monk-at-exhibition-wall.png",
-    "images": ["images/pool/ipa-juror-badge-2022.webp"],
+    "images": ["images/pool/ipa-juror-badge-2022.webp", "images/pool/unorthodox-opening-night-docartsasia.jpg", "images/pool/unorthodox-visitors-before-monk-portrait.jpg", "images/pool/unorthodox-volunteer-talking-to-visitors.jpg"],
     "location": "Chiang Mai",
     "place": "DocArtsAsia 2",
     "featured": false
