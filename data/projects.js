@@ -1354,5 +1354,47 @@ const PROJECTS = [
     "location": "Chiang Mai",
     "place": "3 Kings Monument",
     "featured": false
+  },
+  {
+    "id": "f28-the-chiang-mai-month-of-photography-2014",
+    "title": "F/28 the Chiang Mai Month of Photography  2014",
+    "categories": ["Curation", "Exhibitions", "Production"],
+    "date": "2014-02-20",
+    "description": "The first edition of F/28, the Chiang Mai Month of Photography (February 2014). Day of month and edition are best guesses, not verified.",
+    "link": "",
+    "image": "images/pool/f28-logo.jpg",
+    "imageFit": "contain",
+    "images": [],
+    "location": "Chiang Mai",
+    "place": "",
+    "featured": false
+  },
+  {
+    "id": "f28-the-chiang-mai-month-of-photography-2015",
+    "title": "F/28 the Chiang Mai Month of Photography  2015",
+    "categories": ["Curation", "Exhibitions", "Production"],
+    "date": "2015-02-20",
+    "description": "The second edition of F/28, the Chiang Mai Month of Photography (February 2015). Day of month and edition are best guesses, not verified.",
+    "link": "",
+    "image": "images/pool/f28-logo.jpg",
+    "imageFit": "contain",
+    "images": [],
+    "location": "Chiang Mai",
+    "place": "",
+    "featured": false
+  },
+  {
+    "id": "f28-the-chiang-mai-month-of-photography-2017",
+    "title": "F/28 the Chiang Mai Month of Photography  2017",
+    "categories": ["Curation", "Exhibitions", "Production"],
+    "date": "2017-02-20",
+    "description": "The fourth edition of F/28, the Chiang Mai Month of Photography (February 2017). Day of month and edition are best guesses, not verified.",
+    "link": "",
+    "image": "images/pool/f28-logo.jpg",
+    "imageFit": "contain",
+    "images": [],
+    "location": "Chiang Mai",
+    "place": "",
+    "featured": false
   }
 ];
