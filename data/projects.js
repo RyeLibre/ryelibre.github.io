@@ -1254,7 +1254,7 @@ const PROJECTS = [
     "link": "https://www.trocaire.org/",
     "image": "images/pool/trocaire-dpp-logos.jpg",
     "imageFit": "contain",
-    "images": [],
+    "images": ["images/pool/trocaire-dpp-workshop-certificates.jpg"],
     "location": "",
     "place": "",
     "featured": false
