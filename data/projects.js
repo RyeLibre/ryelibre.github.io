@@ -1291,5 +1291,18 @@ const PROJECTS = [
     "location": "",
     "place": "",
     "featured": false
+  },
+  {
+    "id": "cv",
+    "title": "CV",
+    "categories": ["CV"],
+    "date": "2026-11-05",
+    "description": "Curriculum vitae — photographer, curator, educator and filmmaker.\n\nOpen the PDF to read it, or download it.",
+    "link": "CV/",
+    "image": "images/cv-cover.jpg",
+    "images": [],
+    "location": "",
+    "place": "",
+    "featured": false
   }
 ];
