@@ -1405,7 +1405,7 @@ const PROJECTS = [
     "description": "",
     "link": "",
     "image": "images/pool/rye-revolutions-side-profile.jpg",
-    "images": ["images/pool/rye-revolutions-black-cycle-studio.jpg", "images/pool/rye-revolutions-basket.jpg"],
+    "images": ["images/pool/rye-revolutions-black-cycle-studio.jpg", "images/pool/rye-revolutions-basket.jpg", "images/pool/rye-revolutions-headlight.jpg", "images/pool/rye-revolutions-leather-saddle.jpg"],
     "location": "",
     "place": "",
     "featured": false
