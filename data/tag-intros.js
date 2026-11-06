@@ -21,8 +21,8 @@ const TAG_INTROS = {
   "Photography":
     "A photograph is a small argument about what's worth looking at.\n\nThis tag collects photo series and single images — portraits, landscapes, and documentary work — shot across different projects and places over the years.\n\n*Replace this intro with your own description of the Photography category.*",
 
-  "Film":
-    "Moving image work, from short documentaries to experimental clips and zine-adjacent films.\n\nPosts here include finished films, behind-the-scenes notes, and the occasional unfinished cut worth sharing anyway.\n\n*Replace this intro with your own description of the Film category.*",
+  "Films":
+    "Moving image work, from short documentaries to experimental clips and zine-adjacent films.\n\nPosts here include finished films, behind-the-scenes notes, and the occasional unfinished cut worth sharing anyway.\n\n*Replace this intro with your own description of the Films category.*",
 
   "Mountains":
     "Mountains show up again and again in this work — as subject, as backdrop, and as the terrain that shapes how people live.\n\nThis tag gathers posts shot or set in mountainous places, from high passes to the villages tucked beneath them.\n\n*Replace this intro with your own description of the Mountains category.*",

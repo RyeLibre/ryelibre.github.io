@@ -7,7 +7,7 @@ const FEATURED_TAGS = [
   "Design",
   "Rye Revolutions",
   "Photography",
-  "Film",
+  "Films",
   "Peace-work",
   "Exhibitions",
   "Festivals",

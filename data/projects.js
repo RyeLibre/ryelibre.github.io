@@ -104,7 +104,7 @@ const PROJECTS = [
   {
     "id": "filmmaking-workbook",
     "title": "FilmMaking Workbook",
-    "categories": ["Design", "Film", "Learning media"],
+    "categories": ["Design", "Films", "Learning media"],
     "date": "2018-09-19",
     "description": "",
     "link": "",
@@ -143,7 +143,7 @@ const PROJECTS = [
   {
     "id": "unfiltered-yangon-photo-festival",
     "title": "Unfiltered @ Yangon Photo Festival",
-    "categories": ["Kachin", "Film", "Screenings"],
+    "categories": ["Kachin", "Films", "Screenings"],
     "date": "2020-03-19",
     "description": "short experimental doc",
     "link": "",
@@ -300,7 +300,7 @@ const PROJECTS = [
   {
     "id": "unjaded-in-the-land-of-jade",
     "title": "Unjaded : in the land of Jade",
-    "categories": ["Kachin", "Film", "Books", "Scripts"],
+    "categories": ["Kachin", "Films", "Books", "Scripts"],
     "date": "2026-09-19",
     "description": "Feature animation script",
     "link": "",
@@ -375,7 +375,7 @@ const PROJECTS = [
   {
     "id": "the-laiza-hotel",
     "title": "The Laiza Hotel",
-    "categories": ["Kachin", "Film", "Production"],
+    "categories": ["Kachin", "Films", "Production"],
     "date": "2026-09-19",
     "description": "Feature documentary presented by Living Films  Produced by Sakse",
     "link": "",
@@ -480,7 +480,7 @@ const PROJECTS = [
   {
     "id": "maran",
     "title": "Maran",
-    "categories": ["Kachin", "Film", "Production"],
+    "categories": ["Kachin", "Films", "Production"],
     "date": "2020-01-20",
     "description": "Feature fiction film\n\nProduction shut down 70% through shooting due to the lockdown",
     "link": "",
@@ -627,7 +627,7 @@ const PROJECTS = [
   {
     "id": "welcome-to-free-kachin",
     "title": "Welcome to Free Kachin",
-    "categories": ["Kachin", "Film", "Production"],
+    "categories": ["Kachin", "Films", "Production"],
     "date": "2009-08-20",
     "description": "",
     "link": "",
@@ -679,7 +679,7 @@ const PROJECTS = [
   {
     "id": "cord-keller-teaching-filmmaking-laiza",
     "title": "Cord Keller Teaching Filmmaking in Laiza",
-    "categories": ["Kachin", "Film", "Educator", "Organized"],
+    "categories": ["Kachin", "Films", "Educator", "Organized"],
     "date": "2013-10-07",
     "description": "Cord Keller — director/producer of *Survivor* — teaching a filmmaking workshop in Laiza at the DocArtsAsia center.",
     "link": "",

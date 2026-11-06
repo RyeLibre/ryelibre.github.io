@@ -348,7 +348,10 @@ function renderCategoryIntro() {
 function renderMedia(project) {
   const media = document.createElement("div");
   const fitClass = project.imageFit === "contain-dark" ? " project-media-contain-dark" : project.imageFit === "contain" ? " project-media-contain" : "";
-  media.className = "project-media" + fitClass;
+  // In the Films view, posters are shown whole (uncropped) at their own proportions.
+  const filmsView =
+    !state.activeSubtag && state.activeTags.size === 1 && state.activeTags.has("films") && !project.imageFit;
+  media.className = "project-media" + fitClass + (filmsView ? " project-media-full" : "");
 
   const img = document.createElement("img");
   img.src = getImageSrc(project);
@@ -779,7 +782,7 @@ const TIMELINE_TAG_COLORS = [
   ["Curation", "#f97316"],
   ["Design", "#eab308"],
   ["Photography", "#22c55e"],
-  ["Film", "#14b8a6"],
+  ["Films", "#14b8a6"],
   ["Educator", "#3b82f6"],
   ["Production", "#8b5cf6"],
   ["Studios", "#ec4899"],
