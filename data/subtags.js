@@ -4,6 +4,7 @@
 // are used as ordinary post categories — tag a post with one and it'll show
 // up when that sub-tag is clicked, same as any other tag.
 const TAG_SUBTAGS = {
+  "Juror": ["Judge", "Nominator", "Reviewer"],
   "Design": ["Logos", "Bags", "Bikes", "Scarfs"],
   "Photography": ["Unicorn Liberation Front", "Lubecker Hutchen Archivist"],
   "Exhibitions": ["Photo works", "Curated works", "Collaborated works"],

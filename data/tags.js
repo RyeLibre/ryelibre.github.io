@@ -5,6 +5,7 @@ const FEATURED_TAGS = [
   "Curation",
   "Juror",
   "Design",
+  "Rye Revolutions",
   "Photography",
   "Film",
   "Peace-work",

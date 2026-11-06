@@ -3,6 +3,12 @@
 // A tag with no entry here just won't show an intro — that's fine.
 // `description` supports Markdown, same as post descriptions.
 const TAG_INTROS = {
+  "Juror":
+    "Judging, nominating and reviewing for photography awards, festivals and portfolio reviews.\n\nUse the buttons above to see where I served as a judge, a nominator or a reviewer.",
+
+  "Rye Revolutions":
+    "Rye Revolutions — 1st class second-hand cycles, rebuilt and redesigned.",
+
   "Kachin":
     "Kachin State sits in the far north of Myanmar, bordered by China and India — a place of highland forests, jade mines, and a long history of conflict and resilience.\n\nThis tag gathers the documentary, photography, and community work rooted in that region: portraits of daily life, landscapes, and the people navigating displacement and return.\n\n*Replace this intro with your own description of the Kachin category.*",
 

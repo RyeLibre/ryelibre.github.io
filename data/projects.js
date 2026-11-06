@@ -156,7 +156,7 @@ const PROJECTS = [
   {
     "id": "kyotographie-portfolio-reviewer",
     "title": "KYOTOGRAPHIE - Portfolio Reviewer",
-    "categories": ["Juror", "Curation", "Photography"],
+    "categories": ["Juror", "Reviewer", "Curation", "Photography"],
     "date": "2026-09-19",
     "description": "",
     "link": "",
@@ -718,7 +718,7 @@ const PROJECTS = [
   {
     "id": "juror-international-photography-awards",
     "title": "International Photography Awards",
-    "categories": ["Juror", "Photography"],
+    "categories": ["Juror", "Judge", "Photography"],
     "date": "2022-01-01",
     "description": "Juror for the International Photography Awards (IPA).",
     "link": "https://www.photoawards.com/",
@@ -732,7 +732,7 @@ const PROJECTS = [
   {
     "id": "juror-photolucida-critical-mass",
     "title": "Photolucida — Critical Mass",
-    "categories": ["Juror", "Photography"],
+    "categories": ["Juror", "Judge", "Reviewer", "Photography"],
     "date": "2026-09-30",
     "description": "Juror / reviewer for Photolucida's Critical Mass.",
     "link": "https://www.photolucida.org/critical-mass",
@@ -746,7 +746,7 @@ const PROJECTS = [
   {
     "id": "juror-world-press-photo-6x6",
     "title": "World Press Photo — 6x6 Program",
-    "categories": ["Juror", "Photography"],
+    "categories": ["Juror", "Nominator", "Photography"],
     "date": "2026-09-30",
     "description": "Nominator for World Press Photo's 6x6 program.",
     "link": "https://www.worldpressphoto.org/",
@@ -760,7 +760,7 @@ const PROJECTS = [
   {
     "id": "juror-prix-pictet",
     "title": "Prix Pictet",
-    "categories": ["Juror", "Photography"],
+    "categories": ["Juror", "Nominator", "Photography"],
     "date": "2026-09-30",
     "description": "Nominator for the Prix Pictet.",
     "link": "https://prix.pictet.com/",
@@ -843,7 +843,7 @@ const PROJECTS = [
   {
     "id": "portfolio-reviews-foundry-photojournalism-workshop",
     "title": "Portfolio Reviews — Foundry Photojournalism Workshop",
-    "categories": ["Juror", "Photography", "Educator"],
+    "categories": ["Juror", "Reviewer", "Photography", "Educator"],
     "date": "2026-09-30",
     "description": "Portfolio reviewer at the Foundry Photojournalism Workshop.",
     "link": "",
@@ -856,7 +856,7 @@ const PROJECTS = [
   {
     "id": "portfolio-reviews-dali-photo-festival",
     "title": "Curator & Portfolio Reviews — Dali Photo Festival",
-    "categories": ["Festivals", "Juror", "Curation", "Photography"],
+    "categories": ["Festivals", "Juror", "Reviewer", "Curation", "Photography"],
     "date": "2026-09-30",
     "description": "Curator and portfolio reviewer at the Dali Photo Festival.",
     "link": "",
@@ -1097,7 +1097,7 @@ const PROJECTS = [
   {
     "id": "rye-revolutions-cycles",
     "title": "Rye Revolutions — 1st Class 2nd Hand Cycles",
-    "categories": ["Design", "Projects"],
+    "categories": ["Rye Revolutions", "Design", "Projects"],
     "date": "2021-01-03",
     "description": "Design and bikes.",
     "link": "",
@@ -1394,6 +1394,32 @@ const PROJECTS = [
     "imageFit": "contain",
     "images": [],
     "location": "Chiang Mai",
+    "place": "",
+    "featured": false
+  },
+  {
+    "id": "rye-revolutions-black-cycle",
+    "title": "Rye Revolutions — Black Cycle",
+    "categories": ["Rye Revolutions", "Design", "Bikes"],
+    "date": "2026-11-06",
+    "description": "",
+    "link": "",
+    "image": "images/pool/rye-revolutions-side-profile.jpg",
+    "images": ["images/pool/rye-revolutions-black-cycle-studio.jpg", "images/pool/rye-revolutions-basket.jpg"],
+    "location": "",
+    "place": "",
+    "featured": false
+  },
+  {
+    "id": "rye-revolutions-teal-cycle",
+    "title": "Rye Revolutions — Teal Cycle",
+    "categories": ["Rye Revolutions", "Design", "Bikes"],
+    "date": "2026-11-06",
+    "description": "",
+    "link": "",
+    "image": "images/pool/rye-revolutions-teal-cycle.jpg",
+    "images": [],
+    "location": "",
     "place": "",
     "featured": false
   }
