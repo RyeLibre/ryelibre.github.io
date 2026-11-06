@@ -738,7 +738,7 @@ const PROJECTS = [
     "link": "https://www.photolucida.org/critical-mass",
     "image": "images/pool/photolucida-critical-mass-logo.svg",
     "imageFit": "contain",
-    "images": [],
+    "images": ["images/pool/photolucida-logo.png"],
     "location": "",
     "place": "",
     "featured": false
