@@ -900,6 +900,43 @@ function renderTagChecklist(container, selectedKeys) {
     label.appendChild(document.createTextNode(tag));
     container.appendChild(label);
   });
+
+  // Sub-tags (e.g. Educator → Organized, Juror → Judge) are ordinary tags too,
+  // so they can be ticked here to move a post into that sub-group.
+  const known = new Set(state.tags.map((t) => t.toLowerCase()));
+  const subtags = [];
+  if (typeof TAG_SUBTAGS !== "undefined") {
+    Object.entries(TAG_SUBTAGS).forEach(([parent, list]) => {
+      if (parent.toLowerCase() === "steal this idea") return; // handled by its own section
+      list.forEach((s) => subtags.push({ parent, name: s }));
+    });
+  }
+  if (typeof TAG_GROUPS !== "undefined") {
+    Object.entries(TAG_GROUPS).forEach(([parent, g]) => subtags.push({ parent, name: g.tag }));
+  }
+  const seen = new Set();
+  const extras = subtags.filter(({ name }) => {
+    const k = name.toLowerCase();
+    if (known.has(k) || seen.has(k)) return false;
+    seen.add(k);
+    return true;
+  });
+  if (extras.length) {
+    const caption = document.createElement("p");
+    caption.className = "section-hint tag-checklist-caption";
+    caption.textContent = "Sub-groups — tick to move this post into one";
+    container.appendChild(caption);
+    extras.forEach(({ parent, name }) => {
+      const label = document.createElement("label");
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.value = name;
+      checkbox.checked = selectedKeys.has(name.toLowerCase());
+      label.appendChild(checkbox);
+      label.appendChild(document.createTextNode(`${name} (${parent})`));
+      container.appendChild(label);
+    });
+  }
   updateStealSupportSectionVisibility();
 }
 
