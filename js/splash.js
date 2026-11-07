@@ -21,7 +21,30 @@
   const RECAP_STEP_SECONDS = 0.3; // recap list: one word every 0.3 s
 
   const words = SPLASH_WORDS.filter(Boolean);
-  const wordImages = typeof SPLASH_WORD_IMAGES !== "undefined" ? SPLASH_WORD_IMAGES : {};
+  const wordImages = Object.assign({}, typeof SPLASH_WORD_IMAGES !== "undefined" ? SPLASH_WORD_IMAGES : {});
+
+  // Every topic gets photos. Where data/splash.js has none for a word yet, use
+  // placeholders taken from posts with that tag (cover photos first, then gallery
+  // photos), skipping logos. Add the word to SPLASH_WORD_IMAGES to choose your own.
+  const PLACEHOLDERS_PER_WORD = 2;
+  const usedPhotos = new Set(Object.values(wordImages).flat());
+  const isPhoto = (src) => src && /\.(jpe?g|png|webp)$/i.test(src);
+  words.forEach((w) => {
+    if (wordImages[w] && wordImages[w].length) return;
+    if (typeof PROJECTS === "undefined") return;
+    const key = w.toLowerCase();
+    const picks = [];
+    PROJECTS.forEach((p) => {
+      if (picks.length >= PLACEHOLDERS_PER_WORD) return;
+      if (!(p.categories || []).some((c) => c.toLowerCase() === key)) return;
+      const candidates = [];
+      if (!p.imageFit) candidates.push(p.image);
+      (p.images || []).forEach((src) => candidates.push(src));
+      const src = candidates.find((s) => isPhoto(s) && !usedPhotos.has(s));
+      if (src) { picks.push(src); usedPhotos.add(src); }
+    });
+    if (picks.length) wordImages[w] = picks;
+  });
   Object.values(wordImages).forEach((list) => list.forEach((src) => { const i = new Image(); i.src = src; })); // preload
 
   const root = document.createElement("div");
