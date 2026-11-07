@@ -446,10 +446,10 @@ const PROJECTS = [
     "title": "Kamui Mintara",
     "categories": ["Photography", "Mountains", "Exhibitions", "Hokkaido"],
     "date": "2026-09-19",
-    "description": "Solo exhibition on Daisetsuzan National Park",
+    "description": "Solo exhibition on Daisetsuzan National Park, 10–15 August.",
     "link": "",
     "image": "images/kamui-mintara.jpg",
-    "images": [],
+    "images": ["images/pool/kamui-mintara-fuji-photo-salon-poster.jpg"],
     "location": "Sapporo",
     "place": "The Fuji Film Salon",
     "featured": false
