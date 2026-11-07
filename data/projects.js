@@ -1452,5 +1452,18 @@ const PROJECTS = [
     "location": "Chiang Mai",
     "place": "",
     "featured": false
+  },
+  {
+    "id": "suwon-international-photo-festival",
+    "title": "Suwon International Photo Festival",
+    "categories": ["Festivals"],
+    "date": "2026-11-07",
+    "description": "",
+    "link": "",
+    "image": "",
+    "images": [],
+    "location": "Suwon, South Korea",
+    "place": "",
+    "featured": false
   }
 ];

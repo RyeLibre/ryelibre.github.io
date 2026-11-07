@@ -3,6 +3,9 @@
 // A tag with no entry here just won't show an intro — that's fine.
 // `description` supports Markdown, same as post descriptions.
 const TAG_INTROS = {
+  "Festivals":
+    "Festivals I curated and/or organized.",
+
   "Juror":
     "Judging, nominating and reviewing for photography awards, festivals and portfolio reviews.\n\nUse the buttons above to see where I served as a judge, a nominator or a reviewer.",
 
