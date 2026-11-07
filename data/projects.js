@@ -1703,7 +1703,7 @@ const PROJECTS = [
     "description": "My studio as an MFA candidate at the University of Colorado Boulder, 2017–2019.",
     "link": "",
     "image": "images/pool/cu-boulder-mfa-studio-desk-and-shelves.jpg",
-    "images": ["images/pool/cu-boulder-mfa-studio-desk-front.jpg"],
+    "images": ["images/pool/cu-boulder-mfa-studio-desk-front.jpg", "images/pool/mfa-rebels-and-reform-caption-wall.jpg"],
     "location": "Boulder",
     "place": "University of Colorado Boulder",
     "featured": false
