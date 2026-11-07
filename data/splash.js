@@ -49,4 +49,12 @@ const SPLASH_WORD_IMAGES = {
     "images/pool/print-review-table-japan.jpg",
     "images/splash/educator-camera-review-bw.jpg",
   ],
+  "Exhibitions": [
+    "images/splash/exhibitions-moonlit-outdoor-print.jpg",
+    "images/splash/exhibitions-hanging-prints-barr-sign.jpg",
+    "images/splash/exhibitions-outdoor-panels-guard.jpg",
+    "images/splash/exhibitions-kachin-couple-banner.jpg",
+    "images/splash/exhibitions-hanbok-print-corridor.jpg",
+  ],
+
 };
