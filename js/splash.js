@@ -89,23 +89,16 @@
     else if (mode === "out") setImgAnimation("splash-photo-out " + dur + "s ease-in both");
     else imgEl.style.animation = "none";
   };
-  // The recap list: rows of three with middle dots, revealed word by word.
-  const PER_ROW = 3;
-  const showList = (count) => {
+  // The closing recap: one clear line per item, revealed one after another.
+  const recap = typeof SPLASH_RECAP !== "undefined" ? SPLASH_RECAP : words;
+  const showRecap = (count) => {
     imgEl.hidden = true;
     textEl.style.animation = "none";
-    textEl.className = "splash-text splash-list";
-    const rows = [];
-    for (let r = 0; r < words.length; r += PER_ROW) {
-      const parts = words.slice(r, r + PER_ROW).map((w, k) => {
-        const on = r + k < count;
-        return '<span class="' + (on ? "on" : "off") + '">' + (k > 0 ? '<span class="dot"> &middot; </span>' : "") + w + "</span>";
-      });
-      rows.push("<div>" + parts.join("") + "</div>");
-    }
-    textEl.innerHTML = rows.join("");
+    textEl.className = "splash-text splash-recap";
+    textEl.innerHTML = recap
+      .map((line, i) => '<div class="' + (i < count ? "on" : "off") + '">' + line.replace(/&/g, "&amp;") + "</div>")
+      .join("");
   };
-
   // ---- timeline (seconds) ----
   const frames = [];
   const add = (dur, fn) => frames.push({ dur, fn });
@@ -126,8 +119,8 @@
   });
 
   // Recap by text, then the closing question
-  for (let n = 1; n <= words.length; n++) add(RECAP_STEP_SECONDS, () => showList(n));
-  add(1.2, () => showList(words.length));
+  for (let n = 1; n <= recap.length; n++) add(RECAP_STEP_SECONDS, () => showRecap(n));
+  add(1.5, () => showRecap(recap.length));
   const END = 4.0;
   add(END, () => showFaded("splash-title", "How can I help?", END));
 

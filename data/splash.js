@@ -22,6 +22,20 @@ const SPLASH_WORDS = [
   "Adobe Abode",
 ];
 
+// The closing recap: what I do, one line each, shown just before "How can I help?".
+const SPLASH_RECAP = [
+  "Curation",
+  "Design",
+  "Photography",
+  "Filmmaking",
+  "Exhibition design",
+  "Educator & Advisor",
+  "Learning media",
+  "Production",
+  "Studio / Space design",
+  "Screening organizer",
+  "Adobe design & construction",
+];
 // Photos for the splash (3-6 work best). Four are the Screenings photos; the other two
 // (Freedom from Fear, Everyday Kachin) are still placeholders - swap them whenever you choose.
 const SPLASH_IMAGES = [

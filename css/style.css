@@ -1476,3 +1476,7 @@ html.splash-active { overflow: hidden; }
   animation: splash-ring-drain linear forwards;
 }
 @keyframes splash-ring-drain { from { stroke-dashoffset: 0; } to { stroke-dashoffset: 106.8; } }
+
+/* Splash closing recap: one clear line per item */
+.splash-recap { font-size: calc(var(--s) * 0.05); line-height: 1.55; text-align: center; padding: 0 5%; white-space: nowrap; }
+.splash-recap .off { visibility: hidden; }
