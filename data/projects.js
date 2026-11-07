@@ -1465,5 +1465,18 @@ const PROJECTS = [
     "location": "Suwon, South Korea",
     "place": "",
     "featured": false
+  },
+  {
+    "id": "chapnick-grant-asia-society-talk",
+    "title": "Accepting the Howard Chapnick Grant — Asia Society, NYC",
+    "categories": ["Talks"],
+    "date": "2011-01-01",
+    "description": "Accepting the Howard Chapnick Grant from the W. Eugene Smith Memorial Fund at the Asia Society in New York City, 2011.",
+    "link": "https://www.smithfund.org/",
+    "image": "images/splash/talks-asia-society-podium.jpg",
+    "images": [],
+    "location": "New York",
+    "place": "Asia Society",
+    "featured": false
   }
 ];
