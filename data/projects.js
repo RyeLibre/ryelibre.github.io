@@ -1690,7 +1690,7 @@ const PROJECTS = [
     "description": "*The People's War on Drugs*, a photo exhibition by Hkun Lat, shown outdoors on bamboo frames at the School of Arts & Sciences (SAS) campus in Myitkyina, with an opening party, talks, slideshows, photobooks and music. Supported by the Lucie Foundation, SAS, Sakse and DocArtsAsia.",
     "link": "",
     "image": "images/pool/sakse-myitkyina-peoples-war-on-drugs-poster.jpg",
-    "images": ["images/pool/sakse-myitkyina-viewer-poppy-field-print.jpg", "images/pool/sakse-myitkyina-reading-text-banner.jpg", "images/pool/sakse-myitkyina-night-police-print.jpg", "images/pool/sakse-myitkyina-night-row-of-prints.jpg", "images/pool/sakse-myitkyina-photobook-table.jpg", "images/pool/sakse-myitkyina-reading-photobook.jpg", "images/pool/sakse-myitkyina-bamboo-print-garden.jpg", "images/pool/sakse-myitkyina-nargis-migrants-prints.jpg", "images/splash/talks-school-of-arts-sciences.jpg"],
+    "images": ["images/pool/sakse-myitkyina-viewer-poppy-field-print.jpg", "images/pool/sakse-myitkyina-reading-text-banner.jpg", "images/pool/sakse-myitkyina-night-police-print.jpg", "images/pool/sakse-myitkyina-night-row-of-prints.jpg", "images/pool/sakse-myitkyina-photobook-table.jpg", "images/pool/sakse-myitkyina-reading-photobook.jpg", "images/pool/sakse-myitkyina-bamboo-print-garden.jpg", "images/pool/sakse-myitkyina-nargis-migrants-prints.jpg", "images/splash/talks-school-of-arts-sciences.jpg", "images/pool/sakse-myitkyina-bamboo-studio-book-table.jpg"],
     "location": "Myitkyina",
     "place": "School of Arts & Sciences",
     "featured": false
