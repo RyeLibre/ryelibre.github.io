@@ -1480,3 +1480,7 @@ html.splash-active { overflow: hidden; }
 /* Splash closing recap: one clear line per item */
 .splash-recap { font-size: calc(var(--s) * 0.05); line-height: 1.55; text-align: center; padding: 0 5%; white-space: nowrap; }
 .splash-recap .off { visibility: hidden; }
+
+/* Splash layers: photos and text start invisible; js/splash.js fades them with opacity transitions */
+.splash-img { opacity: 0; }
+.splash-text { opacity: 0; z-index: 2; }
