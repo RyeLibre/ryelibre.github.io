@@ -1445,3 +1445,11 @@ html.splash-active { overflow: hidden; }
   cursor: pointer;
 }
 .splash-skip:hover { background: rgba(255, 255, 255, 0.15); }
+
+/* Splash: word/title fade in and out (duration set inline by js/splash.js) */
+@keyframes splash-fade {
+  0% { opacity: 0; }
+  25% { opacity: 1; }
+  75% { opacity: 1; }
+  100% { opacity: 0; }
+}

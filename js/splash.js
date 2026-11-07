@@ -1,5 +1,8 @@
-// Splash intro: a square, white-on-black sequence (~50 s) that runs the tag
-// words and a few photos at an increasing pace, then hands over to the site.
+// Splash intro: a square, white-on-black sequence (~45 s).
+//   1. Rye Libre / All things Libre
+//   2. One run through the topics, in order: each word fades in and out on black
+//      (1 s); topics that have photos then run through them, a little slower.
+//   3. A recap of all the topics as text, ending on "How can I help?"
 // Words and photos come from data/splash.js. Plays once per browser session;
 // open the site with ?intro=1 (or use the footer link) to replay it.
 (function () {
@@ -11,12 +14,15 @@
   try { seen = sessionStorage.getItem(SEEN_KEY) === "1"; } catch {}
   const reduceMotion = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
   if ((seen || reduceMotion) && !forced) return;
-  if (typeof SPLASH_WORDS === "undefined" || typeof SPLASH_IMAGES === "undefined") return;
+  if (typeof SPLASH_WORDS === "undefined") return;
+
+  const WORD_SECONDS = 1.0; // each topic word on black, fading in and out
+  const PHOTO_SECONDS = 0.4; // each photo that follows its topic
+  const RECAP_STEP_SECONDS = 0.3; // recap list: one word every 0.3 s
 
   const words = SPLASH_WORDS.filter(Boolean);
-  const images = SPLASH_IMAGES.slice();
   const wordImages = typeof SPLASH_WORD_IMAGES !== "undefined" ? SPLASH_WORD_IMAGES : {};
-  images.concat(...Object.values(wordImages)).forEach((src) => { const i = new Image(); i.src = src; }); // preload
+  Object.values(wordImages).forEach((list) => list.forEach((src) => { const i = new Image(); i.src = src; })); // preload
 
   const root = document.createElement("div");
   root.id = "splash";
@@ -31,52 +37,36 @@
 
   const imgEl = root.querySelector(".splash-img");
   const textEl = root.querySelector(".splash-text");
-  let imgIndex = 0;
-  const nextImage = () => images[imgIndex++ % images.length];
 
   // ---- frame renderers ----
-  // A word with its own photos runs through ALL of them, quickly, while it is on screen.
-  let cycleTimer = null;
-  const showWord = (w, onImage, dur) => {
-    const own = wordImages[w];
-    if (own && own.length) {
-      let k = 0;
-      imgEl.src = own[0];
-      imgEl.hidden = false;
-      const step = (dur * 1000) / own.length;
-      if (own.length > 1) {
-        cycleTimer = setInterval(() => {
-          k += 1;
-          if (k >= own.length) { clearInterval(cycleTimer); return; }
-          imgEl.src = own[k];
-        }, step);
-      }
-    } else if (onImage) { imgEl.src = nextImage(); imgEl.hidden = false; } else { imgEl.hidden = true; }
-    textEl.className = "splash-text splash-word";
-    textEl.textContent = w;
-  };
-  const showImage = () => {
-    imgEl.src = nextImage();
-    imgEl.hidden = false;
-    textEl.textContent = "";
-  };
-  const showTitle = () => {
+  // Text that fades in and out over `dur` seconds (a quarter fading in, a quarter out).
+  const showFaded = (cls, html, dur) => {
     imgEl.hidden = true;
-    textEl.className = "splash-text splash-title";
-    textEl.innerHTML = 'Rye Libre<span class="splash-sub">All things Libre</span>';
+    textEl.className = "splash-text " + cls;
+    textEl.innerHTML = html;
+    textEl.style.animation = "none";
+    void textEl.offsetWidth; // restart the animation
+    textEl.style.animation = "splash-fade " + dur + "s ease-in-out both";
   };
-  // The list is written in rows of three with middle dots, revealed word by word.
+  const showPhoto = (src) => {
+    textEl.style.animation = "none";
+    textEl.innerHTML = "";
+    imgEl.src = src;
+    imgEl.hidden = false;
+  };
+  // The recap list: rows of three with middle dots, revealed word by word.
   const PER_ROW = 3;
   const showList = (count) => {
     imgEl.hidden = true;
+    textEl.style.animation = "none";
     textEl.className = "splash-text splash-list";
     const rows = [];
     for (let r = 0; r < words.length; r += PER_ROW) {
       const parts = words.slice(r, r + PER_ROW).map((w, k) => {
         const on = r + k < count;
-        return '<span class="' + (on ? "on" : "off") + '">' + (k > 0 ? '<span class="dot"> &middot; </span>' : '') + w + "</span>";
+        return '<span class="' + (on ? "on" : "off") + '">' + (k > 0 ? '<span class="dot"> &middot; </span>' : "") + w + "</span>";
       });
-      rows.push("<div>" + parts.join('') + "</div>");
+      rows.push("<div>" + parts.join("") + "</div>");
     }
     textEl.innerHTML = rows.join("");
   };
@@ -84,31 +74,21 @@
   // ---- timeline (seconds) ----
   const frames = [];
   const add = (dur, fn) => frames.push({ dur, fn });
-  // Duration for a word frame: long enough that each of its own photos gets at least ~0.14 s.
-  const wordDur = (w, base) => Math.max(base, ((wordImages[w] || []).length) * 0.14);
-  const addWord = (w, base, onImage) => { const d = wordDur(w, base); add(d, () => showWord(w, onImage, d)); };
 
-  add(3.0, showTitle);
-  // Round 1: one word at a time, every 4th over a photo
-  words.forEach((w, i) => addWord(w, 1.0, i % 4 === 3));
-  // Round 2: the list builds line by line, then holds
-  for (let n = 1; n <= words.length; n++) add(0.42, () => showList(n));
+  const TITLE = 3.5;
+  add(TITLE, () => showFaded("splash-title", 'Rye Libre<span class="splash-sub">All things Libre</span>', TITLE));
+
+  // One run through the topics, in order
+  words.forEach((w) => {
+    add(WORD_SECONDS, () => showFaded("splash-word", w, WORD_SECONDS));
+    (wordImages[w] || []).forEach((src) => add(PHOTO_SECONDS, () => showPhoto(src)));
+  });
+
+  // Recap by text, then the closing question
+  for (let n = 1; n <= words.length; n++) add(RECAP_STEP_SECONDS, () => showList(n));
   add(1.5, () => showList(words.length));
-  // Round 3: faster, a photo flash after every third word
-  words.forEach((w, i) => {
-    addWord(w, 0.32, false);
-    if (i % 3 === 2) add(0.18, showImage);
-  });
-  // Round 4: fastest
-  words.forEach((w, i) => {
-    addWord(w, 0.22, false);
-    if (i % 3 === 2) add(0.12, showImage);
-  });
-  // Photo burst
-  images.forEach(() => add(0.5, showImage));
-  // Close
-  add(2.5, () => showList(words.length));
-  add(3.5, showTitle);
+  const END = 4.5;
+  add(END, () => showFaded("splash-title", "How can I help?", END));
 
   const total = frames.reduce((s, f) => s + f.dur, 0);
   if (window.console && console.debug) console.debug("Splash intro length: " + total.toFixed(1) + "s");
@@ -120,7 +100,6 @@
     if (finished) return;
     finished = true;
     clearTimeout(timer);
-    clearInterval(cycleTimer);
     try { sessionStorage.setItem(SEEN_KEY, "1"); } catch {}
     root.classList.add("splash-out");
     document.documentElement.classList.remove("splash-active");
@@ -130,7 +109,6 @@
   function run(i) {
     if (finished) return;
     if (i >= frames.length) { finish(); return; }
-    clearInterval(cycleTimer);
     frames[i].fn();
     timer = setTimeout(() => run(i + 1), frames[i].dur * 1000);
   }
