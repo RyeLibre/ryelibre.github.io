@@ -18,6 +18,7 @@ const SPLASH_WORDS = [
   "Sakse",
   "Projects",
   "Screenings",
+  "Talks",
   "Adobe Abode",
 ];
 
@@ -66,6 +67,15 @@ const SPLASH_WORD_IMAGES = {
     "images/pool/laiza-center-workshop-classroom.jpg",
     "images/docartsasia-laiza-rooftop-screening.jpg",
     "images/pool/life-on-the-front-line-crowd.jpg",
+  ],
+
+  "Talks": [
+    "images/journalism-challenges-burma-cmu.jpg",
+    "images/splash/talks-tedxbkk.jpg",
+    "images/splash/talks-school-of-arts-sciences.jpg",
+    "images/splash/talks-ted-interview.jpg",
+    "images/splash/talks-studio-sakse-crowd.jpg",
+    "images/splash/talks-asia-society-podium.jpg",
   ],
 
 };
