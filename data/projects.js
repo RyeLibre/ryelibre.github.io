@@ -1149,7 +1149,7 @@ const PROJECTS = [
     "description": "DocArtsAsia studio in Laiza.",
     "link": "",
     "image": "images/docartsasia-laiza-rooftop-screening.jpg",
-    "images": ["images/pool/docartsasia-laiza-kids-reading-books.jpg", "images/pool/docartsasia-laiza-center-visit.jpg", "images/pool/laiza-center-photobook-israeli-soldiers.jpg", "images/pool/laiza-center-children-reading-photo-books.jpg", "images/pool/laiza-center-student-with-canon-camera.jpg", "images/pool/laiza-center-mounting-print-on-frame.jpg", "images/pool/laiza-center-workshop-classroom.jpg", "images/pool/laiza-center-students-checking-camera.jpg", "images/pool/laiza-center-group-red-character-shirts.jpg"],
+    "images": ["images/pool/docartsasia-laiza-kids-reading-books.jpg", "images/pool/docartsasia-laiza-center-visit.jpg", "images/pool/laiza-center-photobook-israeli-soldiers.jpg", "images/pool/laiza-center-children-reading-photo-books.jpg", "images/pool/laiza-center-student-with-canon-camera.jpg", "images/pool/laiza-center-mounting-print-on-frame.jpg", "images/pool/laiza-center-workshop-classroom.jpg", "images/pool/laiza-center-students-checking-camera.jpg", "images/pool/laiza-center-group-red-character-shirts.jpg", "images/pool/laiza-center-outdoor-screening-audience.jpg", "images/pool/laiza-center-national-geographic-book-face.jpg", "images/pool/laiza-center-students-unrolling-print.jpg"],
     "location": "Laiza",
     "place": "",
     "featured": false
