@@ -328,7 +328,9 @@ const PROJECTS = [
       "images/pool/rebels-reform-poster-detail.jpg",
       "images/pool/rebels-reform-magnet-rail.jpg",
       "images/pool/rebels-reform-speaker-panel.jpg",
-      "images/pool/rebels-reform-panel-talk.jpg"
+      "images/pool/rebels-reform-panel-talk.jpg",
+      "images/pool/gallery-hallway-panels.jpg",
+      "images/pool/gallery-hallway-portraits.jpg"
     ],
     "location": "Boulder, CO",
     "place": "",
