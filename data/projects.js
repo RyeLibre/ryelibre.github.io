@@ -1447,7 +1447,7 @@ const PROJECTS = [
     "link": "",
     "image": "images/pool/cdaf-logo.jpg",
     "imageFit": "contain",
-    "images": [],
+    "images": ["images/pool/cdaf-2014-gallery-skylight-wall.jpg"],
     "location": "Chiang Mai",
     "place": "",
     "featured": false
