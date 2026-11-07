@@ -1425,5 +1425,18 @@ const PROJECTS = [
     "location": "",
     "place": "",
     "featured": false
+  },
+  {
+    "id": "docartsasia-learning-notebook",
+    "title": "DocArtsAsia Learning Notebook",
+    "categories": ["Educator", "Organized", "Learning media", "Books", "Kachin"],
+    "date": "2026-11-07",
+    "description": "A pocket learning notebook of tips, quotes and photographs by Hkun Li (*Life in the front line / Kachin State*), given to every DocArtsAsia workshop student for years.",
+    "link": "",
+    "image": "images/docartsasia-learning-notebook.jpg",
+    "images": ["images/pool/docartsasia-learning-notebook-spread.jpg"],
+    "location": "",
+    "place": "",
+    "featured": false
   }
 ];
