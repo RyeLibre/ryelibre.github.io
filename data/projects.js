@@ -1159,10 +1159,10 @@ const PROJECTS = [
     "title": "Chiang Mai Documentary Arts Festival 2015",
     "categories": ["Festivals", "Curation", "Photography"],
     "date": "2015-02-01",
-    "description": "Year unconfirmed — best guess, not verified.",
+    "description": "Chiang Mai Documentary Arts Festival, 1st–8th February 2015.",
     "link": "",
     "image": "images/cdaf-2015-farmani-smiling.jpg",
-    "images": ["images/pool/cdaf-2015-color-block-exhibit.jpg", "images/pool/cdaf-2015-speaker-podium.jpg"],
+    "images": ["images/pool/cdaf-2015-color-block-exhibit.jpg", "images/pool/cdaf-2015-speaker-podium.jpg", "images/pool/cdaf-2015-opening-gallery-floor.jpg", "images/pool/cdaf-2015-photographers-lineup.jpg", "images/pool/cdaf-2015-five-men-group.jpg"],
     "location": "Chiang Mai",
     "place": "",
     "featured": false
