@@ -1428,8 +1428,9 @@ html.splash-active { overflow: hidden; }
 .splash-word { font-size: calc(var(--s) * 0.115); line-height: 1.1; overflow-wrap: anywhere; }
 .splash-title { font-size: calc(var(--s) * 0.15); line-height: 1.05; }
 .splash-sub { display: block; margin-top: 0.4em; font-size: 0.3em; opacity: 0.75; }
-.splash-list { font-size: calc(var(--s) * 0.04); line-height: 1.18; text-align: left; padding-left: 22%; }
-.splash-gap { height: 1.18em; }
+.splash-list { font-size: calc(var(--s) * 0.037); line-height: 1.9; text-align: center; padding: 0 3%; white-space: nowrap; }
+.splash-list .off { visibility: hidden; }
+.splash-list .dot { opacity: 0.6; }
 .splash-skip {
   position: absolute;
   top: 14px;

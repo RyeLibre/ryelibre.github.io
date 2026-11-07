@@ -7,7 +7,6 @@ const SPLASH_WORDS = [
   "Design",
   "Photography",
   "Films",
-  null, // gap between the two groups in the stacked list
   "Exhibitions",
   "Festivals",
   "Kachin",

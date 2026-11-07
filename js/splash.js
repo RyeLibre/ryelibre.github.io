@@ -56,15 +56,20 @@
     textEl.className = "splash-text splash-title";
     textEl.innerHTML = 'Rye Libre<span class="splash-sub">All things Libre</span>';
   };
+  // The list is written in rows of three with middle dots, revealed word by word.
+  const PER_ROW = 3;
   const showList = (count) => {
     imgEl.hidden = true;
     textEl.className = "splash-text splash-list";
-    let shown = 0;
-    textEl.innerHTML = SPLASH_WORDS.map((w) => {
-      if (w === null) return '<div class="splash-gap"></div>';
-      shown += 1;
-      return "<div>" + (shown <= count ? w : "&nbsp;") + "</div>";
-    }).join("");
+    const rows = [];
+    for (let r = 0; r < words.length; r += PER_ROW) {
+      const parts = words.slice(r, r + PER_ROW).map((w, k) => {
+        const on = r + k < count;
+        return '<span class="' + (on ? "on" : "off") + '">' + (k > 0 ? '<span class="dot"> &middot; </span>' : '') + w + "</span>";
+      });
+      rows.push("<div>" + parts.join('') + "</div>");
+    }
+    textEl.innerHTML = rows.join("");
   };
 
   // ---- timeline (seconds) ----
