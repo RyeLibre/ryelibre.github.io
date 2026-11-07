@@ -22,12 +22,24 @@ const SPLASH_WORDS = [
   "Adobe Abode",
 ];
 
-// Placeholder photos - replace with the ones you choose.
+// Photos for the splash (3-6 work best). Four are the Screenings photos; the other two
+// (Freedom from Fear, Everyday Kachin) are still placeholders - swap them whenever you choose.
 const SPLASH_IMAGES = [
+  "images/splash/screenings-theatre-intro.jpg",
+  "images/splash/screenings-outdoor-villa-night.jpg",
   "images/pool/rebels-reform-freedom-from-fear.jpg",
+  "images/splash/screenings-kids-audience.jpg",
   "images/pool/everyday-kachin-print-strips-close.jpg",
-  "images/pool/rye-revolutions-side-profile.jpg",
-  "images/pool/rebels-reform-burma-moon-collage.jpg",
-  "images/pool/laiza-center-group-red-character-shirts.jpg",
-  "images/pool/cdaf-2012-wooden-gallery-hallway.jpg",
+  "images/splash/screenings-old-chiang-mai-cultural-center.jpg",
 ];
+
+// A word listed here always appears over its own photos (cycling through them)
+// instead of the next photo in the general list.
+const SPLASH_WORD_IMAGES = {
+  "Screenings": [
+    "images/splash/screenings-theatre-intro.jpg",
+    "images/splash/screenings-outdoor-villa-night.jpg",
+    "images/splash/screenings-kids-audience.jpg",
+    "images/splash/screenings-old-chiang-mai-cultural-center.jpg",
+  ],
+};

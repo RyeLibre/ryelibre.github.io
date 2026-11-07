@@ -15,7 +15,9 @@
 
   const words = SPLASH_WORDS.filter(Boolean);
   const images = SPLASH_IMAGES.slice();
-  images.forEach((src) => { const i = new Image(); i.src = src; }); // preload
+  const wordImages = typeof SPLASH_WORD_IMAGES !== "undefined" ? SPLASH_WORD_IMAGES : {};
+  const wordImageCount = {};
+  images.concat(...Object.values(wordImages)).forEach((src) => { const i = new Image(); i.src = src; }); // preload
 
   const root = document.createElement("div");
   root.id = "splash";
@@ -35,7 +37,12 @@
 
   // ---- frame renderers ----
   const showWord = (w, onImage) => {
-    if (onImage) { imgEl.src = nextImage(); imgEl.hidden = false; } else { imgEl.hidden = true; }
+    const own = wordImages[w];
+    if (own && own.length) {
+      wordImageCount[w] = (wordImageCount[w] || 0) + 1;
+      imgEl.src = own[(wordImageCount[w] - 1) % own.length];
+      imgEl.hidden = false;
+    } else if (onImage) { imgEl.src = nextImage(); imgEl.hidden = false; } else { imgEl.hidden = true; }
     textEl.className = "splash-text splash-word";
     textEl.textContent = w;
   };
