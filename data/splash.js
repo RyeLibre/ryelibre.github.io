@@ -41,5 +41,6 @@ const SPLASH_WORD_IMAGES = {
     "images/splash/screenings-outdoor-villa-night.jpg",
     "images/splash/screenings-kids-audience.jpg",
     "images/splash/screenings-old-chiang-mai-cultural-center.jpg",
+    "images/splash/screenings-packed-room-looking-up.jpg",
   ],
 };
