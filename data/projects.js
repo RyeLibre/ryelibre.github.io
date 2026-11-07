@@ -449,7 +449,7 @@ const PROJECTS = [
     "description": "Solo exhibition on Daisetsuzan National Park, 10–15 August.",
     "link": "",
     "image": "images/kamui-mintara.jpg",
-    "images": ["images/pool/kamui-mintara-fuji-photo-salon-poster.jpg"],
+    "images": ["images/pool/kamui-mintara-fuji-photo-salon-poster.jpg", "images/pool/kamui-mintara-wall-of-prints.jpg", "images/pool/kamui-mintara-two-mountain-prints.jpg", "images/pool/kamui-mintara-gallery-overview.jpg"],
     "location": "Sapporo",
     "place": "The Fuji Film Salon",
     "featured": false
