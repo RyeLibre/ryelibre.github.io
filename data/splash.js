@@ -56,4 +56,16 @@ const SPLASH_WORD_IMAGES = {
     "images/splash/exhibitions-hanbok-print-corridor.jpg",
   ],
 
+  "Studios": [
+    "images/splash/studios-gallery-stairwell-prints.jpg",
+    "images/pool/studio-sakse-book-nook.jpg",
+    "images/pool/studio-sakse-work-desk.jpg",
+    "images/pool/studio-sakse-dinner-gallery.jpg",
+    "images/pool/unorthodox-opening-night-docartsasia.jpg",
+    "images/studio-sakse-ii-cnx.jpg",
+    "images/pool/laiza-center-workshop-classroom.jpg",
+    "images/docartsasia-laiza-rooftop-screening.jpg",
+    "images/pool/life-on-the-front-line-crowd.jpg",
+  ],
+
 };
