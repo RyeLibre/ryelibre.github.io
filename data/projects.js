@@ -1433,8 +1433,8 @@ const PROJECTS = [
     "date": "2026-11-07",
     "description": "A pocket learning notebook of tips, quotes and photographs by Hkun Li (*Life in the front line / Kachin State*), given to every DocArtsAsia workshop student for years.",
     "link": "",
-    "image": "images/docartsasia-learning-notebook.jpg",
-    "images": ["images/pool/docartsasia-learning-notebook-spread.jpg"],
+    "image": "images/pool/life-in-the-front-line-zine.jpg",
+    "images": ["images/pool/kashmir-exhibit-corner-2.jpg"],
     "location": "",
     "place": "",
     "featured": false
