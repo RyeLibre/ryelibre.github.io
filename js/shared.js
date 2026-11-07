@@ -143,9 +143,42 @@ function unhideGalleryImages(id) {
   } catch {}
 }
 
+// Gallery photo order set by drag and drop on a post page. Saved per post as a
+// list of the published photo paths; photos not in the list follow in their
+// original order. "Copy gallery order" hands the list over to be made permanent.
+const GALLERY_ORDER_KEY = "portfolio.galleryOrder";
+
+function loadGalleryOrder() {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(GALLERY_ORDER_KEY) || "{}");
+    return parsed && typeof parsed === "object" ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+function saveGalleryOrder(id, list) {
+  const all = loadGalleryOrder();
+  if (list) all[id] = list;
+  else delete all[id];
+  try {
+    localStorage.setItem(GALLERY_ORDER_KEY, JSON.stringify(all));
+  } catch {}
+}
+
 function getVisibleDataImages(project) {
   const hidden = loadHiddenGallery()[project.id] || [];
-  return (project.images || []).filter((src) => !hidden.includes(src));
+  const visible = (project.images || []).filter((src) => !hidden.includes(src));
+  const order = loadGalleryOrder()[project.id];
+  if (!Array.isArray(order) || order.length === 0) return visible;
+  const rank = (src) => {
+    const i = order.indexOf(src);
+    return i === -1 ? order.length : i;
+  };
+  return visible
+    .map((src, i) => ({ src, i }))
+    .sort((a, b) => rank(a.src) - rank(b.src) || a.i - b.i)
+    .map((x) => x.src);
 }
 
 function getGalleryImages(project) {
@@ -652,6 +685,7 @@ function exportDrafts() {
     imageOverrides: loadImageOverrides(),
     galleryOverrides: loadGalleryOverrides(),
     hiddenGallery: loadHiddenGallery(),
+    galleryOrder: loadGalleryOrder(),
     cityCoordOverrides: loadCityCoordOverrides(),
     mediaPool: loadMediaPool(),
   };

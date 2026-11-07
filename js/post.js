@@ -133,6 +133,8 @@ function showFlashAt(index) {
   flashTimer = setTimeout(hideFlash, FLASH_DURATION_MS);
 }
 
+let draggedGallerySrc = null;
+
 function buildGallery(project) {
   const dataImages = getVisibleDataImages(project);
   const hiddenCount = (loadHiddenGallery()[project.id] || []).length;
@@ -188,6 +190,41 @@ function buildGallery(project) {
       img.addEventListener("click", () => showInCover(fig, src));
     }
     fig.appendChild(img);
+
+    // Drag a photo onto another to reorder the gallery.
+    fig.draggable = true;
+    fig.classList.add("gallery-draggable");
+    fig.addEventListener("dragstart", (e) => {
+      draggedGallerySrc = src;
+      fig.classList.add("dragging");
+      e.dataTransfer.effectAllowed = "move";
+      try { e.dataTransfer.setData("text/plain", src); } catch {}
+    });
+    fig.addEventListener("dragend", () => {
+      draggedGallerySrc = null;
+      document.querySelectorAll(".gallery-draggable.dragging, .gallery-draggable.drag-over").forEach((el) =>
+        el.classList.remove("dragging", "drag-over")
+      );
+    });
+    fig.addEventListener("dragover", (e) => {
+      if (!draggedGallerySrc || draggedGallerySrc === src) return;
+      e.preventDefault();
+      fig.classList.add("drag-over");
+    });
+    fig.addEventListener("dragleave", () => fig.classList.remove("drag-over"));
+    fig.addEventListener("drop", (e) => {
+      e.preventDefault();
+      if (!draggedGallerySrc || draggedGallerySrc === src) return;
+      const list = [...dataImages];
+      const from = list.indexOf(draggedGallerySrc);
+      const to = list.indexOf(src);
+      if (from === -1 || to === -1) return;
+      list.splice(from, 1);
+      list.splice(to, 0, draggedGallerySrc);
+      draggedGallerySrc = null;
+      saveGalleryOrder(project.id, list);
+      renderPost();
+    });
 
     const hideBtn = document.createElement("button");
     hideBtn.type = "button";
@@ -249,6 +286,35 @@ function buildGallery(project) {
     });
   });
   addWrap.appendChild(addBtn);
+
+  const savedOrder = loadGalleryOrder()[project.id];
+  if (Array.isArray(savedOrder) && savedOrder.length > 0) {
+    const copyOrderBtn = document.createElement("button");
+    copyOrderBtn.type = "button";
+    copyOrderBtn.className = "add-btn";
+    copyOrderBtn.textContent = "Copy gallery order";
+    copyOrderBtn.title = "Copy the new photo order so it can be made permanent for everyone";
+    copyOrderBtn.addEventListener("click", () => {
+      const text = "Gallery order for post " + project.id + ":\n" + dataImages.join("\n");
+      const done = () => {
+        copyOrderBtn.textContent = "Copied!";
+        setTimeout(() => { copyOrderBtn.textContent = "Copy gallery order"; }, 1500);
+      };
+      if (navigator.clipboard) navigator.clipboard.writeText(text).then(done, () => window.prompt("Copy this:", text));
+      else window.prompt("Copy this:", text);
+    });
+    addWrap.appendChild(copyOrderBtn);
+
+    const resetOrderBtn = document.createElement("button");
+    resetOrderBtn.type = "button";
+    resetOrderBtn.className = "add-btn";
+    resetOrderBtn.textContent = "Reset order";
+    resetOrderBtn.addEventListener("click", () => {
+      saveGalleryOrder(project.id, null);
+      renderPost();
+    });
+    addWrap.appendChild(resetOrderBtn);
+  }
 
   if (hiddenCount > 0) {
     const copyBtn = document.createElement("button");

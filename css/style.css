@@ -1376,3 +1376,8 @@ button {
   height: auto;
   object-fit: contain;
 }
+
+/* Gallery photos can be dragged to reorder */
+.gallery-draggable { cursor: grab; }
+.gallery-draggable.dragging { opacity: 0.4; }
+.gallery-draggable.drag-over { outline: 2px dashed currentColor; outline-offset: 3px; }
