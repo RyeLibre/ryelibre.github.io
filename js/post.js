@@ -343,23 +343,24 @@ function renderPost() {
     badge.textContent = "Draft";
     headerRow.appendChild(badge);
   }
-  container.appendChild(headerRow);
 
+  // Title, badges, date/place and tags all share one (wrapping) line.
   if (!project.gallerySlideshow) {
     if (project.date || project.location || project.place) {
-      const meta = document.createElement("div");
+      const meta = document.createElement("span");
       meta.className = "project-meta";
       meta.textContent = [formatPostDate(project.date), project.location, project.place].filter(Boolean).join(" · ");
-      container.appendChild(meta);
+      headerRow.appendChild(meta);
     }
 
     if (project.categories && project.categories.length) {
       const tags = document.createElement("div");
       tags.className = "project-tags";
       project.categories.forEach((c) => tags.appendChild(buildTagChip(c)));
-      container.appendChild(tags);
+      headerRow.appendChild(tags);
     }
   }
+  container.appendChild(headerRow);
 
   const editLink = document.createElement("a");
   editLink.className = "view-post-link"; // shares link styling, not an "add" affordance
