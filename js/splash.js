@@ -16,7 +16,6 @@
   const words = SPLASH_WORDS.filter(Boolean);
   const images = SPLASH_IMAGES.slice();
   const wordImages = typeof SPLASH_WORD_IMAGES !== "undefined" ? SPLASH_WORD_IMAGES : {};
-  const wordImageCount = {};
   images.concat(...Object.values(wordImages)).forEach((src) => { const i = new Image(); i.src = src; }); // preload
 
   const root = document.createElement("div");
@@ -36,12 +35,22 @@
   const nextImage = () => images[imgIndex++ % images.length];
 
   // ---- frame renderers ----
-  const showWord = (w, onImage) => {
+  // A word with its own photos runs through ALL of them, quickly, while it is on screen.
+  let cycleTimer = null;
+  const showWord = (w, onImage, dur) => {
     const own = wordImages[w];
     if (own && own.length) {
-      wordImageCount[w] = (wordImageCount[w] || 0) + 1;
-      imgEl.src = own[(wordImageCount[w] - 1) % own.length];
+      let k = 0;
+      imgEl.src = own[0];
       imgEl.hidden = false;
+      const step = (dur * 1000) / own.length;
+      if (own.length > 1) {
+        cycleTimer = setInterval(() => {
+          k += 1;
+          if (k >= own.length) { clearInterval(cycleTimer); return; }
+          imgEl.src = own[k];
+        }, step);
+      }
     } else if (onImage) { imgEl.src = nextImage(); imgEl.hidden = false; } else { imgEl.hidden = true; }
     textEl.className = "splash-text splash-word";
     textEl.textContent = w;
@@ -75,21 +84,24 @@
   // ---- timeline (seconds) ----
   const frames = [];
   const add = (dur, fn) => frames.push({ dur, fn });
+  // Duration for a word frame: long enough that each of its own photos gets at least ~0.14 s.
+  const wordDur = (w, base) => Math.max(base, ((wordImages[w] || []).length) * 0.14);
+  const addWord = (w, base, onImage) => { const d = wordDur(w, base); add(d, () => showWord(w, onImage, d)); };
 
   add(3.0, showTitle);
   // Round 1: one word at a time, every 4th over a photo
-  words.forEach((w, i) => add(1.0, () => showWord(w, i % 4 === 3)));
+  words.forEach((w, i) => addWord(w, 1.0, i % 4 === 3));
   // Round 2: the list builds line by line, then holds
   for (let n = 1; n <= words.length; n++) add(0.42, () => showList(n));
   add(1.5, () => showList(words.length));
   // Round 3: faster, a photo flash after every third word
   words.forEach((w, i) => {
-    add(0.32, () => showWord(w, false));
+    addWord(w, 0.32, false);
     if (i % 3 === 2) add(0.18, showImage);
   });
   // Round 4: fastest
   words.forEach((w, i) => {
-    add(0.22, () => showWord(w, false));
+    addWord(w, 0.22, false);
     if (i % 3 === 2) add(0.12, showImage);
   });
   // Photo burst
@@ -108,6 +120,7 @@
     if (finished) return;
     finished = true;
     clearTimeout(timer);
+    clearInterval(cycleTimer);
     try { sessionStorage.setItem(SEEN_KEY, "1"); } catch {}
     root.classList.add("splash-out");
     document.documentElement.classList.remove("splash-active");
@@ -117,6 +130,7 @@
   function run(i) {
     if (finished) return;
     if (i >= frames.length) { finish(); return; }
+    clearInterval(cycleTimer);
     frames[i].fn();
     timer = setTimeout(() => run(i + 1), frames[i].dur * 1000);
   }
