@@ -92,4 +92,14 @@ const SPLASH_WORD_IMAGES = {
     "images/splash/talks-asia-society-podium.jpg",
   ],
 
+  "Festivals": [
+    "images/splash/festivals-gallery-wall-visitors.jpg",
+    "images/splash/festivals-wooden-pavilion-books.jpg",
+    "images/splash/festivals-photobook-tables.jpg",
+    "images/pool/cdaf-monks-viewing-photos.jpg",
+    "images/benefit-auction.jpg",
+    "images/splash/festivals-yangon-print-grid.jpg",
+    "images/cdaf-2015-farmani-smiling.jpg",
+  ],
+
 };
