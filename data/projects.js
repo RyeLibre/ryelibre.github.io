@@ -577,7 +577,7 @@ const PROJECTS = [
     "title": "Chiang Mai Documentatry Arts Festival 2013",
     "categories": ["Festivals", "Curation", "Production"],
     "date": "2013-02-20",
-    "description": "",
+    "description": "Talks at the festival included [Brennan O\u0027Connor](https://photographers.lightrocket.com/profile/3923), a Canadian photojournalist who covers Myanmar\u0027s borderlands.",
     "link": "",
     "image": "images/pool/photobook-exhibition-tables.jpg",
     "images": ["images/pool/cdaf-2013-festival-banner-three-kings-monument.jpg", "images/pool/cdaf-2013-kachin-slide-panel-talk.jpg"],
