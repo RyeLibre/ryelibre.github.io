@@ -580,7 +580,7 @@ const PROJECTS = [
     "description": "",
     "link": "",
     "image": "images/pool/photobook-exhibition-tables.jpg",
-    "images": ["images/pool/cdaf-2013-festival-banner-three-kings-monument.jpg"],
+    "images": ["images/pool/cdaf-2013-festival-banner-three-kings-monument.jpg", "images/pool/cdaf-2013-kachin-slide-panel-talk.jpg"],
     "location": "Chiang Mai",
     "place": "",
     "featured": false
