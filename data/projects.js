@@ -1438,5 +1438,19 @@ const PROJECTS = [
     "location": "",
     "place": "",
     "featured": false
+  },
+  {
+    "id": "chiang-mai-documentary-arts-festival-2014",
+    "title": "Chiang Mai Documentary Arts Festival 2014",
+    "categories": ["Festivals", "Curation", "Production"],
+    "date": "2014-02-20",
+    "description": "",
+    "link": "",
+    "image": "images/pool/cdaf-logo.jpg",
+    "imageFit": "contain",
+    "images": [],
+    "location": "Chiang Mai",
+    "place": "",
+    "featured": false
   }
 ];
