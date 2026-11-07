@@ -568,7 +568,7 @@ const PROJECTS = [
     "description": "",
     "link": "",
     "image": "images/pool/cdaf-gallery-viewer.jpg",
-    "images": ["images/pool/thai-house-gallery-dusk.jpg", "images/pool/laptop-feedback-session.jpg", "images/pool/cdaf-2012-wooden-gallery-hallway.jpg"],
+    "images": ["images/pool/thai-house-gallery-dusk.jpg", "images/pool/laptop-feedback-session.jpg", "images/pool/cdaf-2012-wooden-gallery-hallway.jpg", "images/pool/cdaf-2012-full-of-grace-poster-night.jpg"],
     "location": "Chiang Mai",
     "place": "",
     "featured": true
