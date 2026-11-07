@@ -43,4 +43,10 @@ const SPLASH_WORD_IMAGES = {
     "images/splash/screenings-old-chiang-mai-cultural-center.jpg",
     "images/splash/screenings-packed-room-looking-up.jpg",
   ],
+  "Educator": [
+    "images/splash/educator-teaching-in-dark-room.jpg",
+    "images/pool/computer-training-workshop.jpg",
+    "images/pool/print-review-table-japan.jpg",
+    "images/splash/educator-camera-review-bw.jpg",
+  ],
 };
