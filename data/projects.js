@@ -1603,5 +1603,83 @@ const PROJECTS = [
     "location": "",
     "place": "",
     "featured": false
+  },
+  {
+    "id": "suwon-international-photo-festival-2015",
+    "title": "Suwon International Photo Festival 2015",
+    "categories": ["Festivals"],
+    "date": "2015-11-01",
+    "description": "",
+    "link": "",
+    "image": "",
+    "images": [],
+    "location": "Suwon, South Korea",
+    "place": "",
+    "featured": false
+  },
+  {
+    "id": "suwon-international-photo-festival-2016",
+    "title": "Suwon International Photo Festival 2016",
+    "categories": ["Festivals"],
+    "date": "2016-11-01",
+    "description": "The festival's third edition; the main theme was migration.",
+    "link": "",
+    "image": "",
+    "images": [],
+    "location": "Suwon, South Korea",
+    "place": "",
+    "featured": false
+  },
+  {
+    "id": "suwon-international-photo-festival-2017",
+    "title": "Suwon International Photo Festival 2017",
+    "categories": ["Festivals"],
+    "date": "2017-11-01",
+    "description": "",
+    "link": "",
+    "image": "images/pool/suwon-photo-festival-group-photo-opening.jpg",
+    "images": [],
+    "location": "Suwon, South Korea",
+    "place": "",
+    "featured": false
+  },
+  {
+    "id": "suwon-international-photo-festival-2018",
+    "title": "Suwon International Photo Festival 2018",
+    "categories": ["Festivals"],
+    "date": "2018-10-24",
+    "description": "24–31 October 2018.",
+    "link": "",
+    "image": "",
+    "images": [],
+    "location": "Suwon, South Korea",
+    "place": "",
+    "featured": false
+  },
+  {
+    "id": "suwon-international-photo-festival-2019",
+    "title": "Suwon International Photo Festival 2019",
+    "categories": ["Festivals"],
+    "date": "2019-11-01",
+    "description": "",
+    "link": "",
+    "image": "",
+    "images": [],
+    "location": "Suwon, South Korea",
+    "place": "",
+    "featured": false
+  },
+  {
+    "id": "suwon-international-photo-festival-2020",
+    "title": "Suwon International Photo Festival 2020",
+    "categories": ["Festivals"],
+    "date": "2020-11-01",
+    "description": "Held online during the pandemic.",
+    "link": "",
+    "image": "",
+    "images": [],
+    "location": "Suwon, South Korea",
+    "place": "",
+    "featured": false
   }
 ];
