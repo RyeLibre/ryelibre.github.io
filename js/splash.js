@@ -17,7 +17,8 @@
   if (typeof SPLASH_WORDS === "undefined") return;
 
   const WORD_SECONDS = 1.0; // each topic word on black, fading in and out
-  const PHOTO_SECONDS = 0.4; // each photo that follows its topic
+  const PHOTO_SECONDS = 0.35; // each photo that follows its topic (the first fades in)
+  const LAST_PHOTO_SECONDS = 0.8; // the topic's last photo, fading out to black
   const RECAP_STEP_SECONDS = 0.3; // recap list: one word every 0.3 s
 
   const words = SPLASH_WORDS.filter(Boolean);
@@ -63,19 +64,30 @@
 
   // ---- frame renderers ----
   // Text that fades in and out over `dur` seconds (a quarter fading in, a quarter out).
+  const setImgAnimation = (css) => {
+    imgEl.style.animation = "none";
+    void imgEl.offsetWidth; // restart the animation
+    imgEl.style.animation = css;
+  };
   const showFaded = (cls, html, dur) => {
     imgEl.hidden = true;
+    imgEl.style.animation = "none";
     textEl.className = "splash-text " + cls;
     textEl.innerHTML = html;
     textEl.style.animation = "none";
     void textEl.offsetWidth; // restart the animation
     textEl.style.animation = "splash-fade " + dur + "s ease-in-out both";
   };
-  const showPhoto = (src) => {
+  // mode: "in" fades the photo in from black, "out" fades it to black over `dur`
+  // (you see less and less), anything else is a straight cut.
+  const showPhoto = (src, mode, dur) => {
     textEl.style.animation = "none";
     textEl.innerHTML = "";
     imgEl.src = src;
     imgEl.hidden = false;
+    if (mode === "in") setImgAnimation("splash-photo-in " + dur + "s ease-out both");
+    else if (mode === "out") setImgAnimation("splash-photo-out " + dur + "s ease-in both");
+    else imgEl.style.animation = "none";
   };
   // The recap list: rows of three with middle dots, revealed word by word.
   const PER_ROW = 3;
@@ -98,22 +110,39 @@
   const frames = [];
   const add = (dur, fn) => frames.push({ dur, fn });
 
-  const TITLE = 3.5;
+  const TITLE = 3.0;
   add(TITLE, () => showFaded("splash-title", 'Rye Libre<span class="splash-sub">All things Libre</span>', TITLE));
 
   // One run through the topics, in order
   words.forEach((w) => {
     add(WORD_SECONDS, () => showFaded("splash-word", w, WORD_SECONDS));
-    (wordImages[w] || []).forEach((src) => add(PHOTO_SECONDS, () => showPhoto(src)));
+    const photos = wordImages[w] || [];
+    photos.forEach((src, i) => {
+      const last = i === photos.length - 1;
+      if (last) add(LAST_PHOTO_SECONDS, () => showPhoto(src, "out", LAST_PHOTO_SECONDS));
+      else if (i === 0) add(PHOTO_SECONDS, () => showPhoto(src, "in", PHOTO_SECONDS));
+      else add(PHOTO_SECONDS, () => showPhoto(src, "cut", 0));
+    });
   });
 
   // Recap by text, then the closing question
   for (let n = 1; n <= words.length; n++) add(RECAP_STEP_SECONDS, () => showList(n));
-  add(1.5, () => showList(words.length));
-  const END = 4.5;
+  add(1.2, () => showList(words.length));
+  const END = 4.0;
   add(END, () => showFaded("splash-title", "How can I help?", END));
 
   const total = frames.reduce((s, f) => s + f.dur, 0);
+
+  // Progress ring: a thin circle that empties over the whole intro (no numbers).
+  const ring = document.createElement("div");
+  ring.className = "splash-ring";
+  ring.innerHTML =
+    '<svg viewBox="0 0 40 40" aria-hidden="true">' +
+    '<circle class="splash-ring-track" cx="20" cy="20" r="17"></circle>' +
+    '<circle class="splash-ring-left" cx="20" cy="20" r="17" style="animation-duration:' + total.toFixed(2) + 's"></circle>' +
+    "</svg>";
+  root.appendChild(ring);
+
   if (window.console && console.debug) console.debug("Splash intro length: " + total.toFixed(1) + "s");
 
   let timer = null;

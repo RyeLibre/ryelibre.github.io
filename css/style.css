@@ -1453,3 +1453,26 @@ html.splash-active { overflow: hidden; }
   75% { opacity: 1; }
   100% { opacity: 0; }
 }
+
+/* Splash: photo fades, and the progress ring */
+@keyframes splash-photo-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes splash-photo-out { from { opacity: 1; } to { opacity: 0; } }
+.splash-ring {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  width: 34px;
+  height: 34px;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+.splash-ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.splash-ring circle { fill: none; stroke-width: 2.5; }
+.splash-ring-track { stroke: rgba(255, 255, 255, 0.2); }
+.splash-ring-left {
+  stroke: #fff;
+  stroke-linecap: round;
+  stroke-dasharray: 106.8;
+  animation: splash-ring-drain linear forwards;
+}
+@keyframes splash-ring-drain { from { stroke-dashoffset: 0; } to { stroke-dashoffset: 106.8; } }
