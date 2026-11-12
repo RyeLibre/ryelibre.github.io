@@ -298,11 +298,23 @@ function openPhotoPicker(title, onSelect) {
 function bindPhotoPickerUpload() {
   const uploadInput = document.getElementById("photo-picker-upload");
   if (!uploadInput) return;
+  // Remember the chosen size between visits.
+  const savedSize = document.getElementById("photo-picker-size");
+  if (savedSize) {
+    try { const v = localStorage.getItem("portfolio.photoSize"); if (v) savedSize.value = v; } catch {}
+    if (!savedSize.value) savedSize.value = "2200";
+    savedSize.addEventListener("change", () => { try { localStorage.setItem("portfolio.photoSize", savedSize.value); } catch {} });
+  }
   uploadInput.addEventListener("change", () => {
     const file = uploadInput.files[0];
     if (!file) return;
-    resizeImageForWeb(file)
+    const sizeSelect = document.getElementById("photo-picker-size");
+    const maxDim = sizeSelect ? parseInt(sizeSelect.value, 10) || 2200 : 2200;
+    resizeImageForWeb(file, maxDim)
       .then((dataUrl) => {
+        const note = document.getElementById("photo-picker-size-note");
+        const dims = resizeImageForWeb.last;
+        if (note && dims) note.textContent = "Added " + dims.width + " × " + dims.height + " px, " + Math.round((dataUrl.length * 0.75) / 1024) + " KB (was " + Math.round(file.size / 1024) + " KB)";
         const item = addToMediaPool(dataUrl, file.name);
         if (photoPickerCallback) {
           photoPickerCallback(item.dataUrl);
@@ -363,6 +375,7 @@ function resizeImageForWeb(file, maxDim = 2200, quality = 0.85) {
         ctx.fillStyle = "#fff";
         ctx.fillRect(0, 0, width, height);
         ctx.drawImage(img, 0, 0, width, height);
+        resizeImageForWeb.last = { width, height };
         resolve(canvas.toDataURL("image/jpeg", quality));
       };
       img.src = reader.result;

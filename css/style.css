@@ -1498,3 +1498,6 @@ html.splash-active { overflow: hidden; }
 
 /* Owner-only controls: hidden for visitors, shown when the owner switch is on (see ?owner=1) */
 html:not(.owner) .admin-only { display: none !important; }
+
+.photo-size-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 8px 0 12px; }
+.photo-size-row select { font: inherit; }

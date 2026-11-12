@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=20261107e">
+<link rel="stylesheet" href="css/style.css?v=20261107f">
 <link rel="icon" href="data:,">
 <script>(function(){try{var q=new URLSearchParams(location.search).get("owner");if(q==="1")localStorage.setItem("portfolio.owner","1");if(q==="0")localStorage.removeItem("portfolio.owner");if(localStorage.getItem("portfolio.owner")==="1")document.documentElement.classList.add("owner");}catch(e){}})();</script>
 </head>
@@ -40,6 +40,7 @@
     <h3 id="photo-picker-title">Choose a photo</h3>
     <p class="section-hint">Pick a photo already in your media pool, or upload a new one — new uploads are added to
       the pool so you can reuse them later.</p>
+    <div class="photo-size-row"><label for="photo-picker-size">Resize to</label> <select id="photo-picker-size"><option value="1200">Small — 1200 px</option><option value="1600">Medium — 1600 px</option><option value="2200">Large — 2200 px</option><option value="3000">Extra large — 3000 px</option></select> <span id="photo-picker-size-note" class="section-hint"></span></div>
     <label for="photo-picker-upload" class="add-btn photo-picker-upload-label">+ Upload new photo</label>
     <input id="photo-picker-upload" type="file" accept="image/*" hidden>
     <div id="photo-picker-grid" class="media-pool-grid gallery-grid"></div>
@@ -56,10 +57,10 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script src="data/tags.js?v=20261107e"></script>
-<script src="data/media-pool.js?v=20261107e"></script>
-<script src="data/projects.js?v=20261107e"></script>
-<script src="js/shared.js?v=20261107e"></script>
-<script src="js/post.js?v=20261107e"></script>
+<script src="data/tags.js?v=20261107f"></script>
+<script src="data/media-pool.js?v=20261107f"></script>
+<script src="data/projects.js?v=20261107f"></script>
+<script src="js/shared.js?v=20261107f"></script>
+<script src="js/post.js?v=20261107f"></script>
 </body>
 </html>
