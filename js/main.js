@@ -554,10 +554,14 @@ function renderCard(project) {
     const details = buildStealSupportDetails(project);
     if (details) card.appendChild(details);
   } else {
-    const desc = document.createElement("div");
-    desc.className = "project-description";
-    desc.innerHTML = window.marked ? marked.parse(project.description || "") : (project.description || "");
-    card.appendChild(desc);
+    // Thumbnail cards show only the post's excerpt (set in the Edit dialog);
+    // the full description is on the post page.
+    if (project.excerpt) {
+      const desc = document.createElement("div");
+      desc.className = "project-description project-excerpt";
+      desc.textContent = project.excerpt;
+      card.appendChild(desc);
+    }
   }
 
   const linkRow = document.createElement("div");
@@ -972,6 +976,7 @@ function openPostDialog(project) {
   document.getElementById("post-link").value = project ? project.link || "" : "";
   document.getElementById("post-location").value = project ? project.location || "" : "";
   document.getElementById("post-place").value = project ? project.place || "" : "";
+  document.getElementById("post-excerpt").value = project ? project.excerpt || "" : "";
   document.getElementById("post-description").value = project ? project.description || "" : "";
   document.getElementById("post-tags-other").value = "";
   document.getElementById("post-featured").checked = project ? !!project.featured : false;
@@ -1163,6 +1168,7 @@ function bindDialogs() {
       title,
       categories: dedupedCategories,
       date: document.getElementById("post-date").value || new Date().toISOString().slice(0, 10),
+      excerpt: document.getElementById("post-excerpt").value.trim(),
       description: document.getElementById("post-description").value.trim(),
       link: document.getElementById("post-link").value.trim(),
       location: document.getElementById("post-location").value.trim(),
@@ -1229,6 +1235,7 @@ function showGeneratedPost(post) {
     place: post.place || "",
     featured: !!post.featured,
   };
+  if (post.excerpt) snippet.excerpt = post.excerpt;
   if (post.stealDetails) snippet.stealDetails = post.stealDetails;
   if (post.supportDetails) snippet.supportDetails = post.supportDetails;
   const lines = JSON.stringify(snippet, null, 2).split("\n");
@@ -1265,6 +1272,7 @@ function showGeneratedEdit(project) {
     place: project.place || "",
     featured: !!project.featured,
   };
+  if (project.excerpt) snippet.excerpt = project.excerpt;
   if (project.embed) snippet.embed = project.embed;
   if (project.stealDetails) snippet.stealDetails = project.stealDetails;
   if (project.supportDetails) snippet.supportDetails = project.supportDetails;

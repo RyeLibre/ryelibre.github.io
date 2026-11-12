@@ -752,3 +752,25 @@ function exportDrafts() {
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
 }
+
+// Owner switch shortcut: triple-click the footer text to turn owner mode on or off
+// (same as opening the site with ?owner=1 / ?owner=0).
+document.addEventListener("DOMContentLoaded", () => {
+  const foot = document.querySelector(".site-footer p");
+  if (!foot) return;
+  let clicks = 0;
+  let timer = null;
+  foot.addEventListener("click", () => {
+    clicks += 1;
+    clearTimeout(timer);
+    timer = setTimeout(() => { clicks = 0; }, 700);
+    if (clicks >= 3) {
+      clicks = 0;
+      try {
+        if (isOwner()) localStorage.removeItem("portfolio.owner");
+        else localStorage.setItem("portfolio.owner", "1");
+      } catch {}
+      location.reload();
+    }
+  });
+});
