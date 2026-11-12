@@ -41,7 +41,7 @@ const PROJECTS = [
     "title": "Portraits of Independence",
     "categories": ["Exhibitions", "Photography", "Kachin"],
     "date": "2026-09-19",
-    "description": "Portraits of Independence\nat the Nikon Salon in Shinjuku, Tokyo",
+    "description": "Portraits of Independence\nat the Nikon Salon in Shinjuku, Tokyo\n\n**Won the Nikon Salon Jun Miki Award in 2010.**\n\nNikon Imaging Japan Inc. has operated Nikon Salon, a photography gallery established in 1968 to support and advance photographic culture. Nikon Salon provides a venue for outstanding works across all genres, free from distinctions between professional and amateur photographers and independent of commercial considerations, while pursuing the true role of photographic exhibitions. Since 1999, Nikon Salon has also supported emerging photographers by presenting the Jun Miki Award to the best exhibition by a new photographer each year.\n\n[Nikon Salon on Wikipedia](https://en.wikipedia.org/wiki/Nikon_Salon#Awards) · [Nikon: art and science activities](https://www.nikon.com/company/sustainability/society/citizenship-activities/art-science/)",
     "link": "",
     "image": "images/portraits-of-independence.jpg",
     "images": ["images/pool/portraits-of-independence-wall.jpg"],
