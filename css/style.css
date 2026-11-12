@@ -1501,3 +1501,15 @@ html:not(.owner) .admin-only { display: none !important; }
 
 .photo-size-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 8px 0 12px; }
 .photo-size-row select { font: inherit; }
+
+/* Links inside descriptions: pure white on the dark theme (dark on the light theme so they stay readable) */
+.post-description a,
+.project-description a {
+  color: #ffffff;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+@media (prefers-color-scheme: light) {
+  .post-description a,
+  .project-description a { color: #111318; }
+}
