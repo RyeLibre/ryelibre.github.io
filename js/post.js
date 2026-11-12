@@ -287,6 +287,45 @@ function buildGallery(project) {
   });
   addWrap.appendChild(addBtn);
 
+  // Publish this post's photo changes (new photos, removals, new order) to the live site.
+  const changes = describePublishChanges(project);
+  if (changes.any) {
+    const publishBtn = document.createElement("button");
+    publishBtn.type = "button";
+    publishBtn.className = "add-btn publish-btn";
+    publishBtn.textContent = "Publish to site";
+    const bits = [];
+    if (changes.overrides) bits.push(changes.overrides + " new photo" + (changes.overrides === 1 ? "" : "s"));
+    if (changes.hidden) bits.push(changes.hidden + " removed");
+    if (changes.ordered) bits.push("new order");
+    publishBtn.title = "Publish to the live site: " + bits.join(", ");
+    publishBtn.addEventListener("click", async () => {
+      if (!hasPublishToken()) {
+        openPublishSetup();
+        return;
+      }
+      if (!window.confirm("Publish to the live site for \"" + project.title + "\"?\n\n" + bits.join(", "))) return;
+      publishBtn.disabled = true;
+      try {
+        const result = await publishPostChanges(project, (t) => { publishBtn.textContent = t; });
+        alert("Published. The live site updates in about a minute (" + result.total + " photos in this gallery).");
+        renderPost();
+      } catch (e) {
+        publishBtn.disabled = false;
+        publishBtn.textContent = "Publish to site";
+        alert(e.message || "Couldn't publish.");
+      }
+    });
+    addWrap.appendChild(publishBtn);
+  }
+
+  const setupBtn = document.createElement("button");
+  setupBtn.type = "button";
+  setupBtn.className = "add-btn";
+  setupBtn.textContent = "Publishing setup";
+  setupBtn.addEventListener("click", () => openPublishSetup());
+  addWrap.appendChild(setupBtn);
+
   const savedOrder = loadGalleryOrder()[project.id];
   if (Array.isArray(savedOrder) && savedOrder.length > 0) {
     const copyOrderBtn = document.createElement("button");

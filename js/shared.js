@@ -171,7 +171,41 @@ function saveGalleryOrder(id, list) {
   } catch {}
 }
 
+// Photo changes just published to the repo keep showing from this browser until
+// the site finishes redeploying (then the live data matches and this is dropped).
+const PENDING_IMAGES_KEY = "portfolio.pendingImages";
+
+function loadPendingImages() {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(PENDING_IMAGES_KEY) || "{}");
+    return parsed && typeof parsed === "object" ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+function savePendingImages(id, entry) {
+  const all = loadPendingImages();
+  if (entry) all[id] = entry;
+  else delete all[id];
+  try {
+    localStorage.setItem(PENDING_IMAGES_KEY, JSON.stringify(all));
+  } catch {
+    // Storage full: the live site will show the result once it redeploys.
+  }
+}
+
 function getVisibleDataImages(project) {
+  const pending = loadPendingImages()[project.id];
+  if (pending) {
+    const live = project.images || [];
+    const same = live.length === pending.paths.length && live.every((p, i) => p === pending.paths[i]);
+    if (same || Date.now() - pending.at > 6 * 60 * 60 * 1000) {
+      savePendingImages(project.id, null);
+    } else {
+      return pending.paths.map((p) => (pending.dataUrls && pending.dataUrls[p]) || p);
+    }
+  }
   const hidden = loadHiddenGallery()[project.id] || [];
   const visible = (project.images || []).filter((src) => !hidden.includes(src));
   const order = loadGalleryOrder()[project.id];
