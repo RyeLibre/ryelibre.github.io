@@ -146,7 +146,7 @@ function buildGallery(project) {
 
   if (dataImages.length === 0 && overrides.length === 0) {
     const hint = document.createElement("p");
-    hint.className = "section-hint";
+    hint.className = "section-hint admin-only";
     hint.textContent =
       "No extra photos yet — add one below, or add paths to this post's \"images\" array in data/projects.js.";
     section.appendChild(hint);
@@ -192,8 +192,8 @@ function buildGallery(project) {
     fig.appendChild(img);
 
     // Drag a photo onto another to reorder the gallery.
-    fig.draggable = true;
-    fig.classList.add("gallery-draggable");
+    fig.draggable = isOwner();
+    if (isOwner()) fig.classList.add("gallery-draggable");
     fig.addEventListener("dragstart", (e) => {
       draggedGallerySrc = src;
       fig.classList.add("dragging");
@@ -228,7 +228,7 @@ function buildGallery(project) {
 
     const hideBtn = document.createElement("button");
     hideBtn.type = "button";
-    hideBtn.className = "reset-photo-btn gallery-remove";
+    hideBtn.className = "reset-photo-btn gallery-remove admin-only";
     hideBtn.textContent = "Remove";
     hideBtn.title = "Remove this photo from the gallery";
     hideBtn.addEventListener("click", () => {
@@ -259,7 +259,7 @@ function buildGallery(project) {
 
     const removeBtn = document.createElement("button");
     removeBtn.type = "button";
-    removeBtn.className = "reset-photo-btn gallery-remove";
+    removeBtn.className = "reset-photo-btn gallery-remove admin-only";
     removeBtn.textContent = "Remove";
     removeBtn.addEventListener("click", () => {
       removeGalleryImage(project.id, index);
@@ -273,7 +273,7 @@ function buildGallery(project) {
   section.appendChild(grid);
 
   const addWrap = document.createElement("div");
-  addWrap.className = "gallery-add";
+  addWrap.className = "gallery-add admin-only";
 
   const addBtn = document.createElement("button");
   addBtn.type = "button";
@@ -429,7 +429,7 @@ function renderPost() {
   container.appendChild(headerRow);
 
   const editLink = document.createElement("a");
-  editLink.className = "view-post-link"; // shares link styling, not an "add" affordance
+  editLink.className = "view-post-link admin-only"; // shares link styling, not an "add" affordance
   editLink.href = "index.html?edit=" + encodeURIComponent(project.id);
   editLink.textContent = "Edit this post";
   container.appendChild(editLink);
@@ -495,7 +495,7 @@ function renderPost() {
   if (isDraft) {
     const removeBtn = document.createElement("button");
     removeBtn.type = "button";
-    removeBtn.className = "btn-text-remove";
+    removeBtn.className = "btn-text-remove admin-only";
     removeBtn.textContent = "Remove this draft post";
     removeBtn.addEventListener("click", () => {
       removeDraftPostStorage(project.id);

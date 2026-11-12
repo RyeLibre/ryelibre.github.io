@@ -1495,3 +1495,6 @@ html.splash-active { overflow: hidden; }
   background: #000;
   border-radius: var(--radius);
 }
+
+/* Owner-only controls: hidden for visitors, shown when the owner switch is on (see ?owner=1) */
+html:not(.owner) .admin-only { display: none !important; }

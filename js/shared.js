@@ -111,6 +111,11 @@ function removeGalleryImage(id, index) {
   }
 }
 
+// True when the owner switch is on (open the site once with ?owner=1; ?owner=0 turns it off).
+function isOwner() {
+  return document.documentElement.classList.contains("owner");
+}
+
 // Published gallery photos (from data/projects.js) can't be deleted from the
 // browser, so "Remove" hides them on this browser and records the removal;
 // "Copy removed photos" (or the export) hands the list over to be made

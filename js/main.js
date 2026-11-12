@@ -59,7 +59,7 @@ function init() {
   bindDialogs();
 
   const editId = params.get("edit");
-  if (editId) {
+  if (editId && isOwner()) {
     const project = state.projects.find((p) => String(p.id) === editId);
     if (project) openPostDialog(project);
   }
@@ -157,7 +157,7 @@ function renderTagList() {
     if (state.draftTagKeys.has(key)) {
       const removeBtn = document.createElement("button");
       removeBtn.type = "button";
-      removeBtn.className = "tag-remove";
+      removeBtn.className = "tag-remove admin-only";
       removeBtn.textContent = "×";
       removeBtn.title = "Remove draft tag";
       removeBtn.addEventListener("click", (e) => {
@@ -326,7 +326,7 @@ function renderCategoryIntro() {
   categoryIntroEl.hidden = false;
   categoryIntroEl.innerHTML =
     `<div class="category-intro-header"><h2 class="category-intro-title">${escapeHtml(activeTag)}</h2>` +
-    `<button type="button" class="view-post-link intro-edit-btn">Edit intro</button></div>` +
+    `<button type="button" class="view-post-link intro-edit-btn admin-only">Edit intro</button></div>` +
     subtagsHtml +
     `<div class="category-intro-text">${window.marked ? marked.parse(intro) : intro}</div>`;
 
@@ -439,6 +439,7 @@ function buildStealSupportDetails(project) {
 let draggedFeaturedId = null;
 
 function bindFeaturedDrag(card, id) {
+  if (!isOwner()) return;
   card.draggable = true;
   card.classList.add("featured-draggable");
   card.addEventListener("dragstart", (e) => {
@@ -560,7 +561,7 @@ function renderCard(project) {
   }
 
   const linkRow = document.createElement("div");
-  linkRow.className = "card-link-row";
+  linkRow.className = "card-link-row admin-only";
 
   const editLink = document.createElement("button");
   editLink.type = "button";
@@ -574,7 +575,7 @@ function renderCard(project) {
   if (isDraft) {
     const removeBtn = document.createElement("button");
     removeBtn.type = "button";
-    removeBtn.className = "btn-text-remove";
+    removeBtn.className = "btn-text-remove admin-only";
     removeBtn.textContent = "Remove draft";
     removeBtn.addEventListener("click", () => removeDraftPost(project.id));
     card.appendChild(removeBtn);
@@ -640,7 +641,7 @@ function renderMapZoomControls() {
   const zoomBtns = MAP_ZOOM_LEVELS.map(
     (z, i) => `<button type="button" class="map-zoom-btn${z === state.mapZoom ? " active" : ""}" data-zoom="${z}">${MAP_ZOOM_LABELS[i]}</button>`
   ).join("");
-  const pinBtn = `<button type="button" id="pin-city-btn" class="map-zoom-btn${state.pinningCity ? " active" : ""}">${state.pinningCity ? "Click the map to pin…" : "+ Pin a city"}</button>`;
+  const pinBtn = `<button type="button" id="pin-city-btn" class="map-zoom-btn admin-only${state.pinningCity ? " active" : ""}">${state.pinningCity ? "Click the map to pin…" : "+ Pin a city"}</button>`;
 
   el.innerHTML = zoomBtns + pinBtn;
 
@@ -705,13 +706,13 @@ function renderLocationMap() {
     .join("");
 
   const unmappedNote = unmapped.length
-    ? `<p class="section-hint">Not shown on the map yet — add these to <code>data/city-coords.js</code>: ${unmapped.map(escapeHtml).join(", ")}</p>`
+    ? `<p class="section-hint admin-only">Not shown on the map yet — add these to <code>data/city-coords.js</code>: ${unmapped.map(escapeHtml).join(", ")}</p>`
     : "";
 
   const localOverrides = loadCityCoordOverrides();
   const overrideKeys = Object.keys(localOverrides);
   const overridesNote = overrideKeys.length
-    ? `<div class="section-hint">Local pins not yet published: ${overrideKeys
+    ? `<div class="section-hint admin-only">Local pins not yet published: ${overrideKeys
         .map((key) => {
           const label = escapeHtml(localOverrides[key].label || key);
           return `${label} <button type="button" class="city-pin-remove" data-city-key="${escapeHtml(key)}">remove</button>`;
