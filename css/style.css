@@ -1484,3 +1484,14 @@ html.splash-active { overflow: hidden; }
 /* Splash layers: photos and text start invisible; js/splash.js fades them with opacity transitions */
 .splash-img { opacity: 0; }
 .splash-text { opacity: 0; z-index: 2; }
+
+/* YouTube video under a post's cover (post "youtube" field) */
+.post-video { margin: 20px 0; }
+.post-video iframe {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1012 / 480;
+  border: 0;
+  background: #000;
+  border-radius: var(--radius);
+}

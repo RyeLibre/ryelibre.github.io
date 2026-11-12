@@ -385,6 +385,8 @@ const PROJECTS = [
     "image": "images/the-laiza-hotel.jpg",
     "images": [],
     "imagePosition": "top",
+    "youtube": "b82WAw4RiTo",
+    "videoTitle": "The Laiza Hotel Teaser",
     "location": "",
     "place": "",
     "featured": true

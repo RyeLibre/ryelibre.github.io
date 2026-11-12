@@ -437,6 +437,22 @@ function renderPost() {
   if (!project.gallerySlideshow) {
     container.appendChild(buildCoverMedia(project));
 
+    // Optional YouTube video (set "youtube" to the video id), shown under the cover.
+    if (project.youtube) {
+      const video = document.createElement("div");
+      video.className = "post-video";
+      const frame = document.createElement("iframe");
+      frame.src = "https://www.youtube.com/embed/" + encodeURIComponent(project.youtube);
+      frame.title = project.videoTitle || project.title + " video";
+      frame.allow =
+        "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+      frame.referrerPolicy = "strict-origin-when-cross-origin";
+      frame.allowFullscreen = true;
+      frame.loading = "lazy";
+      video.appendChild(frame);
+      container.appendChild(video);
+    }
+
     if (project.embed) {
       const embed = document.createElement("div");
       embed.className = "post-embed";
