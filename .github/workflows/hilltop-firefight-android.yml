@@ -1,0 +1,79 @@
+name: Hilltop Firefight — Android build + virus scan
+
+on:
+  push:
+    paths:
+      - 'games/hilltop-firefight/index.html'
+      - 'games/hilltop-firefight/android/**'
+      - '.github/workflows/hilltop-firefight-android.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hilltop-android
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+
+      - name: Put the latest game into the app
+        run: cp games/hilltop-firefight/index.html games/hilltop-firefight/android/app/src/main/assets/index.html
+
+      - name: Build the APK
+        working-directory: games/hilltop-firefight/android
+        run: gradle assembleDebug --no-daemon
+
+      - name: Virus scan (ClamAV, fresh signatures)
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq clamav
+          sudo systemctl stop clamav-freshclam || true
+          sudo freshclam
+          mkdir -p scan
+          cp games/hilltop-firefight/android/app/build/outputs/apk/debug/app-debug.apk scan/HilltopFirefight.apk
+          cp games/hilltop-firefight/index.html scan/index.html
+          {
+            echo "Hilltop Firefight — virus scan report"
+            echo "Date (UTC): $(date -u '+%Y-%m-%d %H:%M')"
+            echo "Scanner: $(clamscan --version)"
+            echo "Commit: ${GITHUB_SHA}"
+            echo
+            echo "SHA-256:"
+            (cd scan && sha256sum HilltopFirefight.apk index.html)
+            echo
+            clamscan -r --scan-archive=yes --alert-broken=no scan
+          } | tee scan-report.txt
+          grep -q "Infected files: 0" scan-report.txt
+
+      - name: Add the APK and scan report to the folder
+        run: |
+          mkdir -p games/hilltop-firefight/download
+          cp scan/HilltopFirefight.apk games/hilltop-firefight/download/HilltopFirefight.apk
+          cp scan-report.txt games/hilltop-firefight/download/virus-scan.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add games/hilltop-firefight/download
+          git commit -m "Hilltop Firefight: built APK + virus scan report" || exit 0
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: HilltopFirefight-apk
+          path: |
+            scan/HilltopFirefight.apk
+            scan-report.txt
