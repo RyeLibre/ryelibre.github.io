@@ -140,7 +140,7 @@ const SCENES=[
  {name:'Yaw Yone',hq:'blue',tod:'Night flares',sky:['#070b18','#162036','#222c40'],sun:null,moon:[260,110],ranges:['#1d2535','#18202c','#141a22'],
   hill:['#202a3a','#0e141e'],slope:['#1d2636','#0c111a'],dead:.35,trees:36,fog:0,night:1,bamboo:1,px:620,top:280,curv:220,ph:2.2},
  {name:'Full Moon',hq:'blue',tod:'Full moon · dark',sky:['#050812','#0c1424','#141d2e'],sun:null,moon:[980,120],bigMoon:1,ranges:['#1d2535','#18202c','#141a22'],
-  hill:['#18202c','#0a0e15'],slope:['#151c27','#080b11'],dead:.3,trees:34,fog:0,night:1,dark:.7,tracers:1,creepers:1,px:660,top:286,curv:230,ph:3.3}
+  hill:['#18202c','#0a0e15'],slope:['#151c27','#080b11'],dead:.3,trees:34,fog:0,night:1,dark:.62,tracers:1,creepers:1,diff:1.5,px:660,top:286,curv:230,ph:3.3}
 ];
 let SC=SCENES[0];
 function ridge(x){const u=(x-SC.px)/640;return SC.top+(SC.flat?Math.pow(Math.abs(u),5)*300+18:u*u*SC.curv)+Math.sin(x*0.013+SC.ph)*6+Math.sin(x*0.031+SC.ph*2)*3}
@@ -442,7 +442,7 @@ showBest();
 buildScene(1);
 
 function newGame(start){G={level:start||1,score:0,totalKills:0,flagsBurned:0};startLevel()}
-function startLevel(){const c=cfg(G.level);buildScene(G.level);
+function startLevel(){const sc0=SCENES[(G.level-1)%SCENES.length],c=cfg(sc0.diff&&G.level<=CAMPAIGN?sc0.diff:G.level);if(sc0.diff&&G.level<=CAMPAIGN){c.acc*=.75;c.quota=10;c.rpgMan=.06;c.drone=0;c.droneDur=0;c.arty=40;c.burst=1;c.maxActive=2;c.rpg=3}buildScene(G.level);
   Object.assign(G,{c,time:90,kills:0,health:5,mag:30,reserve:c.ammo-30,rpg:c.rpg,reloading:0,rpgReload:0,cool:0,
     enemies:[],spawnT:1.6,duck:false,duckAmt:0,zoom:0,recoil:0,shake:0,hurt:0,flash:0,shots:0,hits:0,levelScore:0,dieT:0,
     msgs:[],parts:[],nparts:[],rockets:[],tracers:[],pending:[],flares:[],flareT:1.5,ambT:1,banner:0,brief:2.6,troops:c.quota+8+G.level*3,arty:[],artyT:G.level===1?30:12+R()*10,artyIn:0,artyHits:0,bigFlash:0,flagBurn:0,fires:[],erockets:[],enemyRpgs:0,rpgHits:0,gaps:[],walkers:[],walkT:3,gapKills:0,smoker:null,smokeT:10+R()*15,smokerKills:0,act:null,actIdx:0,smoking:0,smk:[],cases:[],ptr:[],creepers:[],creepT:7+R()*5,ambush:null,herd:null,herdT:6+R()*14,surr:null,surrendered:false,flagShot:false,bird:null,birdT:8+R()*35,birdHit:false,drones:[],droneT:G.level===1?45:9+R()*8,decoysHit:0,preempt:0,hitsTaken:0,dronesDown:0,droneHits:0,enemyShots:0});
@@ -971,13 +971,13 @@ function drawCases(dt){for(const c of G.cases){c.life-=dt;c.x+=c.vx*dt;c.y+=c.vy
   G.cases=G.cases.filter(c=>c.life>0&&c.y<H+40)}
 function creeperPos(c){const e=c.p*c.p*.6+c.p*.4;return[lerp(c.x0,c.x1,e),lerp(c.y0,c.y1,e),lerp(1,2.6,e)]}
 function updCreepers(dt){if(!(SC.creepers||G.level>CAMPAIGN)||(G.surr&&G.surr.phase!=='over'))return;
-  G.creepT-=dt;if(G.creepT<=0){G.creepT=10+R()*8;const sl=slots[Math.floor(R()*slots.length)],dir=sl.x<SC.px?1:-1;
+  G.creepT-=dt;if(G.creepT<=0){G.creepT=(SC.diff?15:10)+R()*8;const sl=slots[Math.floor(R()*slots.length)],dir=sl.x<SC.px?1:-1;
     G.creepers.push({x0:sl.x,y0:sl.by+6,x1:lerp(380,900,R()),y1:H+40,p:0,dur:13+R()*4,dir,t:0,dead:false,skin:['#4f3322','#6f4a31','#9c7350'][Math.floor(R()*3)]})}
   G.creepers=G.creepers.filter(c=>{c.t+=dt;if(c.dead)return c.t<1;c.p+=dt/c.dur;
     if(c.p>=1){if(!G.ambush)G.ambush={t:0,x:clamp(c.x1,260,1020),skin:c.skin,dead:false};return false}return true});
   const A=G.ambush;if(A){A.t+=dt;
-    if(!A.dead&&!A.fired&&A.t>1.0){A.fired=true;A.flash=.12;noise(.2,2400,.6,3);if(state==='play'){G.hitsTaken++;G.health--;G.hurt=1;G.shake=.5;S.hurt();msg('Shot at close range!','#ff7a6a');if(G.health<=0){state='dying';G.dieT=0;G.zoom=0;G.duck=true;spaceHeld=false;$('touch').classList.add('hide')}}}
-    if(A.flash>0)A.flash-=dt;if((A.fired&&A.t>1.5)||(A.dead&&A.t>A.deadAt+.7))G.ambush=null}}
+    if(!A.dead&&!A.fired&&A.t>(SC.diff?1.6:1.0)){A.fired=true;A.flash=.12;noise(.2,2400,.6,3);if(state==='play'){G.hitsTaken++;G.health--;G.hurt=1;G.shake=.5;S.hurt();msg('Shot at close range!','#ff7a6a');if(G.health<=0){state='dying';G.dieT=0;G.zoom=0;G.duck=true;spaceHeld=false;$('touch').classList.add('hide')}}}
+    if(A.flash>0)A.flash-=dt;if((A.fired&&A.t>(SC.diff?2.1:1.5))||(A.dead&&A.t>A.deadAt+.7))G.ambush=null}}
 function drawCreepers(){for(const c of G.creepers){const [x,y,sc]=creeperPos(c);ctx.save();ctx.translate(x,y);ctx.scale(sc,sc);ctx.translate(-x,-y);
     drawWalker({x,dir:c.dir,t:c.t*.6,dead:c.dead,fall:c.dir,skin:c.skin},y-24);ctx.restore()}}
 function creeperHit(ax,ay){for(const c of G.creepers){if(c.dead)continue;const [x,y,sc]=creeperPos(c);
