@@ -1529,18 +1529,19 @@ function cliffRocket(x,y){if(!SC.jade)return false;G.cliff=G.cliff||{st:'up',t:0
 function updCliff(dt){const c=G.cliff;if(!c||c.st==='up')return;c.t+=dt;
   if(c.t>.9&&!c.killed){c.killed=true;let n=0;for(const e of G.enemies){if(e.state==='dead'||e.state==='gone')continue;const sl=slots[e.slot];if(sl&&!sl.brush&&sl.x<CLX+240&&sl.by>JB(CLX)-30){if(e.type==='decoy')e.state='gone';else{killEnemy(e,false,true);n++}}}
     slots.forEach(q=>{if(q.x<CLX+240&&q.by>JB(CLX)-30){q.buried=true;q.busy=true}});if(n)floatText(CLX,JB(CLX)-80,'ROCKFALL  '+n+' BURIED','#ffd9a0')}}
-function spawnCiv(){const r=R(),kind=r<.25?'moto':r<.45?'bike':r<.65?'baby':r<.8?'old':'walk',dir=R()<.5?1:-1,y=548+R()*30,sp=kind==='moto'?160:kind==='bike'?90:kind==='old'?26:45;
+function spawnCiv(){const r=R(),kind=r<.25?'moto':r<.45?'bike':r<.65?'baby':r<.8?'old':'walk',dir=R()<.5?1:-1,y=548+R()*30,sp=kind==='moto'?230:kind==='bike'?140:kind==='old'?60:kind==='baby'?110:150;
   G.civs.push({kind,dir,x:dir>0?-80:W+80,y,v:sp*(.85+R()*.3),t:R()*9,dead:false,dt:0,col:['#3a5aa0','#a0303a','#2f7a4a','#c88a2a','#6a3a7a','#d8d0c0'][Math.floor(R()*6)],lon:['#3a3060','#2a4a3a','#6a2a3a','#4a3a2a'][Math.floor(R()*4)]})}
 function updCivs(dt){if(!SC.station)return;G.civT-=dt;if(G.civT<=0&&state==='play'){G.civT=1.2+R()*2.4;if(G.civs.length<7)spawnCiv()}
   G.civs=G.civs.filter(c=>{c.t+=dt;if(c.dead){c.dt+=dt;return c.dt<1.5}c.x+=c.dir*c.v*dt;return c.x>-120&&c.x<W+120})}
-function drawCivs(){for(const c of [...G.civs].sort((a,b)=>a.y-b.y)){const s=1.5,x=c.x,y=c.y,st=Math.sin(c.t*(c.kind==='old'?5:9));ctx.save();ctx.translate(x,y);ctx.scale(c.dir*s,s);
+function drawCivs(){for(const c of [...G.civs].sort((a,b)=>a.y-b.y)){const s=1.5,x=c.x,y=c.y,st=Math.sin(c.t*(c.kind==='old'?9:c.kind==='baby'?14:17));ctx.save();ctx.translate(x,y);ctx.scale(c.dir*s,s);
     if(c.dead){ctx.globalAlpha=Math.max(0,1-c.dt/1.5);ctx.rotate(Math.min(1.4,c.dt*4))}
     const skin='#b07a52';
     if(c.kind==='moto'||c.kind==='bike'){ctx.strokeStyle='#222';ctx.lineWidth=2.4;ctx.beginPath();ctx.arc(-14,-6,7,0,Math.PI*2);ctx.arc(14,-6,7,0,Math.PI*2);ctx.stroke();
       if(c.kind==='moto'){ctx.fillStyle='#8a1a1a';ctx.fillRect(-12,-18,24,8);ctx.fillStyle='#333';ctx.fillRect(4,-26,3,10)}else{ctx.strokeStyle='#555';ctx.lineWidth=1.6;ctx.beginPath();ctx.moveTo(-14,-6);ctx.lineTo(-2,-18);ctx.lineTo(14,-6);ctx.moveTo(-2,-18);ctx.lineTo(8,-22);ctx.stroke()}
-      ctx.fillStyle=c.col;ctx.fillRect(-6,-36,10,18);ctx.fillStyle=c.lon;ctx.fillRect(-6,-20,12,6);ctx.fillStyle=skin;circ(ctx,-1,-41,5);ctx.fillStyle='#1a1410';ctx.beginPath();ctx.arc(-1,-43,5.2,Math.PI,0);ctx.fill()}
-    else{const bend=c.kind==='old'?.35:0;ctx.rotate(bend*.5);
-      ctx.strokeStyle=c.lon;ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(-2,-14);ctx.lineTo(-2+st*4,0);ctx.moveTo(2,-14);ctx.lineTo(2-st*4,0);ctx.stroke();
+      ctx.rotate(.18);ctx.fillStyle=c.col;ctx.fillRect(-6,-36,10,18);ctx.fillStyle=c.lon;ctx.fillRect(-6,-20,12,6);ctx.fillStyle=skin;circ(ctx,-1,-41,5);ctx.fillStyle='#1a1410';ctx.beginPath();ctx.arc(-1,-43,5.2,Math.PI,0);ctx.fill()}
+    else{const run=c.kind!=='old',bend=c.kind==='old'?.35:.28;ctx.translate(0,-Math.abs(st)*(run?3:1));ctx.rotate(bend*.5);const L=run?9:4;
+      ctx.strokeStyle=c.lon;ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(-2,-14);ctx.lineTo(-2+st*L,-Math.max(0,-st)*4);ctx.moveTo(2,-14);ctx.lineTo(2-st*L,-Math.max(0,st)*4);ctx.stroke();
+      if(run&&c.kind!=='baby'){ctx.strokeStyle='#b07a52';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(0,-40);ctx.lineTo(-st*8,-30);ctx.moveTo(2,-40);ctx.lineTo(st*8+4,-32);ctx.stroke()}
       ctx.fillStyle=c.lon;ctx.fillRect(-6,-26,12,14);ctx.fillStyle=c.col;ctx.fillRect(-6,-44,12,19);ctx.fillStyle=skin;circ(ctx,1,-50,5.5);
       ctx.fillStyle=c.kind==='old'?'#d8d8d0':'#1a1410';ctx.beginPath();ctx.arc(1,-52,5.8,Math.PI,0);ctx.fill();
       if(c.kind==='old'){ctx.strokeStyle='#6a4a2a';ctx.lineWidth=1.8;ctx.beginPath();ctx.moveTo(8,-30);ctx.lineTo(12,0);ctx.stroke()}
