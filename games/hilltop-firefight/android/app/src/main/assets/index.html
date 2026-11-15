@@ -1162,12 +1162,12 @@ const HELI_LOCK=2.4;
 function updHeli(dt){if(!SC.laiza)return;const h=G.heli;
   if(!h){if(state!=='play')return;G.heliT-=dt;if(G.heliT<=0){const x=lerp(380,900,R());G.heli={x,y:-160,ty:175+R()*40,dir:x<640?1:-1,t:0,ph:'down',lock:HELI_LOCK,thump:0};msg('HELICOPTER! Get an RPG on it','#ff6a5a')}return}
   h.t+=dt;h.thump-=dt;if(h.thump<=0&&h.ph!=='dead'){h.thump=.11;noise(.07,220,h.ph==='leave'?.08:.16,1)}
-  if(h.ph==='down'){h.y=lerp(h.y,h.ty,Math.min(1,dt*1.6));h.x+=h.dir*dt*20;if(Math.abs(h.y-h.ty)<4){h.ph='hover';h.t=0;S.ting&&tone(1400,.15,.06,'square')}}
+  if(h.ph==='down'){h.y=lerp(h.y,h.ty,Math.min(1,dt*1.6));h.x+=h.dir*dt*20;if(Math.abs(h.y-h.ty)<4){h.ph='hover';h.t=0;tone(1400,.15,.06,'square')}}
   else if(h.ph==='hover'){h.y=h.ty+Math.sin(h.t*2.4)*4;const inbound=G.rockets.some(r=>Math.hypot(r.tx-h.x,r.ty-h.y)<90);if(!inbound)h.lock-=dt;
     if(Math.floor(h.lock*4)!==Math.floor((h.lock+dt)*4))tone(1800,.06,.05,'square');
     if(h.lock<=0){h.ph='fire';h.t=0;h.mis={t:0};noise(.5,900,.5,2)}}
   else if(h.ph==='fire'){h.mis.t+=dt;if(h.mis.t>=.55&&!h.mis.hit){h.mis.hit=true;S.boom();G.shake=1.6;G.bigFlash=.4;for(let i=0;i<9;i++)nearPuff(R()*W,R()*60);
-      if(state==='play'){msg('MISSILE HIT!','#ff5a4a');playerHit();if(G.health>0)playerHit()}}
+      if(state==='play'){const ducked=G.duckAmt>.6,n=ducked?3:5;msg(ducked?'MISSILE HIT — you were down':'MISSILE HIT!','#ff5a4a');for(let i=0;i<n&&G.health>0;i++)playerHit()}}
     if(h.mis.t>1.2){h.ph='leave';h.t=0}}
   else if(h.ph==='leave'){h.y-=dt*90;h.x+=h.dir*dt*160;if(h.y<-220){G.heli=null;G.heliT=26+R()*10}}
   else if(h.ph==='dead'){h.vy+=260*dt;h.y+=h.vy*dt;h.x+=h.dir*dt*40;h.rot+=dt*4.5;if(R()<.7)G.parts.push({x:h.x,y:h.y,vx:(R()-.5)*30,vy:-30,g:0,life:1.2,max:1.2,r:8,grow:30,rgb:'40,36,34'});
@@ -1176,14 +1176,40 @@ function explodeQuiet(x,y){S.boom();for(let i=0;i<16;i++)G.parts.push({x,y,vx:(R
 function heliRocket(x,y){const h=G.heli;if(!h||h.ph==='dead'||h.ph==='leave')return false;if(Math.abs(x-h.x)>85||Math.abs(y-h.y)>55)return false;
   h.ph='dead';h.vy=-20;h.rot=0;G.score+=600;G.levelScore+=600;floatText(h.x,h.y-50,'HELICOPTER +600','#ffd36b');msg('Helicopter down!','#bde58a');return true}
 function drawHeli(){const h=G.heli;if(!h)return;ctx.save();ctx.translate(h.x,h.y);const spin=h.ph==='dead'?Math.cos(h.rot*2.2):1;if(h.ph==='dead')ctx.rotate(Math.sin(h.rot*2.2)*.12+.15);ctx.scale(h.dir*1.6*(Math.abs(spin)<.12?.12*Math.sign(spin||1):spin),1.6);ctx.rotate(.06);
-  ctx.fillStyle='#1d201c';ctx.beginPath();ctx.ellipse(0,0,40,15,0,0,Math.PI*2);ctx.fill();
-  ctx.beginPath();ctx.moveTo(-30,-4);ctx.lineTo(-92,-6);ctx.lineTo(-92,0);ctx.lineTo(-30,6);ctx.fill();
-  ctx.fillRect(-98,-18,8,18);ctx.fillStyle='rgba(180,190,200,.5)';ctx.beginPath();ctx.ellipse(-94,-8,3,14,0,0,Math.PI*2);ctx.fill();
-  ctx.fillStyle='rgba(140,170,190,.55)';ctx.beginPath();ctx.ellipse(24,-3,15,9,0,Math.PI*1.1,Math.PI*2.05);ctx.fill();
-  ctx.fillStyle='#1d201c';ctx.fillRect(-4,-22,8,8);ctx.fillRect(-14,12,4,10);ctx.fillRect(14,12,4,10);ctx.fillRect(-26,21,56,3);
-  ctx.fillStyle='#2a2d28';ctx.fillRect(-18,8,26,6);ctx.fillRect(-20,9,8,8);
-  const bl=Math.sin(T*40);ctx.strokeStyle='rgba(30,30,30,.55)';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-75*bl,-23);ctx.lineTo(75*bl,-21);ctx.stroke();ctx.fillStyle='rgba(30,30,30,.18)';ctx.beginPath();ctx.ellipse(0,-22,78,4,0,0,Math.PI*2);ctx.fill();
-  if(Math.sin(T*6)>0){ctx.fillStyle='#ff4a3a';circ(ctx,-90,-2,2.5)}
+  const D='#262a27',D2='#32372f',D3='#1b1e1b';
+  // tail boom, fin, stabiliser, tail rotor
+  ctx.fillStyle=D;ctx.beginPath();ctx.moveTo(-22,-9);ctx.lineTo(-92,-6);ctx.lineTo(-92,-1);ctx.lineTo(-22,5);ctx.closePath();ctx.fill();
+  ctx.fillStyle=D2;ctx.beginPath();ctx.moveTo(-84,-6);ctx.lineTo(-96,-30);ctx.lineTo(-102,-30);ctx.lineTo(-98,-2);ctx.closePath();ctx.fill();
+  ctx.fillStyle=D;ctx.fillRect(-90,-3,16,3);ctx.fillRect(-77,-9,2,12);
+  ctx.fillStyle='rgba(200,200,190,.28)';ctx.beginPath();ctx.ellipse(-99,-24,2.5,11,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#c9a227';ctx.fillRect(-100,-36+((T*90)%24),3,3);
+  // skids
+  ctx.strokeStyle=D3;ctx.lineWidth=2.2;ctx.beginPath();ctx.moveTo(-14,12);ctx.lineTo(-20,26);ctx.moveTo(22,12);ctx.lineTo(26,26);ctx.moveTo(-30,26);ctx.lineTo(34,26);ctx.quadraticCurveTo(42,26,42,21);ctx.stroke();
+  // fuselage
+  ctx.fillStyle=D;ctx.beginPath();ctx.moveTo(-26,-10);ctx.quadraticCurveTo(-24,-16,-10,-16);ctx.lineTo(22,-16);ctx.quadraticCurveTo(44,-14,50,0);ctx.quadraticCurveTo(50,10,40,14);ctx.lineTo(-18,14);ctx.quadraticCurveTo(-28,12,-26,-10);ctx.fill();
+  ctx.fillStyle='rgba(255,255,255,.06)';ctx.fillRect(-20,-15,52,5);
+  ctx.strokeStyle='rgba(0,0,0,.35)';ctx.lineWidth=.8;ctx.beginPath();ctx.moveTo(-6,-14);ctx.lineTo(-6,12);ctx.moveTo(10,-14);ctx.lineTo(10,12);ctx.stroke();
+  // engine hump and exhaust
+  ctx.fillStyle=D2;ctx.beginPath();ctx.moveTo(-20,-16);ctx.quadraticCurveTo(-16,-26,-2,-26);ctx.lineTo(16,-26);ctx.quadraticCurveTo(22,-24,22,-16);ctx.closePath();ctx.fill();
+  ctx.fillStyle='#b8925a';ctx.beginPath();ctx.ellipse(-20,-20,3,4,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#3a2a1a';ctx.beginPath();ctx.ellipse(-20,-20,1.6,2.4,0,0,Math.PI*2);ctx.fill();
+  // cockpit glazing (two seats in tandem)
+  ctx.fillStyle='rgba(120,140,150,.75)';ctx.beginPath();ctx.moveTo(14,-14);ctx.lineTo(26,-14);ctx.quadraticCurveTo(42,-12,47,-2);ctx.lineTo(24,-2);ctx.lineTo(14,-4);ctx.closePath();ctx.fill();
+  ctx.strokeStyle=D3;ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(26,-14);ctx.lineTo(28,-2);ctx.moveTo(37,-11);ctx.lineTo(38,-2);ctx.stroke();
+  ctx.fillStyle='rgba(255,255,255,.35)';ctx.fillRect(30,-11,5,2);
+  ctx.fillStyle='#14161a';circ(ctx,33,-7,2.2);circ(ctx,21,-8,2.2);
+  // nose sensor ball and chin gun
+  ctx.fillStyle='#c9c8bd';circ(ctx,50,1,4.5);ctx.fillStyle='rgba(60,60,60,.6)';circ(ctx,51.5,2,1.6);
+  ctx.fillStyle=D3;ctx.fillRect(34,13,8,5);ctx.fillRect(40,15,14,1.8);
+  // stub wing with rocket pod and missile rail
+  ctx.fillStyle=D3;ctx.fillRect(-10,4,26,3);
+  ctx.fillStyle='#4f5639';ctx.beginPath();ctx.moveTo(-12,8);ctx.lineTo(10,8);ctx.quadraticCurveTo(14,12,10,16);ctx.lineTo(-12,16);ctx.closePath();ctx.fill();
+  ctx.fillStyle='#202318';for(let i=0;i<3;i++)circ(ctx,11,10+i*2.6,.9);
+  ctx.fillStyle='#55583f';ctx.fillRect(-2,17,20,3);ctx.fillStyle='#2a2c22';ctx.fillRect(18,17,3,3);
+  // mast and main rotor
+  ctx.fillStyle=D3;ctx.fillRect(-3,-31,6,6);ctx.fillRect(-6,-33,12,3);
+  const bl=Math.sin(T*40);ctx.strokeStyle='rgba(25,25,25,.6)';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-82*bl,-33);ctx.lineTo(82*bl,-31);ctx.stroke();
+  ctx.fillStyle='rgba(30,30,30,.16)';ctx.beginPath();ctx.ellipse(0,-32,86,4.5,0,0,Math.PI*2);ctx.fill();
+  if(Math.sin(T*6)>0){ctx.fillStyle='#ff4a3a';circ(ctx,-97,-31,2)}
+  if(h.ph==='dead'){ctx.fillStyle='rgba(255,140,40,.8)';circ(ctx,-14,-18,6+R()*4);ctx.fillStyle='rgba(255,220,120,.9)';circ(ctx,-14,-18,3)}
   ctx.restore();
   if(h.ph==='hover'){const a=.5+.5*Math.sin(T*18);ctx.strokeStyle=`rgba(255,60,50,${.5+a*.5})`;ctx.lineWidth=2;ctx.strokeRect(h.x-70,h.y-45,140,85);
     ctx.fillStyle='#ff6a5a';ctx.font='800 15px system-ui,sans-serif';ctx.textAlign='center';ctx.fillText(`MISSILE LOCK ${Math.max(0,h.lock).toFixed(1)}`,h.x,h.y-54);ctx.textAlign='left'}
