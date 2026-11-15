@@ -340,7 +340,7 @@ function newGame(){G={level:1,score:0,totalKills:0,flagsBurned:0};startLevel()}
 function startLevel(){const c=cfg(G.level);buildScene(G.level);
   Object.assign(G,{c,time:90,kills:0,health:5,mag:30,reserve:c.ammo-30,rpg:c.rpg,reloading:0,rpgReload:0,cool:0,
     enemies:[],spawnT:1.6,duck:false,duckAmt:0,zoom:0,recoil:0,shake:0,hurt:0,flash:0,shots:0,hits:0,levelScore:0,dieT:0,
-    msgs:[],parts:[],nparts:[],rockets:[],tracers:[],pending:[],flares:[],flareT:1.5,ambT:1,banner:2.6,arty:[],artyT:G.level===1?30:12+R()*10,artyIn:0,artyHits:0,bigFlash:0,flagBurn:0,fires:[],erockets:[],enemyRpgs:0,rpgHits:0,gaps:[],gapKills:0,smoker:null,smokeT:10+R()*15,smokerKills:0,surr:null,surrendered:false,flagShot:false,bird:null,birdT:8+R()*35,birdHit:false,drones:[],droneT:G.level===1?45:9+R()*8,decoysHit:0,preempt:0,hitsTaken:0,dronesDown:0,droneHits:0,enemyShots:0});
+    msgs:[],parts:[],nparts:[],rockets:[],tracers:[],pending:[],flares:[],flareT:1.5,ambT:1,banner:2.6,arty:[],artyT:G.level===1?30:12+R()*10,artyIn:0,artyHits:0,bigFlash:0,flagBurn:0,fires:[],erockets:[],enemyRpgs:0,rpgHits:0,gaps:[],walkers:[],walkT:3,gapKills:0,smoker:null,smokeT:10+R()*15,smokerKills:0,surr:null,surrendered:false,flagShot:false,bird:null,birdT:8+R()*35,birdHit:false,drones:[],droneT:G.level===1?45:9+R()*8,decoysHit:0,preempt:0,hitsTaken:0,dronesDown:0,droneHits:0,enemyShots:0});
   state='play';['title','end','pause'].forEach(id=>$(id).classList.add('hide'));G.windT=2.5+Math.random()*3;
   if(isTouch)$('touch').classList.remove('hide');
 }
@@ -408,7 +408,7 @@ function explode(x,y){S.boom();G.shake=.7;
   if(!G.flagBurn&&Math.hypot(x-fx,y-fy)<55){G.flagBurn=.001;G.score+=500;G.levelScore+=500;G.flagsBurned++;msg('THEIR FLAG IS BURNING!  +500','#ffb347');floatText(fx,fy-24,'+500','#ffb347')}
   if(G.smoker&&Math.abs(G.smoker.x-x)<70&&Math.abs(G.smoker.by-y)<60){const m=G.smoker;G.smoker=null;G.smokeT=14+R()*18;G.kills++;G.totalKills++;G.score+=250;G.levelScore+=250;G.smokerKills++;n++;
     floatText(m.x,m.by-40,'SMOKER +250','#ffe38a');msg('Got the smoker!','#ffd36b');if(G.kills===30&&!G.surr)startSurrender()}
-  for(const g of G.gaps){const w=g.walker;if(w&&!w.dead&&Math.abs(w.x-x)<70&&Math.abs(g.by-y)<60){w.dead=true;w.t=0;w.fall=w.dir;G.kills++;G.totalKills++;G.score+=200;G.levelScore+=200;G.gapKills++;floatText(w.x,g.by-22,'+200','#ffe38a');n++}}
+  for(const w of G.walkers){const wy=baseY(w.x);if(!w.dead&&Math.abs(w.x-x)<70&&Math.abs(wy-y)<60&&G.gaps.some(g=>Math.abs(g.x-w.x)<45)){w.dead=true;w.t=0;w.fall=w.dir;G.kills++;G.totalKills++;G.score+=200;G.levelScore+=200;G.gapKills++;floatText(w.x,wy-22,'+200','#ffe38a');n++}}
   if(n>=2){const b=n*75;G.score+=b;G.levelScore+=b;msg(`Multi-kill x${n}  +${b}`,'#ffd36b')}
   const cy=Math.max(y,baseY(clamp(x,150,1130))+4);const rg=fgc.createRadialGradient(x,cy,2,x,cy,34);
   rg.addColorStop(0,'rgba(20,14,8,.85)');rg.addColorStop(1,'rgba(20,14,8,0)');fgc.fillStyle=rg;fgc.beginPath();fgc.ellipse(x,cy,34,12,0,0,Math.PI*2);fgc.fill();
@@ -421,7 +421,7 @@ function gapShape(x,by){const pts=[],n=16;
   const p=new Path2D();p.moveTo(pts[0][0],pts[0][1]-R()*3);for(const q of pts)p.lineTo(q[0],q[1]);for(const q of top)p.lineTo(q[0],q[1]);p.closePath();return p}
 function inGap(g,x,y){return PC.isPointInPath(g.path,x,y)}
 function makeGap(x,y){if(x<175||x>1105||Math.abs(x-SC.px)<75)return;const by=baseY(x);if(Math.abs(y-by)>34)return;
-  if(G.gaps.some(g=>Math.abs(g.x-x)<55))return;const g={x,by,nextT:1.5+R()*3,walker:null,path:gapShape(x,by)};G.gaps.push(g);
+  if(G.gaps.some(g=>Math.abs(g.x-x)<55))return;const g={x,by,path:gapShape(x,by)};if(!G.gaps.length)G.walkT=1.5+R()*3;G.gaps.push(g);
   const c=fgc;c.save();
   for(let i=0;i<22;i++){const a=R()*Math.PI*2,r=24+R()*12;c.fillStyle=R()<.5?'#7a3c22':'#94502e';ell(c,x+Math.cos(a)*r,by-4+Math.sin(a)*r*.6,2+R()*4,1.5+R()*2.5)}
   c.fillStyle='#1d150d';c.fill(g.path);
@@ -430,22 +430,26 @@ function makeGap(x,y){if(x<175||x>1105||Math.abs(x-SC.px)<75)return;const by=bas
   for(let i=0;i<26;i++){const rx=x+(R()-.5)*70,ry=by+12+R()*28;c.fillStyle=R()<.5?'#8a4628':'#6a3520';ell(c,rx,ry,2+R()*4,1.5+R()*2.5)}
   c.restore();msg('You blew a gap in their wall','#ffd9a0')}
 function updGaps(dt){if(G.surr&&G.surr.phase!=='over')return;
-  for(const g of G.gaps){const w=g.walker;
-    if(!w){g.nextT-=dt;if(g.nextT<=0){const dir=R()<.5?1:-1;g.walker={x:g.x-dir*40,dir,t:0,dead:false,skin:['#4f3322','#6f4a31','#9c7350','#b08560'][Math.floor(R()*4)]};g.nextT=4+R()*7}}
-    else{w.t+=dt;if(!w.dead){w.x+=w.dir*75*dt;if(Math.abs(w.x-g.x)>42)g.walker=null}else if(w.t>.9)g.walker=null}}}
-function walkerHit(ax,ay){for(const g of G.gaps){const w=g.walker;if(!w||w.dead)continue;
-  if(inGap(g,ax,ay)&&Math.abs(ax-w.x)<9){w.dead=true;w.t=0;w.fall=w.dir;
+  if(G.gaps.length){G.walkT-=dt;
+    if(G.walkT<=0&&!G.walkers.some(w=>!w.dead)){G.walkT=4+R()*7;
+      const g=G.gaps[Math.floor(R()*G.gaps.length)],dir=R()<.5?1:-1;
+      // walk past the chosen gap and on through any other gaps further along that way
+      const ahead=G.gaps.filter(o=>(o.x-g.x)*dir>=0&&Math.abs(o.x-g.x)<420).map(o=>o.x);
+      const far=dir>0?Math.max(...ahead):Math.min(...ahead);
+      G.walkers.push({x:g.x-dir*70,dir,endX:far+dir*70,t:0,dead:false,skin:['#4f3322','#6f4a31','#9c7350','#b08560'][Math.floor(R()*4)]})}}
+  G.walkers=G.walkers.filter(w=>{w.t+=dt;if(w.dead)return w.t<.9;w.x+=w.dir*75*dt;return (w.endX-w.x)*w.dir>0})}
+function walkerHit(ax,ay){for(const g of G.gaps){if(!inGap(g,ax,ay))continue;
+  for(const w of G.walkers){if(w.dead||Math.abs(ax-w.x)>9)continue;w.dead=true;w.t=0;w.fall=w.dir;
     G.kills++;G.totalKills++;G.score+=200;G.levelScore+=200;G.hits++;floatText(w.x,g.by-22,'GAP SHOT +200','#ffe38a');G.gapKills++;
     if(G.kills===G.c.quota)msg('Kill target reached — hold the line!','#bde58a');if(G.kills===30&&!G.surr)startSurrender();return true}}return false}
-function drawGaps(){for(const g of G.gaps){const w=g.walker;if(!w)continue;ctx.save();
-  ctx.clip(g.path);
-  const bob=Math.abs(Math.sin(w.t*11))*1.5,hy=g.by-2+bob;
-  if(w.dead){ctx.globalAlpha=Math.max(0,1-w.t/.9);ctx.translate(w.x,g.by+20);ctx.rotate(w.fall*Math.min(1,w.t*3)*1.2);ctx.translate(-w.x,-(g.by+20))}
+function drawWalker(w,by){const bob=Math.abs(Math.sin(w.t*11))*1.5,hy=by-2+bob;ctx.save();
+  if(w.dead){ctx.globalAlpha=Math.max(0,1-w.t/.9);ctx.translate(w.x,by+20);ctx.rotate(w.fall*Math.min(1,w.t*3)*1.2);ctx.translate(-w.x,-(by+20))}
   ctx.fillStyle='#4b5535';rr(ctx,w.x-8,hy+7,16,30,5);
   ctx.fillStyle=w.skin;circ(ctx,w.x+w.dir*1.5,hy+1.5,6);
   ctx.fillStyle='#3e4a2b';ctx.beginPath();ctx.arc(w.x,hy-1,8,Math.PI,0);ctx.fill();ctx.fillRect(w.x-9,hy-1.5,18,2.2);
-  ctx.save();ctx.translate(w.x-w.dir*4,hy+16);ctx.rotate(w.dir*.9);ctx.fillStyle='#181814';ctx.fillRect(-2,-16,4,30);ctx.restore();
-  ctx.restore()}}
+  ctx.save();ctx.translate(w.x-w.dir*4,hy+16);ctx.rotate(w.dir*.9);ctx.fillStyle='#181814';ctx.fillRect(-2,-16,4,30);ctx.restore();ctx.restore()}
+function drawGaps(){for(const g of G.gaps){const near=G.walkers.filter(w=>Math.abs(w.x-g.x)<45);if(!near.length)continue;
+  ctx.save();ctx.clip(g.path);for(const w of near)drawWalker(w,baseY(w.x));ctx.restore()}}
 /* ---------- hidden smoker: a thin line of cigarette smoke from the trench ---------- */
 function updSmoker(dt){if(G.surr&&G.surr.phase!=='over'){G.smoker=null;return}
   if(!G.smoker){G.smokeT-=dt;if(G.smokeT<=0){let x;for(let k=0;k<10;k++){x=lerp(200,1080,R());if(Math.abs(x-SC.px)>80&&!G.gaps.some(g=>Math.abs(g.x-x)<40))break}
