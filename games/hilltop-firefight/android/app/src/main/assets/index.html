@@ -55,6 +55,7 @@ body.rot #stage{inset:auto;top:0;left:100vw;width:100vh;height:100vw;transform-o
   <button id="tDuck">DUCK</button>
   <button id="tRpg">RPG</button>
   <button id="tRel">RELOAD</button>
+  <button id="tFlare">FLARE</button>
 </div>
 
 <div id="title" class="ov intro"><div class="card wide">
@@ -80,7 +81,7 @@ body.rot #stage{inset:auto;top:0;left:100vw;width:100vh;height:100vw;transform-o
     <li><b>Click</b> shoot · <b>Hold Alt</b> aim down sights · <b>ducked + Alt:</b> smoke, flute, radio</li>
     <li><b>Scroll down</b> duck · <b>up</b> stand (or Space)</li>
     <li><b>Right-click</b> / <b>F</b> RPG</li>
-    <li><b>R</b> or shoot the target: reload</li>
+    <li><b>R</b> or shoot the target: reload · <b>Q</b> flare (night)</li>
   </ul>
   <p class="tip">Duck at the scope glint, the RPG warning and the artillery whistle. Look for faces — some are helmets on sticks (−50 if you shoot one). Shoot drones down. Burn their flag with an RPG for +500. At night some sneak down the hill — shoot them before they reach your trench. RPGs blow gaps in their dirt wall — hit a soldier passing the gap for +200 and an extra RPG. See a thin line of cigarette smoke? Someone is hiding there — an RPG gets him.</p>
   <button id="startBtn">START</button>
@@ -138,9 +139,9 @@ const SCENES=[
  {name:'Lawa Yang',flat:1,tod:'Dusk',sky:['#2f3561','#c0705a','#e89a5c'],sun:[1050,330,'255,170,90',.9],ranges:['#5a4c63','#4b4253','#3b3a40'],
   hill:['#3f4529','#22281a'],slope:['#3b4227','#1f2516'],dead:.3,trees:36,fog:.03,dusk:1,dim:.46,dimc:'25,12,30',sunDisc:'255,170,100',px:680,top:286,curv:210,ph:5.2},
  {name:'Yaw Yone',hq:'blue',tod:'Night flares',sky:['#070b18','#162036','#222c40'],sun:null,moon:[260,110],ranges:['#1d2535','#18202c','#141a22'],
-  hill:['#202a3a','#0e141e'],slope:['#1d2636','#0c111a'],dead:.35,trees:36,fog:0,night:1,bamboo:1,px:620,top:280,curv:220,ph:2.2},
+  hill:['#202a3a','#0e141e'],slope:['#1d2636','#0c111a'],dead:.35,trees:36,fog:0,night:1,bamboo:1,px:620,top:280,curv:220,ph:2.2,diff:2,opts:{quota:11,rpgMan:.08,drone:18,arty:34}},
  {name:'Full Moon',hq:'blue',tod:'Full moon · dark',sky:['#050812','#0c1424','#141d2e'],sun:null,moon:[980,120],bigMoon:1,ranges:['#1d2535','#18202c','#141a22'],
-  hill:['#18202c','#0a0e15'],slope:['#151c27','#080b11'],dead:.3,trees:34,fog:0,night:1,dark:.62,tracers:1,creepers:1,diff:1.5,px:660,top:286,curv:230,ph:3.3}
+  hill:['#18202c','#0a0e15'],slope:['#151c27','#080b11'],dead:.3,trees:34,fog:0,night:1,dark:.62,tracers:1,creepers:1,diff:1.5,opts:{quota:10,rpgMan:.06,drone:0,droneDur:0,arty:40},px:660,top:286,curv:230,ph:3.3}
 ];
 let SC=SCENES[0];
 function ridge(x){const u=(x-SC.px)/640;return SC.top+(SC.flat?Math.pow(Math.abs(u),5)*300+18:u*u*SC.curv)+Math.sin(x*0.013+SC.ph)*6+Math.sin(x*0.031+SC.ph*2)*3}
@@ -442,10 +443,10 @@ showBest();
 buildScene(1);
 
 function newGame(start){G={level:start||1,score:0,totalKills:0,flagsBurned:0};startLevel()}
-function startLevel(){const sc0=SCENES[(G.level-1)%SCENES.length],c=cfg(sc0.diff&&G.level<=CAMPAIGN?sc0.diff:G.level);if(sc0.diff&&G.level<=CAMPAIGN){c.acc*=.75;c.quota=10;c.rpgMan=.06;c.drone=0;c.droneDur=0;c.arty=40;c.burst=1;c.maxActive=2;c.rpg=3}buildScene(G.level);
+function startLevel(){const sc0=SCENES[(G.level-1)%SCENES.length],c=cfg(sc0.diff&&G.level<=CAMPAIGN?sc0.diff:G.level);$('tFlare').style.display=sc0.night?'':'none';if(sc0.diff&&G.level<=CAMPAIGN){c.acc*=.75;c.burst=1;c.maxActive=2;c.rpg=3;Object.assign(c,sc0.opts||{})}buildScene(G.level);
   Object.assign(G,{c,time:90,kills:0,health:5,mag:30,reserve:c.ammo-30,rpg:c.rpg,reloading:0,rpgReload:0,cool:0,
     enemies:[],spawnT:1.6,duck:false,duckAmt:0,zoom:0,recoil:0,shake:0,hurt:0,flash:0,shots:0,hits:0,levelScore:0,dieT:0,
-    msgs:[],parts:[],nparts:[],rockets:[],tracers:[],pending:[],flares:[],flareT:1.5,ambT:1,banner:0,brief:2.6,troops:c.quota+8+G.level*3,arty:[],artyT:G.level===1?30:12+R()*10,artyIn:0,artyHits:0,bigFlash:0,flagBurn:0,fires:[],erockets:[],enemyRpgs:0,rpgHits:0,gaps:[],walkers:[],walkT:3,gapKills:0,smoker:null,smokeT:10+R()*15,smokerKills:0,act:null,actIdx:0,smoking:0,smk:[],cases:[],ptr:[],creepers:[],creepT:7+R()*5,ambush:null,herd:null,herdT:6+R()*14,surr:null,surrendered:false,flagShot:false,bird:null,birdT:8+R()*35,birdHit:false,drones:[],droneT:G.level===1?45:9+R()*8,decoysHit:0,preempt:0,hitsTaken:0,dronesDown:0,droneHits:0,enemyShots:0});
+    msgs:[],parts:[],nparts:[],rockets:[],tracers:[],pending:[],flares:[],flareT:1.5,ambT:1,banner:0,brief:2.6,troops:c.quota+8+G.level*3,arty:[],artyT:G.level===1?30:12+R()*10,artyIn:0,artyHits:0,bigFlash:0,flagBurn:0,fires:[],erockets:[],enemyRpgs:0,rpgHits:0,gaps:[],walkers:[],walkT:3,gapKills:0,smoker:null,smokeT:10+R()*15,smokerKills:0,myFlares:SCENES[(G.level-1)%SCENES.length].night?3:0,flareCool:0,act:null,actIdx:0,smoking:0,smk:[],cases:[],ptr:[],creepers:[],creepT:7+R()*5,ambush:null,herd:null,herdT:6+R()*14,surr:null,surrendered:false,flagShot:false,bird:null,birdT:8+R()*35,birdHit:false,drones:[],droneT:G.level===1?45:9+R()*8,decoysHit:0,preempt:0,hitsTaken:0,dronesDown:0,droneHits:0,enemyShots:0});
   state='play';['title','end','pause'].forEach(id=>$(id).classList.add('hide'));G.windT=2.5+Math.random()*3;
   if(isTouch)$('touch').classList.remove('hide');
 }
@@ -693,6 +694,10 @@ function fireRpg(){if(state!=='play')return;ac();
   if(G.surr&&G.surr.phase==='flag')G.surr.calm=0;
   G.rpg--;G.rpgReload=1.6;S.whoosh();if(G.rpg>0)S.rpgload();G.shake=.25;const [ax,ay]=toWorld(...aimPt());const k=distK();
   G.rockets.push({sx:DPX+(W*.56-DPX)/k,sy:DPY+(H+80-DPY)/k,tx:ax,ty:ay,t:0,dur:.85*(SC.dist||200)/200})}
+function fireFlare(){if(state!=='play')return;ac();if(!SC.night){msg('Flares are for night missions');return}
+  if(!(G.myFlares>0)){msg('No flares left','#ffb38a');return}if(G.flareCool>0)return;G.myFlares--;G.flareCool=1.2;
+  const [wx]=toWorld(...aimPt());noise(.5,2600,.25,1,'bandpass');tone(900,.25,.05,'triangle');
+  G.flares.push({x:clamp(wx,150,1130),y:H+60,ty:110+R()*30,rise:true,life:9,max:9,sway:R()*6});msg('Flare up!','#ffd9a0')}
 function toggleDuck(){if(state!=='play')return;ac();G.duck=!G.duck}
 function setScope(on){if(on&&!spaceHeld&&state==='play')S.scope();spaceHeld=on}
 
@@ -737,7 +742,7 @@ function update(dt){T+=dt;if(state!=='play'&&state!=='dying')return;const c=G.c;
   G.cool-=dt;G.rpgReload-=dt;G.recoil=Math.max(0,G.recoil-dt*7);G.shake=Math.max(0,G.shake-dt);G.hurt=Math.max(0,G.hurt-dt*1.4);G.flash-=dt;
   if(G.reloading>0){G.reloading-=dt;if(G.reloading<=0){const n=Math.min(30-G.mag,G.reserve);G.mag+=n;G.reserve-=n}}
   slots.forEach(s=>s.cool-=dt);
-  updSurrender(dt);updBird(dt);updHerd(dt);updAct(dt);updCreepers(dt);updGaps(dt);updSmoker(dt);
+  G.flareCool-=dt;updSurrender(dt);updBird(dt);updHerd(dt);updAct(dt);updCreepers(dt);updGaps(dt);updSmoker(dt);
   G.spawnT-=dt;if(G.spawnT<=0){G.spawnT=c.spawn*(.6+R()*.8);
     if(G.enemies.filter(e=>e.state!=='dead'&&e.state!=='gone').length<c.maxActive)spawn()}
   G.pending=G.pending.filter(p=>{p.t-=dt;if(p.t<=0){spawn({slot:p.slot,type:p.angry?(R()<.35?'rpg':'soldier'):'soldier',quick:true});return false}return true});
@@ -768,8 +773,8 @@ function update(dt){T+=dt;if(state!=='play'&&state!=='dying')return;const c=G.c;
     const x=lerp(r.sx,r.tx,p),y=lerp(r.sy,r.ty,p)-Math.sin(Math.PI*p)*60;
     G.parts.push({x,y,vx:(R()-.5)*10,vy:-10,g:0,life:.7,max:.7,r:3+4*(1-p),grow:14,rgb:'200,196,186'});
     if(p>=1){explode(r.tx,r.ty);return false}r.x=x;r.y=y;r.p=p;return true});
-  if(SC.night){G.flareT-=dt;if(G.flareT<=0){G.flareT=SC.bigMoon?14+R()*8:5+R()*4;S.flare();G.flares.push({x:lerp(250,1030,R()),y:90+R()*40,life:6.5,max:6.5,sway:R()*6})}
-    G.flares=G.flares.filter(f=>{f.life-=dt;f.y+=dt*16;return f.life>0})}
+  if(SC.night){G.flareT-=dt;if(G.flareT<=0){G.flareT=SC.bigMoon?20+R()*8:12+R()*6;S.flare();G.flares.push({x:lerp(250,1030,R()),y:90+R()*40,life:6.5,max:6.5,sway:R()*6})}
+    G.flares=G.flares.filter(f=>{if(f.rise){f.y-=560*dt;if(f.y<=f.ty){f.rise=false;S.flare();tone(180,.4,.1,'sine')}return true}f.life-=dt;f.y+=dt*16;return f.life>0})}
   G.ambT-=dt;if(G.ambT<=0){G.ambT=.35+R()*1.4;S.amb();
     if(R()<.55){const tx=lerp(160,1120,R());G.tracers.push({x1:lerp(0,W,R()),y1:H+100,x2:tx,y2:baseY(tx)-R()*20,t:0,dur:.3,col:'150,255,120'})}
     else{const sx=lerp(160,1120,R());G.tracers.push({x1:sx,y1:baseY(sx)-14,x2:lerp(0,W,R()),y2:H+120,t:0,dur:.25,col:'255,120,80'})}}
@@ -825,7 +830,7 @@ function drawFlag(){// Burma Army infantry flag (red field, white helmet with cr
     ctx.fillStyle=`rgba(0,0,0,${.12+.12*Math.sin(T*4.5-i*.55)})`;ctx.fillRect(x,y0+off,fw/N+.6,fh)}
   if(burn>0){const ex=x0+keep/N*fw;ctx.fillStyle='rgba(30,20,15,.85)';ctx.fillRect(ex-2,y0,3,fh);ctx.save();ctx.fillStyle='#ffb347';ctx.shadowColor='#ff7a1a';ctx.shadowBlur=14;
     for(let k=0;k<4;k++)circ(ctx,ex+(R()-.5)*4,y0+R()*fh,2+R()*3);ctx.restore()}}
-function nightLight(){let L=0;for(const f of G.flares){const a=f.life/f.max;L+=Math.min(1,(1-a)*6)*Math.min(1,a*2.5)}return Math.min(1,L+(G.boom||0)*1.2)}
+function nightLight(){let L=0;for(const f of G.flares){if(f.rise)continue;const a=f.life/f.max;L+=Math.min(1,(1-a)*6)*Math.min(1,a*2.5)}return Math.min(1,L+(G.boom||0)*1.2)}
 function drawParts(arr,yBase){for(const p of arr){const a=clamp(p.life/p.max,0,1);
   if(p.txt){ctx.globalAlpha=a;ctx.fillStyle=p.col;ctx.font='bold 16px system-ui,sans-serif';ctx.textAlign='center';ctx.fillText(p.txt,p.x,p.y);continue}
   if(p.helmet){ctx.save();ctx.globalAlpha=a;ctx.translate(p.x,p.y);ctx.rotate(p.rot);helmet(0,0);ctx.restore();continue}
@@ -845,7 +850,8 @@ function drawFarInner(){
   if(SC.fog){const gr=ctx.createLinearGradient(0,240,0,H);gr.addColorStop(0,`rgba(210,212,205,${SC.fog*.6})`);gr.addColorStop(.4,`rgba(210,212,205,${SC.fog})`);gr.addColorStop(1,`rgba(210,212,205,${SC.fog*.3})`);ctx.fillStyle=gr;ctx.fillRect(-500,-300,W+1000,H+700)}
   if(SC.dim){ctx.fillStyle=`rgba(${SC.dimc},${SC.dim})`;ctx.fillRect(-300,-300,W+600,H+600)}
   if(SC.night){const L=nightLight();ctx.fillStyle=`rgba(4,8,20,${(SC.dark||(SC.hq?.5:.74))-L*(SC.hq?.4:.56)})`;ctx.fillRect(-200,-200,W+400,H+400);
-    for(const f of G.flares){const a=Math.min(1,f.life*2),fx=f.x+Math.sin(T+f.sway)*8;
+    for(const f of G.flares){if(f.rise){ctx.fillStyle='rgba(255,120,90,.9)';ctx.shadowColor='#ff7050';ctx.shadowBlur=14;circ(ctx,f.x,f.y,3);ctx.shadowBlur=0;ctx.fillStyle='rgba(220,200,190,.25)';ctx.fillRect(f.x-1,f.y,2,40);continue}
+      const a=Math.min(1,f.life*2),fx=f.x+Math.sin(T+f.sway)*8;
       ctx.strokeStyle='rgba(200,200,190,.35)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(fx,f.y);ctx.lineTo(fx,f.y-18);ctx.stroke();
       ctx.fillStyle='rgba(200,200,190,.35)';ell(ctx,fx,f.y-20,8,3);
       const gr=ctx.createRadialGradient(fx,f.y,1,fx,f.y,60);gr.addColorStop(0,`rgba(255,250,220,${a})`);gr.addColorStop(1,'rgba(255,250,220,0)');ctx.fillStyle=gr;circ(ctx,fx,f.y,60)}}
@@ -1005,6 +1011,8 @@ function drawShelfItems(py){const A=G&&G.act;const carried=k=>A&&((k==='lighter'
   if(!carried('flute')){ctx.save();ctx.translate(SHELF.flute[0],SHELF.flute[1]+py);fluteDraw(ctx,92);ctx.restore()}
   if(!carried('handset')){ctx.save();ctx.translate(SHELF.handset[0],SHELF.handset[1]+py);handsetDraw(ctx);ctx.restore();
     ctx.strokeStyle='#2a2b27';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(SHELF.handset[0]+8,SHELF.handset[1]+py+4);ctx.quadraticCurveTo(SHELF.handset[0]+20,SHELF.handset[1]+py+24,SHELF.radio[0]-20,SHELF.radio[1]+py-4);ctx.stroke()}}
+function drawWallFlares(py){if(!SC.night)return;for(let i=0;i<(G.myFlares||0);i++){ctx.save();ctx.translate(700+i*22,520+py);ctx.rotate(.12);
+    ctx.fillStyle='#b8342a';rr(ctx,-6,-60,12,62,4);ctx.fillStyle='#e8d9b0';ctx.fillRect(-6,-60,12,10);ctx.fillStyle='rgba(0,0,0,.3)';ctx.fillRect(-6,-20,12,3);ctx.restore()}}
 function handAt(x,y,rot,sc){ctx.save();ctx.translate(x,y);ctx.rotate(rot||0);ctx.scale((sc||1.1)*1.4,(sc||1.1)*1.4);drawHand(ctx,false);ctx.restore()}
 function drawAct(py){const A=G.act;if(!A)return;const t=A.t,S2=p=>[p[0],p[1]+py],rest=[W*.55,H+150],mouth=[W/2+40,H-40];
   if(A.type==='cigarette'){const pack=S2(SHELF.pack),lit=S2(SHELF.lighter);let p;
@@ -1084,7 +1092,7 @@ function draw(){ctx.setTransform(sc*dpr,0,0,sc*dpr,0,0);
   if(SC.hq)ctx.translate(Math.sin(T*.7)*1.6+Math.sin(T*1.9)*.5,Math.cos(T*.9)*1.3);
   const du=G.duckAmt,farY=-du*90;const [ax,ay]=aimPt();const Z=lerp(1,1.9,G.zoom);
   ctx.save();ctx.translate(ax,ay);ctx.scale(Z,Z);ctx.translate(-ax,-ay);ctx.translate(0,farY);drawFar();ctx.restore();
-  const py=lerp(600,-40,du)+G.zoom*130;ctx.drawImage(near,0,py);drawShelfItems(py);drawParts(G.nparts,py);drawAmbush(py);if(BAMBOO)ctx.drawImage(BAMBOO,0,py-600);if(G.act)drawAct(py);drawSmoke();drawSmk(1/60);
+  const py=lerp(600,-40,du)+G.zoom*130;ctx.drawImage(near,0,py);drawShelfItems(py);drawWallFlares(py);drawParts(G.nparts,py);drawAmbush(py);if(BAMBOO)ctx.drawImage(BAMBOO,0,py-600);if(G.act)drawAct(py);drawSmoke();drawSmk(1/60);
   if(SC.night){const L=nightLight();ctx.fillStyle=`rgba(4,8,20,${(SC.dark?.5:(SC.hq?.38:.55))-L*.3})`;ctx.fillRect(-200,-200,W+400,H+400)}
   else if(SC.dim){ctx.fillStyle=`rgba(${SC.dimc},${SC.dim*.9})`;ctx.fillRect(-200,-200,W+400,H+400)}
   if(SC.rain)drawRain();
@@ -1135,6 +1143,8 @@ function draw(){ctx.setTransform(sc*dpr,0,0,sc*dpr,0,0);
   for(let i=0;i<Math.min(4,Math.max(G.c.rpg,G.rpg));i++){ctx.fillStyle=i<G.rpg?'#9a9d6a':'rgba(255,255,255,.15)';const x=bx+150+i*30,y=TY+42;
     ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+12,y-8);ctx.lineTo(x+24,y);ctx.lineTo(x+12,y+8);ctx.fill();ctx.fillRect(x+20,y-2,8,4)}
   if(G.rpg>4){ctx.fillStyle='#f4efd6';ctx.font='800 13px system-ui,sans-serif';ctx.fillText('×'+G.rpg,bx+252,TY+56)}
+  if(SC.night){panel(W-196,138,180,30);ctx.fillStyle='#c8c9b0';ctx.font='700 12px system-ui,sans-serif';ctx.fillText('FLARES [Q]',W-184,158);
+    for(let i=0;i<3;i++){ctx.fillStyle=i<G.myFlares?'#d8483a':'rgba(255,255,255,.15)';rr(ctx,W-100+i*24,146,9,18,3);ctx.fillStyle=i<G.myFlares?'#e8d9b0':'rgba(255,255,255,.1)';ctx.fillRect(W-100+i*24,146,9,4)}}
   ctx.textAlign='center';let my2=H*.3;
   if(G.surr&&G.surr.phase==='flag'){const left=Math.ceil(6-G.surr.calm);ctx.font='800 22px system-ui,sans-serif';ctx.fillStyle='rgba(0,0,0,.5)';
     ctx.fillText(`WHITE FLAG — hold fire ${left}…   (or shoot him and the fighting goes on)`,W/2+1,H*.2+1);ctx.fillStyle='#ffffff';ctx.fillText(`WHITE FLAG — hold fire ${left}…   (or shoot him and the fighting goes on)`,W/2,H*.2)}
@@ -1174,12 +1184,13 @@ let wheelLock=0;cv.addEventListener('wheel',e=>{e.preventDefault();if(state!=='p
 addEventListener('keydown',e=>{const k=e.key.toLowerCase();
   if(k==='alt'||k==='z'){e.preventDefault();if(state==='play'&&G.duck&&G.duckAmt>.6){if(!e.repeat)startAct()}else setScope(true)}
   else if(k===' '){e.preventDefault();if(!e.repeat)toggleDuck()}
+  else if(k==='q'||k==='g')fireFlare();
   else if(k==='r')reload();else if(k==='f'||k==='e')fireRpg();else if(k==='p'||k==='escape')pause()});
 addEventListener('keyup',e=>{const k=e.key.toLowerCase();if(k==='alt'||k==='z'){e.preventDefault();setScope(false)}});
 addEventListener('blur',()=>setScope(false));
 const tb=(id,fn,up)=>{const b=$(id);b.addEventListener('pointerdown',e=>{e.stopPropagation();e.preventDefault();fn()});
   if(up){b.addEventListener('pointerup',e=>{e.stopPropagation();up()});b.addEventListener('pointerleave',()=>up());b.addEventListener('pointercancel',()=>up())}};
-tb('tScope',()=>{if(state==='play'&&G.duck&&G.duckAmt>.6)startAct();else setScope(true)},()=>setScope(false));tb('tDuck',toggleDuck);tb('tRpg',fireRpg);tb('tRel',reload);
+tb('tScope',()=>{if(state==='play'&&G.duck&&G.duckAmt>.6)startAct();else setScope(true)},()=>setScope(false));tb('tDuck',toggleDuck);tb('tFlare',fireFlare);tb('tRpg',fireRpg);tb('tRel',reload);
 $('startBtn').onclick=()=>{ac();loadSfx();stopAmbience();newGame()};
 document.querySelectorAll('.levels li').forEach((li,i)=>{li.style.cursor='pointer';li.title='Start at this level';li.addEventListener('click',()=>{ac();loadSfx();stopAmbience();newGame(i+1)})});
 function introAudio(){if(state!=='title')return;ac();loadSfx();startAmbience()}
