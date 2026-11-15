@@ -678,35 +678,39 @@ function explode(x,y){S.boom();G.shake=.7;
   if(!G.flagBurn&&Math.hypot(x-fx,y-fy)<55){G.flagBurn=.001;G.score+=500;G.levelScore+=500;G.flagsBurned++;msg('THEIR FLAG IS BURNING!  +500','#ffb347');floatText(fx,fy-24,'+500','#ffb347')}
   if(G.smoker&&Math.abs(G.smoker.x-x)<70&&Math.abs(G.smoker.by-y)<60){const m=G.smoker;G.smoker=null;G.smokeT=14+R()*18;G.kills++;G.totalKills++;G.score+=250;G.levelScore+=250;G.smokerKills++;n++;
     floatText(m.x,m.by-40,'SMOKER +250','#ffe38a');msg('Got the smoker!','#ffd36b');if(G.kills===30&&!G.surr)startSurrender()}
-  for(const w of G.walkers){const wy=baseY(w.x);if(!w.dead&&Math.abs(w.x-x)<70&&Math.abs(wy-y)<60&&G.gaps.some(g=>Math.abs(g.x-w.x)<45)){w.dead=true;w.t=0;w.fall=w.dir;G.kills++;G.totalKills++;G.score+=200;G.levelScore+=200;G.gapKills++;G.rpg++;floatText(w.x,wy-22,'+200  +1 RPG','#ffe38a');n++}}
+  for(const w of G.walkers){const wy=baseY(w.x);if(!w.dead&&Math.abs(w.x-x)<70&&Math.abs(wy-y)<60&&G.gaps.some(g=>w.x>g.L-20&&w.x<g.R+20)){w.dead=true;w.t=0;w.fall=w.dir;G.kills++;G.totalKills++;G.score+=200;G.levelScore+=200;G.gapKills++;G.rpg++;floatText(w.x,wy-22,'+200  +1 RPG','#ffe38a');n++}}
   if(n>=2){const b=n*75;G.score+=b;G.levelScore+=b;msg(`Multi-kill x${n}  +${b}`,'#ffd36b')}
   const cy=Math.max(y,baseY(x)+4);const rg=fgc.createRadialGradient(x,cy,2,x,cy,34);
   rg.addColorStop(0,'rgba(20,14,8,.85)');rg.addColorStop(1,'rgba(20,14,8,0)');fgc.fillStyle=rg;fgc.beginPath();fgc.ellipse(x,cy,34,12,0,0,Math.PI*2);fgc.fill();
 }
 /* ---------- gaps blown in the enemy dirt wall ---------- */
 const PC=mk(4,4).getContext('2d');
-function gapShape(x,by){const pts=[],n=16;
-  for(let i=0;i<=n;i++){const a=Math.PI*(i/n);const r=(i===0||i===n)?24:lerp(15,25,R());pts.push([x-Math.cos(a)*r*(i<n/2?1:1),by-13+Math.sin(a)*(lerp(20,28,R()))])}
-  const top=[];for(let i=1;i<6;i++)top.push([x+24-i*8+(R()-.5)*4,by-13-R()*5]);
+function gapShape(L,R2,by){const x=(L+R2)/2,hw=(R2-L)/2,pts=[],n=Math.max(16,Math.round(hw/3));
+  for(let i=0;i<=n;i++){const a=Math.PI*(i/n);const r=(i===0||i===n)?hw:hw*lerp(.62,1.04,R());pts.push([x-Math.cos(a)*r,by-13+Math.sin(a)*(lerp(20,28,R()))])}
+  const top=[],m=Math.max(5,Math.round(hw/5));for(let i=1;i<m;i++)top.push([x+hw-i*(2*hw/m)+(R()-.5)*4,by-13-R()*5]);
   const p=new Path2D();p.moveTo(pts[0][0],pts[0][1]-R()*3);for(const q of pts)p.lineTo(q[0],q[1]);for(const q of top)p.lineTo(q[0],q[1]);p.closePath();return p}
 function inGap(g,x,y){return PC.isPointInPath(g.path,x,y)}
 function makeGap(x,y){if(SC.nopost||x<-200||x>W+200||Math.abs(x-SC.px)<75)return;const by=baseY(x);if(Math.abs(y-by)>34)return;
-  if(G.gaps.some(g=>Math.abs(g.x-x)<55))return;const g={x,by,path:gapShape(x,by)};if(!G.gaps.length)G.walkT=1.5+R()*3;G.gaps.push(g);
+  // a blast next to (or inside) an existing gap widens it into one big break
+  let L=x-24,R2=x+24;const near=G.gaps.filter(o=>L<o.R+30&&R2>o.L-30);for(const o of near){L=Math.min(L,o.L);R2=Math.max(R2,o.R)}
+  if(near.length&&L>=near[0].L&&R2<=near[0].R&&near.length===1){L-=10;R2+=10}
+  G.gaps=G.gaps.filter(o=>!near.includes(o));const cx=(L+R2)/2,cby=baseY(cx);
+  const g={x:cx,by:cby,L,R:R2,path:gapShape(L,R2,cby)};if(!G.gaps.length)G.walkT=1.5+R()*3;G.gaps.push(g);x=cx;
   const c=fgc;c.save();
   for(let i=0;i<22;i++){const a=R()*Math.PI*2,r=24+R()*12;c.fillStyle=R()<.5?'#7a3c22':'#94502e';ell(c,x+Math.cos(a)*r,by-4+Math.sin(a)*r*.6,2+R()*4,1.5+R()*2.5)}
   c.fillStyle='#1d150d';c.fill(g.path);
   const gr=c.createLinearGradient(0,by-14,0,by+15);gr.addColorStop(0,'rgba(70,44,26,.7)');gr.addColorStop(1,'rgba(0,0,0,0)');c.fillStyle=gr;c.fill(g.path);
   c.strokeStyle='rgba(150,80,48,.8)';c.lineWidth=2;c.stroke(g.path);
-  for(let i=0;i<26;i++){const rx=x+(R()-.5)*70,ry=by+12+R()*28;c.fillStyle=R()<.5?'#8a4628':'#6a3520';ell(c,rx,ry,2+R()*4,1.5+R()*2.5)}
-  c.restore();msg('You blew a gap in their wall','#ffd9a0')}
+  for(let i=0;i<26;i++){const rx=x+(R()-.5)*(R2-L+30),ry=by+12+R()*28;c.fillStyle=R()<.5?'#8a4628':'#6a3520';ell(c,rx,ry,2+R()*4,1.5+R()*2.5)}
+  c.restore();msg(near.length?'The gap in their wall is wider!':'You blew a gap in their wall','#ffd9a0')}
 function updGaps(dt){if(G.surr&&G.surr.phase!=='over')return;
   if(G.gaps.length){G.walkT-=dt;
     if(G.walkT<=0&&!G.walkers.some(w=>!w.dead)){G.walkT=4+R()*7;
       const g=G.gaps[Math.floor(R()*G.gaps.length)],dir=R()<.5?1:-1;
       // walk past the chosen gap and on through any other gaps further along that way
-      const ahead=G.gaps.filter(o=>(o.x-g.x)*dir>=0&&Math.abs(o.x-g.x)<420).map(o=>o.x);
+      const ahead=G.gaps.filter(o=>(o.x-g.x)*dir>=0&&Math.abs(o.x-g.x)<420).map(o=>dir>0?o.R:o.L);
       const far=dir>0?Math.max(...ahead):Math.min(...ahead);
-      G.walkers.push({x:g.x-dir*70,dir,endX:far+dir*70,t:0,dead:false,skin:['#4f3322','#6f4a31','#9c7350','#b08560'][Math.floor(R()*4)]})}}
+      G.walkers.push({x:(dir>0?g.L:g.R)-dir*46,dir,endX:far+dir*46,t:0,dead:false,skin:['#4f3322','#6f4a31','#9c7350','#b08560'][Math.floor(R()*4)]})}}
   G.walkers=G.walkers.filter(w=>{w.t+=dt;if(w.dead)return w.t<.9;w.x+=w.dir*75*dt;return (w.endX-w.x)*w.dir>0})}
 function walkerHit(ax,ay){for(const g of G.gaps){if(!inGap(g,ax,ay))continue;
   for(const w of G.walkers){if(w.dead||Math.abs(ax-w.x)>9)continue;S.enemyHit();w.dead=true;w.t=0;w.fall=w.dir;
@@ -719,11 +723,11 @@ function drawWalker(w,by){const bob=Math.abs(Math.sin(w.t*11))*1.5,hy=by-2+bob;c
   ctx.fillStyle=w.skin;circ(ctx,w.x+w.dir*1.5,hy+1.5,6);
   ctx.fillStyle='#3e4a2b';ctx.beginPath();ctx.arc(w.x,hy-1,8,Math.PI,0);ctx.fill();ctx.fillRect(w.x-9,hy-1.5,18,2.2);
   ctx.save();ctx.translate(w.x-w.dir*4,hy+16);ctx.rotate(w.dir*.9);ctx.fillStyle='#181814';ctx.fillRect(-2,-16,4,30);ctx.restore();ctx.restore()}
-function drawGaps(){for(const g of G.gaps){const near=G.walkers.filter(w=>Math.abs(w.x-g.x)<45);if(!near.length)continue;
+function drawGaps(){for(const g of G.gaps){const near=G.walkers.filter(w=>w.x>g.L-20&&w.x<g.R+20);if(!near.length)continue;
   ctx.save();ctx.clip(g.path);for(const w of near)drawWalker(w,baseY(w.x));ctx.restore()}}
 /* ---------- hidden smoker: a thin line of cigarette smoke from the trench ---------- */
 function updSmoker(dt){if(SC.nopost)return;if(G.surr&&G.surr.phase!=='over'){G.smoker=null;return}
-  if(!G.smoker){G.smokeT-=dt;if(G.smokeT<=0){let x;for(let k=0;k<10;k++){x=lerp(slots[0].x,slots[slots.length-1].x,R());if(Math.abs(x-SC.px)>80&&!G.gaps.some(g=>Math.abs(g.x-x)<40))break}
+  if(!G.smoker){G.smokeT-=dt;if(G.smokeT<=0){let x;for(let k=0;k<10;k++){x=lerp(slots[0].x,slots[slots.length-1].x,R());if(Math.abs(x-SC.px)>80&&!G.gaps.some(g=>x>g.L-30&&x<g.R+30))break}
       G.smoker={x,by:baseY(x),t:0,dur:9+R()*6,ph:R()*6}}}
   else{G.smoker.t+=dt;if(G.smoker.t>G.smoker.dur){G.smoker=null;G.smokeT=14+R()*18}}}
 function drawSmoker(){const m=G.smoker;if(!m)return;const fade=Math.min(1,m.t/1.5,(m.dur-m.t)/1.5);
