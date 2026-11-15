@@ -1448,19 +1448,24 @@ function drawPillbox(du){const rb=150-du*660-G.zoom*70,sb=rb+520;
   if(G.dustT>0){ctx.fillStyle=`rgba(150,140,120,${G.dustT*.18})`;ctx.fillRect(-200,-200,W+400,H+400);for(let i=0;i<40;i++){ctx.fillStyle=`rgba(190,180,160,${G.dustT*.5})`;ctx.fillRect(R()*W,rb+R()*(H-rb)*(1.6-G.dustT),2,2+R()*3)}}
 }
 /* ---------- night vision: green, grainy, bright, seen through two overlapping tubes ---------- */
-var NVGMASK,NVGNOISE;
+var NVGMASK,NVGNOISE,NVGVIG;
 function nvgInit(){if(NVGMASK)return;NVGMASK=mk(W,H);const g=NVGMASK.getContext('2d');g.fillStyle='#000';g.fillRect(0,0,W,H);g.globalCompositeOperation='destination-out';
   for(const cx of [W/2-175,W/2+175]){const gr=g.createRadialGradient(cx,H/2,300,cx,H/2,345);gr.addColorStop(0,'rgba(0,0,0,1)');gr.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=gr;g.beginPath();g.arc(cx,H/2,345,0,Math.PI*2);g.fill()}
+  NVGVIG=mk(320,180);{const v=NVGVIG.getContext('2d'),id=v.createImageData(320,180);for(let y=0;y<180;y++)for(let x=0;x<320;x++){const X=x*4,Y=y*4,d=Math.min(Math.hypot(X-(W/2-175),Y-H/2),Math.hypot(X-(W/2+175),Y-H/2)),t=clamp((d-170)/175,0,1),i=(y*320+x)*4;id.data[i]=0;id.data[i+1]=10;id.data[i+2]=2;id.data[i+3]=Math.round(t*t*170)}v.putImageData(id,0,0)}
   NVGNOISE=mk(256,256);const n=NVGNOISE.getContext('2d'),id=n.createImageData(256,256);for(let i=0;i<id.data.length;i+=4){const v=Math.random()*255;id.data[i]=v;id.data[i+1]=v;id.data[i+2]=v;id.data[i+3]=255}n.putImageData(id,0,0)}
-function nvgPost(c,live){nvgInit();c.save();
+function nvgPost(c,live){nvgInit();const cvs=c.canvas;c.save();
   c.globalCompositeOperation='saturation';c.fillStyle='#000';c.fillRect(-50,-50,W+100,H+100);
-  c.globalCompositeOperation='multiply';c.fillStyle='#78ff8c';c.fillRect(-50,-50,W+100,H+100);
-  c.globalCompositeOperation='screen';c.fillStyle='rgba(16,70,26,.55)';c.fillRect(-50,-50,W+100,H+100);
-  c.globalCompositeOperation='lighter';c.fillStyle='rgba(20,60,26,.25)';c.fillRect(-50,-50,W+100,H+100);
-  c.globalCompositeOperation='overlay';c.globalAlpha=.32;const pat=c.createPattern(NVGNOISE,'repeat');c.translate(live?Math.random()*256:0,live?Math.random()*256:0);c.fillStyle=pat;c.fillRect(-300,-300,W+600,H+600);
+  // crush the shadows: multiply the picture with itself, then lift the highlights back up
+  c.save();c.setTransform(1,0,0,1,0,0);c.globalCompositeOperation='multiply';c.drawImage(cvs,0,0);c.globalCompositeOperation='screen';c.globalAlpha=.55;c.drawImage(cvs,0,0);c.restore();
+  c.globalCompositeOperation='multiply';c.fillStyle='#6cff7e';c.fillRect(-50,-50,W+100,H+100);
+  c.globalCompositeOperation='color-dodge';c.fillStyle='rgba(40,110,50,.55)';c.fillRect(-50,-50,W+100,H+100);
+  c.globalCompositeOperation='screen';c.fillStyle='rgba(4,22,8,.6)';c.fillRect(-50,-50,W+100,H+100);
+  c.globalCompositeOperation='overlay';c.globalAlpha=.5;const pat=c.createPattern(NVGNOISE,'repeat');c.translate(live?Math.random()*256:0,live?Math.random()*256:0);c.fillStyle=pat;c.fillRect(-300,-300,W+600,H+600);
   c.restore();c.save();
-  if(live){c.globalAlpha=.06;c.fillStyle='#000';for(let y=(T*120)%4;y<H;y+=4)c.fillRect(0,y,W,1.2);c.globalAlpha=.05+.03*Math.sin(T*23);c.fillStyle='#b8ffc0';c.fillRect(0,0,W,H)}
-  c.globalAlpha=1;c.drawImage(NVGMASK,0,0,W,H);c.restore()}
+  if(live){c.globalAlpha=.07;c.fillStyle='#000';for(let y=(T*120)%3;y<H;y+=3)c.fillRect(0,y,W,1);c.globalAlpha=.04+.03*Math.sin(T*23);c.fillStyle='#b8ffc0';c.fillRect(0,0,W,H)}
+  // darker toward the edge of each tube
+  c.globalAlpha=1;c.drawImage(NVGVIG,0,0,W,H);
+  c.drawImage(NVGMASK,0,0,W,H);c.restore()}
 function heart(x,y,on){ctx.fillStyle=on?'#e25b4a':'rgba(255,255,255,.18)';ctx.beginPath();ctx.moveTo(x,y+6);
   ctx.bezierCurveTo(x-12,y-4,x-6,y-12,x,y-5);ctx.bezierCurveTo(x+6,y-12,x+12,y-4,x,y+6);ctx.fill()}
 function panel(x,y,w,h){ctx.fillStyle='rgba(12,14,9,.55)';rr(ctx,x,y,w,h,8)}
