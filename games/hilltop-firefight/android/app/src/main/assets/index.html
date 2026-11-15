@@ -517,8 +517,55 @@ function makeThumbs(){const lis=document.querySelectorAll('.levels li');const ke
   document.querySelectorAll('.levels li.soon').forEach(li=>{const d=document.createElement('div');d.className='thumb ph';d.textContent='?';li.prepend(d)});
   buildScene(1)}
 try{makeThumbs()}catch(e){buildScene(1)}
+setTimeout(()=>{try{if(state==='title'&&!/nosplash/.test(location.hash))startDemo()}catch(e){DEMO=null;$('title').classList.remove('hide')}},50);
 function measureIntro(){try{const c=document.querySelector('#title .card');if(c&&c.offsetHeight)T_H=c.offsetHeight+16}catch(e){}resize()}measureIntro();addEventListener('load',measureIntro);
 
+/* ---------- splash: Studio Sakse presents, then short clips of play ---------- */
+let DEMO=null;
+const CLIPS=[
+ {lvl:1,dur:6.0,cap:'',go(){G.dAuto=true;G.dFrom=3.0;for(let i=0;i<4;i++)spawn()}},
+ {lvl:2,dur:5.4,cap:'RPG · GAP SHOT',go(){spawn();spawn();const x=SC.px-200;G.dT=()=>[x,baseY(x)-4];G.dRpg=.9;G.dGap=1.8}},
+ {lvl:5,dur:3.6,cap:'',go(){G.duck=true;G.duckAmt=1;G.dAct=.25}},
+ {lvl:6,dur:3.4,cap:'NIGHT FLARES',go(){G.myFlares=3;G.flareT=1.3;G.dFlare=[.2,1.5];G.dAuto=true;G.dFrom=1;for(let i=0;i<3;i++)spawn()}},
+ {lvl:3,dur:3.2,cap:'DRONE',go(){launchDrone();const d=G.drones[0];d.dur=3.2;d.t=1.1;G.dT=()=>G.drones[0]&&G.drones[0].state==='fly'?[G.drones[0].x,G.drones[0].y]:null;G.dShoot=1.7}},
+ {lvl:9,dur:3.6,cap:'HELICOPTER',go(){const x=700;G.heli={x,y:150,ty:190,dir:-1,t:0,ph:'down',lock:9,thump:0};G.dT=()=>G.heli?[G.heli.x,G.heli.y]:null;G.dRpg=1.1}},
+ {lvl:4,dur:4.6,cap:'',go(){const fx=SC.px+58,fy=baseY(SC.px)-85;G.dT=()=>[fx,fy];G.dRpg=.5;G.title=1}}];
+function demoClip(i){const c=CLIPS[i];G={level:c.lvl,score:0,totalKills:0,flagsBurned:0};startLevel();
+  Object.assign(G,{demo:true,brief:0,health:5,droneT:99,artyT:99,heliT:99,creepT:99,smokeT:99,ambT:99,dt0:0,dFired:{}});G.c.aim=.2;
+  $('touch').classList.add('hide');mx=W/2;my=H/2-20;c.go()}
+function startDemo(){DEMO={t:0,i:0,ct:0};$('title').classList.add('hide');demoClip(0)}
+function endDemo(){if(!DEMO)return;DEMO=null;try{G&&G.drones&&G.drones.forEach(stopBuzz)}catch(e){}G=null;state='title';buildScene(1);cv.style.filter='';lastBlur='';
+  $('title').classList.remove('hide');$('touch').classList.add('hide');showBest()}
+function demoUpdate(dt){DEMO.t+=dt;DEMO.ct+=dt;const c=CLIPS[DEMO.i],t=DEMO.ct,once=k=>!G.dFired[k]&&(G.dFired[k]=1);
+  if(t>=c.dur){DEMO.i++;DEMO.ct=0;if(DEMO.i>=CLIPS.length){endDemo();return}demoClip(DEMO.i);return}
+  G.time=90;let tg=G.dT?G.dT():null;
+  if(G.dAuto&&t>(G.dFrom||0)){const e=G.enemies.find(e=>e.state!=='dead'&&e.state!=='gone'&&e.type!=='decoy'&&e.rise>.7);if(e){const g=geo(e);tg=[g.x,g.hy+4]}else if(R()<.04)spawn()}
+  let gapOn=false;if(G.dGap!==undefined&&G.gaps[0]){const gp=G.gaps[0];if(!G.walkers.length)G.walkT=Math.min(G.walkT,.2);if(t>G.dGap){const w=G.walkers.find(w=>!w.dead);tg=[w&&Math.abs(w.x-gp.x)<40?w.x:gp.x,gp.by+2];gapOn=w&&Math.abs(w.x-gp.x)<16}}
+  if(tg){const k=distK(),sx=DPX+(tg[0]-DPX)*k,sy=DPY+(tg[1]-DPY)*k-G.duckAmt*90;mx+=(sx-mx)*Math.min(1,dt*14);my+=(sy-my)*Math.min(1,dt*14);
+    const on=Math.hypot(sx-mx,sy-my)<7;
+    if(on&&(G.dAuto&&R()<.3||gapOn)&&G.cool<=0){if(G.mag<=0){G.mag=30}shoot()}
+    if(G.dShoot!==undefined&&t>G.dShoot&&once('ds')){mx=sx;my=sy;G.cool=0;shoot()}
+    if(G.dRpg!==undefined&&t>G.dRpg&&once('rpg')){G.rpgReload=0;fireRpg()}}
+  if(G.dAct!==undefined&&t>G.dAct&&once('act'))startAct('cigarette');
+  if(G.dFlare)G.dFlare.forEach((ft,j)=>{if(t>ft&&once('fl'+j)){G.flareCool=0;mx=lerp(400,880,j);fireFlare()}})}
+function drawDemo(){const t=DEMO.t,ct=DEMO.ct,c=CLIPS[DEMO.i];ctx.save();ctx.textAlign='center';
+  // black open with the studio card
+  if(DEMO.i===0&&ct<3.6){const a=ct<3?1:1-(ct-3)/.6;ctx.fillStyle=`rgba(0,0,0,${a})`;ctx.fillRect(0,0,W,H);
+    const s1=clamp((ct-.3)/.7,0,1)*clamp((3.2-ct)/.5,0,1),s2=clamp((ct-1.3)/.6,0,1)*clamp((3.2-ct)/.5,0,1);
+    ctx.globalAlpha=s1;ctx.fillStyle='#e9e2c8';ctx.font='300 22px system-ui,sans-serif';ctx.fillText('S T U D I O',W/2,H/2-40);
+    ctx.font='800 64px system-ui,sans-serif';ctx.fillText('SAKSE',W/2,H/2+22);ctx.fillStyle='#c9a83f';ctx.fillRect(W/2-90,H/2+42,180,2);
+    ctx.globalAlpha=s2;ctx.fillStyle='#a9b08e';ctx.font='italic 400 22px Georgia,serif';ctx.fillText('presents',W/2,H/2+84);ctx.globalAlpha=1}
+  // letterbox bars and a caption
+  ctx.fillStyle='#000';ctx.fillRect(0,0,W,52);ctx.fillRect(0,H-52,W,52);
+  if(c.cap){ctx.globalAlpha=clamp(ct/.4,0,1)*clamp((c.dur-ct)/.4,0,1);ctx.textAlign='left';ctx.fillStyle='#c9a83f';ctx.font='800 15px system-ui,sans-serif';ctx.fillText(c.cap,40,H-20);ctx.textAlign='center';ctx.globalAlpha=1}
+  // closing title card
+  if(G.title&&ct>2.0){const a=clamp((ct-2.0)/.6,0,1);ctx.fillStyle=`rgba(0,0,0,${.45*a})`;ctx.fillRect(0,52,W,H-104);ctx.globalAlpha=a;
+    ctx.fillStyle='#f4efd6';ctx.font='900 78px system-ui,sans-serif';ctx.fillText('HILLTOP FIREFIGHT',W/2,H/2+10);
+    ctx.fillStyle='#e0483e';ctx.font='700 18px system-ui,sans-serif';ctx.fillText('KACHIN INDEPENDENCE ARMY  ·  THE FRONT LINE',W/2,H/2+48);ctx.globalAlpha=1}
+  if(DEMO.i===CLIPS.length-1&&ct>c.dur-.6){ctx.fillStyle=`rgba(0,0,0,${(ct-(c.dur-.6))/.6})`;ctx.fillRect(0,0,W,H)}
+  ctx.fillStyle='rgba(255,255,255,.45)';ctx.font='600 12px system-ui,sans-serif';ctx.textAlign='right';ctx.fillText('click or press any key to skip',W-24,H-20);
+  ctx.restore()}
+['pointerdown','keydown'].forEach(ev=>addEventListener(ev,e=>{if(!DEMO)return;e.stopPropagation();if(e.cancelable)e.preventDefault();endDemo();introAudio()},true));
 function newGame(start){G={level:start||1,score:0,totalKills:0,flagsBurned:0};startLevel()}
 function startLevel(){const sc0=SCENES[(G.level-1)%SCENES.length],c=cfg(sc0.diff&&G.level<=CAMPAIGN?sc0.diff:G.level);$('tFlare').style.display=sc0.night?'':'none';if(sc0.diff&&G.level<=CAMPAIGN){c.acc*=.75;c.burst=1;c.maxActive=2;c.rpg=3;Object.assign(c,sc0.opts||{})}buildScene(G.level);
   Object.assign(G,{c,time:90,kills:0,health:5,mag:30,reserve:c.ammo-30,rpg:c.rpg,reloading:0,rpgReload:0,cool:0,
@@ -527,7 +574,7 @@ function startLevel(){const sc0=SCENES[(G.level-1)%SCENES.length],c=cfg(sc0.diff
   state='play';G.wq=[];G.waveN=0;if(SC.runners)G.creepT=2.5;G.heli=null;G.heliT=20+R()*8;G.patches=SC.runners?[{x:420,y:425,r:78},{x:655,y:470,r:88},{x:885,y:415,r:74}].map(q=>({...q,burnt:false,smoke:0,seed:R()*99})):[];G.blurT=0;G.dustT=0;undeafen();['title','end','pause'].forEach(id=>$(id).classList.add('hide'));G.windT=2.5+Math.random()*3;
   if(isTouch)$('touch').classList.remove('hide');
 }
-function msg(t,col){G.msgs=G.msgs.filter(m=>m.t!==t);G.msgs.push({t,col:col||'#f2e7b8',life:1.6})}
+function msg(t,col){if(G&&G.demo)return;G.msgs=G.msgs.filter(m=>m.t!==t);G.msgs.push({t,col:col||'#f2e7b8',life:1.6})}
 function floatText(x,y,t,col){G.parts.push({x,y,vx:0,vy:-30,g:0,life:1,max:1,txt:t,col})}
 
 /* ---------- enemies ---------- */
@@ -571,7 +618,7 @@ function enemyFire(e){const c=G.c;e.flash=.07;
   if(G.duckAmt<.45&&R()<c.acc){playerHit()}
   else{setTimeout(()=>{if(G&&state==='play'){S.crack();if(G.duckAmt<.6)nearPuff(R()*W,10+R()*50)}},120)}
 }
-function playerHit(){if(state!=='play')return;G.hitsTaken++;G.health--;G.hurt=1;G.shake=.45;S.hurt();msg('Hit!','#ff8a7a');
+function playerHit(){if(state!=='play'||G.demo)return;G.hitsTaken++;G.health--;G.hurt=1;G.shake=.45;S.hurt();msg('Hit!','#ff8a7a');
   if(G.health<=0){state='dying';G.dieT=0;G.zoom=0;G.duck=true;spaceHeld=false;$('touch').classList.add('hide')}}
 function killEnemy(e,head,byRpg){
   if(e.type==='surrender'){S.enemyHit();e.state='dead';e.t=0;G.surr.phase='over';G.flagShot=true;const g=geo(e);dust(g.x,g.lip,8,'150,130,95');
@@ -816,7 +863,7 @@ function saveBest(){if(G.score>best){best=G.score;try{localStorage.setItem('hill
 function pause(){if(state==='play'){state='paused';try{AC&&AC.suspend()}catch(e){}G.drones.forEach(d=>{if(d.bz)try{d.bz.g.gain.value=0}catch(e){}});$('pause').classList.remove('hide')}else if(state==='paused'){state='play';try{AC&&AC.resume()}catch(e){}$('pause').classList.add('hide');last=performance.now()}}
 
 /* ---------- update ---------- */
-function update(dt){T+=dt;if(state!=='play'&&state!=='dying')return;const c=G.c;
+function update(dt){T+=dt;if(DEMO)demoUpdate(dt);if(state!=='play'&&state!=='dying')return;const c=G.c;
   if(state==='dying'){G.dieT+=dt;if(G.dieT>6){gameOver();return}}
   if(state==='play'&&G.brief>0){G.brief-=dt;return}
   if(state==='play'){G.time-=dt;if(G.time<=0){G.time=0;endLevel();return}}
@@ -1139,7 +1186,7 @@ function updCreepers(dt){if(!(SC.creepers||SC.runners||G.level>CAMPAIGN)||(G.sur
         if(c.mt<=0){if(hid&&c.stays>0){c.stays--;c.mode='cover';c.mt=1.2+R()*1.2}else{c.mode='run';c.atPt=false;c.mt=1.6+R()*1.8}}}}
     if(c.p>=1){if(!G.ambush)G.ambush={t:0,x:clamp(c.x1,260,1020),skin:c.skin,dead:false};return false}return true});
   const A=G.ambush;if(A){A.t+=dt;
-    if(!A.dead&&!A.fired&&A.t>(SC.diff?1.6:1.0)){A.fired=true;A.flash=.12;noise(.2,2400,.6,3);if(state==='play'){G.hitsTaken++;G.health--;G.hurt=1;G.shake=.5;S.hurt();msg('Shot at close range!','#ff7a6a');if(G.health<=0){state='dying';G.dieT=0;G.zoom=0;G.duck=true;spaceHeld=false;$('touch').classList.add('hide')}}}
+    if(!A.dead&&!A.fired&&A.t>(SC.diff?1.6:1.0)){A.fired=true;A.flash=.12;noise(.2,2400,.6,3);if(state==='play'&&!G.demo){G.hitsTaken++;G.health--;G.hurt=1;G.shake=.5;S.hurt();msg('Shot at close range!','#ff7a6a');if(G.health<=0){state='dying';G.dieT=0;G.zoom=0;G.duck=true;spaceHeld=false;$('touch').classList.add('hide')}}}
     if(A.flash>0)A.flash-=dt;if((A.fired&&A.t>(SC.diff?2.1:1.5))||(A.dead&&A.t>A.deadAt+.7))G.ambush=null}}
 function drawCreepers(){for(const c of G.creepers){const [x,y,sc]=creeperPos(c);ctx.save();ctx.globalAlpha=c.dead?1:SC.runners?.85:.5+.12*Math.sin(c.t*.7);ctx.translate(x,y);ctx.scale(sc,sc*.78);ctx.translate(-x,-y);
     const inP=SC.runners&&c.atPt&&c.pt&&!c.pt.burnt,off=c.dead?0:c.mode==='cover'?(inP?26:12):c.mode==='shoot'&&inP?8:0,run=SC.runners&&c.mode==='run'&&!c.dead;
@@ -1338,6 +1385,7 @@ function draw(){setBlur();ctx.setTransform(sc*dpr,0,0,sc*dpr,0,0);
     ctx.restore();ctx.textAlign='left'}
   if(G.hurt>0){const v=ctx.createRadialGradient(W/2,H/2,H*.25,W/2,H/2,H*.85);v.addColorStop(0,'rgba(160,0,0,0)');v.addColorStop(1,`rgba(170,10,0,${.75*G.hurt})`);ctx.fillStyle=v;ctx.fillRect(0,0,W,H)}
   if(state==='dying'){drawDeath();return}
+  if(G.demo){drawDemo();return}
   // HUD
   ctx.font='700 15px system-ui,sans-serif';
   panel(16,14,262,62);ctx.fillStyle='#c8c9b0';ctx.fillText(`LEVEL ${G.level}${G.level<=CAMPAIGN?' / '+CAMPAIGN:''}`,30,36);
