@@ -351,6 +351,11 @@ function floatText(x,y,t,col){G.parts.push({x,y,vx:0,vy:-30,g:0,life:1,max:1,txt
 function geo(e){const s=slots[e.slot];let x=s.x+e.dx;if(e.type==='decoy')x+=Math.sin(T*3+e.bob)*3;
   const hy=s.by+14-e.rise*44+(e.type==='decoy'?Math.sin(T*5+e.bob)*1.5:0);
   return{x,hy,hr:9.5,tx:x-12,ty:hy+9,tw:24,th:34,lip:s.by-5,by:s.by}}
+function goAngry(){const c=G.c;G.angry=true;
+  G.c=Object.assign({},c,{maxActive:Math.max(c.maxActive,5),spawn:.3,aim:c.aim*.6,acc:Math.min(.7,c.acc+.08),burst:2,rpgMan:.35,
+    drone:5,droneDur:Math.max(3.5,c.droneDur*.8),arty:8,artyDur:Math.max(1.5,c.artyDur*.85),decoy:.05});
+  G.droneT=1.5;G.artyT=2.5;G.spawnT=.2;G.shake=.5;
+  for(let k=0;k<4;k++)G.pending.push({t:1+k*.35,slot:Math.floor(R()*slots.length),angry:1})}
 function startSurrender(){G.surr={phase:'wait',t:0,calm:0};G.pending=[];
   G.enemies.forEach(e=>{if(e.state!=='dead')e.state='lowering'});
   G.drones.forEach(d=>{if(d.state==='fly'){stopBuzz(d);d.state='fall';d.ft=.6;d.vy=0;d.vr=0;d.rot=0}});
@@ -366,7 +371,7 @@ function spawn(opt={}){const c=G.c;if(G.surr&&G.surr.phase!=='over')return;
   const free=slots.map((s,i)=>i).filter(i=>!slots[i].busy&&slots[i].cool<=0);if(!free.length)return;
   const i=(opt.slot!=null&&free.includes(opt.slot))?opt.slot:free[Math.floor(R()*free.length)];
   const decoy=opt.type?opt.type==='decoy':R()<c.decoy;
-  const type=decoy?'decoy':(!opt.type&&R()<c.rpgMan?'rpg':'soldier');
+  const type=decoy?'decoy':((opt.type==='rpg'||(!opt.type&&R()<c.rpgMan))?'rpg':'soldier');
   slots[i].busy=true;
   G.enemies.push({slot:i,type,state:'rising',rise:0,t:0,
     aim:(opt.quick?.45:1)*c.aim*(.7+R()*.6)*(type==='rpg'?1.35:1),shots:0,next:0,dx:(R()-.5)*16,skin:['#4f3322','#5e3d28','#6f4a31','#86603f','#9c7350','#b08560'][Math.floor(R()*6)],bob:R()*6,flash:0,
@@ -386,7 +391,7 @@ function playerHit(){if(state!=='play')return;G.hitsTaken++;G.health--;G.hurt=1;
   if(G.health<=0){state='dying';G.dieT=0;G.zoom=0;$('touch').classList.add('hide')}}
 function killEnemy(e,head,byRpg){
   if(e.type==='surrender'){e.state='dead';e.t=0;G.surr.phase='over';G.flagShot=true;const g=geo(e);dust(g.x,g.lip,8,'150,130,95');
-    msg('Surrender refused — the fighting continues!','#ff8a6a');G.spawnT=1.2;return}
+    msg('You shot the white flag — THE BURMA ARMY IS ATTACKING HARD!','#ff6a5a');goAngry();return}
   if(e.shots===0)G.preempt++;e.state='dead';e.t=0;G.kills++;G.totalKills++;
   if(G.kills===30&&!G.surr)startSurrender();
   const pts=byRpg?120:(head?150:100);G.score+=pts;G.levelScore+=pts;const g=geo(e);
@@ -622,7 +627,7 @@ function update(dt){T+=dt;if(state!=='play'&&state!=='dying')return;const c=G.c;
   updSurrender(dt);updBird(dt);updGaps(dt);updSmoker(dt);
   G.spawnT-=dt;if(G.spawnT<=0){G.spawnT=c.spawn*(.6+R()*.8);
     if(G.enemies.filter(e=>e.state!=='dead'&&e.state!=='gone').length<c.maxActive)spawn()}
-  G.pending=G.pending.filter(p=>{p.t-=dt;if(p.t<=0){spawn({slot:p.slot,type:'soldier',quick:true});return false}return true});
+  G.pending=G.pending.filter(p=>{p.t-=dt;if(p.t<=0){spawn({slot:p.slot,type:p.angry?(R()<.35?'rpg':'soldier'):'soldier',quick:true});return false}return true});
   for(const e of G.enemies){e.t+=dt;e.flash-=dt;
     if(e.state==='rising'){e.rise=Math.min(e.maxRise,e.rise+dt*3.4);if(e.rise>=e.maxRise){e.state='up';e.t=0}}
     else if(e.state==='up'){
