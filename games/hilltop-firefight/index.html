@@ -1027,7 +1027,7 @@ function drawAct(py){const A=G.act;if(!A)return;const t=A.t,S2=p=>[p[0],p[1]+py]
 function drawSmoke(){if(!(G.smoking>0)||state==='dying')return;const sw=(1-G.duckAmt),cx=W/2+40+(mx-W/2)*.08*sw+Math.sin(T*1.3)*2.6,cy=H-6+(my-H/2)*.04*sw+G.recoil*6,inhale=(Math.sin(T*1.4)+1)/2;
   ctx.save();ctx.translate(cx,cy);ctx.rotate(-.35);ctx.fillStyle='#f3efe4';ctx.fillRect(-3,-26,6,30);ctx.fillStyle='#d79a55';ctx.fillRect(-3,-2,6,6);
   ctx.fillStyle=`rgba(255,${120+inhale*80},40,${.6+inhale*.4})`;ctx.shadowColor='#ff7a20';ctx.shadowBlur=8+inhale*10;ctx.fillRect(-3,-30,6,5);ctx.restore();
-  if(R()<.3)G.smk.push({x:cx-8+(R()-.5)*6,y:cy-36,vx:(R()-.5)*6,vy:-42-R()*16,life:16,max:16,r:2.5,ph:R()*6});
+  if(R()<.13)G.smk.push({x:cx-8+(R()-.5)*6,y:cy-36,vx:(R()-.5)*6,vy:-42-R()*16,life:16,max:16,r:2.5,ph:R()*6});
   if(R()<.012+inhale*.01)for(let i=0;i<6;i++)G.smk.push({x:cx-14+(R()-.5)*10,y:cy-30,vx:(R()-.5)*16,vy:-34-R()*18,life:16,max:16,r:5,ph:R()*6})}
 function drawSmk(dt){if(!G.smk.length)return;ctx.save();G.smk=G.smk.filter(p=>{p.life-=dt;const age=1-p.life/p.max;
     p.x+=(p.vx+Math.sin(T*.8+p.ph+age*4)*(8+age*40))*dt;p.y+=p.vy*dt*(1-age*.35);
@@ -1146,7 +1146,13 @@ function draw(){ctx.setTransform(sc*dpr,0,0,sc*dpr,0,0);
   ctx.globalAlpha=1;ctx.textAlign='left';
 }
 
-function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;update(dt);draw();requestAnimationFrame(loop)}
+let ERR='';
+function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;
+  try{update(dt);
+    if(G){if(G.parts.length>700)G.parts.splice(0,G.parts.length-700);if(G.nparts.length>300)G.nparts.splice(0,G.nparts.length-300);if(G.smk&&G.smk.length>90)G.smk.splice(0,G.smk.length-90)}
+    draw()}catch(e){ERR=(e&&e.message)||String(e);try{ctx.setTransform(sc*dpr,0,0,sc*dpr,0,0)}catch(x){}}
+  if(ERR){ctx.save();ctx.setTransform(sc*dpr,0,0,sc*dpr,0,0);ctx.fillStyle='rgba(0,0,0,.6)';ctx.fillRect(0,H-22,W,22);ctx.fillStyle='#ffb38a';ctx.font='12px monospace';ctx.fillText('Error (please screenshot): '+ERR.slice(0,140),10,H-7);ctx.restore()}
+  requestAnimationFrame(loop)}
 requestAnimationFrame(loop);
 
 /* ---------- input ---------- */
