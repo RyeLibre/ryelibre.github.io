@@ -115,7 +115,7 @@ body.rot #stage{inset:auto;top:0;left:100vw;width:100vh;height:100vw;transform-o
     <li><b>Pillbox</b> <span>concrete bunker · shells stun you</span></li>
     <li><b>Upper Kachin</b> <span>snow · blue hour · 220 m</span></li>
     <li><b>Burnt Hill</b> <span>burnt out · ash · 200 m</span></li>
-    <li><b>River Line</b> <span>river · brush · log wall</span></li>
+    <li><b>Mali Hka</b> <span>river · brush · log wall</span></li>
     <li><b>Alaw Bum</b> <span>night vision · 150 m</span></li>
     <li><b>Laiza Hotel</b> <span>rooftop · waves · helicopter</span></li>
     <li><b>Storm Valley</b> <span>storm · bamboo · fighting holes</span></li>
@@ -178,8 +178,8 @@ const SCENES=[
   hill:['#b8c8de','#6f84a3'],slope:['#a9bbd4','#5d7190'],dead:.3,trees:46,fog:.18,fogc:'150,172,205',dim:.22,dimc:'14,28,62',px:640,top:268,curv:200,ph:4.8,diff:3,opts:{quota:14}},
  {name:'Burnt Hill',ash:1,smoke:1,tod:'Burnt out · ash and smoke',dist:200,sky:['#6f665d','#9c9182','#b3a895'],sun:[880,210,'255,200,150',.35],sunDisc:'235,200,160',ranges:['#8e857a','#7a7268','#655e56'],
   hill:['#8a8478','#55504a'],slope:['#878074','#4c4741'],dead:1,trees:20,fog:.2,fogc:'165,155,140',px:620,top:276,curv:215,ph:1.3,diff:3,opts:{quota:14}},
- {name:'River Line',river:1,logwall:1,tod:'Across the river',dist:200,sky:['#5f8fbf','#a9c6db','#cfdcd8'],sun:[980,120,'255,250,230',.6],ranges:['#7d98a6','#6b8a86','#58765e'],
-  hill:['#5a6e3a','#34441f'],slope:['#56693a','#2f3d1c'],dead:.15,trees:50,fog:.1,px:640,top:300,curv:150,ph:3.7,diff:3,opts:{quota:15}},
+ {name:'Mali Hka',river:1,logwall:1,tod:'Across the river',dist:200,sky:['#5f8fbf','#a9c6db','#cfdcd8'],sun:[980,120,'255,250,230',.6],ranges:['#7d98a6','#6b8a86','#58765e'],
+  hill:['#4c6234','#2c3c1b'],slope:['#56693a','#2f3d1c'],dead:.15,trees:60,fog:.12,fogc:'170,190,190',px:640,top:215,curv:150,ph:3.7,diff:3,opts:{quota:15}},
  {name:'Alaw Bum',hq:'haze',nvg:1,dist:150,tod:'Night vision',sky:['#5d8fc4','#bcd3df','#d6d8c8'],sun:[300,80,'255,255,235',.9],ranges:['#8aa2b3','#748e88','#5f7b5c'],
   hill:['#7f7652','#4a4830'],slope:['#776f4b','#41412a'],dead:.4,trees:44,fog:.16,bamboo:1,px:560,top:270,curv:240,ph:1.7},
  {name:'Laiza Hotel',laiza:1,nopost:1,concrete:1,towers:1,runners:1,dist:300,tod:'Dusk on the hotel roof',sky:['#e2b394','#ecbd9f','#c99a86'],sun:null,ranges:['#b98f80','#9a7a70','#7a6460'],
@@ -349,6 +349,10 @@ function buildBg(){let g=bg.getContext('2d');g.setTransform(1,0,0,1,PADX,0);cons
     for(let i=0;i<120;i++){const x=600+srnd()*(X1-600),y=L(x)+10+srnd()*240;g.fillStyle=`rgba(${190+srnd()*40},${205+srnd()*35},${230+srnd()*20},${.35+srnd()*.4})`;g.beginPath();g.moveTo(x,y);g.lineTo(x+14+srnd()*30,y-6-srnd()*8);g.lineTo(x+10+srnd()*24,y+4+srnd()*10);g.closePath();g.fill()}
     g.restore();for(let x=600;x<X1;x+=7+srnd()*9){const y=L(x)+2,h=14+srnd()*22;g.fillStyle='#0f1724';g.beginPath();g.moveTo(x-4-srnd()*3,y+3);g.lineTo(x,y-h);g.lineTo(x+4+srnd()*3,y+3);g.closePath();g.fill();if(srnd()<.2){g.strokeStyle='#0f1724';g.lineWidth=1.2;g.beginPath();g.moveTo(x+3,y);g.lineTo(x+3,y-h*1.8);g.stroke()}}
     for(let i=0;i<70;i++){const x=640+srnd()*(X1-640),y=L(x)+20+srnd()*200;if(y>420)continue;const h=10+srnd()*16;g.fillStyle='rgba(12,20,32,.9)';g.beginPath();g.moveTo(x-3,y+2);g.lineTo(x,y-h);g.lineTo(x+3,y+2);g.closePath();g.fill()}}
+  if(SC.river){const cols=['#7f9a9c','#6a878a','#587577','#47635f','#3a5449'];
+    g.fillStyle=cols[0];g.fillRect(X0,0,WW,HB);cols.forEach((c,k)=>{const base=-60+k*62,amp=150-k*18,per=340-k*30;g.fillStyle=c;g.beginPath();g.moveTo(X0,HB);for(let x=X0;x<=X1;x+=6){const v=Math.abs(((x+k*170+2000)%per)/(per/2)-1);g.lineTo(x,base+v*amp+Math.sin(x*.031+k)*8+Math.sin(x*.09+k*2)*3)}g.lineTo(X1,HB);g.closePath();g.fill();
+      for(let i=0;i<90;i++){const x=X0+srnd()*WW,y=base+amp*.5+srnd()*160;g.fillStyle=`rgba(20,40,25,${.05+k*.02})`;g.beginPath();g.moveTo(x,y-6);g.lineTo(x+3,y+4);g.lineTo(x-3,y+4);g.fill()}
+      g.fillStyle='rgba(190,205,205,.18)';g.fillRect(X0,base+70,WW,40)})}
   if(SC.stormclouds)for(let i=0;i<60;i++){const x=X0+srnd()*WW,y=-20+srnd()*190,r=60+srnd()*130;const cg=g.createRadialGradient(x,y,6,x,y,r);const d=srnd();cg.addColorStop(0,`rgba(${10+d*25},${14+d*28},${18+d*30},.85)`);cg.addColorStop(1,'rgba(10,14,18,0)');g.fillStyle=cg;g.fillRect(x-r,y-r,r*2,r*2)}
   if(SC.laiza){const r2=x=>SC.top-100+((x-860)/620)**2*190+Math.sin(x*.02)*5+Math.sin(x*.053)*3;
     gr=g.createLinearGradient(0,150,0,420);gr.addColorStop(0,'#9c776c');gr.addColorStop(1,'#6e5550');g.fillStyle=gr;g.beginPath();g.moveTo(X0,HB);for(let x=X0;x<=X1;x+=4)g.lineTo(x,r2(x));g.lineTo(X1,HB);g.fill();
@@ -782,7 +786,8 @@ function updSurrender(dt){const S2=G.surr;if(!S2||S2.phase==='over')return;S2.t+
   if(S2.phase==='flag'){S2.calm+=dt;if(S2.calm>=6){S2.phase='done';G.surrendered=true;G.score+=1000;G.levelScore+=1000;msg('THE ENEMY POST SURRENDERED  +1000','#ffffff');setTimeout(()=>{if(state==='play')endLevel()},1800)}}}
 function spawn(opt={}){const c=G.c;if(G.surr&&G.surr.phase!=='over')return;
   const free=slots.map((s,i)=>i).filter(i=>!slots[i].busy&&!slots[i].buried&&slots[i].cool<=0);if(!free.length)return;
-  const i=(opt.slot!=null&&free.includes(opt.slot))?opt.slot:free[Math.floor(R()*free.length)];
+  let pool=free;if(SC.river&&opt.slot==null){const br=free.filter(j=>slots[j].brush);if(br.length&&R()<.78)pool=br}
+  const i=(opt.slot!=null&&free.includes(opt.slot))?opt.slot:pool[Math.floor(R()*pool.length)];
   const decoy=opt.type?opt.type==='decoy':R()<c.decoy;
   const rpgBusy=!G.angry&&(G.enemies.some(e=>e.type==='rpg'&&e.state!=='dead'&&e.state!=='gone')||G.erockets.length>0);
   const type=decoy?'decoy':((!rpgBusy&&(opt.type==='rpg'||(!opt.type&&R()<c.rpgMan)))?'rpg':'soldier');
