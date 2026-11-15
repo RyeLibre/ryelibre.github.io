@@ -81,7 +81,7 @@ body.rot #stage{inset:auto;top:0;left:100vw;width:100vh;height:100vw;transform-o
     <li><b>Right-click</b> / <b>F</b> RPG</li>
     <li><b>R</b> or shoot the target: reload</li>
   </ul>
-  <p class="tip">Duck at the scope glint, the RPG warning and the artillery whistle. Look for faces — some are helmets on sticks (−50 if you shoot one). Shoot drones down. Burn their flag with an RPG for +500. RPGs blow gaps in their dirt wall — hit a soldier passing the gap for +200. See a thin line of cigarette smoke? Someone is hiding there — an RPG gets him.</p>
+  <p class="tip">Duck at the scope glint, the RPG warning and the artillery whistle. Look for faces — some are helmets on sticks (−50 if you shoot one). Shoot drones down. Burn their flag with an RPG for +500. RPGs blow gaps in their dirt wall — hit a soldier passing the gap for +200 and an extra RPG. See a thin line of cigarette smoke? Someone is hiding there — an RPG gets him.</p>
   <button id="startBtn">START</button>
   <div id="hs"></div>
 </div></div>
@@ -428,7 +428,7 @@ function explode(x,y){S.boom();G.shake=.7;
   if(!G.flagBurn&&Math.hypot(x-fx,y-fy)<55){G.flagBurn=.001;G.score+=500;G.levelScore+=500;G.flagsBurned++;msg('THEIR FLAG IS BURNING!  +500','#ffb347');floatText(fx,fy-24,'+500','#ffb347')}
   if(G.smoker&&Math.abs(G.smoker.x-x)<70&&Math.abs(G.smoker.by-y)<60){const m=G.smoker;G.smoker=null;G.smokeT=14+R()*18;G.kills++;G.totalKills++;G.score+=250;G.levelScore+=250;G.smokerKills++;n++;
     floatText(m.x,m.by-40,'SMOKER +250','#ffe38a');msg('Got the smoker!','#ffd36b');if(G.kills===30&&!G.surr)startSurrender()}
-  for(const w of G.walkers){const wy=baseY(w.x);if(!w.dead&&Math.abs(w.x-x)<70&&Math.abs(wy-y)<60&&G.gaps.some(g=>Math.abs(g.x-w.x)<45)){w.dead=true;w.t=0;w.fall=w.dir;G.kills++;G.totalKills++;G.score+=200;G.levelScore+=200;G.gapKills++;floatText(w.x,wy-22,'+200','#ffe38a');n++}}
+  for(const w of G.walkers){const wy=baseY(w.x);if(!w.dead&&Math.abs(w.x-x)<70&&Math.abs(wy-y)<60&&G.gaps.some(g=>Math.abs(g.x-w.x)<45)){w.dead=true;w.t=0;w.fall=w.dir;G.kills++;G.totalKills++;G.score+=200;G.levelScore+=200;G.gapKills++;G.rpg++;floatText(w.x,wy-22,'+200  +1 RPG','#ffe38a');n++}}
   if(n>=2){const b=n*75;G.score+=b;G.levelScore+=b;msg(`Multi-kill x${n}  +${b}`,'#ffd36b')}
   const cy=Math.max(y,baseY(clamp(x,150,1130))+4);const rg=fgc.createRadialGradient(x,cy,2,x,cy,34);
   rg.addColorStop(0,'rgba(20,14,8,.85)');rg.addColorStop(1,'rgba(20,14,8,0)');fgc.fillStyle=rg;fgc.beginPath();fgc.ellipse(x,cy,34,12,0,0,Math.PI*2);fgc.fill();
@@ -460,7 +460,7 @@ function updGaps(dt){if(G.surr&&G.surr.phase!=='over')return;
   G.walkers=G.walkers.filter(w=>{w.t+=dt;if(w.dead)return w.t<.9;w.x+=w.dir*75*dt;return (w.endX-w.x)*w.dir>0})}
 function walkerHit(ax,ay){for(const g of G.gaps){if(!inGap(g,ax,ay))continue;
   for(const w of G.walkers){if(w.dead||Math.abs(ax-w.x)>9)continue;S.enemyHit();w.dead=true;w.t=0;w.fall=w.dir;
-    G.kills++;G.totalKills++;G.score+=200;G.levelScore+=200;G.hits++;floatText(w.x,g.by-22,'GAP SHOT +200','#ffe38a');G.gapKills++;
+    G.kills++;G.totalKills++;G.score+=200;G.levelScore+=200;G.hits++;floatText(w.x,g.by-22,'GAP SHOT +200  +1 RPG','#ffe38a');G.gapKills++;G.rpg++;msg('+1 RPG','#ffd36b');
     if(G.kills===G.c.quota)msg('Kill target reached — hold the line!','#bde58a');if(G.kills===30&&!G.surr)startSurrender();return true}}return false}
 function drawWalker(w,by){const bob=Math.abs(Math.sin(w.t*11))*1.5,hy=by-2+bob;ctx.save();
   if(w.dead){ctx.globalAlpha=Math.max(0,1-w.t/.9);ctx.translate(w.x,by+20);ctx.rotate(w.fall*Math.min(1,w.t*3)*1.2);ctx.translate(-w.x,-(by+20))}
@@ -621,7 +621,7 @@ function gameOver(){state='over';stopAmbience();G.arty.forEach(a=>{try{a.wh&&a.w
 function roundStats(){return `Killed before they fired <b>${G.preempt}</b><br>Decoys shot <b>${G.decoysHit}</b>${G.decoysHit?` (−${G.decoysHit*50})`:''}<br>Enemy shots fired <b>${G.enemyShots}</b> &nbsp;·&nbsp; Times you were hit <b>${G.hitsTaken}</b><br>`+
   (G.enemyRpgs?`Enemy RPGs fired <b>${G.enemyRpgs}</b> &nbsp;·&nbsp; RPG hits on you <b>${G.rpgHits}</b><br>`:'')+
   (G.smokerKills?`Smokers hit with RPG <b>${G.smokerKills}</b> (+${G.smokerKills*250})<br>`:'')+
-  (G.gapKills?`Shot through the gap <b>${G.gapKills}</b> (+${G.gapKills*200})<br>`:'')+
+  (G.gapKills?`Shot through the gap <b>${G.gapKills}</b> (+${G.gapKills*200}, +${G.gapKills} RPG)<br>`:'')+
   (G.surrendered?`White flag accepted <b>+1000</b><br>`:G.flagShot?`White flag holder shot — fighting continued<br>`:'')+(G.birdHit?`Bird shot <b>+1 heart</b><br>`:'')+
   (G.flagBurn?`Enemy flag burned <b>+500</b><br>`:'')+
   (G.artyIn?`Artillery shells <b>${G.artyIn}</b> &nbsp;·&nbsp; Shell hits on you <b>${G.artyHits}</b><br>`:'')+
@@ -857,8 +857,9 @@ function draw(){ctx.setTransform(sc*dpr,0,0,sc*dpr,0,0);
     if(hot){ctx.strokeStyle='#ffe38a';ctx.lineWidth=2;ctx.beginPath();ctx.arc(rx,ry,16,0,Math.PI*2);ctx.stroke()}
     ctx.font='700 9px system-ui,sans-serif';ctx.fillStyle='#c8c9b0';ctx.textAlign='center';ctx.fillText('RELOAD',rx,ry+25);ctx.textAlign='left';ctx.restore()}
   ctx.fillStyle='#c8c9b0';ctx.font='700 13px system-ui,sans-serif';ctx.fillText('RPG  [R-click / F]',bx+142,TY+22);
-  for(let i=0;i<G.c.rpg;i++){ctx.fillStyle=i<G.rpg?'#9a9d6a':'rgba(255,255,255,.15)';const x=bx+150+i*36,y=TY+42;
+  for(let i=0;i<Math.min(4,Math.max(G.c.rpg,G.rpg));i++){ctx.fillStyle=i<G.rpg?'#9a9d6a':'rgba(255,255,255,.15)';const x=bx+150+i*30,y=TY+42;
     ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+12,y-8);ctx.lineTo(x+24,y);ctx.lineTo(x+12,y+8);ctx.fill();ctx.fillRect(x+20,y-2,8,4)}
+  if(G.rpg>4){ctx.fillStyle='#f4efd6';ctx.font='800 13px system-ui,sans-serif';ctx.fillText('×'+G.rpg,bx+252,TY+56)}
   ctx.textAlign='center';let my2=H*.3;
   if(G.surr&&G.surr.phase==='flag'){const left=Math.ceil(6-G.surr.calm);ctx.font='800 22px system-ui,sans-serif';ctx.fillStyle='rgba(0,0,0,.5)';
     ctx.fillText(`WHITE FLAG — hold fire ${left}…   (or shoot him and the fighting goes on)`,W/2+1,H*.2+1);ctx.fillStyle='#ffffff';ctx.fillText(`WHITE FLAG — hold fire ${left}…   (or shoot him and the fighting goes on)`,W/2,H*.2)}
