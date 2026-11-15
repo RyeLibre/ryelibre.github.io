@@ -1658,8 +1658,18 @@ function nvgPost(c,live){nvgInit();const cvs=c.canvas;c.save();
   c.restore();c.save();
   if(live){c.globalAlpha=.07;c.fillStyle='#000';for(let y=(T*120)%3;y<H;y+=3)c.fillRect(0,y,W,1);c.globalAlpha=.04+.03*Math.sin(T*23);c.fillStyle='#b8ffc0';c.fillRect(0,0,W,H)}
   // darker toward the edge of each tube
-  c.globalAlpha=1;c.drawImage(NVGVIG,0,0,W,H);
-  c.drawImage(NVGMASK,0,0,W,H);c.restore()}
+  c.restore();
+  // one round scope on the rifle: follows the aim, darker outside but the land still shows faintly
+  let sx=W/2,sy=H/2;if(live&&G){const p=aimPt();sx=p[0];sy=p[1]}const r=255;
+  c.save();c.beginPath();c.rect(-50,-50,W+100,H+100);c.arc(sx,sy,r,0,Math.PI*2,true);c.save();c.clip('evenodd');c.globalCompositeOperation='saturation';c.fillStyle='#000';c.fillRect(-50,-50,W+100,H+100);c.globalCompositeOperation='source-over';c.fillStyle='rgba(4,6,8,.86)';c.fillRect(-50,-50,W+100,H+100);c.restore();
+  const vg=c.createRadialGradient(sx,sy,r*.55,sx,sy,r);vg.addColorStop(0,'rgba(0,8,2,0)');vg.addColorStop(1,'rgba(0,8,2,.7)');c.fillStyle=vg;c.beginPath();c.arc(sx,sy,r,0,Math.PI*2);c.fill();
+  c.strokeStyle='#050806';c.lineWidth=26;c.beginPath();c.arc(sx,sy,r+12,0,Math.PI*2);c.stroke();c.strokeStyle='rgba(120,140,120,.18)';c.lineWidth=2;c.beginPath();c.arc(sx,sy,r+25,0,Math.PI*2);c.stroke();
+  // reticle: thin cross, thick posts at the edge, a few stadia ticks
+  c.strokeStyle='rgba(0,0,0,.85)';c.lineWidth=1.2;c.beginPath();c.moveTo(sx-r,sy);c.lineTo(sx+r,sy);c.moveTo(sx,sy-r);c.lineTo(sx,sy+r);c.stroke();
+  c.lineWidth=6;c.beginPath();c.moveTo(sx-r,sy);c.lineTo(sx-r*.45,sy);c.moveTo(sx+r*.45,sy);c.lineTo(sx+r,sy);c.moveTo(sx,sy+r);c.lineTo(sx,sy+r*.45);c.moveTo(sx,sy-r);c.lineTo(sx,sy-r*.6);c.stroke();
+  c.lineWidth=1.2;for(const [d,w] of [[30,26],[62,40],[96,54]]){c.beginPath();c.moveTo(sx-w/2,sy+d);c.lineTo(sx+w/2,sy+d);c.stroke()}
+  for(const d of [-.3,-.15,.15,.3]){c.beginPath();c.moveTo(sx+d*r,sy-5);c.lineTo(sx+d*r,sy+5);c.stroke()}
+  c.restore()}
 function heart(x,y,on){ctx.fillStyle=on?'#e25b4a':'rgba(255,255,255,.18)';ctx.beginPath();ctx.moveTo(x,y+6);
   ctx.bezierCurveTo(x-12,y-4,x-6,y-12,x,y-5);ctx.bezierCurveTo(x+6,y-12,x+12,y-4,x,y+6);ctx.fill()}
 function panel(x,y,w,h){ctx.fillStyle='rgba(12,14,9,.55)';rr(ctx,x,y,w,h,8)}
@@ -1679,11 +1689,11 @@ function draw(){setBlur();ctx.setTransform(sc*dpr,0,0,sc*dpr,0,0);
   if(SC.rain)drawRain();if(SC.snow)drawSnow();if(SC.storm)drawStorm();
   if(du>.85&&state!=='dying'&&!G.act){ctx.fillStyle='rgba(240,230,200,.55)';ctx.font='600 18px system-ui,sans-serif';ctx.textAlign='center';
     ctx.fillText('IN COVER — reload · click the cigarettes, flute, radio or a flare · SPACE to stand',W/2,H*.86);ctx.textAlign='left'}
-  if(du<.95&&G.zoom<.6&&!(G.demo&&G.dCamAt!==undefined&&DEMO.ct>G.dCamAt))drawGun(ax,ay);drawCases(FDT);drawPtr(FDT);
+  if(du<.95&&G.zoom<.6&&!SC.nvg&&!(G.demo&&G.dCamAt!==undefined&&DEMO.ct>G.dCamAt))drawGun(ax,ay);drawCases(FDT);drawPtr(FDT);
   if(G.zoom>.02)drawSights(ax,ay);
   ctx.restore();
   // crosshair (unscoped)
-  if(G.zoom<.5&&state!=='dying'){ctx.save();ctx.globalAlpha=(du>.25?.25:.5)*(1-G.zoom*2);ctx.strokeStyle='rgba(255,255,255,.9)';ctx.lineWidth=1.5;const gap=5+G.recoil*3;
+  if(G.zoom<.5&&state!=='dying'&&!SC.nvg){ctx.save();ctx.globalAlpha=(du>.25?.25:.5)*(1-G.zoom*2);ctx.strokeStyle='rgba(255,255,255,.9)';ctx.lineWidth=1.5;const gap=5+G.recoil*3;
     ctx.beginPath();ctx.arc(ax,ay,15+G.recoil*3,0,Math.PI*2);ctx.moveTo(ax-24,ay);ctx.lineTo(ax-gap,ay);ctx.moveTo(ax+gap,ay);ctx.lineTo(ax+24,ay);
     ctx.moveTo(ax,ay-24);ctx.lineTo(ax,ay-gap);ctx.moveTo(ax,ay+gap);ctx.lineTo(ax,ay+24);ctx.stroke();
     ctx.fillStyle='#ff5040';circ(ctx,ax,ay,1.6);ctx.restore()}
