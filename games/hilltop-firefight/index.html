@@ -49,6 +49,8 @@ body.rot #stage{inset:auto;top:0;left:100vw;width:100vh;height:100vw;transform-o
 .tip{font-size:13px;margin:4px 0 8px}
 .ov{overflow:auto}
 .modes{display:flex;gap:6px;justify-content:center;margin:6px 0 2px}.mode{padding:6px 16px;font-size:13px;background:#2b3322;color:#c8c9b0;border:1px solid #56603f}.mode.on{background:#c9a83f;color:#1a1608;border-color:#c9a83f}.modetip{font-size:12px;color:#a9b08e;text-align:center;margin-bottom:6px}
+.hof{margin-top:12px;padding:10px 12px;border-radius:8px;background:#232a1b;border:1px solid #3a4428;font-size:12px}.hoft{font-family:'Black Ops One',Impact,sans-serif;color:#ece6d4;letter-spacing:.08em;font-size:15px;text-align:center}.hoftabs{display:flex;gap:6px;justify-content:center;margin:5px 0}.hoftabs button{padding:3px 10px;font-size:11px;margin:0;background:#2b3322;color:#c8c9b0;border:1px solid #56603f}.hoftabs button.on{background:#e8e4d8;color:#1a1608}#hofList{margin:0;padding-left:22px;color:#e8e4d8;columns:2;column-gap:18px}#hofList li{line-height:1.6;break-inside:avoid}#hofList li span{float:right;color:#d9c27a}#hofList .me{color:#ffd36b}
+.share{margin:8px 0 12px;padding:10px;border-radius:8px;background:#232a1b;border:1px solid #3a4428}.shtl{font-size:14px;color:#ffd36b;margin-bottom:6px}.shrow{display:flex;gap:6px;justify-content:center}.shrow input{width:160px;padding:7px 9px;border-radius:6px;border:1px solid #56603f;background:#14180f;color:#eee;font-size:14px}.shrow button{margin:0;padding:7px 14px;font-size:13px}.card.big .share .shtl{font-size:22px}.card.big .shrow input{font-size:20px;width:240px}
 .signup{margin-top:12px;padding:10px 12px;border-radius:8px;background:#232a1b;border:1px solid #3a4428;font-size:12px}.tourn{color:#ffd36b;font-size:13px;margin-bottom:3px}.sutxt{color:#a9b08e;margin-bottom:6px}.surow{display:flex;gap:6px}.surow input{flex:1;min-width:0;padding:6px 8px;border-radius:6px;border:1px solid #56603f;background:#14180f;color:#eee;font-size:12px}.surow button{padding:6px 10px;font-size:11px;margin:0}.sumsg{margin-top:5px;color:#bde58a;min-height:14px}
 .logo{font-family:'Black Ops One',Impact,'Arial Black',sans-serif;color:#ece6d4;text-align:center;line-height:.95;letter-spacing:.04em;margin:6px 0 10px}.logo .lr1{font-size:46px}.logo .lr2{font-size:52px}.logo .bi{display:inline-block;margin:0 .04em;vertical-align:baseline}.ltag{font-family:system-ui,sans-serif;font-size:10px;letter-spacing:.12em;white-space:nowrap;color:#9a9583;margin-top:9px}
 .card,.card.wide{transform:scale(var(--cs,1));transform-origin:center;flex:none}
@@ -97,6 +99,7 @@ body.rot #stage{inset:auto;top:0;left:100vw;width:100vh;height:100vw;transform-o
   <div id="modeTip" class="modetip">Take each hill in 90 seconds</div>
   <button id="startBtn">START</button>
   <div style="font-size:12px;color:#a9b08e;margin-top:6px">or click a level to start there</div>
+  <div id="hof" class="hof"><div class="hoft">HALL OF FAME</div><div class="hoftabs"><button id="hofC" class="on">Campaign</button><button id="hofE">Endless</button></div><ol id="hofList"></ol></div>
   <form id="signup" class="signup" onsubmit="return false">
     <div class="tourn">🏆 <b>Tournament coming soon</b> — start practising!</div>
     <div class="sutxt">Want to hear about contests, big updates and new games? (optional)</div>
@@ -129,6 +132,7 @@ body.rot #stage{inset:auto;top:0;left:100vw;width:100vh;height:100vw;transform-o
   <h1 id="endTitle">Position held</h1>
   <p class="sub" id="endSub"></p>
   <div class="stats" id="endStats"></div>
+  <div id="share" class="share"><div class="shtl">🏆 Add to the Hall of Fame?</div><div class="shrow"><input id="shName" maxlength="12" placeholder="name or initials"><button id="shBtn">SHARE SCORE</button></div><div id="shMsg" class="sumsg"></div></div>
   <button id="endBtn">NEXT LEVEL</button>
   <button id="endBtn2" class="alt hide">MAIN MENU</button>
 </div></div>
@@ -1163,11 +1167,11 @@ function toggleDuck(){if(state!=='play')return;ac();G.duck=!G.duck}
 function setScope(on){if(on&&!spaceHeld&&state==='play')S.scope();spaceHeld=on}
 
 /* ---------- end states ---------- */
-function showEnd(title,sub,stats,btn,onBtn,menu,kia){$('end').querySelector('.card').classList.toggle('big',!!(G&&G.endless));
+function showEnd(title,sub,stats,btn,onBtn,menu,kia){prepShare();$('end').querySelector('.card').classList.toggle('big',!!(G&&G.endless));
   $('endTitle').textContent=title;$('endTitle').className=kia?'kia':'';
   $('endSub').textContent=sub||'';$('endStats').innerHTML=stats;
   $('endBtn').textContent=btn;$('endBtn').onclick=onBtn;
-  $('endBtn2').classList.toggle('hide',!menu);$('endBtn2').onclick=()=>{$('end').classList.add('hide');$('title').classList.remove('hide');showBest();state='title';startAmbience()};
+  $('endBtn2').classList.toggle('hide',!menu);$('endBtn2').onclick=()=>{$('end').classList.add('hide');$('title').classList.remove('hide');showBest();hofLoad();state='title';startAmbience()};
   $('end').classList.remove('hide')}
 function endLevel(){state='end';stopHeliSnd();stopAmbience();G.arty.forEach(a=>{try{a.wh&&a.wh.stop()}catch(e){}});G.drones.forEach(stopBuzz);$('touch').classList.add('hide');spaceHeld=false;
   const acc=G.shots?Math.round(100*G.hits/G.shots):0,ok=G.kills>=G.c.quota||G.surrendered;
@@ -2027,6 +2031,26 @@ $('suBtn').onclick=()=>{const em=$('suEmail').value.trim(),nm=$('suName').value.
   $('suBtn').disabled=true;fetch(SIGNUP_URL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({email:em,name:nm,source:'Hilltop Firefight ('+(window.HF_WHERE||'web')+')',interests:'contests, updates, new games, tournament'})})
     .then(r=>{if(!r.ok)throw 0;$('suMsg').style.color='#bde58a';$('suMsg').textContent='Thanks! We\'ll let you know.';track('signup');$('suEmail').value='';$('suName').value=''})
     .catch(()=>{$('suMsg').style.color='#ffb38a';$('suMsg').textContent='Could not send — are you online? Try again later.'}).finally(()=>{$('suBtn').disabled=false})};
+// ---------- Hall of Fame: local list on this device, plus a shared online board once SCORES_URL is set ----------
+const SCORES_URL='';
+let hofMode='campaign';
+function hofLocal(){try{return JSON.parse(localStorage.getItem('hilltop_hof')||'[]')}catch(e){return[]}}
+function hofSave(a){try{localStorage.setItem('hilltop_hof',JSON.stringify(a.slice(0,200)))}catch(e){}}
+function fmtT(t){return Math.floor(t/60)+':'+String(Math.floor(t%60)).padStart(2,'0')}
+function hofRender(list){const L=(list||hofLocal()).filter(e=>e.mode===hofMode).sort((a,b)=>hofMode==='endless'?b.time-a.time:b.score-a.score).slice(0,10);
+  $('hofList').innerHTML=L.length?L.map(e=>`<li>${e.name.replace(/[<>&]/g,'')} <span>${hofMode==='endless'?fmtT(e.time):e.score}</span></li>`).join(''):'<li style="list-style:none;margin-left:-22px;color:#9a9583">No scores yet — be the first!</li>'}
+function hofLoad(){hofRender();if(!SCORES_URL)return;fetch(SCORES_URL+'?mode='+hofMode).then(r=>r.json()).then(d=>{if(Array.isArray(d))hofRender(d.map(e=>({...e,mode:hofMode})))}).catch(()=>{})}
+$('hofC').onclick=()=>{hofMode='campaign';$('hofC').classList.add('on');$('hofE').classList.remove('on');hofLoad()};
+$('hofE').onclick=()=>{hofMode='endless';$('hofE').classList.add('on');$('hofC').classList.remove('on');hofLoad()};
+let shareRec=null;
+function prepShare(){if(!G||G.demo){$('share').style.display='none';return}const ok=G.score>0||G.endless&&G.time>5;shareRec=ok?{mode:G.endless?'endless':'campaign',score:G.score,time:Math.floor(G.time||0),level:G.level,levelName:SC.name,kills:G.totalKills||G.kills,where:window.HF_WHERE||'web'}:null;
+  $('share').style.display=ok?'':'none';$('shMsg').textContent='';$('shBtn').disabled=false;try{$('shName').value=localStorage.getItem('hilltop_name')||''}catch(e){}}
+$('shBtn').onclick=()=>{if(!shareRec)return;let nm=$('shName').value.trim().replace(/[^\p{L}\p{N} ._-]/gu,'').slice(0,12);if(!nm){$('shMsg').style.color='#ffb38a';$('shMsg').textContent='Enter a name or initials';return}
+  try{localStorage.setItem('hilltop_name',nm)}catch(e){}const rec={...shareRec,name:nm,date:new Date().toISOString().slice(0,10)};const a=hofLocal();a.push(rec);hofSave(a);$('shBtn').disabled=true;track('share-'+rec.mode);
+  if(!SCORES_URL){$('shMsg').style.color='#bde58a';$('shMsg').textContent='Saved to the Hall of Fame on this device. Online board opens soon!';shareRec=null;return}
+  fetch(SCORES_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(rec)}).then(r=>{if(!r.ok)throw 0;$('shMsg').style.color='#bde58a';$('shMsg').textContent='Shared! You\'re in the Hall of Fame.'}).catch(()=>{$('shMsg').style.color='#ffb38a';$('shMsg').textContent='Saved here — could not reach the online board.'});shareRec=null};
+['pointerdown','keydown'].forEach(ev=>$('share').addEventListener(ev,e=>e.stopPropagation()));
+hofLoad();
 $('startBtn').onclick=()=>{ac();loadSfx();stopAmbience();newGame()};
 document.querySelectorAll('.levels li').forEach((li,i)=>{if(li.classList.contains('soon'))return;li.style.cursor='pointer';li.title='Start at this level';li.addEventListener('click',()=>{ac();loadSfx();stopAmbience();newGame(i+1)})});
 function introAudio(){if(state!=='title')return;ac();loadSfx();startAmbience()}
