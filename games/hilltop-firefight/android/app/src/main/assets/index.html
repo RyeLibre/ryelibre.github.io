@@ -618,15 +618,16 @@ const CLIPS=[
  {lvl:1,dur:5.2,cap:'',go(){G.dAuto=true;G.dFrom=3.3;G.dUp=[[2.9,4]]}},
  {lvl:2,dur:2.9,cap:'RPG · GAP SHOT',go(){upNow(2);const x=SC.px-200;G.dT=()=>[x,baseY(x)-4];G.dRpg=.12;G.dRpgDur=.5;G.dGap=.75;G.dZoom=.7}},
  {lvl:5,dur:3.6,cap:'',go(){G.duck=true;G.duckAmt=1;startAct('cigarette');G.act.t=.3;G.dSmokeCut=1.0}},
- {lvl:7,dur:2.3,cap:'FULL MOON',go(){G.ambT=.05;G.flares.push({x:560,y:120,life:5,max:5,sway:2});spawnCreeper();const c=G.creepers[0];c.p=.45;G.dT=()=>{const c=G.creepers[0];if(!c||c.dead)return null;const [x,y,k]=creeperPos(c);return[x,y-24*k]};G.dShoot=.75}},
+ {lvl:7,dur:2.9,cap:'FULL MOON · LANDMINE',go(){G.ambT=.05;G.flares.push({x:560,y:120,life:5,max:5,sway:2});spawnCreeper();const c=G.creepers[0];c.p=.45;spawnCreeper();const m=G.creepers[1];m.x0=SC.px+180;m.x1=SC.px+260;m.p=.33;m.mineAt=.4;m.dur=11;G.dT=()=>{const c=G.creepers[0];if(!c||c.dead)return null;const [x,y,k]=creeperPos(c);return[x,y-14*k]};G.dShoot=.75}},
  {lvl:6,dur:1.9,cap:'NIGHT FLARES',go(){G.flares.push({x:520,y:130,life:6,max:6,sway:1},{x:880,y:115,life:6,max:6,sway:3});upNow(3);G.dAuto=true;G.dFrom=.15}},
  {lvl:8,dur:2.9,cap:'PILLBOX · ARTILLERY',go(){upNow(3);G.dAuto=true;G.dFrom=.1;G.dStop=.8;G.arty.push({t:.95,delay:1.1,dur:.9,x0:640,xt:650,flash:0,whistled:false})}},
  {lvl:3,dur:1.7,cap:'DRONE',go(){launchDrone();const d=G.drones[0];d.dur=3;d.t=1.5;G.dT=()=>G.drones[0]&&G.drones[0].state==='fly'?[G.drones[0].x,G.drones[0].y]:null;G.dShoot=.55}},
+ {lvl:9,dur:2.7,cap:'UPPER KACHIN · AVALANCHE',go(){upNow(5);const b=G.banks[0],x=(b.x0+b.x1)/2;G.dT=()=>[x,bankY(x)-28];G.dRpg=.15;G.dRpgDur=.5}},
  {lvl:10,dur:2.3,cap:'HELICOPTER',go(){const x=700;G.heli={x,y:185,ty:190,dir:-1,t:0,ph:'hover',lock:9,thump:0};G.dT=()=>G.heli?[G.heli.x,G.heli.y]:null;G.dRpg=.2;G.dRpgDur=.55}},
  {lvl:4,dur:6.2,cap:'',go(){const fx=SC.px+58,fy=baseY(SC.px)-85;G.dT=()=>G.dSurr&&DEMO.ct>1.7?[SC.px,baseY(SC.px)+70]:[fx,fy+16];G.dRpg=.08;G.dRpgDur=.45;G.dZoom=.45;G.dZoomOff=1.55;G.dSurr=1.4;G.dCamAt=1.55;G.title=1}}];
 function demoClip(i){const c=CLIPS[i];G={level:c.lvl,score:0,totalKills:0,flagsBurned:0};startLevel();
   Object.assign(G,{demo:true,brief:0,health:5,droneT:99,artyT:99,heliT:99,creepT:99,smokeT:99,ambT:99,dt0:0,dFired:{}});G.c.aim=.2;
-  $('touch').classList.add('hide');mx=W/2;my=H/2-20;spaceHeld=false;G.cut=.12;if(i>=3&&i<=5){G.smoking=45;seedSmoke();}c.go();if(G.dT){const tg=G.dT();if(tg){const k=distK();mx=DPX+(tg[0]-DPX)*k;my=DPY+(tg[1]-DPY)*k-G.duckAmt*90}}}
+  $('touch').classList.add('hide');mx=W/2;my=H/2-20;spaceHeld=false;G.cut=.12;if(i>=3&&i<=4){G.smoking=45;seedSmoke();}c.go();if(G.dT){const tg=G.dT();if(tg){const k=distK();mx=DPX+(tg[0]-DPX)*k;my=DPY+(tg[1]-DPY)*k-G.duckAmt*90}}}
 function startDemo(){DEMO={t:0,i:0,ct:0};$('title').classList.add('hide');demoClip(0)}
 function endDemo(){if(!DEMO)return;stopHeliSnd();DEMO=null;spaceHeld=false;try{G&&G.drones&&G.drones.forEach(stopBuzz)}catch(e){}G=null;state='title';buildScene(1);cv.style.filter='';lastBlur='';
   $('title').classList.remove('hide');$('touch').classList.add('hide');showBest()}
@@ -1354,7 +1355,7 @@ function updCreepers(dt){if(!(SC.creepers||SC.runners||G.level>CAMPAIGN)||(G.sur
   G.creepers=G.creepers.filter(c=>{c.t+=dt;if(c.dead)return c.t<1;
     if(c.mineAt&&c.p>=c.mineAt){const [mx2,my2,k]=creeperPos(c);c.dead=true;c.t=0;c.mineAt=0;G.kills++;G.totalKills++;G.score+=100;G.levelScore+=100;
       noise(.35,420,.35,2);noise(.15,2600,.2,3);G.flashes=G.flashes||[];G.flashes.push({x:mx2,y:my2-6*k,t:0,k});
-      for(let i=0;i<14;i++)G.parts.push({x:mx2,y:my2,vx:(R()-.5)*120,vy:-40-R()*120,g:220,life:.9,max:.9,r:1.5+R()*3,grow:10,rgb:i<4?'255,220,150':'90,80,70'});
+      for(let i=0;i<26;i++)G.parts.push({x:mx2,y:my2,vx:(R()-.5)*170,vy:-50-R()*170,g:220,life:1.1,max:1.1,r:2+R()*4,grow:16,rgb:i<8?'255,220,150':'90,80,70',glow:i<8?1:0});
       floatText(mx2,my2-40*k,'LANDMINE +100','#ffcf7a');if(G.kills===G.c.quota)msg('Kill target reached — hold the line!','#bde58a');return true}
     if(!SC.runners)c.p+=dt/c.dur;
     else{c.flash=Math.max(0,(c.flash||0)-dt);c.mt-=dt;
@@ -1371,7 +1372,7 @@ function updCreepers(dt){if(!(SC.creepers||SC.runners||G.level>CAMPAIGN)||(G.sur
   const A=G.ambush;if(A){A.t+=dt;
     if(!A.dead&&!A.fired&&A.t>(A.first?2.0:1.0)){A.fired=true;A.flash=.12;noise(.2,2400,.6,3);if(state==='play'&&!G.demo){G.hitsTaken++;if(A.first)G.health--;else{G.health=0;G.killedBy='pistol'}G.hurt=1;G.shake=.5;S.hurt();msg('Shot at close range!','#ff7a6a');if(G.health<=0){state='dying';G.dieT=0;G.zoom=0;G.duck=true;spaceHeld=false;$('touch').classList.add('hide')}}}
     if(A.flash>0)A.flash-=dt;if((A.fired&&A.t>(A.first?2.5:1.5))||(A.dead&&A.t>A.deadAt+.7))G.ambush=null}}
-function drawMineFlash(){if(!G.flashes)return;G.flashes=G.flashes.filter(f=>{f.t+=FDT;const a=1-f.t/.35;if(a<=0)return false;const r=(20+f.t*90)*f.k;const gr=ctx.createRadialGradient(f.x,f.y,1,f.x,f.y,r);gr.addColorStop(0,`rgba(255,240,200,${a})`);gr.addColorStop(.4,`rgba(255,170,80,${a*.6})`);gr.addColorStop(1,'rgba(255,140,60,0)');ctx.fillStyle=gr;circ(ctx,f.x,f.y,r);return true})}
+function drawMineFlash(){if(!G.flashes)return;G.flashes=G.flashes.filter(f=>{f.t+=FDT;const a=1-f.t/.5;if(a<=0)return false;const r=(34+f.t*160)*f.k;const gr=ctx.createRadialGradient(f.x,f.y,1,f.x,f.y,r);gr.addColorStop(0,`rgba(255,240,200,${a})`);gr.addColorStop(.4,`rgba(255,170,80,${a*.6})`);gr.addColorStop(1,'rgba(255,140,60,0)');ctx.fillStyle=gr;circ(ctx,f.x,f.y,r);return true})}
 function drawCreepers(){drawMineFlash();for(const c of G.creepers){const [x,y,sc]=creeperPos(c);ctx.save();ctx.globalAlpha=c.dead?1:SC.runners?.85:.5+.12*Math.sin(c.t*.7);ctx.translate(x,y);ctx.scale(sc,sc*.78);ctx.translate(-x,-y);
     const inP=SC.runners&&c.atPt&&c.pt&&!c.pt.burnt,off=c.dead?0:c.mode==='cover'?(inP?26:12):c.mode==='shoot'&&inP?8:0,run=SC.runners&&c.mode==='run'&&!c.dead;
     drawWalker({x,dir:c.dir,t:run||!SC.runners?c.t*(SC.runners?.75:.35):0,dead:c.dead,fall:c.dir,skin:c.skin,legs:SC.runners&&off===0},y-24+off);
