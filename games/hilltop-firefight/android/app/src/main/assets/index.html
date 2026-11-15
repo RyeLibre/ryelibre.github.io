@@ -150,7 +150,7 @@ const SCENES=[
  {name:'Pillbox',pillbox:1,concrete:1,dist:280,tod:'Overcast morning · concrete pillbox',sky:['#6d7680','#a3a9a8','#b9bab0'],sun:null,ranges:['#87908f','#747d77','#5f6a5c'],
   hill:['#535a3a','#2f3520'],slope:['#4d5436','#2a301c'],dead:.35,trees:38,fog:.14,px:640,top:280,curv:220,ph:6.1,diff:3,opts:{quota:12,drone:11,arty:16,artyDur:2.2}},
  {name:'Laiza Hotel',laiza:1,nopost:1,concrete:1,towers:1,runners:1,dist:300,tod:'Dusk on the hotel roof',sky:['#e2b394','#ecbd9f','#c99a86'],sun:null,ranges:['#b98f80','#9a7a70','#7a6460'],
-  hill:['#4a3b38','#251d1d'],slope:['#43363a','#211a1c'],dead:.15,trees:60,fog:.42,fogc:'190,150,135',dim:.28,dimc:'45,25,38',dusk:1,px:640,top:262,curv:150,ph:2.6,diff:2.5,opts:{quota:12,drone:16,arty:30}}
+  hill:['#4a3b38','#251d1d'],slope:['#43363a','#211a1c'],dead:.15,trees:60,fog:.42,fogc:'190,150,135',dim:.28,dimc:'45,25,38',dusk:1,px:640,top:262,curv:150,ph:2.6,diff:2.5,opts:{quota:10,drone:20,arty:34}}
 ];
 let SC=SCENES[0];
 function ridge(x){const u=(x-SC.px)/640;return SC.top+(SC.flat?Math.pow(Math.abs(u),5)*300+18:u*u*SC.curv)+Math.sin(x*0.013+SC.ph)*6+Math.sin(x*0.031+SC.ph*2)*3}
@@ -522,7 +522,7 @@ function startLevel(){const sc0=SCENES[(G.level-1)%SCENES.length],c=cfg(sc0.diff
   Object.assign(G,{c,time:90,kills:0,health:5,mag:30,reserve:c.ammo-30,rpg:c.rpg,reloading:0,rpgReload:0,cool:0,
     enemies:[],spawnT:1.6,duck:false,duckAmt:0,zoom:0,recoil:0,shake:0,hurt:0,flash:0,shots:0,hits:0,levelScore:0,dieT:0,
     msgs:[],parts:[],nparts:[],rockets:[],tracers:[],pending:[],flares:[],flareT:1.5,ambT:1,banner:0,brief:2.6,troops:c.quota+8+G.level*3,arty:[],artyT:G.level===1?30:12+R()*10,artyIn:0,artyHits:0,bigFlash:0,flagBurn:0,fires:[],erockets:[],enemyRpgs:0,rpgHits:0,gaps:[],walkers:[],walkT:3,gapKills:0,smoker:null,smokeT:10+R()*15,smokerKills:0,myFlares:SCENES[(G.level-1)%SCENES.length].night?3:0,flareCool:0,act:null,actIdx:0,smoking:0,smk:[],cases:[],ptr:[],creepers:[],creepT:7+R()*5,ambush:null,herd:null,herdT:6+R()*14,surr:null,surrendered:false,flagShot:false,bird:null,birdT:8+R()*35,birdHit:false,drones:[],droneT:G.level===1?45:9+R()*8,decoysHit:0,preempt:0,hitsTaken:0,dronesDown:0,droneHits:0,enemyShots:0});
-  state='play';G.blurT=0;G.dustT=0;undeafen();['title','end','pause'].forEach(id=>$(id).classList.add('hide'));G.windT=2.5+Math.random()*3;
+  state='play';G.patches=SC.runners?[{x:420,y:425,r:78},{x:655,y:470,r:88},{x:885,y:415,r:74}].map(q=>({...q,burnt:false,smoke:0,seed:R()*99})):[];G.blurT=0;G.dustT=0;undeafen();['title','end','pause'].forEach(id=>$(id).classList.add('hide'));G.windT=2.5+Math.random()*3;
   if(isTouch)$('touch').classList.remove('hide');
 }
 function msg(t,col){G.msgs=G.msgs.filter(m=>m.t!==t);G.msgs.push({t,col:col||'#f2e7b8',life:1.6})}
@@ -650,6 +650,9 @@ function drawSmoker(){const m=G.smoker;if(!m)return;const fade=Math.min(1,m.t/1.
     ctx.strokeStyle=`rgba(225,225,220,${(SC.night?.35:.55)*fade*(w?.45:1)})`;ctx.lineWidth=w?3:1.4;ctx.stroke()}
   const gr=ctx.createLinearGradient(0,m.by-80,0,m.by-30);gr.addColorStop(0,'rgba(0,0,0,0)');ctx.restore()}
 function burnAround(x,y){
+  if(G.patches)for(const q of G.patches){if(q.burnt||Math.abs(x-q.x)>q.r+30||Math.abs(y-q.y)>50)continue;q.burnt=true;q.smoke=8;
+    for(let k=-2;k<=2;k++)G.fires.push({x:q.x+k*q.r*.35,y:q.y+6,w:12,t:0,dur:4+R()*3,big:1});floatText(q.x,q.y-40,'COVER BURNT','#ffb070');
+    for(const c of G.creepers)if(!c.dead&&c.atPt&&c.pt===q){c.dead=true;c.t=0;G.kills++;G.totalKills++;G.score+=150;G.levelScore+=150;floatText(q.x,q.y-60,'RUNNER +150','#ffe38a');if(G.kills===G.c.quota)msg('Kill target reached — hold the line!','#bde58a')}}
   for(const t of TREES){if(t.burnt)continue;const cy=t.y-(t.dead?24:34)*t.s;if(Math.hypot(t.x-x,cy-y)<70+20*t.s){t.burnt=true;
     const g=(t.layer==='bg'?bgh.getContext('2d'):fgc);g.save();g.globalCompositeOperation='source-atop';for(let i=0;i<40;i++){const a=R()*Math.PI*2,r=Math.sqrt(R());g.fillStyle=`rgba(${20+R()*25},${14+R()*12},${8+R()*8},${.55+R()*.4})`;
       circ(g,t.x+Math.cos(a)*r*20*t.s,t.y-34*t.s+Math.sin(a)*r*24*t.s,(3+R()*6)*t.s)}g.restore();
@@ -920,7 +923,7 @@ function drawFar(){const k=distK();if(k!==1){ctx.fillStyle=SC.sky[0];ctx.fillRec
 function drawFarInner(){
   ctx.drawImage(bg,-PADX,0);drawHerd(false);ctx.drawImage(bgh,-PADX,0);
   for(const e of G.enemies)drawEnemy(e);
-  ctx.drawImage(fg,-PADX,0);drawHerd(true);drawCreepers();
+  ctx.drawImage(fg,-PADX,0);drawHerd(true);drawCreepers();if(G.patches&&G.patches.length)drawPatches();
   drawGaps();drawSmoker();
   if(!SC.nopost)drawFlag();
   if(SC.smoke){for(let k=0;k<4;k++){const bx=[260,520,830,1060][k];for(let i=0;i<7;i++){const p=((T*.08+i/7+k*.23)%1);
@@ -1065,29 +1068,40 @@ function ejectCase(){const gb=G.gunBase;if(!gb||G.zoom>.5)return;const [bx,by,ro
 function drawCases(dt){for(const c of G.cases){c.life-=dt;c.x+=c.vx*dt;c.y+=c.vy*dt;c.vy+=1300*dt;c.rot+=c.vr*dt;
     ctx.save();ctx.translate(c.x,c.y);ctx.rotate(c.rot);ctx.scale(1.9,1.9);ctx.fillStyle='#c9a24a';ctx.fillRect(-7,-2.6,14,5.2);ctx.fillStyle='#e9cf7e';ctx.fillRect(-6,-2.2,12,1.4);ctx.fillStyle='#8a6a28';ctx.fillRect(5,-2.6,2.5,5.2);ctx.restore()}
   G.cases=G.cases.filter(c=>c.life>0&&c.y<H+40)}
-function creeperPos(c){const e=c.p*c.p*.6+c.p*.4;return[lerp(c.x0,c.x1,e),lerp(c.y0,c.y1,e),lerp(.9,1.9,e)]}
+function drawPatches(){for(const q of G.patches){const k=lerp(.9,1.9,clamp((q.y-290)/280,0,1));let sd=q.seed;const rn=()=>{sd=(sd*9301+49297)%233280;return sd/233280};
+  if(!q.burnt){for(let i=0;i<34;i++){const a=rn()*Math.PI,rr2=rn();const bx=q.x+Math.cos(a)*q.r*rr2*1.1,by=q.y+12-Math.sin(a)*q.r*.35*rr2;ctx.fillStyle=['#23251a','#2b2c1e','#33321f','#1c1e16'][i%4];circ(ctx,bx,by,(11+rn()*12)*k*.8)}
+    ctx.fillStyle='rgba(255,180,140,.12)';for(let i=0;i<6;i++)circ(ctx,q.x+(rn()-.5)*q.r*1.4,q.y-4-rn()*10,5*k)}
+  else{ctx.fillStyle='rgba(25,18,14,.85)';ell(ctx,q.x,q.y+12,q.r*1.1,q.r*.22);ctx.strokeStyle='#120d0a';ctx.lineWidth=2*k;
+    for(let i=0;i<9;i++){const bx=q.x+(rn()-.5)*q.r*1.8;ctx.beginPath();ctx.moveTo(bx,q.y+12);ctx.lineTo(bx+(rn()-.5)*8,q.y-4-rn()*14);ctx.stroke()}
+    if(q.smoke>0){q.smoke-=1/60;for(let i=0;i<5;i++){const ph=((T*.25+i/5)%1);ctx.fillStyle=`rgba(70,62,58,${.3*(1-ph)*Math.min(1,q.smoke)})`;circ(ctx,q.x+Math.sin(ph*5+i)*14,q.y-ph*120,10+ph*30)}}}}}
+function creeperPos(c){if(SC.runners&&c.wx!==undefined){const a=c.p<.5,u=a?c.p/.5:(c.p-.5)/.5,x=a?lerp(c.x0,c.wx,u):lerp(c.wx,c.x1,u),y=a?lerp(c.y0,c.wy,u):lerp(c.wy,c.y1,u);return[x,y,lerp(.9,1.9,clamp((y-290)/280,0,1))]}
+  const e=c.p*c.p*.6+c.p*.4;return[lerp(c.x0,c.x1,e),lerp(c.y0,c.y1,e),lerp(.9,1.9,e)]}
 function updCreepers(dt){if(!(SC.creepers||SC.runners||G.level>CAMPAIGN)||(G.surr&&G.surr.phase!=='over'))return;
-  G.creepT-=dt;if(G.creepT<=0){G.creepT=SC.runners?3.2+R()*3:(SC.diff?15:10)+R()*8;let sl=slots[Math.floor(R()*slots.length)];if(SC.nopost){const x=lerp(300,980,R());sl={x,by:ridge(x)+12+R()*30}}const dir=sl.x<SC.px?1:-1;
-    G.creepers.push({x0:sl.x,y0:sl.by+6,x1:lerp(380,900,R()),y1:SC.runners?565:H+40,p:0,dur:SC.runners?10+R()*4:13+R()*4,mode:'run',mt:1+R()*1.2,dir,t:0,dead:false,skin:['#4f3322','#6f4a31','#9c7350'][Math.floor(R()*3)]})}
+  G.creepT-=dt;if(G.creepT<=0){G.creepT=SC.runners?4.2+R()*3.5:(SC.diff?15:10)+R()*8;let sl=slots[Math.floor(R()*slots.length)];let pt=null;if(SC.runners){const live=(G.patches||[]).filter(q=>!q.burnt);pt=live.length&&R()<.85?live[Math.floor(R()*live.length)]:null}
+    if(SC.nopost){const x=pt?clamp(pt.x+(R()-.5)*300,260,1020):lerp(300,980,R());sl={x,by:ridge(x)+12+R()*30}}const dir=sl.x<SC.px?1:-1;
+    G.creepers.push({x0:sl.x,y0:sl.by+6,x1:lerp(380,900,R()),y1:SC.runners?565:H+40,p:0,dur:SC.runners?10+R()*4:13+R()*4,mode:'run',mt:1+R()*1.2,pt,wx:pt?pt.x+(R()-.5)*pt.r*.8:undefined,wy:pt?pt.y+4:undefined,stays:0,dir,t:0,dead:false,skin:['#4f3322','#6f4a31','#9c7350'][Math.floor(R()*3)]})}
   G.creepers=G.creepers.filter(c=>{c.t+=dt;if(c.dead)return c.t<1;
     if(!SC.runners)c.p+=dt/c.dur;
     else{c.flash=Math.max(0,(c.flash||0)-dt);c.mt-=dt;
-      if(c.mode==='run'){c.p+=dt/c.dur*1.9;if(c.mt<=0){c.mode='cover';c.mt=.9+R()*1.4;c.cx=c.p}}
-      else if(c.mode==='cover'){if(c.mt<=0){c.mode='shoot';c.mt=.95;c.shot=false}}
+      if(c.wx===undefined){c.wx=lerp(c.x0,c.x1,.5);c.wy=lerp(c.y0,c.y1,.5)}
+      const hid=c.pt&&!c.pt.burnt&&c.atPt;
+      if(c.mode==='run'){c.p+=dt/c.dur*1.9;
+        if(c.pt&&!c.pt.burnt&&!c.used&&c.p>=.5){c.p=.5;c.atPt=true;c.used=true;c.stays=1+(R()<.5?1:0);c.mode='cover';c.mt=1+R()*1.2}
+        else if(c.mt<=0){c.mode='shoot';c.mt=1.1;c.shot=false}}
+      else if(c.mode==='cover'){if(!hid){c.mode='run';c.atPt=false;c.mt=1+R()}else if(c.mt<=0){c.mode='shoot';c.mt=1.1;c.shot=false}}
       else{if(!c.shot&&c.mt<.55){c.shot=true;c.flash=.1;noise(.12,2000,.08+.25*c.p,3);
-          if(state==='play'&&G.duckAmt<.6&&R()<.12+c.p*.25){playerHit();msg('Hit by a runner!','#ff7a6a')}}
-        if(c.mt<=0){c.mode='run';c.mt=1.1+R()*1.5}}}
+          if(state==='play'&&G.duckAmt<.6&&R()<.07+c.p*.15){playerHit();msg('Hit by a runner!','#ff7a6a')}}
+        if(c.mt<=0){if(hid&&c.stays>0){c.stays--;c.mode='cover';c.mt=1.2+R()*1.2}else{c.mode='run';c.atPt=false;c.mt=1.6+R()*1.8}}}}
     if(c.p>=1){if(!G.ambush)G.ambush={t:0,x:clamp(c.x1,260,1020),skin:c.skin,dead:false};return false}return true});
   const A=G.ambush;if(A){A.t+=dt;
     if(!A.dead&&!A.fired&&A.t>(SC.diff?1.6:1.0)){A.fired=true;A.flash=.12;noise(.2,2400,.6,3);if(state==='play'){G.hitsTaken++;G.health--;G.hurt=1;G.shake=.5;S.hurt();msg('Shot at close range!','#ff7a6a');if(G.health<=0){state='dying';G.dieT=0;G.zoom=0;G.duck=true;spaceHeld=false;$('touch').classList.add('hide')}}}
     if(A.flash>0)A.flash-=dt;if((A.fired&&A.t>(SC.diff?2.1:1.5))||(A.dead&&A.t>A.deadAt+.7))G.ambush=null}}
 function drawCreepers(){for(const c of G.creepers){const [x,y,sc]=creeperPos(c);ctx.save();ctx.globalAlpha=c.dead?1:SC.runners?.85:.5+.12*Math.sin(c.t*.7);ctx.translate(x,y);ctx.scale(sc,sc*.78);ctx.translate(-x,-y);
-    const off=c.dead?0:c.mode==='cover'?24:c.mode==='shoot'?8:0,run=SC.runners&&c.mode==='run'&&!c.dead;
+    const inP=SC.runners&&c.atPt&&c.pt&&!c.pt.burnt,off=c.dead?0:c.mode==='cover'?(inP?26:12):c.mode==='shoot'&&inP?8:0,run=SC.runners&&c.mode==='run'&&!c.dead;
     drawWalker({x,dir:c.dir,t:run||!SC.runners?c.t*(SC.runners?.75:.35):0,dead:c.dead,fall:c.dir,skin:c.skin,legs:SC.runners&&off===0},y-24+off);
-    if(SC.runners&&c.mode!=='run'&&!c.dead){ctx.globalAlpha=1;for(const [bx,by2,r] of [[-12,4,10],[0,0,13],[12,5,10],[-4,9,11],[8,10,9]]){ctx.fillStyle=SC.dusk?'#2c2a20':'#2c3a1d';circ(ctx,x+bx,y+by2,r)}ctx.fillStyle='rgba(255,190,150,.15)';circ(ctx,x-2,y-5,8)}
     if(c.flash>0&&!c.dead){ctx.globalAlpha=1;ctx.fillStyle='rgba(255,220,140,.95)';circ(ctx,x+c.dir*16,y-32+off,5);ctx.fillStyle='rgba(255,180,90,.35)';circ(ctx,x+c.dir*16,y-32+off,14)}if(!SC.runners){ctx.fillStyle='rgba(8,12,18,.45)';ctx.fillRect(x-12,y-36,24,52)}ctx.restore()}}
 function creeperHit(ax,ay){for(const c of G.creepers){if(c.dead)continue;const [x,y,sc]=creeperPos(c);
-    const cov=SC.runners&&c.mode==='cover';if(Math.abs(ax-x)<(cov?6:10)*sc&&ay>y-(cov?12:30)*sc&&ay<y+(cov?-2:16)*sc){c.dead=true;c.t=0;G.kills++;G.totalKills++;G.score+=150;G.levelScore+=150;G.hits++;S.enemyHit();floatText(x,y-34*sc,SC.runners?'RUNNER +150':'CREEPER +150','#ffe38a');
+    const cov=SC.runners&&c.mode==='cover'&&c.atPt&&c.pt&&!c.pt.burnt;if(Math.abs(ax-x)<(cov?6:10)*sc&&ay>y-(cov?12:30)*sc&&ay<y+(cov?-2:16)*sc){c.dead=true;c.t=0;G.kills++;G.totalKills++;G.score+=150;G.levelScore+=150;G.hits++;S.enemyHit();floatText(x,y-34*sc,SC.runners?'RUNNER +150':'CREEPER +150','#ffe38a');
       if(G.kills===30&&!G.surr)startSurrender();return true}}return false}
 function ambushRise(){const A=G.ambush;return A?(A.dead?Math.max(0,1-(A.t-A.deadAt)*2):ease(A.t/.28)):0}
 function drawAmbush(py){const A=G.ambush;if(!A)return;const k=ambushRise(),x=A.x,base=nearTop(x)+py+20,hy=base+70-220*k;
