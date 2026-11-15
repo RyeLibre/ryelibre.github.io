@@ -756,7 +756,7 @@ function startLevel(){stopHeliSnd();if(G&&!G.demo&&!DEMO)track('level-'+G.level+
   Object.assign(G,{c,time:90,kills:0,health:5,mag:30,reserve:c.ammo-30,rpg:c.rpg,reloading:0,rpgReload:0,cool:0,
     enemies:[],spawnT:1.6,duck:false,duckAmt:0,zoom:0,recoil:0,shake:0,hurt:0,flash:0,shots:0,hits:0,levelScore:0,dieT:0,
     birds:[],msgs:[],parts:[],nparts:[],rockets:[],tracers:[],pending:[],flares:[],flareT:1.5,ambT:1,banner:0,brief:2.6,troops:c.quota+8+G.level*3,arty:[],artyT:G.level===1?30:12+R()*10,artyIn:0,artyHits:0,bigFlash:0,flagBurn:0,fires:[],erockets:[],enemyRpgs:0,rpgHits:0,gaps:[],walkers:[],walkT:3,gapKills:0,smoker:null,smokeT:10+R()*15,smokerKills:0,myFlares:SCENES[(G.level-1)%SCENES.length].night?3:0,flareCool:0,act:null,actIdx:0,smoking:0,smk:[],cases:[],ptr:[],creepers:[],creepT:7+R()*5,ambush:null,herd:null,herdT:6+R()*14,surr:null,surrendered:false,flagShot:false,bird:null,birdT:8+R()*35,birdHit:false,drones:[],droneT:G.level===1?45:9+R()*8,decoysHit:0,preempt:0,hitsTaken:0,dronesDown:0,droneHits:0,enemyShots:0});
-  if(G.endless){try{G.bestE=+localStorage.getItem('hilltop_endless_'+G.level)||0}catch(e){}G.time=0;G.c.quota=9999;G.resT=40;G.rpgT=90;G.rampT=60;G.birdClock=0;G.birdMin=0}state='play';G.banks=SC.ridge?[{ridge:1,x0:985,x1:1135,st:'ok',t:0,seed:R()*99}]:SC.snowbank?(()=>{const xs=slots.filter(q=>!q.fox).map(q=>q.x).sort((a,b)=>a-b),lo=xs[0],hi=xs[xs.length-1],w=(hi-lo)/3;return[{sd:0,x0:lo+w-20,x1:lo+2*w+20,st:'ok',t:0,seed:R()*99}]})():null;G.ambN=0;G.minesLeft=(SC.creepers||SC.laiza)?1+(R()<.5?1:0):0;G.flashes=[];G.wq=[];G.waveN=0;if(SC.runners)G.creepT=2.5;G.heli=null;G.heliT=20+R()*8;G.patches=SC.runners?[{x:420,y:425,r:78},{x:655,y:470,r:88},{x:885,y:415,r:74}].map(q=>({...q,burnt:false,smoke:0,seed:R()*99})):[];G.blurT=0;G.dustT=0;undeafen();['title','end','pause'].forEach(id=>$(id).classList.add('hide'));G.windT=2.5+Math.random()*3;
+  G.aidUsed=false;if(G.endless){try{G.bestE=+localStorage.getItem('hilltop_endless_'+G.level)||0}catch(e){}G.time=0;G.c.quota=9999;G.resT=40;G.rpgT=90;G.rampT=60;G.birdClock=0;G.birdMin=0}state='play';G.banks=SC.ridge?[{ridge:1,x0:985,x1:1135,st:'ok',t:0,seed:R()*99}]:SC.snowbank?(()=>{const xs=slots.filter(q=>!q.fox).map(q=>q.x).sort((a,b)=>a-b),lo=xs[0],hi=xs[xs.length-1],w=(hi-lo)/3;return[{sd:0,x0:lo+w-20,x1:lo+2*w+20,st:'ok',t:0,seed:R()*99}]})():null;G.ambN=0;G.minesLeft=(SC.creepers||SC.laiza)?1+(R()<.5?1:0):0;G.flashes=[];G.wq=[];G.waveN=0;if(SC.runners)G.creepT=2.5;G.heli=null;G.heliT=20+R()*8;G.patches=SC.runners?[{x:420,y:425,r:78},{x:655,y:470,r:88},{x:885,y:415,r:74}].map(q=>({...q,burnt:false,smoke:0,seed:R()*99})):[];G.blurT=0;G.dustT=0;undeafen();['title','end','pause'].forEach(id=>$(id).classList.add('hide'));G.windT=2.5+Math.random()*3;
   if(isTouch)$('touch').classList.remove('hide');
 }
 function msg(t,col){if(G&&G.demo)return;G.msgs=G.msgs.filter(m=>m.t!==t);G.msgs.push({t,col:col||'#f2e7b8',life:1.6})}
@@ -1351,9 +1351,12 @@ function trenchObjAt(x,y){const py=lerp(600,-40,G.duckAmt)+G.zoom*130,inb=(cx,cy
   if(SC.night)for(let i=0;i<(G.myFlares||0);i++){if(inb(700+i*22,520+py-30,14,38))return{type:'flare',label:'Flare',box:[688,520+py-68,30+((G.myFlares||1)-1)*22,74]}}
   if(inb(SHELF.pack[0],SHELF.pack[1]+py-4,20,20)||inb(SHELF.lighter[0],SHELF.lighter[1]+py,10,16))return{type:'cigarette',label:'Cigarettes',box:[455,428+py,62,48]};
   if(inb(SHELF.flute[0],SHELF.flute[1]+py,50,12))return{type:'flute',label:'Flute',box:[312,421+py,100,24]};
+  if(inb(361,456+py,40,16))return{type:'aid',label:G.aidUsed?'First aid (empty)':'First aid',box:[316,438+py,90,36]};
   if(inb(586,447+py,44,32)||inb(SHELF.handset[0],SHELF.handset[1]+py,16,12))return{type:'radio',label:'Radio',box:[515,412+py,115,66]};
   return null}
 function trenchClick(){if(G.act)return;const o=trenchObjAt(mx,my);if(!o){msg('Stand up to shoot (SPACE) · click an item in the trench to use it');return}
+  if(o.type==='aid'){if(G.aidUsed){msg('The first aid box is empty','#ffb38a');return}if(G.health>=5){msg('Not hurt — save it for later','#e8d9a8');return}
+    G.aidUsed=true;G.health++;S.reload();tone(880,.12,.06,'sine');setTimeout(()=>tone(1320,.15,.05,'sine'),120);msg('First aid  +1 HEART','#ff9a8a');return}
   if(o.type==='flare'&&!(G.myFlares>0))return;startAct(o.type)}
 function drawTrenchHover(){if(!G||state!=='play'||G.duckAmt<.85||G.act)return;const o=trenchObjAt(mx,my);if(!o)return;const [x,y,w,h]=o.box;
   ctx.save();ctx.strokeStyle='rgba(255,230,160,.9)';ctx.lineWidth=2;ctx.setLineDash([5,4]);ctx.strokeRect(x-4,y-4,w+8,h+8);ctx.setLineDash([]);
@@ -1535,7 +1538,8 @@ function ambushHit(ax,ay){const A=G.ambush;if(!A||A.dead||A.fired)return false;c
 function drawPtr(dt){G.ptr=G.ptr.filter(t=>{t.t+=dt;const p=t.t/.18,p2=Math.min(1,p+.25);ctx.strokeStyle=`rgba(255,${200-p*80},120,${1-p*.6})`;ctx.lineWidth=3;ctx.shadowColor='#ffb060';ctx.shadowBlur=10;
     ctx.beginPath();ctx.moveTo(lerp(t.x1,t.x2,p),lerp(t.y1,t.y2,p));ctx.lineTo(lerp(t.x1,t.x2,p2),lerp(t.y1,t.y2,p2));ctx.stroke();ctx.shadowBlur=0;return t.t<.18})}
 function lerp2(a,b,k){return[lerp(a[0],b[0],k),lerp(a[1],b[1],k)]}
-function drawShelfItems(py){const A=G&&G.act;const carried=k=>A&&((k==='lighter'&&A.type==='cigarette'&&A.t>1.0&&A.t<3.1)||(k==='flute'&&A.type==='flute'&&A.t>.55&&A.t<7.9)||(k==='handset'&&A.type==='radio'&&A.t>.55&&A.t<4.1));
+function drawShelfItems(py){{const x=361,y=455+py;ctx.save();ctx.fillStyle=G&&G.aidUsed?'rgba(230,226,215,.45)':'#ece8dc';rr(ctx,x-15,y-12,30,24,3);ctx.fillStyle=G&&G.aidUsed?'rgba(170,60,50,.4)':'#c8262a';ctx.fillRect(x-3,y-8,6,16);ctx.fillRect(x-8,y-3,16,6);ctx.restore()}
+const A=G&&G.act;const carried=k=>A&&((k==='lighter'&&A.type==='cigarette'&&A.t>1.0&&A.t<3.1)||(k==='flute'&&A.type==='flute'&&A.t>.55&&A.t<7.9)||(k==='handset'&&A.type==='radio'&&A.t>.55&&A.t<4.1));
   if(!carried('lighter')){ctx.save();ctx.translate(SHELF.lighter[0],SHELF.lighter[1]+py);lighterDraw(ctx);ctx.restore()}
   if(!carried('flute')){ctx.save();ctx.translate(SHELF.flute[0],SHELF.flute[1]+py);fluteDraw(ctx,92);ctx.restore()}
   if(!carried('handset')){ctx.save();ctx.translate(SHELF.handset[0],SHELF.handset[1]+py);handsetDraw(ctx);ctx.restore();
@@ -1738,7 +1742,7 @@ function draw(){setBlur();ctx.setTransform(sc*dpr,0,0,sc*dpr,0,0);
   else if(SC.dim){ctx.fillStyle=`rgba(${SC.dimc},${SC.dim*.9})`;ctx.fillRect(-200,-200,W+400,H+400)}
   if(SC.rain)drawRain();if(SC.snow)drawSnow();if(SC.storm)drawStorm();
   if(du>.85&&state!=='dying'&&!G.act){ctx.fillStyle='rgba(240,230,200,.55)';ctx.font='600 18px system-ui,sans-serif';ctx.textAlign='center';
-    ctx.fillText('IN COVER — reload · click the cigarettes, flute, radio or a flare · SPACE to stand',W/2,H*.86);ctx.textAlign='left'}
+    ctx.fillText('IN COVER — reload · click first aid, cigarettes, flute, radio or a flare · SPACE to stand',W/2,H*.86);ctx.textAlign='left'}
   if(du<.95&&G.zoom<.6&&!SC.nvg&&!(G.demo&&G.dCamAt!==undefined&&DEMO.ct>G.dCamAt))drawGun(ax,ay);drawCases(FDT);drawPtr(FDT);
   if(G.zoom>.02)drawSights(ax,ay);
   ctx.restore();
