@@ -321,18 +321,17 @@ function buildFg(){const g=fgc;seed=29+SCENES.indexOf(SC)*13;g.setTransform(1,0,
   g.strokeStyle='rgba(30,28,24,.85)';g.lineWidth=1;
   for(let x=X0+10;x<X1;x+=42){const k=TK(x);if(k<.3)continue;const y=baseY(x)+48*k;g.beginPath();g.moveTo(x,y);g.lineTo(x,y-13*k);g.stroke()}
   g.beginPath();{let pen=false;for(let x=X0+10;x<X1;x+=7){const k=TK(x);if(k<.3){pen=false;continue}const y=baseY(x)+(38+((Math.round((x-X0)/7))%2?3:-3))*k;pen?g.lineTo(x,y):g.moveTo(x,y);pen=true}}g.stroke();
-  if(SC.bamboo){const tone=SC.night?[74,68,42]:[172,158,96];const hgt=26,step=11;
-    const col=v=>`rgb(${tone[0]+v},${tone[1]+v},${tone[2]+v*.5})`;
-    g.lineCap='butt';
-    for(let dir=0;dir<2;dir++)for(let x=X0;x<X1;x+=step){const v=Math.floor(srnd()*26)-13;
-      const xa=x,xb=x+hgt;if(xb>X1||TK(xa)<.3)continue;const k=TK(xa),hh=hgt*k;const ya=baseY(xa)+62*k,yb=baseY(xb)+62*k;
-      g.strokeStyle=col(v);g.lineWidth=3;g.beginPath();
-      if(dir===0){g.moveTo(xa,ya);g.lineTo(xb,yb-hh)}else{g.moveTo(xa,ya-hh);g.lineTo(xb,yb)}g.stroke();
-      g.strokeStyle=`rgba(255,250,210,${SC.night?.08:.3})`;g.lineWidth=1;g.beginPath();
-      if(dir===0){g.moveTo(xa+.8,ya-.6);g.lineTo(xb+.8,yb-hh-.6)}else{g.moveTo(xa+.8,ya-hh+.6);g.lineTo(xb+.8,yb+.6)}g.stroke()}
-    g.strokeStyle=SC.night?'rgba(50,44,26,.95)':'rgba(120,104,58,1)';g.lineWidth=3;
-    for(const off of [62-hgt+2,62-2]){g.beginPath();let pen=false;for(let x=X0;x<X1;x+=6){const k=TK(x);if(k<.3){pen=false;continue}const y=baseY(x)+off*k;pen?g.lineTo(x,y):g.moveTo(x,y);pen=true}g.stroke()}
-    for(let x=X0;x<X1;x+=66){const k=TK(x);if(k<.3)continue;g.fillStyle=SC.night?'#2e2818':'#6e5a32';g.fillRect(x-2,baseY(x)+(62-hgt-6)*k,4,(hgt+10)*k)}}
+  if(SC.bamboo){// sharpened split-bamboo stake fence: rails, posts and a hedge of spikes pointing out at all angles
+    const nt=SC.night?.42:1,c=(r,gg,bb,a)=>`rgba(${Math.round(r*nt)},${Math.round(gg*nt)},${Math.round(bb*nt)},${a})`,hgt=30,base=64;
+    g.lineCap='round';
+    for(let x=X0;x<X1;x+=34){const k=TK(x);if(k<.3)continue;const y=baseY(x)+base*k;g.strokeStyle=c(96,84,64,1);g.lineWidth=3*k;g.beginPath();g.moveTo(x,y+2*k);g.lineTo(x+(srnd()-.5)*4,y-(hgt+8)*k);g.stroke()}
+    for(const off of [-hgt*.75,-hgt*.3]){g.strokeStyle=c(104,92,72,1);g.lineWidth=3.2;g.beginPath();let pen=false;for(let x=X0;x<X1;x+=6){const k=TK(x);if(k<.3){pen=false;continue}const y=baseY(x)+(base+off)*k;pen?g.lineTo(x,y):g.moveTo(x,y);pen=true}g.stroke()}
+    for(let pass=0;pass<2;pass++)for(let x=X0;x<X1;x+=1.9){const k=TK(x);if(k<.3)continue;
+      const y0=baseY(x)+(base-srnd()*hgt*.8)*k,ang=pass?(Math.PI*(.15+srnd()*.25))*(srnd()<.5?1:-1)+Math.PI/2*(srnd()<.5?0:0):-Math.PI/2+(srnd()-.5)*1.9,L=(hgt*(.45+srnd()*.8))*k;
+      const ex=x+Math.cos(ang)*L*(pass?1.2:1),ey=y0+Math.sin(ang)*L*(pass?.45:1);const v=srnd();
+      g.strokeStyle=v<.3?c(170,152,120,1):v<.65?c(132,114,88,1):c(98,84,64,1);g.lineWidth=(1.3+srnd()*1.1)*k;g.beginPath();g.moveTo(x,y0);g.lineTo(ex,ey);g.stroke();
+      if(srnd()<.3){g.strokeStyle=c(230,220,190,.5);g.lineWidth=.6*k;g.beginPath();g.moveTo(x+.6,y0);g.lineTo(ex+.6,ey);g.stroke()}}
+    for(let i=0;i<60;i++){const x=X0+srnd()*(X1-X0),k=TK(x);if(k<.3)continue;g.fillStyle=SC.night?'rgba(20,30,14,.8)':['#3b5a22','#4a6a2a','#2f4a1c'][i%3];circ(g,x,baseY(x)+(base+2)*k,(3+srnd()*4)*k)}}
   }
   if(!SC.nopost)for(let k=0;k<6;k++){const x=lerp(80,1200,k/5)+(srnd()-.5)*30;if(Math.abs(x-SC.px)<70)continue;
     for(let i=0;i<6;i++){g.fillStyle=SC.night?['#121a0e','#16200f','#1a2512'][i%3]:['#2c3c1d','#38502a','#445d30'][i%3];circ(g,x+(srnd()-.5)*24,baseY(x)+2-srnd()*8,5+srnd()*6)}}
@@ -715,8 +714,8 @@ function walkerHit(ax,ay){for(const g of G.gaps){if(!inGap(g,ax,ay))continue;
     if(G.kills===G.c.quota)msg('Kill target reached — hold the line!','#bde58a');if(G.kills===30&&!G.surr)startSurrender();return true}}return false}
 function drawWalker(w,by){const bob=Math.abs(Math.sin(w.t*11))*1.5,hy=by-2+bob;ctx.save();
   if(w.dead){ctx.globalAlpha=Math.max(0,1-w.t/.9);ctx.translate(w.x,by+20);ctx.rotate(w.fall*Math.min(1,w.t*3)*1.2);ctx.translate(-w.x,-(by+20))}
-  if(w.legs){const sw=Math.sin(w.t*11)*7;ctx.strokeStyle='#3c4430';ctx.lineWidth=5;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(w.x-3,hy+34);ctx.lineTo(w.x-3+sw,hy+52);ctx.moveTo(w.x+3,hy+34);ctx.lineTo(w.x+3-sw,hy+52);ctx.stroke()}
-  ctx.fillStyle='#4b5535';rr(ctx,w.x-8,hy+7,16,30,5);
+  if(w.legs){const sw=Math.sin(w.t*11)*7;ctx.strokeStyle='#3a4222';ctx.lineWidth=5;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(w.x-3,hy+34);ctx.lineTo(w.x-3+sw,hy+52);ctx.moveTo(w.x+3,hy+34);ctx.lineTo(w.x+3-sw,hy+52);ctx.stroke()}
+  ctx.fillStyle='#4f5a2f';rr(ctx,w.x-8,hy+7,16,30,5);
   ctx.fillStyle=w.skin;circ(ctx,w.x+w.dir*1.5,hy+1.5,6);
   ctx.fillStyle='#3e4a2b';ctx.beginPath();ctx.arc(w.x,hy-1,8,Math.PI,0);ctx.fill();ctx.fillRect(w.x-9,hy-1.5,18,2.2);
   ctx.save();ctx.translate(w.x-w.dir*4,hy+16);ctx.rotate(w.dir*.9);ctx.fillStyle='#181814';ctx.fillRect(-2,-16,4,30);ctx.restore();ctx.restore()}
@@ -958,13 +957,13 @@ function drawEnemy(e){const g=geo(e);
   ctx.save();ctx.beginPath();ctx.rect(g.x-70,g.lip-140,140,140);ctx.clip();
   if(e.state==='dead'){ctx.globalAlpha=Math.max(0,1-e.t/1.1);ctx.translate(g.x,g.lip);ctx.rotate(e.fall*Math.min(1,e.t*2.4));ctx.translate(-g.x,-g.lip)}
   if(e.type==='decoy'){ctx.strokeStyle='#6b5233';ctx.lineWidth=2.5;ctx.beginPath();ctx.moveTo(g.x,g.hy+2);ctx.lineTo(g.x+3,g.lip+40);ctx.stroke();helmet(g.x,g.hy)}
-  else{ctx.fillStyle='#4b5535';rr(ctx,g.x-13,g.hy+9,26,36,7);ctx.fillStyle='rgba(0,0,0,.18)';rr(ctx,g.x-13,g.hy+9,9,36,5);ctx.fillStyle='rgba(255,220,170,.08)';rr(ctx,g.x+5,g.hy+10,7,30,4);ctx.fillStyle='#3a4329';ctx.fillRect(g.x-6,g.hy+9,12,3);ctx.fillStyle='rgba(30,25,15,.6)';ctx.fillRect(g.x-11,g.hy+20,22,2.2);
-    ctx.fillStyle='#3d462b';ctx.fillRect(g.x-3,g.hy+9,6,4);
+  else{ctx.fillStyle='#4f5a2f';rr(ctx,g.x-13,g.hy+9,26,36,7);ctx.fillStyle='rgba(0,0,0,.18)';rr(ctx,g.x-13,g.hy+9,9,36,5);ctx.fillStyle='rgba(255,220,170,.08)';rr(ctx,g.x+5,g.hy+10,7,30,4);ctx.fillStyle='#3a4222';ctx.fillRect(g.x-6,g.hy+9,12,3);ctx.fillStyle='rgba(30,25,15,.6)';ctx.fillRect(g.x-11,g.hy+20,22,2.2);
+    ctx.fillStyle='#3a4222';ctx.fillRect(g.x-3,g.hy+9,6,4);
     ctx.fillStyle=e.skin;circ(ctx,g.x,g.hy+2.5,7);
     ctx.fillStyle='rgba(30,15,5,.25)';ctx.fillRect(g.x-3,g.hy+7,6,4);
     ctx.fillStyle='rgba(15,8,4,.75)';ctx.fillRect(g.x-4,g.hy+1,3,1.6);ctx.fillRect(g.x+1.5,g.hy+1,3,1.6);
     helmet(g.x,g.hy);
-    if(e.type==='surrender'){const wv=Math.sin(T*6);ctx.fillStyle='#434c2f';
+    if(e.type==='surrender'){const wv=Math.sin(T*6);ctx.fillStyle='#48522b';
       ctx.save();ctx.translate(g.x-12,g.hy+12);ctx.rotate(-2.6+wv*.08);ctx.fillRect(-3,0,6,20);ctx.restore();
       ctx.save();ctx.translate(g.x+12,g.hy+12);ctx.rotate(2.75+wv*.25);ctx.fillRect(-3,0,6,20);
       ctx.fillStyle='#6b5233';ctx.fillRect(-1,18,2,44);
@@ -973,9 +972,9 @@ function drawEnemy(e){const g=geo(e);
     const aiming=e.state==='up'&&e.t>e.aim*.35;
     ctx.fillStyle='#181814';
     if(e.type==='surrender'){}
-    else if(e.type==='rpg'){if(aiming){ctx.fillStyle='#2b2f22';circ(ctx,g.x+8,g.hy+6,6.5);ctx.fillStyle='#4d5a32';ctx.beginPath();ctx.moveTo(g.x+8,g.hy-4);ctx.lineTo(g.x+15,g.hy+6);ctx.lineTo(g.x+8,g.hy+16);ctx.lineTo(g.x+1,g.hy+6);ctx.fill();ctx.fillStyle='#434c2f';ctx.fillRect(g.x-15,g.hy+12,11,6)}
+    else if(e.type==='rpg'){if(aiming){ctx.fillStyle='#2b2f22';circ(ctx,g.x+8,g.hy+6,6.5);ctx.fillStyle='#4d5a32';ctx.beginPath();ctx.moveTo(g.x+8,g.hy-4);ctx.lineTo(g.x+15,g.hy+6);ctx.lineTo(g.x+8,g.hy+16);ctx.lineTo(g.x+1,g.hy+6);ctx.fill();ctx.fillStyle='#48522b';ctx.fillRect(g.x-15,g.hy+12,11,6)}
       else{ctx.save();ctx.translate(g.x+10,g.hy+14);ctx.rotate(-.35);ctx.fillStyle='#2b2f22';ctx.fillRect(-3,-4,6,40);ctx.fillStyle='#4d5a32';ctx.beginPath();ctx.moveTo(0,-20);ctx.lineTo(6,-8);ctx.lineTo(0,-2);ctx.lineTo(-6,-8);ctx.fill();ctx.restore()}}
-    else if(aiming){ctx.fillRect(g.x-1,g.hy+6,15,6);circ(ctx,g.x-1,g.hy+9,3.2);ctx.fillStyle='#434c2f';ctx.fillRect(g.x-15,g.hy+12,11,6);ctx.fillRect(g.x+8,g.hy+11,8,7)}
+    else if(aiming){ctx.fillRect(g.x-1,g.hy+6,15,6);circ(ctx,g.x-1,g.hy+9,3.2);ctx.fillStyle='#48522b';ctx.fillRect(g.x-15,g.hy+12,11,6);ctx.fillRect(g.x+8,g.hy+11,8,7)}
     else{ctx.save();ctx.translate(g.x,g.hy+22);ctx.rotate(-.7);ctx.fillRect(-16,-2.5,32,5);ctx.restore()}}
   ctx.restore()}
 function drawEnemyFx(e){if(e.state!=='up'||e.type==='decoy')return;const g=geo(e);
@@ -1284,17 +1283,17 @@ function creeperHit(ax,ay){for(const c of G.creepers){if(c.dead)continue;const [
 function ambushRise(){const A=G.ambush;return A?(A.dead?Math.max(0,1-(A.t-A.deadAt)*2):ease(A.t/.28)):0}
 function drawAmbush(py){const A=G.ambush;if(!A)return;const k=ambushRise(),x=A.x,base=nearTop(x)+py+20,hy=base+70-220*k;
   ctx.save();ctx.beginPath();ctx.rect(0,-200,W,base+200);ctx.clip();
-  ctx.fillStyle='#2e3524';rr(ctx,x-90,hy+80,180,200,40);ctx.fillStyle='#252b1d';rr(ctx,x-90,hy+80,60,200,30);
+  ctx.fillStyle='#424c27';rr(ctx,x-90,hy+80,180,200,40);ctx.fillStyle='#333b1e';rr(ctx,x-90,hy+80,60,200,30);
   ctx.fillStyle=A.skin;circ(ctx,x,hy+40,42);ctx.fillStyle='rgba(0,0,0,.35)';circ(ctx,x-10,hy+46,36);
   ctx.fillStyle='rgba(10,5,2,.85)';ctx.fillRect(x-22,hy+30,14,6);ctx.fillRect(x+8,hy+30,14,6);ctx.fillRect(x-14,hy+62,28,4);
   ctx.fillStyle='#2c3520';ctx.beginPath();ctx.arc(x,hy+26,52,Math.PI,0);ctx.lineTo(x+60,hy+30);ctx.lineTo(x-60,hy+30);ctx.closePath();ctx.fill();
   ctx.fillStyle='rgba(220,230,255,.18)';ctx.beginPath();ctx.arc(x+8,hy+22,44,Math.PI*1.15,Math.PI*1.7);ctx.lineTo(x+8,hy+22);ctx.fill();
   let mzx=x+114,mzy=hy+96;
   if(A.first){// arm and pistol held at the side
-    ctx.fillStyle='#2e3524';rr(ctx,x+40,hy+100,70,34,16);ctx.fillStyle=A.skin;circ(ctx,x+112,hy+112,20);ctx.fillStyle='#111';rr(ctx,x+96,hy+84,36,26,5);ctx.fillStyle='#000';circ(ctx,x+114,hy+96,7)}
+    ctx.fillStyle='#424c27';rr(ctx,x+40,hy+100,70,34,16);ctx.fillStyle=A.skin;circ(ctx,x+112,hy+112,20);ctx.fillStyle='#111';rr(ctx,x+96,hy+84,36,26,5);ctx.fillStyle='#000';circ(ctx,x+114,hy+96,7)}
   else{// looking straight down the barrel
     mzx=x+14;mzy=hy+78;const sw=Math.sin(A.t*9)*2;ctx.save();ctx.translate(sw,0);ctx.translate(mzx,mzy);ctx.scale(1.7,1.7);ctx.translate(-mzx,-mzy);
-    ctx.fillStyle='#2e3524';ctx.beginPath();ctx.moveTo(x-40,hy+190);ctx.lineTo(x-6,hy+150);ctx.lineTo(x+44,hy+150);ctx.lineTo(x+70,hy+200);ctx.closePath();ctx.fill();
+    ctx.fillStyle='#424c27';ctx.beginPath();ctx.moveTo(x-40,hy+190);ctx.lineTo(x-6,hy+150);ctx.lineTo(x+44,hy+150);ctx.lineTo(x+70,hy+200);ctx.closePath();ctx.fill();
     ctx.fillStyle=A.skin;ctx.beginPath();ctx.ellipse(mzx-26,mzy+30,22,18,.4,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.ellipse(mzx+26,mzy+32,22,18,-.4,0,Math.PI*2);ctx.fill();
     ctx.fillStyle='rgba(0,0,0,.25)';ctx.beginPath();ctx.ellipse(mzx-26,mzy+38,18,8,.4,0,Math.PI*2);ctx.fill();
     ctx.fillStyle='#1a1b1c';rr(ctx,mzx-30,mzy-30,60,56,8);ctx.fillStyle='#2b2d2f';rr(ctx,mzx-26,mzy-26,52,18,5);
@@ -1351,7 +1350,7 @@ function drawSmk(dt){if(!G.smk.length)return;ctx.save();G.smk=G.smk.filter(p=>{p
 const ease=t=>{t=clamp(t,0,1);return t*t*(3-2*t)};
 const PR={x:2,y:-4};
 function drawHand(c,blood=true){
-  c.fillStyle='#4b5535';c.fillRect(-34,38,68,1600);c.fillStyle='#3d462b';c.fillRect(-34,38,68,10);
+  c.fillStyle='#4f5a2f';c.fillRect(-34,38,68,1600);c.fillStyle='#3a4222';c.fillRect(-34,38,68,10);
   c.fillStyle='#6e4a30';rr(c,-26,-24,52,68,18);
   [[-19,-24,10,36],[-7,-28,10.5,42],[5,-26,10.5,40],[16,-20,9.5,32]].forEach(([x,y,w,l])=>rr(c,x-w/2,y-l+8,w,l,w/2));
   c.save();c.translate(-24,8);c.rotate(-.95);rr(c,-5.5,-34,11,34,5.5);c.restore();
@@ -1360,7 +1359,7 @@ function drawHand(c,blood=true){
   c.fillStyle='rgba(135,10,10,.88)';[[-4,0,15,12],[9,12,9,7],[-13,16,8,6],[-9,-46,5,4],[-2,-52,5,4],[10,-50,5,4],[18,-38,4,3],[-20,-38,4,3]].forEach(([x,y,rx,ry])=>ell(c,x,y,rx,ry));
   c.fillStyle='rgba(135,10,10,.7)';c.fillRect(-2,10,4,22)}
 function drawHandBack(c){
-  c.fillStyle='#4b5535';c.fillRect(-34,38,68,1600);c.fillStyle='#3d462b';c.fillRect(-34,38,68,10);
+  c.fillStyle='#4f5a2f';c.fillRect(-34,38,68,1600);c.fillStyle='#3a4222';c.fillRect(-34,38,68,10);
   c.fillStyle='#6a462d';rr(c,-26,-24,52,68,18);
   [[-19,-24,10,36],[-7,-28,10.5,42],[5,-26,10.5,40],[16,-20,9.5,32]].forEach(([x,y,w,l])=>rr(c,x-w/2,y-l+8,w,l,w/2));
   c.save();c.translate(-24,8);c.rotate(-.95);rr(c,-5.5,-34,11,34,5.5);c.restore();
