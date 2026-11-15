@@ -27,8 +27,8 @@ button.alt{background:#2b3322;color:#e8e6dc;border-color:#56603f}
 #stage{position:fixed;inset:0;overflow:hidden}
 body.rot #stage{inset:auto;top:0;left:100vw;width:100vh;height:100vw;transform-origin:top left;transform:rotate(90deg)}
 #rotBtn{position:absolute;left:8px;top:50%;transform:translateY(-50%);z-index:6;width:auto;height:auto;padding:8px 14px;margin:0;font-size:13px;border-radius:20px;background:rgba(30,36,24,.8);color:#eee;border:1px solid #6a7450}
-#ctl{position:absolute;left:50%;transform:translateX(-50%);bottom:8px;z-index:8;display:flex;align-items:center;gap:8px;padding:5px 12px;border-radius:20px;background:rgba(20,24,16,.7);border:1px solid #56603f}
-#ctl button{margin:0;padding:4px 10px;font-size:13px;border-radius:12px;background:#2b3322;color:#eee;border:1px solid #6a7450;width:auto;height:auto}
+#ctl{position:absolute;left:50%;transform:translateX(-50%);bottom:8px;z-index:8;display:flex;align-items:center;gap:6px}
+#ctl button{margin:0;padding:0;width:34px;height:34px;font-size:15px;line-height:34px;border-radius:50%;background:rgba(20,24,16,.55);color:#e8e4d8;border:1px solid rgba(232,228,216,.35)}
 #ctl #vol{width:110px;accent-color:#e8e4d8}#vIcon{cursor:pointer;font-size:16px;user-select:none}
 #touch{position:absolute;right:10px;bottom:10px;display:flex;flex-direction:column;gap:10px;z-index:4}
 #touch button{width:78px;height:58px;padding:0;font-size:13px;border-radius:12px;background:rgba(30,36,24,.75);color:#eee;border:1px solid #6a7450;margin:0}
@@ -64,7 +64,7 @@ body.rot #stage{inset:auto;top:0;left:100vw;width:100vh;height:100vw;transform-o
 <div id="stage">
 <div id="wrap"><canvas id="c"></canvas></div>
 <button id="rotBtn" class="hide">⟳ Rotate</button>
-<div id="ctl"><button id="pBtn" title="Pause (P)">❚❚</button><span id="vIcon">🔊</span><input id="vol" type="range" min="0" max="100" value="80" title="Volume"></div>
+<div id="ctl"><button id="pBtn" title="Pause (P)"><svg width="14" height="14" viewBox="0 0 24 24" fill="#e8e4d8" style="vertical-align:middle"><rect x="5" y="4" width="5" height="16" rx="1"/><rect x="14" y="4" width="5" height="16" rx="1"/></svg></button><button id="vIcon" title="Volume: click to change">🔊</button></div>
 
 <div id="touch" class="hide">
   <button id="tScope">AIM (hold)</button>
@@ -564,9 +564,9 @@ buildNear();
 /* ---------- audio ---------- */
 let AC=null;
 function ac(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}return AC}
-let MG=null,VOLN=null,VOL=.8;try{const v=localStorage.getItem('hilltop_vol');if(v!==null)VOL=+v}catch(e){}
+let MG=null,VOLN=null,VOL=1;try{const v=localStorage.getItem('hilltop_vol');if(v!==null)VOL=+v}catch(e){}
 function out(){const a=ac();if(!MG){VOLN=a.createGain();VOLN.gain.value=VOL;VOLN.connect(a.destination);MG=a.createGain();MG.connect(VOLN)}return MG}
-function setVol(v){VOL=v;try{localStorage.setItem('hilltop_vol',v)}catch(e){}if(VOLN)try{VOLN.gain.value=v}catch(e){}const ic=document.getElementById('vIcon');if(ic)ic.textContent=v<=0?'🔇':v<.4?'🔉':'🔊'}
+function setVol(v){VOL=v;try{localStorage.setItem('hilltop_vol',v)}catch(e){}if(VOLN)try{VOLN.gain.value=v}catch(e){}const ic=document.getElementById('vIcon');if(ic){const w1='<path d="M15.5 9a4 4 0 0 1 0 6"/>',w2='<path d="M18.5 6.5a8 8 0 0 1 0 11"/>',x='<path d="M16 9l5 6M21 9l-5 6"/>';ic.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#e8e4d8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><path d="M4 9h4l5-4v14l-5-4H4z" fill="#e8e4d8"/>'+(v<=0?x:(v>=.3?w1:'')+(v>=.6?w2:''))+'</svg>';ic.title='Volume '+Math.round(v*100)+'% · click to change'}}
 // pillbox shell hit: near-silence for 6 s with a ringing tone
 function deafen(){const a=ac();if(!a)return;const m=out(),t=a.currentTime;try{m.gain.cancelScheduledValues(t);m.gain.setValueAtTime(m.gain.value,t);m.gain.linearRampToValueAtTime(.015,t+.25);m.gain.setValueAtTime(.015,t+4.2);m.gain.linearRampToValueAtTime(1,t+6);
   const o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.value=4100+Math.random()*500;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.045,t+.3);g.gain.linearRampToValueAtTime(.02,t+4);g.gain.linearRampToValueAtTime(0,t+6);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+6.1)}catch(e){}}
@@ -1766,7 +1766,7 @@ function draw(){setBlur();ctx.setTransform(sc*dpr,0,0,sc*dpr,0,0);
 }
 
 let ERR='';
-let FDT=1/60,PBV=null;function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;FDT=dt||1/60;{const pv=(state==='play'||state==='paused')&&G&&!G.demo?'':'none';if(PBV!==pv){PBV=pv;$('pBtn').style.display=pv;$('pBtn').textContent='❚❚'}}
+let FDT=1/60,PBV=null;function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;FDT=dt||1/60;{const pv=(state==='play'||state==='paused')&&G&&!G.demo?'':'none';if(PBV!==pv){PBV=pv;$('pBtn').style.display=pv}}
   try{update(dt);
     if(G){if(G.parts.length>700)G.parts.splice(0,G.parts.length-700);if(G.nparts.length>300)G.nparts.splice(0,G.nparts.length-300);if(G.smk&&G.smk.length>(G.demo?900:170))G.smk.splice(0,G.smk.length-(G.demo?900:170))}
     draw()}catch(e){ERR=(e&&e.message)||String(e);try{ctx.setTransform(sc*dpr,0,0,sc*dpr,0,0)}catch(x){}}
@@ -1814,9 +1814,8 @@ document.querySelectorAll('.levels li').forEach((li,i)=>{if(li.classList.contain
 function introAudio(){if(state!=='title')return;ac();loadSfx();startAmbience()}
 ['pointerdown','keydown'].forEach(ev=>addEventListener(ev,introAudio));
 $('resBtn').onclick=pause;
-$('vol').value=Math.round(VOL*100);setVol(VOL);let lastVol=VOL||.8;
-$('vol').addEventListener('input',e=>{ac();const v=+e.target.value/100;if(v>0)lastVol=v;setVol(v)});
-$('vIcon').addEventListener('click',()=>{ac();const v=VOL>0?0:lastVol;setVol(v);$('vol').value=Math.round(v*100)});
+setVol(VOL);
+$('vIcon').addEventListener('click',e=>{e.stopPropagation();ac();const steps=[1,.6,.3,0],i=steps.findIndex(x=>Math.abs(x-VOL)<.05);setVol(steps[(i+1)%steps.length])});
 $('pBtn').addEventListener('click',e=>{e.stopPropagation();pause()});
 ['pointerdown','wheel','keydown'].forEach(ev=>$('ctl').addEventListener(ev,e=>e.stopPropagation()));$('pause').addEventListener('click',e=>{if(e.target.id==='pause')pause()});
 })();
