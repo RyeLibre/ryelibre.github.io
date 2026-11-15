@@ -85,7 +85,7 @@ body.rot #stage{inset:auto;top:0;left:100vw;width:100vh;height:100vw;transform-o
     <li><b>Hpa Lap Bum</b> <span>Tea Mountain · sunrise</span></li>
     <li><b>Alaw Bum</b> <span>midday heat · 150 m</span></li>
     <li><b>A Len Bum</b> <span>monsoon rain · flat top</span></li>
-    <li><b>Hkaya Bum</b> <span>burnt ridge · 250 m</span></li>
+    <li><b>Hkaya Bum</b> <span>burnt ridge · 250 m · foxholes</span></li>
     <li><b>Lawa Yang</b> <span>dusk · flat top</span></li>
     <li><b>Yaw Yone</b> <span>night flares</span></li>
     <li><b>Full Moon</b> <span>dark · tracers · they creep down</span></li>
@@ -139,7 +139,7 @@ const SCENES=[
   hill:['#7f7652','#4a4830'],slope:['#776f4b','#41412a'],dead:.4,trees:44,fog:.16,bamboo:1,px:560,top:270,curv:240,ph:1.7},
  {name:'A Len Bum',flat:1,tod:'Monsoon rain',sky:['#59626a','#8c938f','#9aa09a'],sun:null,ranges:['#7c8689','#6c7774','#5a675a'],
   hill:['#4f5f34','#2f3c1e'],slope:['#4a5a30','#2b3719'],dead:.2,trees:40,fog:.3,rain:1,bamboo:1,px:700,top:292,curv:200,ph:3.1},
- {name:'Hkaya Bum',dist:250,tod:'Burnt ridge',sky:['#857b6c','#c0ad8e','#b7a688'],sun:[700,170,'255,210,150',.5],ranges:['#998f80','#857c6c','#6e6656'],
+ {name:'Hkaya Bum',dist:250,foxholes:1,tod:'Burnt ridge',sky:['#857b6c','#c0ad8e','#b7a688'],sun:[700,170,'255,210,150',.5],ranges:['#998f80','#857c6c','#6e6656'],
   hill:['#5d5536','#37311f'],slope:['#575033','#302a1b'],dead:.85,trees:30,fog:.12,smoke:1,px:620,top:276,curv:225,ph:4.4},
  {name:'Lawa Yang',flat:1,tod:'Dusk',sky:['#2f3561','#c0705a','#e89a5c'],sun:[1050,330,'255,170,90',.9],ranges:['#5a4c63','#4b4253','#3b3a40'],
   hill:['#3f4529','#22281a'],slope:['#3b4227','#1f2516'],dead:.3,trees:36,fog:.03,dusk:1,dim:.46,dimc:'25,12,30',sunDisc:'255,170,100',px:680,top:286,curv:210,ph:5.2},
@@ -165,7 +165,9 @@ function TK(x){if(!RING)return 1;const d=x-SC.px,A=d<0?RING.L:RING.R,u=d/A;retur
 function baseY(x){if(!RING)return ridge(x)+60;const d=x-SC.px,A=d<0?RING.L:RING.R;if(Math.abs(d)>=A)return ridge(x);return Math.max(ridge(x),RING.yt(x))}
 let slots=[];
 function makeSlots(){const L=[],Rt=[];const lo=RING?SC.px-(RING.L-40):205,hi=RING?SC.px+(RING.R-40):1075;for(let i=0;i<5;i++){L.push(lerp(lo,SC.px-95,i/4));Rt.push(lerp(SC.px+95,hi,i/4))}
-  slots=[...L,...Rt].map(x=>({x,by:baseY(x),busy:false,cool:0}))}
+  slots=[...L,...Rt].map(x=>({x,by:baseY(x),busy:false,cool:0}));
+  // forward single foxholes down the slope (Hkaya Bum)
+  if(SC.foxholes)[[300,70],[430,105],[560,62],[720,98],[850,66],[985,92]].forEach(([x,d])=>slots.push({x,by:baseY(x)+d,busy:false,cool:0,fox:true}))}
 
 function rangeY(k,x){if(SC.hq==='haze'&&k===5){const u=(x-760)/900;return 262+u*u*120-(Math.abs(Math.sin(x*.021))*10+Math.abs(Math.sin(x*.057+1))*6+Math.abs(Math.sin(x*.11+2))*3)}
   if(SC.hq){const b=[292,306,324,346,372,398][k],a=[38,32,28,26,22,16][k],o=k*1.7+SC.ph;
@@ -922,8 +924,13 @@ function toWorld(ax,ay){const k=distK();return[DPX+(ax-DPX)/k,DPY+(ay+G.duckAmt*
 function drawFar(){const k=distK();if(k!==1){ctx.fillStyle=SC.sky[0];ctx.fillRect(-300,-300,W+600,H+600);ctx.save();ctx.translate(DPX,DPY);ctx.scale(k,k);ctx.translate(-DPX,-DPY);drawFarInner();ctx.restore()}else drawFarInner()}
 function drawFarInner(){
   ctx.drawImage(bg,-PADX,0);drawHerd(false);ctx.drawImage(bgh,-PADX,0);
-  for(const e of G.enemies)drawEnemy(e);
-  ctx.drawImage(fg,-PADX,0);drawHerd(true);drawCreepers();if(G.patches&&G.patches.length)drawPatches();
+  for(const e of G.enemies)if(!slots[e.slot]||!slots[e.slot].fox)drawEnemy(e);
+  ctx.drawImage(fg,-PADX,0);drawHerd(true);
+  if(SC.foxholes){for(const s2 of slots)if(s2.fox){ctx.fillStyle='rgba(20,14,8,.85)';ell(ctx,s2.x,s2.by-3,17,4.5)}
+    for(const e of G.enemies)if(slots[e.slot]&&slots[e.slot].fox)drawEnemy(e);
+    for(const s2 of slots)if(s2.fox){ctx.fillStyle='#6a4a2c';ctx.beginPath();ctx.ellipse(s2.x,s2.by-1,26,7,0,Math.PI,0);ctx.fill();ctx.fillStyle='#4e3520';ctx.fillRect(s2.x-26,s2.by-1,52,4);
+      ctx.fillStyle='rgba(230,180,130,.25)';ctx.beginPath();ctx.ellipse(s2.x-4,s2.by-5,16,2.5,0,Math.PI,0);ctx.fill()}}
+  drawCreepers();if(G.patches&&G.patches.length)drawPatches();
   drawGaps();drawSmoker();
   if(!SC.nopost)drawFlag();
   if(SC.smoke){for(let k=0;k<4;k++){const bx=[260,520,830,1060][k];for(let i=0;i<7;i++){const p=((T*.08+i/7+k*.23)%1);
