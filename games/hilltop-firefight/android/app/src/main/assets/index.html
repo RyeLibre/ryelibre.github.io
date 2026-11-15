@@ -74,7 +74,7 @@ body.rot #stage{inset:auto;top:0;left:100vw;width:100vh;height:100vw;transform-o
     <li><b>Click</b> shoot · <b>Hold Alt</b> aim down sights · <b>ducked:</b> click an item to use it</li>
     <li><b>Scroll down</b> duck · <b>up</b> stand (or Space)</li>
     <li><b>Right-click</b> / <b>F</b> RPG</li>
-    <li><b>R</b> or shoot the target: reload · <b>Q</b> flare (night)</li>
+    <li><b>R</b> or shoot the target: reload · <b>night:</b> duck and click a flare</li>
   </ul>
   <p class="tip">Duck at the scope glint, the RPG warning and the artillery whistle. Look for faces — some are helmets on sticks (−50 if you shoot one). Shoot drones down. Burn their flag with an RPG for +500. At night some sneak down the hill — shoot them before they reach your trench. RPGs blow gaps in their dirt wall — hit a soldier passing the gap for +200 and an extra RPG. See a thin line of cigarette smoke? Someone is hiding there — an RPG gets him.</p>
   <button id="startBtn">START</button>
@@ -601,7 +601,7 @@ function drawDemo(){const t=DEMO.t,ct=DEMO.ct,c=CLIPS[DEMO.i];ctx.save();ctx.tex
   ctx.restore()}
 ['pointerdown','keydown'].forEach(ev=>addEventListener(ev,e=>{if(!DEMO)return;e.stopPropagation();if(e.cancelable)e.preventDefault();endDemo();introAudio()},true));
 function newGame(start){G={level:typeof start==="number"&&start>0?start:1,score:0,totalKills:0,flagsBurned:0};startLevel()}
-function startLevel(){const sc0=SCENES[(G.level-1)%SCENES.length],c=cfg(sc0.diff&&G.level<=CAMPAIGN?sc0.diff:G.level);$('tFlare').style.display=sc0.night?'':'none';if(sc0.diff&&G.level<=CAMPAIGN){c.acc*=.75;c.burst=1;c.maxActive=2;c.rpg=3;Object.assign(c,sc0.opts||{})}buildScene(G.level);
+function startLevel(){const sc0=SCENES[(G.level-1)%SCENES.length],c=cfg(sc0.diff&&G.level<=CAMPAIGN?sc0.diff:G.level);$('tFlare').style.display='none';if(sc0.diff&&G.level<=CAMPAIGN){c.acc*=.75;c.burst=1;c.maxActive=2;c.rpg=3;Object.assign(c,sc0.opts||{})}buildScene(G.level);
   Object.assign(G,{c,time:90,kills:0,health:5,mag:30,reserve:c.ammo-30,rpg:c.rpg,reloading:0,rpgReload:0,cool:0,
     enemies:[],spawnT:1.6,duck:false,duckAmt:0,zoom:0,recoil:0,shake:0,hurt:0,flash:0,shots:0,hits:0,levelScore:0,dieT:0,
     msgs:[],parts:[],nparts:[],rockets:[],tracers:[],pending:[],flares:[],flareT:1.5,ambT:1,banner:0,brief:2.6,troops:c.quota+8+G.level*3,arty:[],artyT:G.level===1?30:12+R()*10,artyIn:0,artyHits:0,bigFlash:0,flagBurn:0,fires:[],erockets:[],enemyRpgs:0,rpgHits:0,gaps:[],walkers:[],walkT:3,gapKills:0,smoker:null,smokeT:10+R()*15,smokerKills:0,myFlares:SCENES[(G.level-1)%SCENES.length].night?3:0,flareCool:0,act:null,actIdx:0,smoking:0,smk:[],cases:[],ptr:[],creepers:[],creepT:7+R()*5,ambush:null,herd:null,herdT:6+R()*14,surr:null,surrendered:false,flagShot:false,bird:null,birdT:8+R()*35,birdHit:false,drones:[],droneT:G.level===1?45:9+R()*8,decoysHit:0,preempt:0,hitsTaken:0,dronesDown:0,droneHits:0,enemyShots:0});
@@ -1488,7 +1488,7 @@ function draw(){setBlur();ctx.setTransform(sc*dpr,0,0,sc*dpr,0,0);
   for(let i=0;i<Math.min(4,Math.max(G.c.rpg,G.rpg));i++){ctx.fillStyle=i<G.rpg?'#9a9d6a':'rgba(255,255,255,.15)';const x=bx+150+i*30,y=TY+42;
     ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+12,y-8);ctx.lineTo(x+24,y);ctx.lineTo(x+12,y+8);ctx.fill();ctx.fillRect(x+20,y-2,8,4)}
   if(G.rpg>4){ctx.fillStyle='#f4efd6';ctx.font='800 13px system-ui,sans-serif';ctx.fillText('×'+G.rpg,bx+252,TY+56)}
-  if(SC.night){panel(W-196,138,180,30);ctx.fillStyle='#c8c9b0';ctx.font='700 12px system-ui,sans-serif';ctx.fillText('FLARES [Q]',W-184,158);
+  if(SC.night){panel(W-196,138,180,30);ctx.fillStyle='#c8c9b0';ctx.font='700 12px system-ui,sans-serif';ctx.fillText('FLARES',W-184,158);
     for(let i=0;i<3;i++){ctx.fillStyle=i<G.myFlares?'#d8483a':'rgba(255,255,255,.15)';rr(ctx,W-100+i*24,146,9,18,3);ctx.fillStyle=i<G.myFlares?'#e8d9b0':'rgba(255,255,255,.1)';ctx.fillRect(W-100+i*24,146,9,4)}}
   ctx.textAlign='center';let my2=H*.3;
   if(G.surr&&G.surr.phase==='flag'){const left=Math.ceil(6-G.surr.calm);ctx.font='800 22px system-ui,sans-serif';ctx.fillStyle='rgba(0,0,0,.5)';
@@ -1529,7 +1529,6 @@ let wheelLock=0;cv.addEventListener('wheel',e=>{e.preventDefault();if(state!=='p
 addEventListener('keydown',e=>{const k=e.key.toLowerCase();
   if(k==='alt'||k==='z'){e.preventDefault();setScope(true)}
   else if(k===' '){e.preventDefault();if(!e.repeat)toggleDuck()}
-  else if(k==='q'||k==='g')fireFlare();
   else if(k==='r')reload();else if(k==='f'||k==='e')fireRpg();else if(k==='p'||k==='escape')pause()});
 addEventListener('keyup',e=>{const k=e.key.toLowerCase();if(k==='alt'||k==='z'){e.preventDefault();setScope(false)}});
 addEventListener('blur',()=>setScope(false));
