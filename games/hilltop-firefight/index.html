@@ -107,7 +107,6 @@ body.rot #stage{inset:auto;top:0;left:100vw;width:100vh;height:100vw;transform-o
 </div><div class="colR">
   <ol class="levels">
     <li><b>Hpa Lap Bum</b> <span>Tea Mountain · sunrise</span></li>
-    <li><b>Alaw Bum</b> <span>night vision · 150 m</span></li>
     <li><b>A Len Bum</b> <span>monsoon rain · flat top</span></li>
     <li><b>Hkaya Bum</b> <span>burnt ridge · 250 m · foxholes</span></li>
     <li><b>Lawa Yang</b> <span>dusk · flat top</span></li>
@@ -116,6 +115,7 @@ body.rot #stage{inset:auto;top:0;left:100vw;width:100vh;height:100vw;transform-o
     <li><b>Pillbox</b> <span>concrete bunker · shells stun you</span></li>
     <li><b>Upper Kachin</b> <span>snow · blue hour · 220 m</span></li>
     <li><b>Burnt Hill</b> <span>burnt out · ash · 200 m</span></li>
+    <li><b>Alaw Bum</b> <span>night vision · 150 m</span></li>
     <li><b>Laiza Hotel</b> <span>rooftop · waves · helicopter</span></li>
     <li><b>Storm Valley</b> <span>storm · bamboo · fighting holes</span></li>
   </ol>
@@ -161,8 +161,6 @@ function star(g,x,y,r){g.beginPath();for(let i=0;i<10;i++){const a=-Math.PI/2+i*
 const SCENES=[
  {name:'Hpa Lap Bum',hq:'sunrise',alias:'Tea Mountain',tod:'Sunrise',sky:['#4b567c','#c98a6e','#e3b088'],sun:[170,300,'255,190,120',.85],ranges:['#7d7590','#6b6878','#585d5e'],
   hill:['#4e4c3c','#26241c'],slope:['#47473a','#22201a'],dead:.3,trees:34,fog:.06,dim:.12,dimc:'30,20,45',sunDisc:'255,205,140',px:640,top:282,curv:215,ph:0},
- {name:'Alaw Bum',hq:'haze',nvg:1,dist:150,tod:'Night vision',sky:['#5d8fc4','#bcd3df','#d6d8c8'],sun:[300,80,'255,255,235',.9],ranges:['#8aa2b3','#748e88','#5f7b5c'],
-  hill:['#7f7652','#4a4830'],slope:['#776f4b','#41412a'],dead:.4,trees:44,fog:.16,bamboo:1,px:560,top:270,curv:240,ph:1.7},
  {name:'A Len Bum',flat:1,banana:1,log:1,tod:'Monsoon rain',sky:['#59626a','#8c938f','#9aa09a'],sun:null,ranges:['#7c8689','#6c7774','#5a675a'],
   hill:['#4f5f34','#2f3c1e'],slope:['#4a5a30','#2b3719'],dead:.2,trees:40,fog:.3,rain:1,bamboo:1,px:700,top:292,curv:200,ph:3.1},
  {name:'Hkaya Bum',dist:250,foxholes:1,bamboo:1,tod:'Burnt ridge',sky:['#857b6c','#c0ad8e','#b7a688'],sun:[700,170,'255,210,150',.5],ranges:['#998f80','#857c6c','#6e6656'],
@@ -179,6 +177,8 @@ const SCENES=[
   hill:['#b8c8de','#6f84a3'],slope:['#a9bbd4','#5d7190'],dead:.3,trees:46,fog:.18,fogc:'150,172,205',dim:.22,dimc:'14,28,62',px:640,top:268,curv:200,ph:4.8,diff:3,opts:{quota:14}},
  {name:'Burnt Hill',ash:1,smoke:1,tod:'Burnt out · ash and smoke',dist:200,sky:['#6f665d','#9c9182','#b3a895'],sun:[880,210,'255,200,150',.35],sunDisc:'235,200,160',ranges:['#8e857a','#7a7268','#655e56'],
   hill:['#8a8478','#55504a'],slope:['#878074','#4c4741'],dead:1,trees:20,fog:.2,fogc:'165,155,140',px:620,top:276,curv:215,ph:1.3,diff:3,opts:{quota:14}},
+ {name:'Alaw Bum',hq:'haze',nvg:1,dist:150,tod:'Night vision',sky:['#5d8fc4','#bcd3df','#d6d8c8'],sun:[300,80,'255,255,235',.9],ranges:['#8aa2b3','#748e88','#5f7b5c'],
+  hill:['#7f7652','#4a4830'],slope:['#776f4b','#41412a'],dead:.4,trees:44,fog:.16,bamboo:1,px:560,top:270,curv:240,ph:1.7},
  {name:'Laiza Hotel',laiza:1,nopost:1,concrete:1,towers:1,runners:1,dist:300,tod:'Dusk on the hotel roof',sky:['#e2b394','#ecbd9f','#c99a86'],sun:null,ranges:['#b98f80','#9a7a70','#7a6460'],
   hill:['#4a3b38','#251d1d'],slope:['#43363a','#211a1c'],dead:.15,trees:60,fog:.42,fogc:'190,150,135',dim:.28,dimc:'45,25,38',dusk:1,px:640,top:262,curv:150,ph:2.6,diff:2.5,opts:{quota:18,drone:0,droneDur:0,arty:40}}
 ,
@@ -671,14 +671,15 @@ const upNow=n=>{for(let i=0;i<n;i++)spawn();G.enemies.forEach(e=>{if(e.type==='d
 const CLIPS=[
  {lvl:1,dur:5.2,cap:'',go(){G.dAuto=true;G.dFrom=3.3;G.dUp=[[2.9,4]]}},
  {lvl:2,dur:2.9,cap:'RPG · GAP SHOT',go(){upNow(2);const x=SC.px-200;G.dT=()=>[x,baseY(x)-4];G.dRpg=.12;G.dRpgDur=.5;G.dGap=.75;G.dZoom=.7}},
- {lvl:5,dur:3.6,cap:'',go(){G.duck=true;G.duckAmt=1;startAct('cigarette');G.act.t=.3;G.dSmokeCut=1.0}},
- {lvl:7,dur:2.9,cap:'FULL MOON · LANDMINE',go(){G.ambT=.05;G.flares.push({x:560,y:120,life:5,max:5,sway:2});spawnCreeper();const c=G.creepers[0];c.p=.45;spawnCreeper();const m=G.creepers[1];m.x0=SC.px+180;m.x1=SC.px+260;m.p=.33;m.mineAt=.4;m.dur=11;G.dT=()=>{const c=G.creepers[0];if(!c||c.dead)return null;const [x,y,k]=creeperPos(c);return[x,y-14*k]};G.dShoot=.75}},
- {lvl:6,dur:1.9,cap:'NIGHT FLARES',go(){G.flares.push({x:520,y:130,life:6,max:6,sway:1},{x:880,y:115,life:6,max:6,sway:3});upNow(3);G.dAuto=true;G.dFrom=.15}},
- {lvl:8,dur:7.3,cap:'PILLBOX · ARTILLERY',go(){upNow(3);G.dAuto=true;G.dFrom=.1;G.dStop=.8;G.arty.push({t:.95,delay:1.1,dur:.9,x0:640,xt:650,flash:0,whistled:false})}},
- {lvl:3,dur:1.7,cap:'DRONE',go(){launchDrone();const d=G.drones[0];d.dur=3;d.t=1.5;G.dT=()=>G.drones[0]&&G.drones[0].state==='fly'?[G.drones[0].x,G.drones[0].y]:null;G.dShoot=.55}},
- {lvl:9,dur:2.7,cap:'UPPER KACHIN · AVALANCHE',go(){upNow(5);const b=G.banks[0],x=(b.x0+b.x1)/2;G.dT=()=>[x,bankY(x)-28];G.dRpg=.15;G.dRpgDur=.5}},
+ {lvl:4,dur:3.6,cap:'',go(){G.duck=true;G.duckAmt=1;startAct('cigarette');G.act.t=.3;G.dSmokeCut=1.0}},
+ {lvl:6,dur:2.9,cap:'FULL MOON · LANDMINE',go(){G.ambT=.05;G.flares.push({x:560,y:120,life:5,max:5,sway:2});spawnCreeper();const c=G.creepers[0];c.p=.45;spawnCreeper();const m=G.creepers[1];m.x0=SC.px+180;m.x1=SC.px+260;m.p=.33;m.mineAt=.4;m.dur=11;G.dT=()=>{const c=G.creepers[0];if(!c||c.dead)return null;const [x,y,k]=creeperPos(c);return[x,y-14*k]};G.dShoot=.75}},
+ {lvl:5,dur:1.9,cap:'NIGHT FLARES',go(){G.flares.push({x:520,y:130,life:6,max:6,sway:1},{x:880,y:115,life:6,max:6,sway:3});upNow(3);G.dAuto=true;G.dFrom=.15}},
+ {lvl:7,dur:7.3,cap:'PILLBOX · ARTILLERY',go(){upNow(3);G.dAuto=true;G.dFrom=.1;G.dStop=.8;G.arty.push({t:.95,delay:1.1,dur:.9,x0:640,xt:650,flash:0,whistled:false})}},
+ {lvl:2,dur:1.7,cap:'DRONE',go(){launchDrone();const d=G.drones[0];d.dur=3;d.t=1.5;G.dT=()=>G.drones[0]&&G.drones[0].state==='fly'?[G.drones[0].x,G.drones[0].y]:null;G.dShoot=.55}},
+ {lvl:8,dur:2.7,cap:'UPPER KACHIN · AVALANCHE',go(){upNow(5);const b=G.banks[0],x=(b.x0+b.x1)/2;G.dT=()=>[x,bankY(x)-28];G.dRpg=.15;G.dRpgDur=.5}},
+ {lvl:10,dur:1.9,cap:'NIGHT VISION',go(){upNow(3);G.dAuto=true;G.dFrom=.2}},
  {lvl:11,dur:2.3,cap:'HELICOPTER',go(){const x=700;G.heli={x,y:185,ty:190,dir:-1,t:0,ph:'hover',lock:9,thump:0};G.dT=()=>G.heli?[G.heli.x,G.heli.y]:null;G.dRpg=.2;G.dRpgDur=.55}},
- {lvl:4,dur:6.2,cap:'',go(){const fx=SC.px+58,fy=baseY(SC.px)-85;G.dT=()=>G.dSurr&&DEMO.ct>1.7?[SC.px,baseY(SC.px)+70]:[fx,fy+16];G.dRpg=.08;G.dRpgDur=.45;G.dZoom=.45;G.dZoomOff=1.55;G.dSurr=1.4;G.dCamAt=1.55;G.title=1}}];
+ {lvl:3,dur:6.2,cap:'',go(){const fx=SC.px+58,fy=baseY(SC.px)-85;G.dT=()=>G.dSurr&&DEMO.ct>1.7?[SC.px,baseY(SC.px)+70]:[fx,fy+16];G.dRpg=.08;G.dRpgDur=.45;G.dZoom=.45;G.dZoomOff=1.55;G.dSurr=1.4;G.dCamAt=1.55;G.title=1}}];
 function demoClip(i){const c=CLIPS[i];G={level:c.lvl,score:0,totalKills:0,flagsBurned:0};startLevel();
   Object.assign(G,{demo:true,brief:0,health:5,droneT:99,artyT:99,heliT:99,creepT:99,smokeT:99,ambT:99,dt0:0,dFired:{}});G.c.aim=.2;
   $('touch').classList.add('hide');mx=W/2;my=H/2-20;spaceHeld=false;G.cut=.12;if(i>=3&&i<=4){G.smoking=45;seedSmoke();}c.go();if(G.dT){const tg=G.dT();if(tg){const k=distK();mx=DPX+(tg[0]-DPX)*k;my=DPY+(tg[1]-DPY)*k-G.duckAmt*90}}}
