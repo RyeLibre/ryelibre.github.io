@@ -1445,7 +1445,7 @@ function draw(){setBlur();ctx.setTransform(sc*dpr,0,0,sc*dpr,0,0);
   if(G.zoom>.02)drawSights(ax,ay);
   ctx.restore();
   // crosshair (unscoped)
-  if(G.zoom<.5&&state!=='dying'){ctx.save();ctx.globalAlpha=(du>.25?.3:1)*(1-G.zoom*2);ctx.strokeStyle='rgba(255,255,255,.9)';ctx.lineWidth=1.5;const gap=5+G.recoil*3;
+  if(G.zoom<.5&&state!=='dying'){ctx.save();ctx.globalAlpha=(du>.25?.25:.5)*(1-G.zoom*2);ctx.strokeStyle='rgba(255,255,255,.9)';ctx.lineWidth=1.5;const gap=5+G.recoil*3;
     ctx.beginPath();ctx.arc(ax,ay,15+G.recoil*3,0,Math.PI*2);ctx.moveTo(ax-24,ay);ctx.lineTo(ax-gap,ay);ctx.moveTo(ax+gap,ay);ctx.lineTo(ax+24,ay);
     ctx.moveTo(ax,ay-24);ctx.lineTo(ax,ay-gap);ctx.moveTo(ax,ay+gap);ctx.lineTo(ax,ay+24);ctx.stroke();
     ctx.fillStyle='#ff5040';circ(ctx,ax,ay,1.6);ctx.restore()}
