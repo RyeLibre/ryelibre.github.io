@@ -392,6 +392,13 @@ function buildFg(){const g=fgc;seed=29+SCENES.indexOf(SC)*13;g.setTransform(1,0,
   }
   if(!SC.nopost)for(let k=0;k<6;k++){const x=lerp(80,1200,k/5)+(srnd()-.5)*30;if(Math.abs(x-SC.px)<70)continue;
     for(let i=0;i<6;i++){g.fillStyle=SC.ash?['#2a2420','#3a332d','#4a423a'][i%3]:SC.night?['#121a0e','#16200f','#1a2512'][i%3]:['#2c3c1d','#38502a','#445d30'][i%3];circ(g,x+(srnd()-.5)*24,baseY(x)+2-srnd()*8,5+srnd()*6)}}
+  if(SC.holes){// a carpet of broad leaves over the whole slope, leaving the holes and a little dirt around them
+    const near=(x,y)=>HOLES.some(([hx,hy])=>Math.hypot((hx-x)*.9,(hy+8-y)*1.1)<40);
+    for(let i=0;i<2600;i++){const x=X0+srnd()*XW,yt=ridge(x)-4,y=yt+Math.pow(srnd(),.8)*(HB-yt);if(near(x,y))continue;const k=.7+(y-200)/500,lw=(10+srnd()*12)*k,a=-Math.PI/2+(srnd()-.5)*2.6;
+      const c=[[28,52,20],[36,64,24],[44,76,28],[24,44,16],[52,88,32]][Math.floor(srnd()*5)];g.save();g.translate(x,y);g.rotate(a);
+      g.fillStyle=`rgb(${c[0]},${c[1]},${c[2]})`;g.beginPath();g.moveTo(0,0);g.quadraticCurveTo(lw*.9,-lw*.55,lw*2.2,0);g.quadraticCurveTo(lw*.9,lw*.55,0,0);g.fill();
+      g.fillStyle=`rgba(255,255,220,.06)`;g.beginPath();g.moveTo(0,0);g.quadraticCurveTo(lw*.9,-lw*.55,lw*2.2,0);g.lineTo(0,0);g.fill();
+      g.strokeStyle='rgba(150,180,100,.4)';g.lineWidth=.7*k;g.beginPath();g.moveTo(0,0);g.lineTo(lw*2.2,0);g.stroke();g.restore()}}
   for(let i=0;i<(SC.holes?60:22);i++){const x=-PADX+srnd()*(W+2*PADX),y=lerp(baseY(x)+70,HB-40,srnd());if(SC.holes&&HOLES.some(([hx,hy])=>Math.abs(hx-x)<50&&y>hy-10&&y<hy+70))continue;{const ts=1.1+srnd()*.6,dd=srnd()<SC.dead;plant(g,x,y,ts*(SC.hq?1.4:1),dd);TREES.push({x,y,s:ts,layer:'fg',burnt:false,dead:dd})}}
 }
 let TREES=[],FENCE=[];
