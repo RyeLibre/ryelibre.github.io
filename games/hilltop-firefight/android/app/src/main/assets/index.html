@@ -1244,7 +1244,7 @@ function drawPatches(){for(const q of G.patches){const k=lerp(.9,1.9,clamp((q.y-
     ctx.fillStyle='rgba(255,180,140,.12)';for(let i=0;i<6;i++)circ(ctx,q.x+(rn()-.5)*q.r*1.4,q.y-4-rn()*10,5*k)}
   else{ctx.fillStyle='rgba(25,18,14,.85)';ell(ctx,q.x,q.y+12,q.r*1.1,q.r*.22);ctx.strokeStyle='#120d0a';ctx.lineWidth=2*k;
     for(let i=0;i<9;i++){const bx=q.x+(rn()-.5)*q.r*1.8;ctx.beginPath();ctx.moveTo(bx,q.y+12);ctx.lineTo(bx+(rn()-.5)*8,q.y-4-rn()*14);ctx.stroke()}
-    if(q.smoke>0){q.smoke-=1/60;for(let i=0;i<5;i++){const ph=((T*.25+i/5)%1);ctx.fillStyle=`rgba(70,62,58,${.3*(1-ph)*Math.min(1,q.smoke)})`;circ(ctx,q.x+Math.sin(ph*5+i)*14,q.y-ph*120,10+ph*30)}}}}}
+    if(q.smoke>0){q.smoke-=FDT;for(let i=0;i<5;i++){const ph=((T*.25+i/5)%1);ctx.fillStyle=`rgba(70,62,58,${.3*(1-ph)*Math.min(1,q.smoke)})`;circ(ctx,q.x+Math.sin(ph*5+i)*14,q.y-ph*120,10+ph*30)}}}}}
 function creeperPos(c){if(SC.runners&&c.wx!==undefined){const a=c.p<.5,u=a?c.p/.5:(c.p-.5)/.5,x=a?lerp(c.x0,c.wx,u):lerp(c.wx,c.x1,u),y=a?lerp(c.y0,c.wy,u):lerp(c.wy,c.y1,u);return[x,y,lerp(.9,1.9,clamp((y-290)/280,0,1))]}
   const e=c.p*c.p*.6+c.p*.4;return[lerp(c.x0,c.x1,e),lerp(c.y0,c.y1,e),lerp(.9,1.9,e)]}
 function spawnCreeper(wx){let sl=slots[Math.floor(R()*slots.length)];let pt=null;if(SC.runners){const live=(G.patches||[]).filter(q=>!q.burnt);pt=live.length&&R()<.75?live.reduce((a,b)=>Math.abs(b.x-wx)<Math.abs(a.x-wx)?b:a):null}
@@ -1276,7 +1276,7 @@ function updCreepers(dt){if(!(SC.creepers||SC.runners||G.level>CAMPAIGN)||(G.sur
   const A=G.ambush;if(A){A.t+=dt;
     if(!A.dead&&!A.fired&&A.t>(A.first?2.0:1.0)){A.fired=true;A.flash=.12;noise(.2,2400,.6,3);if(state==='play'&&!G.demo){G.hitsTaken++;if(A.first)G.health--;else{G.health=0;G.killedBy='pistol'}G.hurt=1;G.shake=.5;S.hurt();msg('Shot at close range!','#ff7a6a');if(G.health<=0){state='dying';G.dieT=0;G.zoom=0;G.duck=true;spaceHeld=false;$('touch').classList.add('hide')}}}
     if(A.flash>0)A.flash-=dt;if((A.fired&&A.t>(A.first?2.5:1.5))||(A.dead&&A.t>A.deadAt+.7))G.ambush=null}}
-function drawMineFlash(){if(!G.flashes)return;G.flashes=G.flashes.filter(f=>{f.t+=1/60;const a=1-f.t/.35;if(a<=0)return false;const r=(20+f.t*90)*f.k;const gr=ctx.createRadialGradient(f.x,f.y,1,f.x,f.y,r);gr.addColorStop(0,`rgba(255,240,200,${a})`);gr.addColorStop(.4,`rgba(255,170,80,${a*.6})`);gr.addColorStop(1,'rgba(255,140,60,0)');ctx.fillStyle=gr;circ(ctx,f.x,f.y,r);return true})}
+function drawMineFlash(){if(!G.flashes)return;G.flashes=G.flashes.filter(f=>{f.t+=FDT;const a=1-f.t/.35;if(a<=0)return false;const r=(20+f.t*90)*f.k;const gr=ctx.createRadialGradient(f.x,f.y,1,f.x,f.y,r);gr.addColorStop(0,`rgba(255,240,200,${a})`);gr.addColorStop(.4,`rgba(255,170,80,${a*.6})`);gr.addColorStop(1,'rgba(255,140,60,0)');ctx.fillStyle=gr;circ(ctx,f.x,f.y,r);return true})}
 function drawCreepers(){drawMineFlash();for(const c of G.creepers){const [x,y,sc]=creeperPos(c);ctx.save();ctx.globalAlpha=c.dead?1:SC.runners?.85:.5+.12*Math.sin(c.t*.7);ctx.translate(x,y);ctx.scale(sc,sc*.78);ctx.translate(-x,-y);
     const inP=SC.runners&&c.atPt&&c.pt&&!c.pt.burnt,off=c.dead?0:c.mode==='cover'?(inP?26:12):c.mode==='shoot'&&inP?8:0,run=SC.runners&&c.mode==='run'&&!c.dead;
     drawWalker({x,dir:c.dir,t:run||!SC.runners?c.t*(SC.runners?.75:.35):0,dead:c.dead,fall:c.dir,skin:c.skin,legs:SC.runners&&off===0},y-24+off);
@@ -1344,9 +1344,9 @@ function drawAct(py){const A=G.act;if(!A)return;const t=A.t,S2=p=>[p[0],p[1]+py]
 function drawSmoke(){if(!(G.smoking>0)||state==='dying')return;const sw=(1-G.duckAmt),cx=W/2+40+(mx-W/2)*.08*sw+Math.sin(T*1.3)*2.6,cy=H-6-(G.demo?50:0)+(my-H/2)*.04*sw+G.recoil*6,inhale=(Math.sin(T*1.4)+1)/2;
   ctx.save();ctx.translate(cx,cy);ctx.rotate(-.35);ctx.fillStyle='#f3efe4';ctx.fillRect(-3,-26,6,30);ctx.fillStyle='#d79a55';ctx.fillRect(-3,-2,6,6);
   ctx.fillStyle=`rgba(255,${120+inhale*80},40,${.6+inhale*.4})`;ctx.shadowColor='#ff7a20';ctx.shadowBlur=8+inhale*10;ctx.fillRect(-3,-30,6,5);ctx.restore();
-  if(R()<(G.demo?.9:.38))G.smk.push({x:cx-8+(R()-.5)*6,y:cy-36,vx:(R()-.5)*6,vy:G.demo?-30-R()*8:-42-R()*16,life:G.demo?26:16,max:G.demo?26:16,r:G.demo?3.5:3,ph:R()*6});
-  if(R()<(G.demo?.09:.03)+inhale*.03)for(let i=0;i<8;i++)G.smk.push({x:cx-14+(R()-.5)*10,y:cy-30,vx:(R()-.5)*16,vy:G.demo?-26-R()*10:-34-R()*18,life:G.demo?26:16,max:G.demo?26:16,r:5,ph:R()*6})}
-function seedSmoke(){for(let i=0;i<110;i++){const age=R()*.95;G.smk.push({x:W/2+28+Math.sin(age*7+i)*age*60+(R()-.5)*20*age,y:H-95-age*(H+40),vx:(R()-.5)*6,vy:-30,life:26*(1-age),max:26,r:3+R()*4,ph:R()*6})}}
+  if(R()<(G.demo?22*FDT:.38))G.smk.push({x:cx-8+(R()-.5)*6,y:cy-36,vx:(R()-.5)*6,vy:G.demo?-34:-42-R()*16,life:G.demo?30:16,max:G.demo?30:16,r:G.demo?3.5:3,ph:R()*6});
+  if(R()<(G.demo?1.2*FDT:.03+inhale*.03))for(let i=0;i<8;i++)G.smk.push({x:cx-14+(R()-.5)*10,y:cy-30,vx:(R()-.5)*16,vy:G.demo?-32:-34-R()*18,life:G.demo?30:16,max:G.demo?30:16,r:5,ph:R()*6})}
+function seedSmoke(){for(let i=0;i<110;i++){const age=R()*.95;G.smk.push({x:W/2+28+Math.sin(age*7+i)*age*60+(R()-.5)*20*age,y:H-95-age*(H+40),vx:(R()-.5)*6,vy:-34,life:30*(1-age),max:30,r:3+R()*4,ph:R()*6})}}
 function drawSmk(dt){if(!G.smk.length)return;ctx.save();G.smk=G.smk.filter(p=>{p.life-=dt;const age=1-p.life/p.max;
     p.x+=(p.vx+Math.sin(T*(G.demo?.45:.8)+p.ph+age*4)*(8+age*(G.demo?28:40)))*dt;p.y+=p.vy*dt*(1-age*.35);
     const r=(p.r+age*age*120)*(G.demo?1.3:1),a=(G.demo?.55:.4)*Math.pow(1-age,1.3)*Math.min(1,(p.max-p.life)*2);ctx.fillStyle=`rgba(215,215,210,${a})`;circ(ctx,p.x,p.y,r);return p.life>0&&p.y>-140});ctx.restore()}
@@ -1473,13 +1473,13 @@ function draw(){setBlur();ctx.setTransform(sc*dpr,0,0,sc*dpr,0,0);
   if(SC.hq)ctx.translate(Math.sin(T*.7)*1.6+Math.sin(T*1.9)*.5,Math.cos(T*.9)*1.3);
   const du=G.duckAmt,farY=-du*90;const [ax,ay]=aimPt();const Z=lerp(1,1.9,G.zoom);
   ctx.save();ctx.translate(ax,ay);ctx.scale(Z,Z);ctx.translate(-ax,-ay);ctx.translate(0,farY);drawFar();ctx.restore();if(SC.laiza){drawTown(du);if(SC.dim){ctx.fillStyle=`rgba(${SC.dimc},${SC.dim*.6})`;ctx.fillRect(-200,-200,W+400,H+400)}}
-  const py=lerp(600,-40,du)+G.zoom*130;ctx.drawImage(near,0,py);drawShelfItems(py);drawWallFlares(py);drawParts(G.nparts,py);drawAmbush(py);if(BAMBOO)ctx.drawImage(BAMBOO,0,py-600);if(SC.pillbox)drawPillbox(du);if(SC.laiza)drawRooftop(du,py);if(G.act)drawAct(py);drawSmoke();drawSmk(1/60);
+  const py=lerp(600,-40,du)+G.zoom*130;ctx.drawImage(near,0,py);drawShelfItems(py);drawWallFlares(py);drawParts(G.nparts,py);drawAmbush(py);if(BAMBOO)ctx.drawImage(BAMBOO,0,py-600);if(SC.pillbox)drawPillbox(du);if(SC.laiza)drawRooftop(du,py);if(G.act)drawAct(py);drawSmoke();drawSmk(FDT);
   if(SC.night){const L=nightLight();ctx.fillStyle=`rgba(4,8,20,${(SC.dark?.5:(SC.hq?.38:.55))-L*.3})`;ctx.fillRect(-200,-200,W+400,H+400)}
   else if(SC.dim){ctx.fillStyle=`rgba(${SC.dimc},${SC.dim*.9})`;ctx.fillRect(-200,-200,W+400,H+400)}
   if(SC.rain)drawRain();
   if(du>.85&&state!=='dying'&&!G.act){ctx.fillStyle='rgba(240,230,200,.55)';ctx.font='600 18px system-ui,sans-serif';ctx.textAlign='center';
     ctx.fillText('IN COVER — reload · click the cigarettes, flute, radio or a flare · SPACE to stand',W/2,H*.86);ctx.textAlign='left'}
-  if(du<.95&&G.zoom<.6)drawGun(ax,ay);drawCases(1/60);drawPtr(1/60);
+  if(du<.95&&G.zoom<.6)drawGun(ax,ay);drawCases(FDT);drawPtr(FDT);
   if(G.zoom>.02)drawSights(ax,ay);
   ctx.restore();
   // crosshair (unscoped)
@@ -1541,9 +1541,9 @@ function draw(){setBlur();ctx.setTransform(sc*dpr,0,0,sc*dpr,0,0);
 }
 
 let ERR='';
-function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;
+let FDT=1/60;function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;FDT=dt||1/60;
   try{update(dt);
-    if(G){if(G.parts.length>700)G.parts.splice(0,G.parts.length-700);if(G.nparts.length>300)G.nparts.splice(0,G.nparts.length-300);if(G.smk&&G.smk.length>(G.demo?320:170))G.smk.splice(0,G.smk.length-(G.demo?320:170))}
+    if(G){if(G.parts.length>700)G.parts.splice(0,G.parts.length-700);if(G.nparts.length>300)G.nparts.splice(0,G.nparts.length-300);if(G.smk&&G.smk.length>(G.demo?900:170))G.smk.splice(0,G.smk.length-(G.demo?900:170))}
     draw()}catch(e){ERR=(e&&e.message)||String(e);try{ctx.setTransform(sc*dpr,0,0,sc*dpr,0,0)}catch(x){}}
   if(ERR){ctx.save();ctx.setTransform(sc*dpr,0,0,sc*dpr,0,0);ctx.fillStyle='rgba(0,0,0,.6)';ctx.fillRect(0,H-22,W,22);ctx.fillStyle='#ffb38a';ctx.font='12px monospace';ctx.fillText('Error (please screenshot): '+ERR.slice(0,140),10,H-7);ctx.restore()}
   requestAnimationFrame(loop)}
