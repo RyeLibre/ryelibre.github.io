@@ -37,7 +37,7 @@ body.rot #stage{inset:auto;top:0;left:100vw;width:100vh;height:100vw;transform-o
 .flag{width:120px;height:80px;object-fit:cover;border-radius:3px;box-shadow:0 4px 14px rgba(0,0,0,.5)}
 .vsword{font-size:34px;font-weight:900;color:#d9433a;letter-spacing:.05em}
 .levels{list-style:none;counter-reset:lv;padding:0;margin:8px 0 12px;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;font-size:13px;text-align:left}
-.levels li{counter-increment:lv;background:#232a1b;border-radius:6px;padding:6px 8px}
+.levels li{counter-increment:lv;background:#232a1b;border-radius:6px;padding:6px 8px}.levels li:hover{background:#3a4428;outline:1px solid #c9a83f}
 .levels li::before{content:counter(lv);display:inline-block;width:18px;height:18px;margin-right:6px;border-radius:50%;background:#c9a83f;color:#1a1608;font-weight:800;font-size:11px;text-align:center;line-height:18px}
 .levels span{display:block;color:#a9b08e;font-size:11px;margin-left:24px}
 .tip{font-size:13px;margin:4px 0 8px}
@@ -84,6 +84,7 @@ body.rot #stage{inset:auto;top:0;left:100vw;width:100vh;height:100vw;transform-o
   </ul>
   <p class="tip">Duck at the scope glint, the RPG warning and the artillery whistle. Look for faces — some are helmets on sticks (−50 if you shoot one). Shoot drones down. Burn their flag with an RPG for +500. At night some sneak down the hill — shoot them before they reach your trench. RPGs blow gaps in their dirt wall — hit a soldier passing the gap for +200 and an extra RPG. See a thin line of cigarette smoke? Someone is hiding there — an RPG gets him.</p>
   <button id="startBtn">START</button>
+  <div style="font-size:12px;color:#a9b08e;margin-top:6px">or click a level above to start there</div>
   <div id="hs"></div>
 </div></div>
 
@@ -440,7 +441,7 @@ function showBest(){$('hs').textContent=best?('Best score: '+best):''}
 showBest();
 buildScene(1);
 
-function newGame(){G={level:1,score:0,totalKills:0,flagsBurned:0};startLevel()}
+function newGame(start){G={level:start||1,score:0,totalKills:0,flagsBurned:0};startLevel()}
 function startLevel(){const c=cfg(G.level);buildScene(G.level);
   Object.assign(G,{c,time:90,kills:0,health:5,mag:30,reserve:c.ammo-30,rpg:c.rpg,reloading:0,rpgReload:0,cool:0,
     enemies:[],spawnT:1.6,duck:false,duckAmt:0,zoom:0,recoil:0,shake:0,hurt:0,flash:0,shots:0,hits:0,levelScore:0,dieT:0,
@@ -1026,10 +1027,11 @@ function drawAct(py){const A=G.act;if(!A)return;const t=A.t,S2=p=>[p[0],p[1]+py]
 function drawSmoke(){if(!(G.smoking>0)||state==='dying')return;const sw=(1-G.duckAmt),cx=W/2+40+(mx-W/2)*.08*sw+Math.sin(T*1.3)*2.6,cy=H-6+(my-H/2)*.04*sw+G.recoil*6,inhale=(Math.sin(T*1.4)+1)/2;
   ctx.save();ctx.translate(cx,cy);ctx.rotate(-.35);ctx.fillStyle='#f3efe4';ctx.fillRect(-3,-26,6,30);ctx.fillStyle='#d79a55';ctx.fillRect(-3,-2,6,6);
   ctx.fillStyle=`rgba(255,${120+inhale*80},40,${.6+inhale*.4})`;ctx.shadowColor='#ff7a20';ctx.shadowBlur=8+inhale*10;ctx.fillRect(-3,-30,6,5);ctx.restore();
-  if(R()<.35)G.smk.push({x:cx-8+(R()-.5)*6,y:cy-36,vx:(R()-.5)*10,vy:-95-R()*45,life:6,max:6,r:3,ph:R()*6});
-  if(R()<.012+inhale*.01)for(let i=0;i<6;i++)G.smk.push({x:cx-14+(R()-.5)*10,y:cy-30,vx:(R()-.5)*30,vy:-70-R()*40,life:5,max:5,r:6,ph:R()*6})}
-function drawSmk(dt){if(!G.smk.length)return;ctx.save();G.smk=G.smk.filter(p=>{p.life-=dt;p.x+=(p.vx+Math.sin(T*1.5+p.ph)*14)*dt;p.y+=p.vy*dt;p.vy*=.995;
-    const a=p.life/p.max;ctx.fillStyle=`rgba(215,215,210,${.16*a})`;circ(ctx,p.x,p.y,p.r+(1-a)*46);return p.life>0&&p.y>-80});ctx.restore()}
+  if(R()<.3)G.smk.push({x:cx-8+(R()-.5)*6,y:cy-36,vx:(R()-.5)*6,vy:-42-R()*16,life:16,max:16,r:2.5,ph:R()*6});
+  if(R()<.012+inhale*.01)for(let i=0;i<6;i++)G.smk.push({x:cx-14+(R()-.5)*10,y:cy-30,vx:(R()-.5)*16,vy:-34-R()*18,life:16,max:16,r:5,ph:R()*6})}
+function drawSmk(dt){if(!G.smk.length)return;ctx.save();G.smk=G.smk.filter(p=>{p.life-=dt;const age=1-p.life/p.max;
+    p.x+=(p.vx+Math.sin(T*.8+p.ph+age*4)*(8+age*40))*dt;p.y+=p.vy*dt*(1-age*.35);
+    const r=p.r+age*age*120,a=.2*Math.pow(1-age,1.6)*Math.min(1,(p.max-p.life)*2);ctx.fillStyle=`rgba(215,215,210,${a})`;circ(ctx,p.x,p.y,r);return p.life>0&&p.y>-140});ctx.restore()}
 
 /* ---------- death: on your knees, the photo, a last touch ---------- */
 const ease=t=>{t=clamp(t,0,1);return t*t*(3-2*t)};
@@ -1173,6 +1175,7 @@ const tb=(id,fn,up)=>{const b=$(id);b.addEventListener('pointerdown',e=>{e.stopP
   if(up){b.addEventListener('pointerup',e=>{e.stopPropagation();up()});b.addEventListener('pointerleave',()=>up());b.addEventListener('pointercancel',()=>up())}};
 tb('tScope',()=>{if(state==='play'&&G.duck&&G.duckAmt>.6)startAct();else setScope(true)},()=>setScope(false));tb('tDuck',toggleDuck);tb('tRpg',fireRpg);tb('tRel',reload);
 $('startBtn').onclick=()=>{ac();loadSfx();stopAmbience();newGame()};
+document.querySelectorAll('.levels li').forEach((li,i)=>{li.style.cursor='pointer';li.title='Start at this level';li.addEventListener('click',()=>{ac();loadSfx();stopAmbience();newGame(i+1)})});
 function introAudio(){if(state!=='title')return;ac();loadSfx();startAmbience()}
 ['pointerdown','keydown'].forEach(ev=>addEventListener(ev,introAudio));
 $('resBtn').onclick=pause;$('pause').addEventListener('click',e=>{if(e.target.id==='pause')pause()});
