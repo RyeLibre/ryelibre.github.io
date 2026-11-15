@@ -294,6 +294,18 @@ function windGust(){const n=Math.random()<.5?'wind1':'wind2';const b=BUF[n];if(!
   const w=play(n,{gain:0,offset:Math.random()*Math.max(0,b.duration-7)});if(!w)return;const t=a.currentTime,pk=.75+Math.random()*.45;
   w.g.gain.setValueAtTime(0,t);w.g.gain.linearRampToValueAtTime(pk,t+1.8);w.g.gain.linearRampToValueAtTime(pk*.7,t+4);w.g.gain.linearRampToValueAtTime(0,t+6.5);
   setTimeout(()=>{try{w.s.stop()}catch(e){}},7000)}
+/* synthesized voice: a short grunt (sawtooth through two vowel formants) */
+function grunt(opt={}){const a=ac();if(!a)return;try{const t=a.currentTime+(opt.delay||0),d=opt.dur||.32;
+  const f0=(opt.pitch||120)*(.9+Math.random()*.2);
+  const o=a.createOscillator();o.type='sawtooth';o.frequency.setValueAtTime(f0*1.25,t);o.frequency.exponentialRampToValueAtTime(f0*.75,t+d);
+  const v=a.createOscillator(),vg=a.createGain();v.frequency.value=7;vg.gain.value=f0*.04;v.connect(vg);vg.connect(o.frequency);
+  const mix=a.createGain();mix.gain.value=0;
+  [[650,6,1],[1100,8,.6],[2500,10,.18]].forEach(([fq,q,gn])=>{const f=a.createBiquadFilter();f.type='bandpass';f.frequency.value=fq*(opt.vowel||1);f.Q.value=q;const g=a.createGain();g.gain.value=gn;o.connect(f);f.connect(g);g.connect(mix)});
+  let out=mix;if(opt.far){const lp=a.createBiquadFilter();lp.type='lowpass';lp.frequency.value=1600;mix.connect(lp);out=lp}
+  const master=a.createGain();master.gain.value=opt.gain||.5;out.connect(master);master.connect(a.destination);
+  mix.gain.setValueAtTime(0,t);mix.gain.linearRampToValueAtTime(1,t+.025);mix.gain.setValueAtTime(1,t+d*.35);mix.gain.exponentialRampToValueAtTime(.001,t+d);
+  o.start(t);v.start(t);o.stop(t+d+.05);v.stop(t+d+.05);
+  noise(d*.6,900,(opt.gain||.5)*.12,2,'bandpass')}catch(e){}}
 const S={
   shot(){if(BUF.shot){play('shot',{gain:.42,rate:.94+Math.random()*.12});noise(.14,500,.12,3)}else{noise(.28,2600,.55,3);noise(.08,8000,.25,2,'highpass')}},
   far(){if(BUF.shot)play('shot',{gain:.2,rate:.75+Math.random()*.15,lp:1400});else noise(.35,900,.22,4)},
@@ -303,7 +315,9 @@ const S={
   ting(){tone(1900,.35,.18,'triangle');tone(2700,.25,.08)},
   click(){tone(900,.05,.12,'square')},
   empty(){if(BUF.empty)play('empty',{gain:.8});else tone(900,.05,.12,'square')},
-  hurt(){noise(.25,300,.7,2);tone(120,.3,.25)},
+  hurt(){noise(.25,300,.7,2);tone(120,.3,.18);grunt({pitch:105,gain:.75,dur:.42,vowel:.9,delay:.04})},
+  impact(){noise(.06,2200,.35,1.2,'bandpass');noise(.12,450,.3,2.5)},
+  enemyHit(){S.impact();grunt({pitch:135+Math.random()*30,gain:.32,dur:.3,far:true,delay:.09+Math.random()*.05,vowel:1+Math.random()*.15})},
   reload(){if(BUF.reload)play('reload',{gain:.9,rate:1.22});else{tone(600,.05,.1,'square');setTimeout(()=>tone(400,.06,.12,'square'),260)}},
   rpgload(){play('rpgload',{gain:.8,delay:.55})},
   scope(){tone(300,.06,.05,'triangle')},
@@ -390,10 +404,11 @@ function enemyFire(e){const c=G.c;e.flash=.07;
 function playerHit(){if(state!=='play')return;G.hitsTaken++;G.health--;G.hurt=1;G.shake=.45;S.hurt();msg('Hit!','#ff8a7a');
   if(G.health<=0){state='dying';G.dieT=0;G.zoom=0;$('touch').classList.add('hide')}}
 function killEnemy(e,head,byRpg){
-  if(e.type==='surrender'){e.state='dead';e.t=0;G.surr.phase='over';G.flagShot=true;const g=geo(e);dust(g.x,g.lip,8,'150,130,95');
+  if(e.type==='surrender'){S.enemyHit();e.state='dead';e.t=0;G.surr.phase='over';G.flagShot=true;const g=geo(e);dust(g.x,g.lip,8,'150,130,95');
     msg('You shot the white flag — THE BURMA ARMY IS ATTACKING HARD!','#ff6a5a');goAngry();return}
   if(e.shots===0)G.preempt++;e.state='dead';e.t=0;G.kills++;G.totalKills++;
   if(G.kills===30&&!G.surr)startSurrender();
+  if(!byRpg)S.enemyHit();else if(R()<.6)grunt({pitch:140,gain:.25,dur:.35,far:true,delay:.25});
   const pts=byRpg?120:(head?150:100);G.score+=pts;G.levelScore+=pts;const g=geo(e);
   floatText(g.x,g.hy-18,(head?'HEAD +':'+')+pts,'#ffe38a');dust(g.x,g.lip,8,'150,130,95');
   if(G.kills===G.c.quota)msg('Kill target reached — hold the line!','#bde58a')}
@@ -444,7 +459,7 @@ function updGaps(dt){if(G.surr&&G.surr.phase!=='over')return;
       G.walkers.push({x:g.x-dir*70,dir,endX:far+dir*70,t:0,dead:false,skin:['#4f3322','#6f4a31','#9c7350','#b08560'][Math.floor(R()*4)]})}}
   G.walkers=G.walkers.filter(w=>{w.t+=dt;if(w.dead)return w.t<.9;w.x+=w.dir*75*dt;return (w.endX-w.x)*w.dir>0})}
 function walkerHit(ax,ay){for(const g of G.gaps){if(!inGap(g,ax,ay))continue;
-  for(const w of G.walkers){if(w.dead||Math.abs(ax-w.x)>9)continue;w.dead=true;w.t=0;w.fall=w.dir;
+  for(const w of G.walkers){if(w.dead||Math.abs(ax-w.x)>9)continue;S.enemyHit();w.dead=true;w.t=0;w.fall=w.dir;
     G.kills++;G.totalKills++;G.score+=200;G.levelScore+=200;G.hits++;floatText(w.x,g.by-22,'GAP SHOT +200','#ffe38a');G.gapKills++;
     if(G.kills===G.c.quota)msg('Kill target reached — hold the line!','#bde58a');if(G.kills===30&&!G.surr)startSurrender();return true}}return false}
 function drawWalker(w,by){const bob=Math.abs(Math.sin(w.t*11))*1.5,hy=by-2+bob;ctx.save();
