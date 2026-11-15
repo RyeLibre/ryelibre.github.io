@@ -66,7 +66,7 @@ body.rot #stage{inset:auto;top:0;left:100vw;width:100vh;height:100vw;transform-o
       <b>Burma Army</b><span>Enemy post across the valley</span></div>
   </div>
   <h1>HILLTOP FIREFIGHT</h1>
-  <p class="sub">6 hilltops · 150–250 m apart · <b>90-second rounds</b> · reach the kill target to take the next hill</p>
+  <p class="sub">6 hilltops · 150–250 m apart · <b>90-second rounds</b> · <b>60 bullets</b> (2 magazines) per level · reach the kill target to take the next hill</p>
   <ol class="levels">
     <li><b>Hpa Lap Bum</b> <span>Tea Mountain · sunrise</span></li>
     <li><b>Alaw Bum</b> <span>midday heat · 150 m</span></li>
@@ -319,7 +319,7 @@ function cfg(L){return{
   acc:Math.min(.62,.16+L*.06),
   burst:L<3?1:2,
   decoy:Math.min(.35,.1+L*.04),
-  ammo:Math.max(60,150-L*13),
+  ammo:60,
   rpg:L<3?3:2,
   quota:5+L*3,
   peek:L>=3,
@@ -551,7 +551,7 @@ function aimPt(){const k=1-G.zoom*.45;return[mx+(Math.sin(T*1.3)*2.6+Math.sin(T*
 function shoot(){if(state!=='play')return;ac();
   if(G.duckAmt>.25){msg('Stand up to shoot  (SPACE)');return}
   if(G.reloading>0||G.cool>0)return;
-  if(G.mag<=0){S.empty();if(G.reserve<=0)msg('Out of bullets — use RPG','#ffb38a');return}
+  if(G.mag<=0){S.empty();if(G.reserve<=0)msg('Out of bullets — duck and hold on','#ffb38a');return}
   if(G.surr&&G.surr.phase==='flag'){G.surr.calm=0;msg('Hold your fire!','#ffffff')}
   G.mag--;G.cool=.15;G.shots++;S.shot();G.recoil=Math.min(3,G.recoil+1);G.shake=Math.max(G.shake,.08);G.flash=.05;
   const [sx0,sy0]=aimPt();const [ax,ay]=toWorld(sx0,sy0);
