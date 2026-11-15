@@ -30,16 +30,16 @@ body.rot #stage{inset:auto;top:0;left:100vw;width:100vh;height:100vw;transform-o
 #touch button{width:78px;height:58px;padding:0;font-size:13px;border-radius:12px;background:rgba(30,36,24,.75);color:#eee;border:1px solid #6a7450;margin:0}
 #hs{margin-top:10px;font-size:13px;color:#a9b08e}
 .intro{background:radial-gradient(ellipse at center,rgba(30,22,14,.82),rgba(6,6,4,.95))}
-.card.wide{max-width:720px;padding:22px 30px}
+.card.wide{max-width:780px;padding:22px 30px}
 .vs{display:flex;align-items:center;justify-content:center;gap:22px;margin-bottom:10px}
 .side{display:flex;flex-direction:column;align-items:center;gap:4px;width:220px}
 .side b{font-size:15px}.side span{font-size:12px;color:#a9b08e}
 .flag{width:120px;height:80px;object-fit:cover;border-radius:3px;box-shadow:0 4px 14px rgba(0,0,0,.5)}
 .vsword{font-size:34px;font-weight:900;color:#d9433a;letter-spacing:.05em}
 .levels{list-style:none;counter-reset:lv;padding:0;margin:8px 0 12px;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;font-size:13px;text-align:left}
-.levels li{counter-increment:lv;background:#232a1b;border-radius:6px;padding:6px 8px}.levels li:hover{background:#3a4428;outline:1px solid #c9a83f}
+.levels li{counter-increment:lv;background:#232a1b;border-radius:6px;padding:6px 8px}.levels .thumb{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:4px;margin-bottom:5px}.levels li:hover{background:#3a4428;outline:1px solid #c9a83f}
 .levels li::before{content:counter(lv);display:inline-block;width:18px;height:18px;margin-right:6px;border-radius:50%;background:#c9a83f;color:#1a1608;font-weight:800;font-size:11px;text-align:center;line-height:18px}
-.levels span{display:block;color:#a9b08e;font-size:11px;margin-left:24px}
+.levels span{display:block;color:#a9b08e;font-size:11px;margin-left:0}
 .tip{font-size:13px;margin:4px 0 8px}
 .ov{overflow:auto}
 .card,.card.wide{transform:scale(var(--cs,1));transform-origin:center;flex:none}
@@ -113,7 +113,7 @@ const $=id=>document.getElementById(id);
 const isTouch=('ontouchstart' in window)||navigator.maxTouchPoints>0;
 let dpr=1,sc=1;
 let rotated=false;
-function resize(){dpr=Math.min(2,window.devicePixelRatio||1);const aw=rotated?innerHeight:innerWidth,ah=rotated?innerWidth:innerHeight;sc=Math.min(aw/W,ah/H);document.documentElement.style.setProperty('--cs',Math.min(1,(ah-16)/600,(aw-16)/760).toFixed(3));
+function resize(){dpr=Math.min(2,window.devicePixelRatio||1);const aw=rotated?innerHeight:innerWidth,ah=rotated?innerWidth:innerHeight;sc=Math.min(aw/W,ah/H);document.documentElement.style.setProperty('--cs',Math.min(1,(ah-16)/900,(aw-16)/820).toFixed(3));
   cv.width=Math.round(W*sc*dpr);cv.height=Math.round(H*sc*dpr);cv.style.width=(W*sc)+'px';cv.style.height=(H*sc)+'px';}
 addEventListener('resize',resize);resize();
 
@@ -440,7 +440,14 @@ let state='title',G=null,mx=W/2,my=H/2,last=performance.now(),T=0,spaceHeld=fals
 let best=0;try{best=+localStorage.getItem('hilltop_best')||0}catch(e){}
 function showBest(){$('hs').textContent=best?('Best score: '+best):''}
 showBest();
-buildScene(1);
+// small preview of every level's scene for the intro page
+function makeThumbs(){const lis=document.querySelectorAll('.levels li');const keep=SC;
+  SCENES.forEach((sc,i)=>{if(!lis[i])return;buildScene(i+1);const c=mk(320,180),g=c.getContext('2d'),k=320/W;g.scale(k,k);
+    g.drawImage(bg,-PADX,0);g.drawImage(bgh,-PADX,0);g.drawImage(fg,-PADX,0);
+    if(sc.night){g.fillStyle=`rgba(4,8,20,${sc.dark?.45:.35})`;g.fillRect(0,0,W,H)}if(sc.dim){g.fillStyle=`rgba(${sc.dimc},${sc.dim})`;g.fillRect(0,0,W,H)}
+    g.drawImage(near,0,600);const im=document.createElement('img');im.src=c.toDataURL('image/jpeg',.8);im.className='thumb';lis[i].prepend(im)});
+  buildScene(1)}
+try{makeThumbs()}catch(e){buildScene(1)}
 
 function newGame(start){G={level:start||1,score:0,totalKills:0,flagsBurned:0};startLevel()}
 function startLevel(){const sc0=SCENES[(G.level-1)%SCENES.length],c=cfg(sc0.diff&&G.level<=CAMPAIGN?sc0.diff:G.level);$('tFlare').style.display=sc0.night?'':'none';if(sc0.diff&&G.level<=CAMPAIGN){c.acc*=.75;c.burst=1;c.maxActive=2;c.rpg=3;Object.assign(c,sc0.opts||{})}buildScene(G.level);
