@@ -634,7 +634,7 @@ function pause(){if(state==='play'){state='paused';try{AC&&AC.suspend()}catch(e)
 
 /* ---------- update ---------- */
 function update(dt){T+=dt;if(state!=='play'&&state!=='dying')return;const c=G.c;
-  if(state==='dying'){G.dieT+=dt;if(G.dieT>6.4){gameOver();return}}
+  if(state==='dying'){G.dieT+=dt;if(G.dieT>7){gameOver();return}}
   if(state==='play'){G.time-=dt;if(G.time<=0){G.time=0;endLevel();return}}
   G.banner-=dt;if(state==='play'&&G.duckAmt>.8){G.radioT=(G.radioT||1)-dt;if(G.radioT<=0){G.radioT=1.5+R()*3;noise(.25+R()*.4,1800,.06,1,'bandpass');setTimeout(()=>noise(.15,2400,.04,1,'bandpass'),300)}}if(state==='play'){G.windT-=dt;if(G.windT<=0){G.windT=8+R()*10;windGust()}}G.boom=Math.max(0,(G.boom||0)-dt);
   G.duckAmt+=((G.duck?1:0)-G.duckAmt)*Math.min(1,dt*11);
@@ -810,7 +810,7 @@ function drawSights(ax,ay){const k=G.zoom,off=(1-k)*460;ctx.save();ctx.translate
   ctx.save();const vg=ctx.createRadialGradient(W/2,H/2,H*.45,W/2,H/2,H*.95);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,`rgba(0,0,0,${.4*k})`);ctx.fillStyle=vg;ctx.fillRect(0,0,W,H);ctx.restore()}
 /* ---------- death: on your knees, the photo, a last touch ---------- */
 const ease=t=>{t=clamp(t,0,1);return t*t*(3-2*t)};
-const PR={x:3,y:2};
+const PR={x:2,y:-4};
 function drawHand(c){
   c.fillStyle='#4b5535';c.fillRect(-34,38,68,300);c.fillStyle='#3d462b';c.fillRect(-34,38,68,10);
   c.fillStyle='#6e4a30';rr(c,-26,-24,52,68,18);
@@ -824,20 +824,27 @@ function drawPrint(c){c.fillStyle='rgba(120,6,6,.78)';rr(c,-24,-22,48,62,18);
   c.save();c.translate(-23,10);c.rotate(-.95);rr(c,-5,-30,10,30,5);c.restore();
   c.fillStyle='rgba(120,6,6,.6)';c.fillRect(-12,38,5,26);c.fillRect(6,38,4,18);
   c.save();c.globalCompositeOperation='destination-out';c.fillStyle='rgba(0,0,0,.35)';[[-8,6,6,4],[10,18,5,3],[-2,-30,2,6],[12,-34,2,5]].forEach(([x,y,rx,ry])=>ell(c,x,y,rx,ry));c.restore()}
+// camera: fall to the knees, then lean in toward the photo pinned on the trench wall
+function deathCam(){const t=G.dieT,e=ease(t/.8),k=ease((t-.7)/1.3);
+  ctx.translate(W/2,H/2);ctx.rotate((e*.08+Math.sin(t*1.3)*.01)*(1-k*.7));ctx.translate(-W/2,-H/2+e*40*(1-k));
+  const fx=700,fy=300+lerp(600,-40,G.duckAmt),Z=lerp(1,3.3,k);
+  ctx.translate(lerp(fx,W/2,k),lerp(fy,H/2-20,k));ctx.scale(Z,Z);ctx.translate(-fx,-fy)}
 function drawDeath(){const t=G.dieT;
-  ctx.fillStyle=`rgba(40,0,0,${Math.min(.45,t*.45)})`;ctx.fillRect(0,0,W,H);
-  const vg=ctx.createRadialGradient(W/2,H/2,H*.3,W/2,H/2,H*.9);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,`rgba(0,0,0,${Math.min(.7,t*.5)})`);ctx.fillStyle=vg;ctx.fillRect(0,0,W,H);
-  const PS=4.4,PRot=-.03,CX=W/2,CY=H/2-10;
-  if(t>.8){const k=ease((t-.8)/.9);
-    ctx.save();ctx.translate(lerp(700,CX,k),lerp(260,CY,k));ctx.rotate(lerp(-.07,PRot,k));ctx.scale(lerp(1,PS,k),lerp(1,PS,k));drawGirlPhoto(ctx);
-    if(t>2.85){ctx.save();ctx.globalAlpha=Math.min(1,(t-2.85)*5);ctx.beginPath();ctx.rect(-30,-36,60,74);ctx.clip();ctx.translate(PR.x,PR.y);ctx.rotate(.15);ctx.scale(.36,.36);drawPrint(ctx);ctx.restore()}
-    ctx.restore()}
-  if(t>1.8&&t<4.3){let k2;if(t<2.85)k2=ease((t-1.8)/1.05);else if(t<3.35)k2=1;else k2=1-ease((t-3.35)/.95);
-    const tx=CX+(PR.x*Math.cos(PRot)-PR.y*Math.sin(PRot))*PS,ty=CY+(PR.x*Math.sin(PRot)+PR.y*Math.cos(PRot))*PS;
-    const press=(t>2.75&&t<3.35)?Math.sin((t-2.75)/.6*Math.PI)*5:0;
-    ctx.save();ctx.translate(lerp(W*.82,tx,k2),lerp(H+300,ty,k2)+press);ctx.rotate(lerp(-.55,.15+PRot,k2));ctx.scale(1.58,1.58);drawHand(ctx);ctx.restore()}
-  if(t>4.3){ctx.fillStyle=`rgba(0,0,0,${Math.min(.72,(t-4.3)*.7)})`;ctx.fillRect(0,0,W,H)}
-  ctx.globalAlpha=clamp((t-4.7)*1.4,0,1);ctx.fillStyle='#e0483e';ctx.font='900 60px system-ui,sans-serif';ctx.textAlign='center';
+  ctx.save();deathCam();ctx.translate(700,300+lerp(600,-40,G.duckAmt));ctx.rotate(-.07);
+  const s=.36,touchT=2.9,slideT=3.25,slideEnd=4.5,dy=42*ease((t-slideT)/(slideEnd-slideT));
+  if(t>touchT){
+    // smear left as the hand slides down
+    if(t>slideT){for(let yy=0;yy<=dy;yy+=1.1){ctx.save();ctx.globalAlpha=.3*(1-yy/(dy+14));ctx.translate(PR.x,PR.y+yy);ctx.rotate(.12);ctx.scale(s,s);drawPrint(ctx);ctx.restore()}}
+    ctx.save();ctx.globalAlpha=Math.min(1,(t-touchT)*5);ctx.translate(PR.x,PR.y);ctx.rotate(.12);ctx.scale(s,s);drawPrint(ctx);ctx.restore()}
+  if(t>2.0&&t<5.3){let hy;
+    if(t<touchT)hy=lerp(170,0,ease((t-2.0)/(touchT-2.0)));else if(t<slideT)hy=Math.sin((t-touchT)/(slideT-touchT)*Math.PI)*1.2;
+    else if(t<slideEnd)hy=dy;else hy=dy+lerp(0,160,ease((t-slideEnd)/.8));
+    ctx.save();ctx.translate(PR.x,PR.y+hy);ctx.rotate(.12);ctx.scale(s,s);drawHand(ctx);ctx.restore()}
+  ctx.restore();
+  ctx.fillStyle=`rgba(40,0,0,${Math.min(.35,t*.35)})`;ctx.fillRect(0,0,W,H);
+  const vg=ctx.createRadialGradient(W/2,H/2,H*.25,W/2,H/2,H*.85);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,`rgba(0,0,0,${Math.min(.75,t*.5)})`);ctx.fillStyle=vg;ctx.fillRect(0,0,W,H);
+  if(t>5.0){ctx.fillStyle=`rgba(0,0,0,${Math.min(.72,(t-5.0)*.7)})`;ctx.fillRect(0,0,W,H)}
+  ctx.globalAlpha=clamp((t-5.4)*1.4,0,1);ctx.fillStyle='#e0483e';ctx.font='900 60px system-ui,sans-serif';ctx.textAlign='center';
   ctx.fillText('KILLED IN ACTION',W/2,H*.88);ctx.globalAlpha=1;
   if(t>1.5){ctx.fillStyle='rgba(255,255,255,.35)';ctx.font='600 13px system-ui,sans-serif';ctx.fillText('click to continue',W/2,H-14)}ctx.textAlign='left'}
 function heart(x,y,on){ctx.fillStyle=on?'#e25b4a':'rgba(255,255,255,.18)';ctx.beginPath();ctx.moveTo(x,y+6);
@@ -847,7 +854,7 @@ function panel(x,y,w,h){ctx.fillStyle='rgba(12,14,9,.55)';rr(ctx,x,y,w,h,8)}
 function draw(){ctx.setTransform(sc*dpr,0,0,sc*dpr,0,0);
   if(!G){ctx.drawImage(bg,-PADX,0);ctx.drawImage(fg,-PADX,0);ctx.drawImage(near,0,600);return}
   const sh=G.shake*14;ctx.save();ctx.translate((R()-.5)*sh,(R()-.5)*sh);
-  if(state==='dying'){const d=Math.min(1,G.dieT/.8),e=d*d*(3-2*d);ctx.translate(W/2,H/2);ctx.rotate(e*.1+Math.sin(G.dieT*1.3)*.012);ctx.translate(-W/2,-H/2+e*55)}
+  if(state==='dying')deathCam();
   const du=G.duckAmt,farY=-du*90;const [ax,ay]=aimPt();const Z=lerp(1,1.9,G.zoom);
   ctx.save();ctx.translate(ax,ay);ctx.scale(Z,Z);ctx.translate(-ax,-ay);ctx.translate(0,farY);drawFar();ctx.restore();
   const py=lerp(600,-40,du)+G.zoom*130;ctx.drawImage(near,0,py);drawParts(G.nparts,py);
