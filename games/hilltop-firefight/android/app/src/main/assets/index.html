@@ -733,7 +733,7 @@ function pause(){if(state==='play'){state='paused';try{AC&&AC.suspend()}catch(e)
 
 /* ---------- update ---------- */
 function update(dt){T+=dt;if(state!=='play'&&state!=='dying')return;const c=G.c;
-  if(state==='dying'){G.dieT+=dt;if(G.dieT>7){gameOver();return}}
+  if(state==='dying'){G.dieT+=dt;if(G.dieT>6){gameOver();return}}
   if(state==='play'&&G.brief>0){G.brief-=dt;return}
   if(state==='play'){G.time-=dt;if(G.time<=0){G.time=0;endLevel();return}}
   G.banner-=dt;if(state==='play'&&G.duckAmt>.8){G.radioT=(G.radioT||1)-dt;if(G.radioT<=0){G.radioT=1.5+R()*3;noise(.25+R()*.4,1800,.06,1,'bandpass');setTimeout(()=>noise(.15,2400,.04,1,'bandpass'),300)}}if(state==='play'){G.windT-=dt;if(G.windT<=0){G.windT=8+R()*10;windGust()}}G.boom=Math.max(0,(G.boom||0)-dt);
@@ -987,7 +987,7 @@ function ejectCase(){const gb=G.gunBase;if(!gb||G.zoom>.5)return;const [bx,by,ro
 function drawCases(dt){for(const c of G.cases){c.life-=dt;c.x+=c.vx*dt;c.y+=c.vy*dt;c.vy+=1300*dt;c.rot+=c.vr*dt;
     ctx.save();ctx.translate(c.x,c.y);ctx.rotate(c.rot);ctx.scale(1.9,1.9);ctx.fillStyle='#c9a24a';ctx.fillRect(-7,-2.6,14,5.2);ctx.fillStyle='#e9cf7e';ctx.fillRect(-6,-2.2,12,1.4);ctx.fillStyle='#8a6a28';ctx.fillRect(5,-2.6,2.5,5.2);ctx.restore()}
   G.cases=G.cases.filter(c=>c.life>0&&c.y<H+40)}
-function creeperPos(c){const e=c.p*c.p*.6+c.p*.4;return[lerp(c.x0,c.x1,e),lerp(c.y0,c.y1,e),lerp(1,2.6,e)]}
+function creeperPos(c){const e=c.p*c.p*.6+c.p*.4;return[lerp(c.x0,c.x1,e),lerp(c.y0,c.y1,e),lerp(.9,1.9,e)]}
 function updCreepers(dt){if(!(SC.creepers||G.level>CAMPAIGN)||(G.surr&&G.surr.phase!=='over'))return;
   G.creepT-=dt;if(G.creepT<=0){G.creepT=(SC.diff?15:10)+R()*8;const sl=slots[Math.floor(R()*slots.length)],dir=sl.x<SC.px?1:-1;
     G.creepers.push({x0:sl.x,y0:sl.by+6,x1:lerp(380,900,R()),y1:H+40,p:0,dur:13+R()*4,dir,t:0,dead:false,skin:['#4f3322','#6f4a31','#9c7350'][Math.floor(R()*3)]})}
@@ -996,8 +996,8 @@ function updCreepers(dt){if(!(SC.creepers||G.level>CAMPAIGN)||(G.surr&&G.surr.ph
   const A=G.ambush;if(A){A.t+=dt;
     if(!A.dead&&!A.fired&&A.t>(SC.diff?1.6:1.0)){A.fired=true;A.flash=.12;noise(.2,2400,.6,3);if(state==='play'){G.hitsTaken++;G.health--;G.hurt=1;G.shake=.5;S.hurt();msg('Shot at close range!','#ff7a6a');if(G.health<=0){state='dying';G.dieT=0;G.zoom=0;G.duck=true;spaceHeld=false;$('touch').classList.add('hide')}}}
     if(A.flash>0)A.flash-=dt;if((A.fired&&A.t>(SC.diff?2.1:1.5))||(A.dead&&A.t>A.deadAt+.7))G.ambush=null}}
-function drawCreepers(){for(const c of G.creepers){const [x,y,sc]=creeperPos(c);ctx.save();ctx.translate(x,y);ctx.scale(sc,sc);ctx.translate(-x,-y);
-    drawWalker({x,dir:c.dir,t:c.t*.6,dead:c.dead,fall:c.dir,skin:c.skin},y-24);ctx.restore()}}
+function drawCreepers(){for(const c of G.creepers){const [x,y,sc]=creeperPos(c);ctx.save();ctx.globalAlpha=c.dead?1:.5+.12*Math.sin(c.t*.7);ctx.translate(x,y);ctx.scale(sc,sc*.78);ctx.translate(-x,-y);
+    drawWalker({x,dir:c.dir,t:c.t*.35,dead:c.dead,fall:c.dir,skin:c.skin},y-24);ctx.fillStyle='rgba(8,12,18,.45)';ctx.fillRect(x-12,y-36,24,52);ctx.restore()}}
 function creeperHit(ax,ay){for(const c of G.creepers){if(c.dead)continue;const [x,y,sc]=creeperPos(c);
     if(Math.abs(ax-x)<10*sc&&ay>y-30*sc&&ay<y+16*sc){c.dead=true;c.t=0;G.kills++;G.totalKills++;G.score+=150;G.levelScore+=150;G.hits++;S.enemyHit();floatText(x,y-34*sc,'CREEPER +150','#ffe38a');
       if(G.kills===30&&!G.surr)startSurrender();return true}}return false}
@@ -1061,7 +1061,7 @@ function drawSmk(dt){if(!G.smk.length)return;ctx.save();G.smk=G.smk.filter(p=>{p
 const ease=t=>{t=clamp(t,0,1);return t*t*(3-2*t)};
 const PR={x:2,y:-4};
 function drawHand(c,blood=true){
-  c.fillStyle='#4b5535';c.fillRect(-34,38,68,300);c.fillStyle='#3d462b';c.fillRect(-34,38,68,10);
+  c.fillStyle='#4b5535';c.fillRect(-34,38,68,1600);c.fillStyle='#3d462b';c.fillRect(-34,38,68,10);
   c.fillStyle='#6e4a30';rr(c,-26,-24,52,68,18);
   [[-19,-24,10,36],[-7,-28,10.5,42],[5,-26,10.5,40],[16,-20,9.5,32]].forEach(([x,y,w,l])=>rr(c,x-w/2,y-l+8,w,l,w/2));
   c.save();c.translate(-24,8);c.rotate(-.95);rr(c,-5.5,-34,11,34,5.5);c.restore();
@@ -1069,32 +1069,41 @@ function drawHand(c,blood=true){
   if(!blood)return;
   c.fillStyle='rgba(135,10,10,.88)';[[-4,0,15,12],[9,12,9,7],[-13,16,8,6],[-9,-46,5,4],[-2,-52,5,4],[10,-50,5,4],[18,-38,4,3],[-20,-38,4,3]].forEach(([x,y,rx,ry])=>ell(c,x,y,rx,ry));
   c.fillStyle='rgba(135,10,10,.7)';c.fillRect(-2,10,4,22)}
-function drawPrint(c){c.fillStyle='rgba(120,6,6,.78)';rr(c,-24,-22,48,62,18);
+function drawHandBack(c){
+  c.fillStyle='#4b5535';c.fillRect(-34,38,68,1600);c.fillStyle='#3d462b';c.fillRect(-34,38,68,10);
+  c.fillStyle='#6a462d';rr(c,-26,-24,52,68,18);
+  [[-19,-24,10,36],[-7,-28,10.5,42],[5,-26,10.5,40],[16,-20,9.5,32]].forEach(([x,y,w,l])=>rr(c,x-w/2,y-l+8,w,l,w/2));
+  c.save();c.translate(24,8);c.rotate(.95);rr(c,-5.5,-34,11,34,5.5);c.restore();
+  c.fillStyle='rgba(225,195,170,.75)';[[-19,-24,36],[-7,-28,42],[5,-26,40],[16,-20,32]].forEach(([x,y,l])=>ell(c,x,y-l+13,3.6,4.6));
+  c.strokeStyle='rgba(60,32,20,.45)';c.lineWidth=1.4;[[-19,-24],[-7,-28],[5,-26],[16,-20]].forEach(([x,y])=>{c.beginPath();c.moveTo(x-3,y-2);c.quadraticCurveTo(x,y-5,x+3,y-2);c.stroke()});
+  c.strokeStyle='rgba(90,55,35,.35)';c.lineWidth=2;[-14,-5,5,14].forEach(x=>{c.beginPath();c.moveTo(x*.6,30);c.lineTo(x,-18);c.stroke()});
+  c.fillStyle='rgba(125,12,10,.8)';ell(c,-6,-16,5,3);ell(c,8,4,3,2.2);ell(c,-12,10,2,1.6);c.fillStyle='rgba(125,12,10,.55)';c.fillRect(-7,-14,2,8)}
+function drawPrint(c){c.fillStyle='rgba(120,6,6,.5)';rr(c,-24,-22,48,62,18);
   [[-19,-22,9,34],[-7,-26,10,40],[5,-24,10,38],[16,-18,9,30]].forEach(([x,y,w,l])=>rr(c,x-w/2,y-l+8,w,l,w/2));
   c.save();c.translate(-23,10);c.rotate(-.95);rr(c,-5,-30,10,30,5);c.restore();
   c.fillStyle='rgba(120,6,6,.6)';c.fillRect(-12,38,5,26);c.fillRect(6,38,4,18);
   c.save();c.globalCompositeOperation='destination-out';c.fillStyle='rgba(0,0,0,.35)';[[-8,6,6,4],[10,18,5,3],[-2,-30,2,6],[12,-34,2,5]].forEach(([x,y,rx,ry])=>ell(c,x,y,rx,ry));c.restore()}
 // camera: fall to the knees, then lean in toward the photo pinned on the trench wall
-function deathCam(){const t=G.dieT,e=ease(t/.8),k=ease((t-.7)/1.3);
+function deathCam(){const t=G.dieT,e=ease(t/.7),k=ease((t-.5)/1.0);
   ctx.translate(W/2,H/2);ctx.rotate((e*.08+Math.sin(t*1.3)*.01)*(1-k*.7));ctx.translate(-W/2,-H/2+e*40*(1-k));
   const fx=700,fy=300+lerp(600,-40,G.duckAmt),Z=lerp(1,3.3,k);
   ctx.translate(lerp(fx,W/2,k),lerp(fy,H/2-20,k));ctx.scale(Z,Z);ctx.translate(-fx,-fy)}
 function drawDeath(){const t=G.dieT;
   ctx.save();deathCam();ctx.translate(700,300+lerp(600,-40,G.duckAmt));ctx.rotate(-.07);
-  const s=.36,touchT=2.9,slideT=3.25,slideEnd=4.5,dy=42*ease((t-slideT)/(slideEnd-slideT));
+  const s=.36,touchT=2.05,slideT=2.35,slideEnd=3.5,dy=42*ease((t-slideT)/(slideEnd-slideT));
   if(t>touchT){
     // smear left as the hand slides down
-    if(t>slideT){for(let yy=0;yy<=dy;yy+=1.1){ctx.save();ctx.globalAlpha=.3*(1-yy/(dy+14));ctx.translate(PR.x,PR.y+yy);ctx.rotate(.12);ctx.scale(s,s);drawPrint(ctx);ctx.restore()}}
+    if(t>slideT){for(let yy=0;yy<=dy;yy+=1.6){ctx.save();ctx.globalAlpha=.16*(1-yy/(dy+14));ctx.translate(PR.x,PR.y+yy);ctx.rotate(.12);ctx.scale(s,s);drawPrint(ctx);ctx.restore()}}
     ctx.save();ctx.globalAlpha=Math.min(1,(t-touchT)*5);ctx.translate(PR.x,PR.y);ctx.rotate(.12);ctx.scale(s,s);drawPrint(ctx);ctx.restore()}
-  if(t>2.0&&t<5.3){let hy;
-    if(t<touchT)hy=lerp(170,0,ease((t-2.0)/(touchT-2.0)));else if(t<slideT)hy=Math.sin((t-touchT)/(slideT-touchT)*Math.PI)*1.2;
+  if(t>1.25&&t<4.3){let hy;
+    if(t<touchT)hy=lerp(170,0,ease((t-1.25)/(touchT-1.25)));else if(t<slideT)hy=Math.sin((t-touchT)/(slideT-touchT)*Math.PI)*1.2;
     else if(t<slideEnd)hy=dy;else hy=dy+lerp(0,160,ease((t-slideEnd)/.8));
-    ctx.save();ctx.translate(PR.x,PR.y+hy);ctx.rotate(.12);ctx.scale(s,s);drawHand(ctx);ctx.restore()}
+    ctx.save();ctx.translate(PR.x,PR.y+hy);ctx.rotate(.12);ctx.scale(s,s);drawHandBack(ctx);ctx.restore()}
   ctx.restore();
   ctx.fillStyle=`rgba(40,0,0,${Math.min(.35,t*.35)})`;ctx.fillRect(0,0,W,H);
   const vg=ctx.createRadialGradient(W/2,H/2,H*.25,W/2,H/2,H*.85);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,`rgba(0,0,0,${Math.min(.75,t*.5)})`);ctx.fillStyle=vg;ctx.fillRect(0,0,W,H);
-  if(t>5.0){ctx.fillStyle=`rgba(0,0,0,${Math.min(.72,(t-5.0)*.7)})`;ctx.fillRect(0,0,W,H)}
-  ctx.globalAlpha=clamp((t-5.4)*1.4,0,1);ctx.fillStyle='#e0483e';ctx.font='900 60px system-ui,sans-serif';ctx.textAlign='center';
+  if(t>4.0){ctx.fillStyle=`rgba(0,0,0,${Math.min(.72,(t-4.0)*.7)})`;ctx.fillRect(0,0,W,H)}
+  ctx.globalAlpha=clamp((t-4.4)*1.4,0,1);ctx.fillStyle='#e0483e';ctx.font='900 60px system-ui,sans-serif';ctx.textAlign='center';
   ctx.fillText('KILLED IN ACTION',W/2,H*.88);ctx.globalAlpha=1;
   if(t>1.5){ctx.fillStyle='rgba(255,255,255,.35)';ctx.font='600 13px system-ui,sans-serif';ctx.fillText('click to continue',W/2,H-14)}ctx.textAlign='left'}
 function heart(x,y,on){ctx.fillStyle=on?'#e25b4a':'rgba(255,255,255,.18)';ctx.beginPath();ctx.moveTo(x,y+6);
