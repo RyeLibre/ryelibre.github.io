@@ -554,7 +554,8 @@ function spawn(opt={}){const c=G.c;if(G.surr&&G.surr.phase!=='over')return;
   const free=slots.map((s,i)=>i).filter(i=>!slots[i].busy&&slots[i].cool<=0);if(!free.length)return;
   const i=(opt.slot!=null&&free.includes(opt.slot))?opt.slot:free[Math.floor(R()*free.length)];
   const decoy=opt.type?opt.type==='decoy':R()<c.decoy;
-  const type=decoy?'decoy':((opt.type==='rpg'||(!opt.type&&R()<c.rpgMan))?'rpg':'soldier');
+  const rpgBusy=!G.angry&&(G.enemies.some(e=>e.type==='rpg'&&e.state!=='dead'&&e.state!=='gone')||G.erockets.length>0);
+  const type=decoy?'decoy':((!rpgBusy&&(opt.type==='rpg'||(!opt.type&&R()<c.rpgMan)))?'rpg':'soldier');
   slots[i].busy=true;
   G.enemies.push({slot:i,type,state:'rising',rise:0,t:0,
     aim:(opt.quick?.45:1)*c.aim*(.7+R()*.6)*(type==='rpg'?1.35:1),shots:0,next:0,dx:(R()-.5)*16,skin:['#4f3322','#5e3d28','#6f4a31','#86603f','#9c7350','#b08560'][Math.floor(R()*6)],bob:R()*6,flash:0,
@@ -562,7 +563,7 @@ function spawn(opt={}){const c=G.c;if(G.surr&&G.surr.phase!=='over')return;
 }
 function freeSlot(e,cool){const s=slots[e.slot];s.busy=false;s.cool=cool}
 function enemyFire(e){const c=G.c;e.flash=.07;
-  if(e.type==='rpg'){e.flash=.15;G.enemyRpgs++;S.whoosh();const g=geo(e);msg('RPG! — DUCK!','#ff6a5a');
+  if(e.type==='rpg'){if(e.rpgFired||(!G.angry&&G.erockets.length))return;e.rpgFired=true;e.flash=.15;G.enemyRpgs++;S.whoosh();const g=geo(e);msg('RPG! — DUCK!','#ff6a5a');
     for(let i=0;i<14;i++)G.parts.push({x:g.x+14,y:g.hy+6,vx:20+R()*60,vy:-R()*30,g:-5,life:1+R()*.8,max:1.8,r:3+R()*4,grow:16,rgb:'190,186,176'});
     G.erockets.push({x0:g.x+6,y0:g.hy+6,xt:lerp(420,860,R()),t:0,dur:1.25});return}
   G.enemyShots++;S.far();const g=geo(e);
