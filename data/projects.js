@@ -27,7 +27,7 @@ const PROJECTS = [
     "title": "Hilltop Firefight",
     "categories": ["Kachin", "Projects"],
     "date": "2026-11",
-    "description": "A front-line shooting game: a Kachin Independence Army post against a Burma Army post on the next hilltop, across six real hilltops — Hpa Lap Bum (Tea Mountain), Alaw Bum, A Len Bum, Hkaya Bum, Lawa Yang and Yaw Yone — in 90-second rounds.\n\n**Play it above:** click to shoot, hold Alt to aim down the sights, scroll down to duck and up to stand, right-click for an RPG, R to reload. Duck at the scope glint, the RPG warning and the artillery whistle.\n\n**Android:** [download the APK](games/hilltop-firefight/download/HilltopFirefight.apk) · [virus scan report](games/hilltop-firefight/download/virus-scan.txt)",
+    "description": "A front-line shooting game: a Kachin Independence Army post against a Burma Army post on the next hilltop, across six real hilltops — Hpa Lap Bum (Tea Mountain), Alaw Bum, A Len Bum, Hkaya Bum, Lawa Yang and Yaw Yone — plus a dark full-moon night where they creep down the hill, in 90-second rounds.\n\n**Play it above:** click to shoot, hold Alt to aim down the sights, scroll down to duck and up to stand, right-click for an RPG, R to reload. Duck at the scope glint, the RPG warning and the artillery whistle.\n\n**Android:** [download the APK](games/hilltop-firefight/download/HilltopFirefight.apk) · [virus scan report](games/hilltop-firefight/download/virus-scan.txt)",
     "link": "",
     "image": "images/hilltop-firefight.jpg",
     "images": [],
