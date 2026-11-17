@@ -14,7 +14,7 @@ canvas{display:block;cursor:none}
 #end h1.kia{color:#ff6a5a}#end h1.held{color:#cfe8a6}
 #end .sub{font-size:22px;color:#e8e4d8;letter-spacing:.12em;text-transform:uppercase;margin:0 0 18px}
 #end .bon{font-size:24px;color:#ffd36b;margin-bottom:12px}#end .bon:empty{display:none}
-#end .ehead{font-family:'Black Ops One',Impact,sans-serif;font-size:min(68px,7vw,9vh);line-height:1.1;color:#f2ede0;margin:0 0 14px;text-shadow:0 3px 16px #000;text-transform:uppercase;letter-spacing:.03em}#end .ehead:empty,#end .enext:empty{display:none}#end .ehead span{white-space:nowrap}#end .ehead b{color:#ffd36b;font-weight:400}
+#end .ehead{font-family:'Black Ops One',Impact,sans-serif;font-size:min(68px,7vw,9vh);line-height:1.1;color:#f2ede0;margin:0 0 14px;text-shadow:0 3px 16px #000;text-transform:uppercase;letter-spacing:.03em}#end .ehead:empty,#end .enext:empty{display:none}#end .ehead span{white-space:nowrap}#end .ehead.multi{font-size:min(46px,4.4vw,6vh);line-height:1.15}#end .enext b{color:#ffd36b;font-weight:400}#end .ehead b{color:#ffd36b;font-weight:400}
 #end .enext{font-family:'Black Ops One',Impact,sans-serif;font-size:min(48px,5vw,6.5vh);color:#cfe8a6;margin:14px 0 10px;text-shadow:0 3px 16px #000;text-transform:uppercase;letter-spacing:.03em}#end #endStats>div{break-inside:avoid}
 #end .bon,#end .stats{font-size:min(34px,3.4vw,4.2vh)!important;line-height:1.3}#end #endStats{columns:2;column-gap:40px;text-align:left;display:inline-block;width:min(900px,94vw)}
 #end .stats{font-size:17px;color:#e2ded2;text-shadow:0 2px 8px #000}
@@ -1483,11 +1483,11 @@ function togglePeek(){if(state!=='play')return;ac();if(G.duck){G.duck=false;G.pe
 function setScope(on){if(on&&!spaceHeld&&state==='play')S.scope();spaceHeld=on}
 
 /* ---------- end states ---------- */
-let END_HEAD='';
+let END_HEAD='',END_FOOT='';
 function showEnd(title,sub,stats,btn,onBtn,menu,kia){prepShare();$('end').querySelector('.card').classList.toggle('big',!!(G&&G.endless));
   let big=title,small=sub||'';const tl=title.toUpperCase();
   if(!(G&&G.endless)){if(kia){big='DIED';small=SC.name}else if(/NOT ENOUGH/.test(tl)){big='OVERTAKEN';small=SC.name+' · not enough kills'}else if(/SURRENDER/.test(tl)){big='SURRENDERED';small=SC.name}else if(/HILL TAKEN/.test(tl)){big='HILL TAKEN';small=sub}else if(/HELD/.test(tl)){big='HELD';small=SC.name+(sub&&!/^Next:/.test(sub)?' · '+sub:'')}}
-  let nextL='';if(/^Next:/.test(sub||'')){nextL=sub;if(small===sub)small=SC.name}$('endHead').innerHTML=END_HEAD;END_HEAD='';$('endNext').textContent=nextL;
+  let nextL='';if(/^Next:/.test(sub||'')){nextL=sub;if(small===sub)small=SC.name}$('endHead').innerHTML=END_HEAD;$('endHead').classList.toggle('multi',/<div>/.test(END_HEAD));END_HEAD='';if(END_FOOT)$('endNext').innerHTML=END_FOOT;else $('endNext').textContent=nextL;END_FOOT='';
   $('endTitle').textContent=big;$('endTitle').className=kia?'kia':(/^(HELD|HILL TAKEN|SURRENDERED|TAKEN|TANK DESTROYED|GHOST|CAMP CLEARED)$/.test(big)?'held':/^(CITY LOST|OVERTAKEN|SPOTTED|RADIOED|OUT OF AMMO|TIME UP)$/.test(big)?'kia':'');$('endSub').textContent=small;
   const parts=String(stats).split('<br>'),isB=x=>/\+\d|burn|DOMINAT|destroy|Bonus/i.test(x);$('endBon').innerHTML=parts.filter(isB).join('<br>');$('endStats').innerHTML=parts.filter(x=>!isB(x)&&x.trim()).flatMap(x=>x.split(/\s*&nbsp;·&nbsp;\s*/)).map(x=>'<div>'+x+'</div>').join('');
   const steps=['endTitle','endSub','endHead','endBon','endStats','endNext','share','endBtn','endBtn2','endBtn3'];steps.forEach(id=>{$(id).classList.add('step');$(id).classList.remove('in')});
@@ -1517,9 +1517,9 @@ function gameOver(){state='over';stopHeliSnd();track((G.endless?'endless-':'')+'
     const f=x=>Math.floor(x/60)+':'+String(x%60).padStart(2,'0'),acc=G.shots?Math.round(100*G.hits/G.shots):0;
     showEnd('KILLED IN ACTION',`Endless · ${SC.name}`,`You survived <b>${f(t)}</b>${nb?' — <b>new best!</b>':` &nbsp;·&nbsp; best <b>${f(b)}</b>`}<br>Kills <b>${G.kills}</b> &nbsp;·&nbsp; Accuracy <b>${acc}%</b><br>Score <b>${G.score}</b>`,'TRY AGAIN',()=>{const l=G.level;newGame(l)},true,true);return}stopAmbience();G.arty.forEach(a=>{try{a.wh&&a.wh.stop()}catch(e){}});G.drones.forEach(stopBuzz);saveBest();
   showEnd('KILLED IN ACTION',`Level ${G.level} · ${SC.name}`,
-    `Kills this level <b>${G.kills}</b> / ${G.c.quota}<br>`+roundStats()+`Total kills <b>${G.totalKills}</b><br>Final score <b>${G.score}</b><br>Best <b>${best}</b>`,'REPLAY LEVEL',()=>{G.score=Math.max(0,G.score-G.levelScore);G.health=5;startLevel()},true,true);
+    (END_HEAD=`<div>Kills this level <b>${G.kills}</b> / ${G.c.quota}</div><div><b>${G.preempt}</b> before they fired</div><div>Hit <b>${G.hitsTaken}</b> times of <b>${G.enemyShots}</b> shots fired</div>`,END_FOOT=`<div>Final score <b>${G.score}</b></div><div>Best <b>${best}</b></div>`,roundStats(true)),'REPLAY LEVEL',()=>{G.score=Math.max(0,G.score-G.levelScore);G.health=5;startLevel()},true,true);
   if(G.level>1){$('endBtn3').classList.remove('hide');$('endBtn3').onclick=()=>newGame(1)}}
-function roundStats(){return (G.ricos?`Helmet ricochets <b>${G.ricos}</b><br>`:'')+`Killed before they fired <b>${G.preempt}</b><br>Decoys shot <b>${G.decoysHit}</b>${G.decoysHit?` (−${G.decoysHit*50})`:''}<br>Enemy shots fired <b>${G.enemyShots}</b> &nbsp;·&nbsp; Times you were hit <b>${G.hitsTaken}</b><br>`+
+function roundStats(top){return (G.ricos?`Helmet ricochets <b>${G.ricos}</b><br>`:'')+(top?'':`Killed before they fired <b>${G.preempt}</b><br>`)+`Decoys shot <b>${G.decoysHit}</b>${G.decoysHit?` (−${G.decoysHit*50})`:''}<br>`+(top?'':`Enemy shots fired <b>${G.enemyShots}</b> &nbsp;·&nbsp; Times you were hit <b>${G.hitsTaken}</b><br>`)+
   (G.enemyRpgs?`Enemy RPGs fired <b>${G.enemyRpgs}</b> &nbsp;·&nbsp; RPG hits on you <b>${G.rpgHits}</b><br>`:'')+
   (G.smokerKills?`Smokers hit with RPG <b>${G.smokerKills}</b> (+${G.smokerKills*250})<br>`:'')+
   (G.gapKills?`Shot through the gap <b>${G.gapKills}</b> (+${G.gapKills*200}, +${G.gapKills} RPG)<br>`:'')+
