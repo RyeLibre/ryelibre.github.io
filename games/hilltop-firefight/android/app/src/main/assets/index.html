@@ -159,6 +159,7 @@ body.rot #stage{inset:auto;top:0;left:100vw;width:100vh;height:100vw;transform-o
   <div class="stats" id="endStats"></div>
   <div id="share" class="share"><div class="shtl">🏆 Add to the Hall of Fame?</div><div class="shrow"><input id="shName" maxlength="12" placeholder="name or initials"><button id="shBtn">SHARE SCORE</button></div><div id="shMsg" class="sumsg"></div></div>
   <button id="endBtn">NEXT LEVEL</button>
+  <button id="endBtn3" class="alt hide">START OVER</button>
   <button id="endBtn2" class="alt hide">MAIN MENU</button>
 </div></div>
 
@@ -1448,9 +1449,9 @@ function showEnd(title,sub,stats,btn,onBtn,menu,kia){prepShare();$('end').queryS
   if(!(G&&G.endless)){if(kia){big='DIED';small=SC.name}else if(/NOT ENOUGH/.test(tl)){big='OVERTAKEN';small=SC.name+' · not enough kills'}else if(/SURRENDER/.test(tl)){big='SURRENDERED';small=SC.name}else if(/HILL TAKEN/.test(tl)){big='HILL TAKEN';small=sub}else if(/HELD/.test(tl)){big='HELD';small=SC.name+(sub?' · '+sub:'')}}
   $('endTitle').textContent=big;$('endTitle').className=kia?'kia':(/^(HELD|HILL TAKEN|SURRENDERED|TAKEN|TANK DESTROYED|GHOST|CAMP CLEARED)$/.test(big)?'held':/^(CITY LOST|OVERTAKEN|SPOTTED|RADIOED|OUT OF AMMO|TIME UP)$/.test(big)?'kia':'');$('endSub').textContent=small;
   const parts=String(stats).split('<br>'),isB=x=>/\+\d|burn|DOMINAT|destroy|Bonus/i.test(x);$('endBon').innerHTML=parts.filter(isB).join('<br>');$('endStats').innerHTML=parts.filter(x=>!isB(x)).join('<br>');
-  const steps=['endTitle','endSub','endBon','endStats','share','endBtn','endBtn2'];steps.forEach(id=>{$(id).classList.add('step');$(id).classList.remove('in')});
-  [0,600,1500,2600,3600,4200,4200].forEach((d,i)=>setTimeout(()=>$(steps[i]).classList.add('in'),d+60));
-  $('endBtn').textContent=btn;$('endBtn').onclick=onBtn;
+  const steps=['endTitle','endSub','endBon','endStats','share','endBtn','endBtn2','endBtn3'];steps.forEach(id=>{$(id).classList.add('step');$(id).classList.remove('in')});
+  [0,600,1500,2600,3600,4200,4200,4200].forEach((d,i)=>setTimeout(()=>$(steps[i]).classList.add('in'),d+60));
+  $('endBtn').textContent=btn;$('endBtn').onclick=onBtn;$('endBtn3').classList.add('hide');
   $('endBtn2').classList.toggle('hide',!menu);$('endBtn2').onclick=()=>{$('end').classList.add('hide');$('title').classList.remove('hide');showBest();hofLoad();state='title';startAmbience()};
   $('end').classList.remove('hide')}
 function endLevel(){state='end';stopHeliSnd();stopAmbience();G.arty.forEach(a=>{try{a.wh&&a.wh.stop()}catch(e){}});G.drones.forEach(stopBuzz);$('touch').classList.add('hide');spaceHeld=false;
@@ -1474,7 +1475,8 @@ function gameOver(){state='over';stopHeliSnd();track((G.endless?'endless-':'')+'
     const f=x=>Math.floor(x/60)+':'+String(x%60).padStart(2,'0'),acc=G.shots?Math.round(100*G.hits/G.shots):0;
     showEnd('KILLED IN ACTION',`Endless · ${SC.name}`,`You survived <b>${f(t)}</b>${nb?' — <b>new best!</b>':` &nbsp;·&nbsp; best <b>${f(b)}</b>`}<br>Kills <b>${G.kills}</b> &nbsp;·&nbsp; Accuracy <b>${acc}%</b><br>Score <b>${G.score}</b>`,'TRY AGAIN',()=>{const l=G.level;newGame(l)},true,true);return}stopAmbience();G.arty.forEach(a=>{try{a.wh&&a.wh.stop()}catch(e){}});G.drones.forEach(stopBuzz);saveBest();
   showEnd('KILLED IN ACTION',`Level ${G.level} · ${SC.name}`,
-    `Kills this level <b>${G.kills}</b> / ${G.c.quota}<br>`+roundStats()+`Total kills <b>${G.totalKills}</b><br>Final score <b>${G.score}</b><br>Best <b>${best}</b>`,'PLAY AGAIN',newGame,true,true)}
+    `Kills this level <b>${G.kills}</b> / ${G.c.quota}<br>`+roundStats()+`Total kills <b>${G.totalKills}</b><br>Final score <b>${G.score}</b><br>Best <b>${best}</b>`,'REPLAY LEVEL',()=>{G.score=Math.max(0,G.score-G.levelScore);G.health=5;startLevel()},true,true);
+  if(G.level>1){$('endBtn3').classList.remove('hide');$('endBtn3').onclick=()=>newGame(1)}}
 function roundStats(){return (G.overkill?`150% kills — dominating <b>+1000</b><br>`:'')+(G.ricos?`Helmet ricochets <b>${G.ricos}</b><br>`:'')+`Killed before they fired <b>${G.preempt}</b><br>Decoys shot <b>${G.decoysHit}</b>${G.decoysHit?` (−${G.decoysHit*50})`:''}<br>Enemy shots fired <b>${G.enemyShots}</b> &nbsp;·&nbsp; Times you were hit <b>${G.hitsTaken}</b><br>`+
   (G.enemyRpgs?`Enemy RPGs fired <b>${G.enemyRpgs}</b> &nbsp;·&nbsp; RPG hits on you <b>${G.rpgHits}</b><br>`:'')+
   (G.smokerKills?`Smokers hit with RPG <b>${G.smokerKills}</b> (+${G.smokerKills*250})<br>`:'')+
