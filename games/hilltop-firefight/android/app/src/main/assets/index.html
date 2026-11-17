@@ -1225,7 +1225,7 @@ function leafHole(x,y){const g=fgc;g.save();g.setTransform(1,0,0,1,PADX,0);const
   let cg=g.createRadialGradient(x,y,4,x,y,r0);cg.addColorStop(0,'#120c06');cg.addColorStop(.45,'#2e2014');cg.addColorStop(.8,'#4a3420');cg.addColorStop(1,'rgba(74,52,32,0)');g.fillStyle=cg;g.beginPath();g.ellipse(x,y,r0*1.05,r0*.6,0,0,Math.PI*2);g.fill();
   for(let i=0;i<40;i++){const a=R()*Math.PI*2,d=r0*(.7+R()*.6);g.fillStyle=R()<.5?'#2a3a18':'#1a1410';g.save();g.translate(x+Math.cos(a)*d,y+Math.sin(a)*d*.55);g.rotate(R()*6);g.fillRect(-6,-2,12,4);g.restore()}
   g.strokeStyle='rgba(20,12,6,.7)';g.lineWidth=2;for(let i=0;i<8;i++){const a=R()*Math.PI*2;g.beginPath();g.moveTo(x+Math.cos(a)*20,y+Math.sin(a)*10);g.lineTo(x+Math.cos(a)*r0*.9,y+Math.sin(a)*r0*.5);g.stroke()}g.restore()}
-function explode(x,y){S.boom();G.shake=.7;if(SC.holes&&y>300)leafHole(x,y);
+function explode(x,y){S.boom();G.shake=.7;if(SC.holes&&y>150){leafHole(x,y);for(const s2 of slots)if(!s2.blown&&Math.hypot(s2.x-x,(s2.by-y)*1.4)<120){s2.blown=true;floatText(s2.x,s2.by-60,'HOLE BLOWN OPEN','#ffb347')}}
   for(let i=0;i<26;i++)G.parts.push({x,y,vx:(R()-.5)*260,vy:-R()*220,g:120,life:.35+R()*.3,max:.65,r:4+R()*7,grow:30,rgb:R()<.5?'255,190,80':'255,120,40',glow:1});
   for(let i=0;i<34;i++)G.parts.push({x:x+(R()-.5)*30,y,vx:(R()-.5)*120,vy:-30-R()*90,g:-8,life:1.2+R()*1.2,max:2.4,r:6+R()*10,grow:26,rgb:'70,66,58'});
   dust(x,y,20,'105,80,50');G.boom=.5;
@@ -1539,7 +1539,7 @@ function update(dt){T+=dt;if(DEMO)demoUpdate(dt);if(state!=='play'&&state!=='dyi
       else if(e.type==='decoy'){if(e.t>e.life)e.state='lowering'}
       else{if(e.t>=e.aim&&e.shots<c.burst&&e.t>=e.next){enemyFire(e);e.shots++;e.next=e.t+.45}
         if(e.shots>=(e.type==='rpg'?1:c.burst)&&e.t>e.next+.1)e.state='lowering'}}
-    else if(e.state==='lowering'){e.rise-=dt*4.5;if(e.rise<=0){e.state='gone';freeSlot(e,.7+R()*1.2)}}
+    else if(e.state==='lowering'){const bl=slots[e.slot]&&slots[e.slot].blown;if(bl&&e.rise<=.45&&e.expT===undefined)e.expT=1.8;if(e.expT>0){e.expT-=dt;e.rise=.45}else e.rise-=dt*4.5;if(e.rise<=0){e.state='gone';freeSlot(e,.7+R()*1.2)}}
     else if(e.state==='dead'){e.rise=Math.max(0,e.rise-dt*1.2);if(e.t>1.1){e.state='gone';freeSlot(e,2.5)}}}
   G.enemies=G.enemies.filter(e=>e.state!=='gone');
   if(G.flagBurn>0&&G.flagBurn<1){G.flagBurn=Math.min(1,G.flagBurn+dt/3.2);const fx=SC.px+41+34*(1-G.flagBurn),fy=baseY(SC.px)-85;
@@ -1636,11 +1636,12 @@ function drawFarInner(){
   if(SC.station){for(const e of G.enemies){const s2=slots[e.slot];if(!s2)continue;ctx.save();ctx.beginPath();ctx.rect(s2.x-19,s2.by-39,38,38);ctx.clip();drawEnemy(e);ctx.restore()}
     for(const s2 of slots){ctx.fillStyle='#d9d2bc';ctx.fillRect(s2.x-22,s2.by-1,44,4)}}
   else if(SC.holes){for(const s2 of slots){let sd=s2.x;const rn=()=>{sd=(sd*9301+49297)%233280;return sd/233280};
+      if(s2.blown){ctx.fillStyle='#3a2414';ctx.beginPath();for(let i=0;i<16;i++){const a=i/16*Math.PI*2,r=(62+rn()*20);ctx.lineTo(s2.x+Math.cos(a)*r,s2.by-14+Math.sin(a)*r*.62)}ctx.fill();ctx.fillStyle='#120a06';ctx.beginPath();ctx.ellipse(s2.x,s2.by-16,34,24,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#050302';ctx.beginPath();ctx.ellipse(s2.x+3,s2.by-12,24,16,0,0,Math.PI*2);ctx.fill();continue}
       ctx.fillStyle='#8a4f2c';ctx.beginPath();for(let i=0;i<14;i++){const a=i/14*Math.PI*2,r=(34+rn()*16);ctx.lineTo(s2.x+Math.cos(a)*r*.9,s2.by-14+Math.sin(a)*r*.8+(Math.sin(a)>0?14:0))}ctx.fill();
       ctx.fillStyle='rgba(60,30,14,.5)';ctx.beginPath();ctx.ellipse(s2.x+3,s2.by-12,20,16,0,0,Math.PI*2);ctx.fill();
       ctx.fillStyle='#120a06';ctx.beginPath();ctx.ellipse(s2.x,s2.by-20,14,15,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#050302';ctx.beginPath();ctx.ellipse(s2.x+2,s2.by-17,9,10,0,0,Math.PI*2);ctx.fill()}
-    for(const e of G.enemies)if(slots[e.slot]){const s2=slots[e.slot];ctx.save();ctx.beginPath();ctx.ellipse(s2.x,s2.by-24,15,22,0,0,Math.PI*2);ctx.clip();drawEnemy(e);ctx.restore()}
-    for(const s2 of slots){ctx.fillStyle='#9a5a32';ctx.beginPath();ctx.ellipse(s2.x,s2.by-5,17,5,0,0,Math.PI);ctx.fill();
+    for(const e of G.enemies)if(slots[e.slot]){const s2=slots[e.slot];ctx.save();ctx.beginPath();if(s2.blown)ctx.rect(s2.x-60,-200,120,s2.by+196);else ctx.ellipse(s2.x,s2.by-24,15,22,0,0,Math.PI*2);ctx.clip();drawEnemy(e);ctx.restore()}
+    for(const s2 of slots){if(s2.blown)continue;ctx.fillStyle='#9a5a32';ctx.beginPath();ctx.ellipse(s2.x,s2.by-5,17,5,0,0,Math.PI);ctx.fill();
       ctx.strokeStyle='rgba(40,70,25,.9)';ctx.lineWidth=2;for(let i=0;i<5;i++){const x=s2.x-16+i*8;ctx.beginPath();ctx.moveTo(x,s2.by-2);ctx.lineTo(x+(i%2?4:-3),s2.by-8-(i%3)*3);ctx.stroke()}}}
   else if(SC.foxholes){for(const s2 of slots)if(s2.fox){ctx.fillStyle='rgba(20,14,8,.85)';ell(ctx,s2.x,s2.by-3,17,4.5)}
     for(const e of G.enemies)if(slots[e.slot]&&slots[e.slot].fox)drawEnemy(e);
