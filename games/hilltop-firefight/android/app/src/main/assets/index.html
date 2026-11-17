@@ -295,7 +295,7 @@ function makeSlots(){if(SC.sniper){slots=[{x:-9999,by:-9999,busy:true,cool:999,f
   if(SC.holes){slots=HOLES.map(([x,y])=>({x,by:y+22,busy:false,cool:0,fox:true,hole:true}));return}const L=[],Rt=[];const lo=RING?SC.px-(RING.L-40):205,hi=RING?SC.px+(RING.R-40):1075;for(let i=0;i<5;i++){L.push(lerp(lo,SC.px-95,i/4));Rt.push(lerp(SC.px+95,hi,i/4))}
   slots=[...L,...Rt].map(x=>({x,by:baseY(x),busy:false,cool:0}));
   // forward single foxholes down the slope (Hkaya Bum)
-  if(SC.river)[230,330,430,520,610,700,790,880,980,1060].forEach(x=>slots.push({x,by:474+Math.sin(x*.05)*4,busy:false,cool:0,fox:true,brush:true}));
+  if(SC.river)[230,330,430,520,610,700,790,880,980,1060].forEach(x=>slots.push({x,by:430+Math.sin(x*.05)*4,busy:false,cool:0,fox:true,brush:true}));
   if(SC.ridge)[760,805,850,895,940].forEach(x=>slots.push({x,by:ridgeLine(x)+6,busy:false,cool:0,fox:true,ridge:true,sc:.62}));
   if(SC.foxholes)[[300,70],[430,105],[560,62],[720,98],[850,66],[985,92]].forEach(([x,d])=>slots.push({x,by:baseY(x)+d,busy:false,cool:0,fox:true}))}
 
@@ -1554,7 +1554,7 @@ function update(dt){T+=dt;if(DEMO)demoUpdate(dt);if(state!=='play'&&state!=='dyi
   G.rockets=G.rockets.filter(r=>{r.t+=dt;const p=r.t/r.dur;
     const x=lerp(r.sx,r.tx,p),y=lerp(r.sy,r.ty,p)-Math.sin(Math.PI*p)*60;
     G.parts.push({x,y,vx:(R()-.5)*10,vy:-10,g:0,life:.7,max:.7,r:3+4*(1-p),grow:14,rgb:'200,196,186'});
-    if(p>=1){if(SC.river&&r.ty>440&&r.ty<505&&!G.rburn.some(b=>r.tx>b.x0&&r.tx<b.x1)){G.rburn.push({x0:r.tx-90,x1:r.tx+90,t:0});msg('Bushes burnt — their trench is exposed','#ffb347')}
+    if(p>=1){if(SC.river&&r.ty>396&&r.ty<462&&!G.rburn.some(b=>r.tx>b.x0&&r.tx<b.x1)){G.rburn.push({x0:r.tx-90,x1:r.tx+90,t:0});msg('Bushes burnt — their trench is exposed','#ffb347')}
       if(SC.laiza&&G.massWave&&!G.retreated&&Math.abs(r.tx-G.massWave.x)<200&&r.ty>300)laizaRetreat();
       if(tankShot(r.tx,r.ty,true)){explode(r.tx,r.ty)}else if(portraitShot(r.tx,r.ty,true)){explodeQuiet(r.tx,r.ty);S.boom()}else if(pagodaRocket(r.tx,r.ty)){explode(r.tx,r.ty)}else if(machHit(r.tx,r.ty)){explode(r.tx,r.ty)}else if(stationFlagHit(r.tx,r.ty)){explodeQuiet(r.tx,r.ty);S.boom()}else if(cliffRocket(r.tx,r.ty)){explodeQuiet(r.tx,r.ty);S.boom()}else if(G.ships&&shipRocket(r.tx,r.ty)){explodeQuiet(r.tx,r.ty);S.boom()}else if(!heliRocket(r.tx,r.ty))explode(r.tx,r.ty);else explodeQuiet(r.tx,r.ty);return false}r.x=x;r.y=y;r.p=p;return true});
   if(SC.night){G.flareT-=dt;if(G.flareT<=0){G.flareT=SC.bigMoon?20+R()*8:12+R()*6;S.flare();G.flares.push({x:lerp(250,1030,R()),y:90+R()*40,life:6.5,max:6.5,sway:R()*6})}
@@ -1642,9 +1642,9 @@ function drawFarInner(){
     for(const s2 of slots)if(s2.fox){ctx.fillStyle='#6a4a2c';ctx.beginPath();ctx.ellipse(s2.x,s2.by-1,26,7,0,Math.PI,0);ctx.fill();ctx.fillStyle='#4e3520';ctx.fillRect(s2.x-26,s2.by-1,52,4);
       ctx.fillStyle='rgba(230,180,130,.25)';ctx.beginPath();ctx.ellipse(s2.x-4,s2.by-5,16,2.5,0,Math.PI,0);ctx.fill()}}
   if(SC.river){for(const e of G.enemies)if(slots[e.slot]&&slots[e.slot].brush)drawEnemy(e);
-    for(const b of G.rburn||[]){const y0=470;ctx.fillStyle='#5a4a32';ctx.fillRect(b.x0,y0+4,b.x1-b.x0,22);ctx.fillStyle='#3a2e1e';ctx.fillRect(b.x0,y0+2,b.x1-b.x0,5);for(let x=b.x0+6;x<b.x1;x+=13){ctx.fillStyle=(x/13|0)%2?'#9a8a62':'#8a7a54';rr(ctx,x-6,y0-2,13,7,3)}
+    for(const b of G.rburn||[]){const y0=426;ctx.fillStyle='#5a4a32';ctx.fillRect(b.x0,y0+4,b.x1-b.x0,22);ctx.fillStyle='#3a2e1e';ctx.fillRect(b.x0,y0+2,b.x1-b.x0,5);for(let x=b.x0+6;x<b.x1;x+=13){ctx.fillStyle=(x/13|0)%2?'#9a8a62':'#8a7a54';rr(ctx,x-6,y0-2,13,7,3)}
       ctx.fillStyle='#1a1612';for(let x=b.x0+4;x<b.x1;x+=17){ctx.fillRect(x,y0-10-((x*7)%9),2,12)}b.t=(b.t||0)+FDT;if(b.t<9&&R()<.3)G.parts.push({x:lerp(b.x0,b.x1,R()),y:y0-6,vx:4,vy:-20,g:-4,life:2.2,max:2.2,r:4,grow:20,rgb:'60,56,50'})}
-    for(let x=180;x<1110;x+=26){if((G.rburn||[]).some(b=>x>b.x0-8&&x<b.x1+8))continue;const y=474+Math.sin(x*.05)*4;for(let k=0;k<4;k++){const bx=x+((k*37+x)%23)-11,by=y+2-((k*13+x)%9);ctx.fillStyle=['#2c3d1c','#36491f','#405526','#25331a'][k];ctx.beginPath();ctx.ellipse(bx,by,15,10,0,0,Math.PI*2);ctx.fill()}
+    for(let x=180;x<1110;x+=26){if((G.rburn||[]).some(b=>x>b.x0-8&&x<b.x1+8))continue;const y=430+Math.sin(x*.05)*4;for(let k=0;k<4;k++){const bx=x+((k*37+x)%23)-11,by=y+2-((k*13+x)%9);ctx.fillStyle=['#2c3d1c','#36491f','#405526','#25331a'][k];ctx.beginPath();ctx.ellipse(bx,by,15,10,0,0,Math.PI*2);ctx.fill()}
       ctx.strokeStyle='#4a5e2a';ctx.lineWidth=1.5;for(let k=0;k<3;k++){ctx.beginPath();ctx.moveTo(x+k*7-7,y+8);ctx.lineTo(x+k*7-9+Math.sin(T*1.5+x)*2,y-14-k*3);ctx.stroke()}}
     ctx.save();ctx.beginPath();ctx.rect(-300,500,W+600,85+300);ctx.clip();
     for(let i=0;i<70;i++){const y=500+8+((i*37)%(85+60)),sp=30+(i%5)*10,x=((i*151.7+T*sp)%(W+400))-200,l=30+(i%4)*18;ctx.strokeStyle=`rgba(225,240,240,${.12+(i%3)*.06})`;ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(x,y);ctx.quadraticCurveTo(x+l/2,y-2,x+l,y);ctx.stroke()}
@@ -1917,10 +1917,10 @@ function drawStationFlag(){const fb=G.sflag||0,x=677,y=62,w=58,h=38;if(fb>=1)ret
   if(fb>0){const fx=x+w*(1-fb);for(let i=0;i<3;i++){ctx.fillStyle=`rgba(255,${120+i*40},40,.8)`;circ(ctx,fx+(R()-.5)*6,y+R()*h,4+R()*4)}}}
 function stationFlagHit(x,y){if(!SC.station||G.sflag)return false;if(x<670||x>745||y<50||y>110)return false;G.sflag=.001;G.score+=500;G.levelScore+=500;G.flagsBurned++;msg('THEIR FLAG IS BURNING!  +500','#ffb347');floatText(705,50,'+500','#ffb347');return true}
 function shipScale(y){return .55+(y-300)/300*.6}
-function spawnShip(o){o=o||{};const lanes=[312,370,440],y=(o.y||lanes[Math.floor(R()*3)])+(o.y?0:(R()-.5)*14);const dir=-1,sc=o.small?.62:shipScale(y)*(o.gun?1.25:1),len=(o.gun?230:o.small?110:150+R()*60)*sc;
+function spawnShip(o){o=o||{};const lanes=[312,370,440],y=(o.y||lanes[Math.floor(R()*3)])+(o.y?0:(R()-.5)*14);const dir=-1,sc=o.small?1.4:shipScale(y)*(o.gun?1.25:1),len=(o.gun?230:o.small?170:150+R()*60)*sc;
   const crew=o.gun?[]:(o.crew===3?[-.3,-.05,.2]:[-.3,-.05,.2].slice(0,o.crew||3));
   const sh={x:o.x!==undefined?o.x:W+len*.6,y,dir,sc,len,v:(o.gun?20:24+R()*12)*sc,state:'sail',t:0,tilt:0,sink:0,gun:!!o.gun,burst:null,bT:2.5,acc:o.acc||1,
-    guns:crew.map(f=>({dx:f*len,up:o.steady?1:0,t:o.steady?4:R()*2.5,mode:o.steady?'up':'down',dead:false,flash:0,steady:!!o.steady}))};if(o.small)sh.v*=3;G.ships.push(sh);return sh}
+    guns:crew.map(f=>({dx:f*len,up:o.steady?1:0,t:o.steady?4:R()*2.5,mode:o.steady?'up':'down',dead:false,flash:0,steady:!!o.steady}))};if(o.small)sh.v*=2.2;G.ships.push(sh);return sh}
 function fleetMsg(t,c){msg(t,c||'#ffb347')}
 function updFleet(dt){const F=G.fw;if(!F||state!=='play')return;F.t+=dt;const sailing=G.ships.filter(s=>s.state==='sail').length;
   // distant rifle fire from the far bank; at most 2 of every ~45 connect
@@ -1950,7 +1950,7 @@ function updMortar(dt){if(!SC.mortar||state!=='play'||G.demo)return;G.mortT-=dt;
   const live=G.enemies.filter(e=>e.state!=='dead'&&e.state!=='gone'&&e.type!=='decoy'&&e.rise>.3&&slots[e.slot]);const hit=live.length&&R()<1/3?live[Math.floor(R()*live.length)]:null;
   setTimeout(()=>{if(!G||state!=='play')return;let x,y;if(hit&&hit.state!=='dead'){const g=geo(hit);x=g.x;y=g.lip;killEnemy(hit,false,true);floatText(x,y-50,'MORTAR','#ffcf7a')}else{const sl=slots[Math.floor(R()*slots.length)];x=sl.x+(R()-.5)*160;y=sl.by-R()*40}
     explodeQuiet(x,y);noise(.6,300,.35,2);for(let i=0;i<22;i++)G.parts.push({x,y,vx:(R()-.5)*160,vy:-80-R()*200,g:260,life:1.2,max:1.2,r:2+R()*4,grow:10,rgb:'120,96,66'})},1700+R()*600)}
-function updRiverBoats(dt){if(!SC.river||state!=='play'||G.demo)return;G.rboatT-=dt;if(G.rboatT<=0&&(G.rboats||0)<2){G.rboats=(G.rboats||0)+1;G.rboatT=30;const sh=spawnShip({crew:2,y:546,acc:.5,small:1});msg('Small boat on the river!','#ffb347')}}
+function updRiverBoats(dt){if(!SC.river||state!=='play'||G.demo)return;G.rboatT-=dt;if(G.rboatT<=0&&(G.rboats||0)<2){G.rboats=2;spawnShip({crew:2,y:540,acc:.5,small:1});spawnShip({crew:2,y:572,acc:.5,small:1,x:W+520});msg('Two boats on the river!','#ffb347')}}
 function updShips(dt){updMortar(dt);updRiverBoats(dt);if(SC.river){updShipList(dt);return}if(!SC.flotilla)return;updFleet(dt);updShipList(dt)}
 function updShipList(dt){
   G.ships=G.ships.filter(sh=>{sh.t+=dt;
