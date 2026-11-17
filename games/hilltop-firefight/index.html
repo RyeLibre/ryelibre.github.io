@@ -295,7 +295,7 @@ function makeSlots(){if(SC.sniper){slots=[{x:-9999,by:-9999,busy:true,cool:999,f
     STK4.forEach((st,j)=>{const sc=[.38,.5,.7,.95,.95][j];XS[j].forEach(x=>slots.push({x,by:stkTop(st)+st[3]*.9,busy:false,cool:0,fox:true,ridge:true,sc}))});[840,950].forEach(x=>slots.push({x,by:572,busy:false,cool:0,fox:true,ridge:true,clip:true,sc:1}));return}
   if(SC.rare===3){const q=RARE_SL[3];slots=q.hill.map(([x,y])=>({x,by:y,busy:false,cool:0,fox:true,ridge:true,sc:.45}));q.pond.forEach(i=>{const [x,y,r]=PONDS3[i];slots.push({x:x+r*.55,by:y-r*.18,busy:false,cool:0,fox:true,ridge:true,clip:true,sc:.5+r/150})});return}
   if(SC.station){slots=WIN.map(([x,y])=>({x,by:y+20,busy:false,cool:0,fox:true,win:true}));return}
-  if(SC.jade){slots=[];[[JA,.55,[480,600,720,860,1000]],[JB,.75,[140,300,460,610]],[JD,1,[110,290,470,640]]].forEach(([f,sc,xs])=>xs.forEach(x=>slots.push({x,by:f(x)+5*sc,busy:false,cool:0,fox:true,ridge:true,sc})));[860,960,1060].forEach(x=>slots.push({x,by:JC(x)+5,busy:false,cool:0,fox:true,ridge:true,sc:.9}));return}
+  if(SC.jade){slots=[];[[JA,.55,[500,640,780,920]],[JB,.75,[150,320,500,660]],[JD,1,[130,300,480,660]]].forEach(([f,sc,xs])=>xs.forEach(x=>slots.push({x,by:f(x)+8*sc,busy:false,cool:0,fox:true,ridge:true,clip:true,sc,rock:true})));return}
   if(SC.holes){slots=HOLES.map(([x,y])=>({x,by:y+22,busy:false,cool:0,fox:true,hole:true}));return}const L=[],Rt=[];const lo=RING?SC.px-(RING.L-40):205,hi=RING?SC.px+(RING.R-40):1075;for(let i=0;i<5;i++){L.push(lerp(lo,SC.px-95,i/4));Rt.push(lerp(SC.px+95,hi,i/4))}
   slots=[...L,...Rt].map(x=>({x,by:baseY(x),busy:false,cool:0}));
   // forward single foxholes down the slope (Hkaya Bum)
@@ -1636,6 +1636,7 @@ function drawFar(){const k=distK();if(k!==1){ctx.fillStyle=SC.sky[0];ctx.fillRec
 function drawFarInner(){
   ctx.drawImage(bg,-PADX,0);drawHerd(false);ctx.drawImage(bgh,-PADX,0);if(SC.jade&&CLIFF)drawCliff();if(SC.jade)drawJadeStones();if(SC.rare){drawMachines();drawLogFire()}if(SC.station){if(G.sflag>0&&G.sflag<1){G.sflag=Math.min(1,G.sflag+FDT/3.2);if(R()<.5)G.parts.push({x:677+58*(1-G.sflag),y:70,vx:6,vy:-25,g:-4,life:1.6,max:1.6,r:3,grow:22,rgb:'60,56,52'})}drawStationFlag()}if(SC.flotilla){ctx.save();for(let i=0;i<60;i++){const y=250+((i*37)%360),sp=14+(i%5)*6,x=((i*151.7+T*sp)%(W+400))-200,l=30+(i%4)*20;ctx.strokeStyle=`rgba(230,235,225,${.1+(i%3)*.05})`;ctx.lineWidth=1.3;ctx.beginPath();ctx.moveTo(x,y);ctx.quadraticCurveTo(x+l/2,y-2,x+l,y);ctx.stroke()}ctx.restore();drawShips()}drawMorts();if(SC.flotilla)drawPagoda();if(SC.port)drawPortrait();if(SC.tank)drawTank();if(SC.mjy)drawCity();if(SC.drive)drawDrive();if(G.banks)drawBanks();
   for(const e of G.enemies)if(!slots[e.slot]||!slots[e.slot].fox)drawEnemy(e);else if(slots[e.slot].ridge){const s3=slots[e.slot];if(s3.clip){ctx.save();ctx.beginPath();ctx.rect(s3.x-80,0,160,s3.by);ctx.clip();drawScaled(e,drawEnemy);ctx.restore()}else drawScaled(e,drawEnemy)}
+  if(SC.jade)drawJadeCover();
   ctx.drawImage(fg,-PADX,0);drawHerd(true);if(G.banks)drawAvalanche();
   if(SC.station){for(const e of G.enemies){const s2=slots[e.slot];if(!s2)continue;ctx.save();ctx.beginPath();ctx.rect(s2.x-19,s2.by-39,38,38);ctx.clip();drawEnemy(e);ctx.restore()}
     for(const s2 of slots){ctx.fillStyle='#d9d2bc';ctx.fillRect(s2.x-22,s2.by-1,44,4)}}
@@ -1895,6 +1896,10 @@ function drawCivs(){for(const c of [...G.civs].sort((a,b)=>a.y-b.y)){const s=1.5
 function civHit(ax,ay){if(!SC.station)return false;for(const c of G.civs){if(c.dead)continue;const h=(c.kind==='moto'||c.kind==='bike'?48:60)*1.5;if(Math.abs(ax-c.x)<14*1.5&&ay>c.y-h&&ay<c.y){c.dead=true;const pen=c.kind==='baby'||c.kind==='old'?500:250;G.score-=pen;G.levelScore-=pen;G.civHits=(G.civHits||0)+1;
       floatText(c.x,c.y-100,'CIVILIAN  −'+pen,'#ff8a7a');msg(c.kind==='baby'?'You shot a mother and child  −500':c.kind==='old'?'You shot an old man  −500':'Civilian hit  −250','#ff8a7a');tone(300,.4,.1,'sawtooth');return true}}return false}
 const JSTONES=[[905,JA(905)+18,1],[525,JB(525)+26,1.35],[395,JD(395)+26,1.7]];
+function drawJadeCover(){for(const s2 of slots){if(!s2.rock)continue;const k=s2.sc,x=s2.x,y=s2.by;let sd=Math.floor(x*7+y);const rn=()=>{sd=(sd*9301+49297)%233280;return sd/233280};
+  ctx.fillStyle='rgba(0,0,0,.25)';ctx.beginPath();ctx.ellipse(x,y+3*k,34*k,6*k,0,0,Math.PI*2);ctx.fill();
+  for(let i=0;i<7;i++){const bx=x+(i-3)*9*k+(rn()-.5)*4*k,by=y-(i%2?4:0)*k-(3-Math.abs(i-3))*2.2*k,r=(7+rn()*5)*k,c=88+rn()*40|0;ctx.fillStyle=`rgb(${c},${c-4},${c-12})`;ctx.beginPath();ctx.moveTo(bx-r,by+r*.5);ctx.lineTo(bx-r*.6,by-r*.6);ctx.lineTo(bx+r*.3,by-r*.8);ctx.lineTo(bx+r,by-r*.1);ctx.lineTo(bx+r*.7,by+r*.6);ctx.closePath();ctx.fill();
+    ctx.fillStyle='rgba(255,255,255,.18)';ctx.beginPath();ctx.moveTo(bx-r*.6,by-r*.6);ctx.lineTo(bx+r*.3,by-r*.8);ctx.lineTo(bx,by-r*.3);ctx.fill()}}}
 function drawJadeStones(){const used=G.jadeUsed;JSTONES.forEach(([x,y,k],i)=>{if(used===i)return;ctx.save();ctx.translate(x,y);ctx.scale(k,k);ctx.globalAlpha=used!=null&&used>=0?.55:1;
   const gr=ctx.createRadialGradient(-4,-6,1,0,-3,14);gr.addColorStop(0,'#b8ffd2');gr.addColorStop(.35,'#2fd27a');gr.addColorStop(1,'#056b3a');ctx.fillStyle=gr;ctx.beginPath();ctx.moveTo(-13,0);ctx.lineTo(-9,-11);ctx.lineTo(2,-15);ctx.lineTo(12,-8);ctx.lineTo(13,0);ctx.closePath();ctx.fill();
   ctx.strokeStyle='rgba(0,40,20,.6)';ctx.lineWidth=1;ctx.stroke();ctx.fillStyle='rgba(255,255,255,.7)';ctx.beginPath();ctx.moveTo(-7,-9);ctx.lineTo(-1,-12);ctx.lineTo(-4,-6);ctx.fill();
