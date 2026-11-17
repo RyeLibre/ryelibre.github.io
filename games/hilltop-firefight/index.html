@@ -1716,13 +1716,13 @@ function grenadeShape(c){// rifle grenade along +x: finned tail, dark tube, rust
 function drawGun(ax,ay){const off=G.duckAmt*360+G.recoil*12+G.zoom*260;
   const GS=1.05,bx=W*.5+(ax-W/2)*.5+200,by=H-5+off;
   const rot=clamp(Math.atan2(ax-bx,by-ay),-1.25,1.25)-G.recoil*.02;
-  const reach=Math.hypot(ax-bx,by-ay),back=Math.max(0,450*GS+90-reach);G.gunBase=[bx,by,rot,back,GS];
+  const reach=Math.hypot(ax-bx,by-ay),back=Math.max(0,450*GS+90-reach)+30+(G.gLoaded&&!(SC&&SC.sniper)?110:0);G.gunBase=[bx,by,rot,back,GS];
   ctx.save();ctx.translate(bx,by);ctx.rotate(rot);ctx.translate(0,back);ctx.scale(GS,GS);ctx.translate(0,G.recoil*8);
   const blk='#141413',grn='#4f5732',grnD='#343a21',grnL='#68714a';
   const lin=(x0,y0,x1,y1,stops)=>{const g=ctx.createLinearGradient(x0,y0,x1,y1);stops.forEach(([o,c])=>g.addColorStop(o,c));return g};
   // --- banana magazine: an even-width curved band sticking out to the left and sweeping forward
-  {const P=t=>{const u=1-t;return[u*u*-30+2*u*t*-67.5+t*t*-144,u*u*-108+2*u*t*-58+t*t*-82]};
-   const D=t=>{const u=1-t;return[2*u*(-67.5+30)+2*t*(-144+67.5),2*u*(-58+108)+2*t*(-82+58)]};
+  {const P=t=>{const u=1-t;return[u*u*-30+2*u*t*-50+t*t*-128,u*u*-100+2*u*t*-38+t*t*-30]};
+   const D=t=>{const u=1-t;return[2*u*(-50+30)+2*t*(-128+50),2*u*(-38+100)+2*t*(-30+38)]};
    const L=[],Rr=[];for(let i=0;i<=16;i++){const t=i/16,[x,y]=P(t),[dx,dy]=D(t),n=Math.hypot(dx,dy),w=lerp(19,16,t);L.push([x-dy/n*w,y+dx/n*w]);Rr.push([x+dy/n*w,y-dx/n*w])}
    ctx.fillStyle='rgba(0,0,0,.35)';ctx.beginPath();L.forEach(([x,y],i)=>i?ctx.lineTo(x+5,y+6):ctx.moveTo(x+5,y+6));Rr.slice().reverse().forEach(([x,y])=>ctx.lineTo(x+5,y+6));ctx.fill();
    ctx.fillStyle=lin(-140,0,-20,0,[[0,'#0e0e0d'],[.5,'#262724'],[1,'#141413']]);ctx.beginPath();L.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y));Rr.slice().reverse().forEach(([x,y])=>ctx.lineTo(x,y));ctx.closePath();ctx.fill();
