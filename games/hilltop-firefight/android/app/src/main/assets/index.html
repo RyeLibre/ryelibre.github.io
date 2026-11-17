@@ -16,7 +16,7 @@ canvas{display:block;cursor:none}
 #end .bon{font-size:24px;color:#ffd36b;margin-bottom:12px}#end .bon:empty{display:none}
 #end .stats{font-size:17px;color:#e2ded2;text-shadow:0 2px 8px #000}
 #end .step{opacity:0;transform:translateY(10px);transition:opacity .6s,transform .6s}#end .step.in{opacity:1;transform:none}
-#dpick{background:rgba(6,8,4,.86);z-index:8}.dopts{display:flex;gap:18px;justify-content:center;margin:18px 0 22px;flex-wrap:wrap}.dopt{width:300px;padding:22px 20px;text-align:center;background:#232a1b;color:#ece6d4;border:2px solid #56603f;border-radius:12px;cursor:pointer}.dopt b{display:block;font-family:'Black Ops One',Impact,sans-serif;font-size:28px;letter-spacing:.05em;margin-bottom:8px;font-weight:400}.dopt span{font-size:13px;color:#b8b49c;line-height:1.4}.dopt:hover,.dopt.on{border-color:#c9a83f;background:#2e3622}
+#dpick{background:rgba(6,8,4,.86);z-index:8}.dopts{display:flex;gap:18px;justify-content:center;margin:18px 0 22px;flex-wrap:wrap}.dopt{width:300px;padding:22px 20px;text-align:center;background:#232a1b;color:#ece6d4;border:2px solid #56603f;border-radius:12px;cursor:pointer}.dopt b{display:block;font-family:'Black Ops One',Impact,sans-serif;font-size:28px;letter-spacing:.05em;margin-bottom:0;font-weight:400}.dopt span{font-size:13px;color:#b8b49c;line-height:1.4}.dopt:hover,.dopt.on{border-color:#c9a83f;background:#2e3622}
 #gate{background:radial-gradient(ellipse at center,#1d2216 0%,#070806 75%);z-index:7}.gcard{text-align:center;color:#ece6d4}
 .gstudio{letter-spacing:.35em;font-size:13px;color:#a9a58e;margin-bottom:10px}.glogo{font-family:'Black Ops One',Impact,sans-serif;font-size:min(10vw,84px);letter-spacing:.06em;line-height:1;margin-bottom:34px}
 #gPlay{font-size:20px;padding:16px 34px;letter-spacing:.08em}#gSkip{display:block;margin:16px auto 0;font-size:13px;padding:8px 18px}.ghint{margin-top:22px;font-size:13px;color:#8a8a76}
@@ -92,8 +92,8 @@ body.rot #stage{inset:auto;top:0;left:100vw;width:100vh;height:100vw;transform-o
 </div>
 
 <div id="dpick" class="ov hide"><div class="gcard"><div class="gstudio">CHOOSE YOUR DIFFICULTY</div>
-  <div class="dopts"><button id="dNew" class="dopt"><b>NEW RECRUIT</b><span>About 20% easier — enemies shoot less well and slower, fewer at once, fewer kills needed</span></button>
-  <button id="dVet" class="dopt"><b>SEASONED VET</b><span>The full fight</span></button></div><button id="dBack" class="alt">Back</button></div></div>
+  <div class="dopts"><button id="dNew" class="dopt"><b>NEW RECRUIT</b></button>
+  <button id="dVet" class="dopt"><b>SEASONED VET</b></button></div><button id="dBack" class="alt">Back</button></div></div>
 <div id="gate" class="ov hide"><div class="gcard"><div class="gstudio">STUDIO SAKSE PRESENTS</div><div class="glogo">HILLTOP FIREFIGHT</div><button id="gPlay">▶&nbsp; PLAY TRAILER WITH SOUND</button><button id="gSkip" class="alt">Skip to the game</button><div class="ghint">🔊 Turn your sound on</div></div></div>
 <div id="title" class="ov intro"><div class="card wide split"><div class="colL">
   <div class="vs">
