@@ -1429,7 +1429,7 @@ function shoot(){if(state!=='play')return;ac();if(SC.sniper){snFire();return}if(
   const [sx0,sy0]=aimPt();{const py=lerp(600,-40,G.duckAmt)+G.zoom*130;if(G.zoom<.3&&sy0>py+nearTop(sx0)+4){nearPuff(sx0,sy0-py);if(!G.cmsg){G.cmsg=1;msg(G.peek?'That is your own cover — stand up to see lower':'That is your own cover','#e8d9a8');setTimeout(()=>G.cmsg=0,1800)}return}}const [ax,ay]=toWorld(sx0,sy0);
   const hb=(G.birds||[]).find(b=>b.state==='fly'&&Math.hypot(ax-b.x,ay-b.y)<22);if(hb){const b=hb;b.state='fall';b.vy=-40;G.hits++;G.birdHit=true;
     for(let i=0;i<10;i++)G.parts.push({x:b.x,y:b.y,vx:(R()-.5)*60,vy:-R()*40,g:30,life:1.2,max:1.2,r:1.5,grow:0,rgb:'40,36,30'});
-    if(G.health<5){G.health++;msg('+1 HEART','#ff9a8a')}else{G.score+=100;msg('Bird down  +100 (health full)','#ffe38a')}return}
+    if(G.health<5){G.health++;G.birdRew='heart';msg('+1 HEART','#ff9a8a')}else{G.rpg++;G.birdRew='rpg';msg('Bird down — hearts full, +1 RPG','#ffd36b');floatText(b.x,b.y-20,'+1 RPG','#ffd36b');tone(1568,.5,.07,'sine')}return}
   for(const d of G.drones){if(d.state==='fly'&&Math.hypot(ax-d.x,ay-d.y)<15*d.s+3){G.hits++;downDrone(d);return}}
   if(civHit(ax,ay))return;
   if(creeperHit(ax,ay))return;
@@ -1506,7 +1506,7 @@ function roundStats(){return (G.overkill?`150% kills — dominating <b>+1000</b>
   (G.enemyRpgs?`Enemy RPGs fired <b>${G.enemyRpgs}</b> &nbsp;·&nbsp; RPG hits on you <b>${G.rpgHits}</b><br>`:'')+
   (G.smokerKills?`Smokers hit with RPG <b>${G.smokerKills}</b> (+${G.smokerKills*250})<br>`:'')+
   (G.gapKills?`Shot through the gap <b>${G.gapKills}</b> (+${G.gapKills*200}, +${G.gapKills} RPG)<br>`:'')+
-  (G.surrendered?`White flag accepted <b>+1000</b><br>`:G.flagShot?`White flag holder shot — fighting continued<br>`:'')+(G.birdHit?`Bird shot <b>+1 heart</b><br>`:'')+
+  (G.surrendered?`White flag accepted <b>+1000</b><br>`:G.flagShot?`White flag holder shot — fighting continued<br>`:'')+(G.birdHit?`Bird shot <b>${G.birdRew==='rpg'?'+1 RPG':'+1 heart'}</b><br>`:'')+
   (G.flagBurn?`Enemy flag burned <b>+500</b><br>`:'')+(G.civHits?`Civilians hit <b>${G.civHits}</b><br>`:'')+
   (G.artyIn?`Artillery shells <b>${G.artyIn}</b> &nbsp;·&nbsp; Shell hits on you <b>${G.artyHits}</b><br>`:'')+
   (G.dronesDown+G.droneHits?`Drones shot down <b>${G.dronesDown}</b> &nbsp;·&nbsp; Drone strikes <b>${G.droneHits}</b><br>`:'')}
