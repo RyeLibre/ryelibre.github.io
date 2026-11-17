@@ -16,6 +16,7 @@ canvas{display:block;cursor:none}
 #end .bon{font-size:24px;color:#ffd36b;margin-bottom:12px}#end .bon:empty{display:none}
 #end .stats{font-size:17px;color:#e2ded2;text-shadow:0 2px 8px #000}
 #end .step{opacity:0;transform:translateY(10px);transition:opacity .6s,transform .6s}#end .step.in{opacity:1;transform:none}
+#dpick{background:rgba(6,8,4,.86);z-index:8}.dopts{display:flex;gap:18px;justify-content:center;margin:18px 0 22px;flex-wrap:wrap}.dopt{width:300px;padding:22px 20px;text-align:center;background:#232a1b;color:#ece6d4;border:2px solid #56603f;border-radius:12px;cursor:pointer}.dopt b{display:block;font-family:'Black Ops One',Impact,sans-serif;font-size:28px;letter-spacing:.05em;margin-bottom:8px;font-weight:400}.dopt span{font-size:13px;color:#b8b49c;line-height:1.4}.dopt:hover,.dopt.on{border-color:#c9a83f;background:#2e3622}
 #gate{background:radial-gradient(ellipse at center,#1d2216 0%,#070806 75%);z-index:7}.gcard{text-align:center;color:#ece6d4}
 .gstudio{letter-spacing:.35em;font-size:13px;color:#a9a58e;margin-bottom:10px}.glogo{font-family:'Black Ops One',Impact,sans-serif;font-size:min(10vw,84px);letter-spacing:.06em;line-height:1;margin-bottom:34px}
 #gPlay{font-size:20px;padding:16px 34px;letter-spacing:.08em}#gSkip{display:block;margin:16px auto 0;font-size:13px;padding:8px 18px}.ghint{margin-top:22px;font-size:13px;color:#8a8a76}
@@ -90,6 +91,9 @@ body.rot #stage{inset:auto;top:0;left:100vw;width:100vh;height:100vw;transform-o
   <button id="tFlare">FLARE</button>
 </div>
 
+<div id="dpick" class="ov hide"><div class="gcard"><div class="gstudio">CHOOSE YOUR DIFFICULTY</div>
+  <div class="dopts"><button id="dNew" class="dopt"><b>NEW RECRUIT</b><span>About 20% easier — enemies shoot less well and slower, fewer at once, fewer kills needed</span></button>
+  <button id="dVet" class="dopt"><b>SEASONED VET</b><span>The full fight</span></button></div><button id="dBack" class="alt">Back</button></div></div>
 <div id="gate" class="ov hide"><div class="gcard"><div class="gstudio">STUDIO SAKSE PRESENTS</div><div class="glogo">HILLTOP FIREFIGHT</div><button id="gPlay">▶&nbsp; PLAY TRAILER WITH SOUND</button><button id="gSkip" class="alt">Skip to the game</button><div class="ghint">🔊 Turn your sound on</div></div></div>
 <div id="title" class="ov intro"><div class="card wide split"><div class="colL">
   <div class="vs">
@@ -1146,9 +1150,9 @@ function drawDemo(){const t=DEMO.t,ct=DEMO.ct,c=CLIPS[DEMO.i];ctx.save();ctx.tex
   ctx.fillStyle='rgba(255,255,255,.45)';ctx.font='600 12px system-ui,sans-serif';ctx.textAlign='right';ctx.fillText('click or press any key to skip',W-24,H-20);
   ctx.restore()}
 ['pointerdown','keydown'].forEach(ev=>addEventListener(ev,e=>{if(!DEMO)return;e.stopPropagation();if(e.cancelable)e.preventDefault();endDemo();introAudio()},true));
-let MODE='campaign';
-function newGame(start){G={endless:MODE==='endless',level:typeof start==="number"&&start>0?start:1,score:0,totalKills:0,flagsBurned:0};startLevel()}
-function startLevel(){stopHeliSnd();if(G&&!G.demo&&!DEMO)track('level-'+G.level+'-start');const sc0=SCENES[(G.level-1)%SCENES.length],c=cfg(sc0.diff&&G.level<=CAMPAIGN?sc0.diff:G.level);$('tFlare').style.display='none';if(sc0.diff&&G.level<=CAMPAIGN){c.acc*=.75;c.burst=1;c.maxActive=2;c.rpg=3;Object.assign(c,sc0.opts||{})}buildScene(G.level);
+let MODE='campaign',DIFF='vet';try{DIFF=localStorage.getItem('hilltop_diff')||'vet'}catch(e){}
+function newGame(start){track('diff-'+DIFF);G={endless:MODE==='endless',level:typeof start==="number"&&start>0?start:1,score:0,totalKills:0,flagsBurned:0};startLevel()}
+function startLevel(){stopHeliSnd();if(G&&!G.demo&&!DEMO)track('level-'+G.level+'-start');const sc0=SCENES[(G.level-1)%SCENES.length],c=cfg(sc0.diff&&G.level<=CAMPAIGN?sc0.diff:G.level);$('tFlare').style.display='none';if(sc0.diff&&G.level<=CAMPAIGN){c.acc*=.75;c.burst=1;c.maxActive=2;c.rpg=3;Object.assign(c,sc0.opts||{})}if(DIFF==='recruit'){c.acc*=.8;c.aim*=1.2;c.spawn*=1.2;c.maxActive=Math.max(1,Math.round(c.maxActive*.8));if(c.quota)c.quota=Math.max(3,Math.ceil(c.quota*.8));if(c.drone)c.drone*=1.25;if(c.arty)c.arty*=1.25;if(c.decoy)c.decoy*=.8}buildScene(G.level);
   Object.assign(G,{c,time:90,kills:0,health:5,mag:30,reserve:c.ammo-30,rpg:c.rpg,reloading:0,rpgReload:0,cool:0,
     enemies:[],spawnT:1.6,duck:false,duckAmt:0,zoom:0,recoil:0,shake:0,hurt:0,flash:0,shots:0,hits:0,levelScore:0,dieT:0,
     birds:[],msgs:[],parts:[],nparts:[],rockets:[],tracers:[],pending:[],flares:[],flareT:1.5,ambT:1,banner:0,brief:2.6,troops:c.quota+8+G.level*3,arty:[],artyT:G.level===1?30:12+R()*10,artyIn:0,artyHits:0,bigFlash:0,flagBurn:0,fires:[],erockets:[],enemyRpgs:0,rpgHits:0,gaps:[],walkers:[],walkT:3,gapKills:0,smoker:null,smokeT:10+R()*15,smokerKills:0,myFlares:SCENES[(G.level-1)%SCENES.length].night?3:0,flareCool:0,act:null,actIdx:0,smoking:0,smk:[],cases:[],ptr:[],creepers:[],creepT:7+R()*5,ambush:null,herd:null,herdT:6+R()*14,surr:null,surrendered:false,flagShot:false,bird:null,birdT:8+R()*35,birdHit:false,drones:[],droneT:G.level===1?45:9+R()*8,decoysHit:0,preempt:0,hitsTaken:0,dronesDown:0,droneHits:0,enemyShots:0});
@@ -2093,7 +2097,7 @@ function portraitShot(ax,ay,rpg){const r=portRect();if(!r||G.stageBusy)return fa
 /* ---- tank ---- */
 function tankEl(){return 90-G.time}
 function tankPose(){const t=tankEl(),K=G.tk;let u,dip=0,pitch=0;if(t<6)u=-1;else if(t<50)u=lerp(0,.3,(t-6)/44);else if(t<59.5){u=.3+(t-50)/9.5*.05;dip=Math.min(1,(t-50)/2)}else if(t<61){u=.35;dip=1-(t-59.5)/1.5;pitch=Math.sin((t-59.5)/1.5*Math.PI)}else u=Math.min(.5,.35+(t-61)/6*.15);
-  if(K&&K.dead)u=K.du;const y=lerp(262,720,u),k=lerp(.18,1.05,Math.max(0,u));return{u,x:lerp(830,560,u)+60*k,y:y+dip*30*k,k,dip,pitch,belly:t>59.6&&t<60.9}}
+  if(K&&K.dead)u=K.du;const y=lerp(262,720,u),k=lerp(.18,1.05,Math.max(0,u));return{u,x:lerp(830,560,u)+60*k,y:y+dip*30*k,k,dip,pitch,belly:t>59.6&&t<(DIFF==='recruit'?61.2:60.9)}}
 function updTank(dt){if(!SC.tank||state!=='play'||G.demo)return;const K=G.tk;if(!K)return;const t=tankEl(),P=tankPose();
   K.eng-=dt;if(K.eng<=0&&!K.dead){K.eng=.32;noise(.3,60+P.u*90,.06+Math.max(0,P.u)*.22,1.2)}
   if(t>4&&!K.m1){K.m1=1;msg('You hear tank tracks on the cobblestones…','#e8d9a8')}
@@ -2129,7 +2133,7 @@ function tankShot(ax,ay,rpg){if(!SC.tank||!G.tk||G.tk.dead)return false;const P=
 /* ---- Mai Ja Yang: drones bomb the city ---- */
 const CIV_LIMIT=60;
 function updCity(dt){if(!SC.mjy||state!=='play'||G.demo)return;const C=G.city;C.t+=dt;
-  const wave=(n,big,fast)=>{for(let i=0;i<n;i++)C.q.push({t:i*(.8+R()*.9),s:big&&R()<.4?3:1+Math.floor(R()*2),f:R()<fast})};
+  const wave=(n,big,fast)=>{if(DIFF==='recruit'){n=Math.round(n*.8);fast*=.7}for(let i=0;i<n;i++)C.q.push({t:i*(.8+R()*.9),s:big&&R()<.4?3:1+Math.floor(R()*2),f:R()<fast})};
   if(C.t>3&&!C.w1){C.w1=1;wave(7,0,.2);msg('Drones coming in over the hills — they are going for the city! Red-light ones are fast.','#ff6a5a')}
   if(C.t>30&&!C.w2){C.w2=1;wave(11,0,.4);msg('Second wave of drones!','#ff6a5a')}
   if(C.t>58&&!C.w3){C.w3=1;wave(15,1,.5);msg('Third wave — big bombers among them!','#ff6a5a')}
@@ -2212,7 +2216,7 @@ function snInit(){if(SNKEY!==SC.sniper||!SNS)paintSniper();const L=SNL[SC.sniper
   G.mag=5;G.reserve=25;G.mags=[];G.time=240;G.rpg=0}
 function snAim(){const S2=G.sn,sw=S2.hold>0&&S2.tired<=0?.12:S2.tired>0?2.2:1,t=performance.now()/1000;return[S2.cam.x+Math.sin(t*1.1)*5*sw+Math.sin(t*2.7)*2*sw,S2.cam.y+Math.cos(t*.9)*4*sw+Math.sin(t*1.9)*1.5*sw]}
 function snGeo(q){const k=snDepth(q.y)*(q.pose==='tower'?.85:1),low=q.pose==='sit'?.62:q.pose==='crouch'||q.pose==='trench'?.7:q.pose==='window'||q.pose==='nest'?.55:1;return{k,hx:q.x+(q.pose==='walk'?0:0),hy:q.y-(q.pose==='window'||q.pose==='nest'||q.pose==='trench'?30:46*low)*k,hr:4.6*k,top:q.y-46*low*k,low}}
-function snAlarm(q,amt,why){if(q.st==='dead')return;if(q.st!=='alarm'){q.st='alarm';q.al=1;G.sn.alert+=amt;if(q.radio&&!q.call){q.call=4;msg('A radio man is calling it in — stop him!','#ff6a5a')}}}
+function snAlarm(q,amt,why){if(q.st==='dead')return;if(DIFF==='recruit')amt*=.8;if(q.st!=='alarm'){q.st='alarm';q.al=1;G.sn.alert+=amt;if(q.radio&&!q.call){q.call=DIFF==='recruit'?5:4;msg('A radio man is calling it in — stop him!','#ff6a5a')}}}
 function snWitness(v,radius,amt,yell){const S2=G.sn;for(const q of S2.t){if(q===v||q.st==='dead')continue;const d=Math.hypot(q.x-v.x,(q.y-v.y)*1.5);const same=q.g===v.g;if(S2.dist>0&&!yell){continue}if(same&&d<radius*1.6||d<radius){snAlarm(q,amt);floatText(q.x,q.y-70,'!','#ffd36b')}}}
 function snFire(){const S2=G.sn;if(!S2||S2.fail||state!=='play')return;if(S2.bolt>0)return;if(G.mag<=0){S.empty();msg(G.reserve>0?'Empty — press R to reload':'Out of bullets','#ffb38a');return}
   G.mag--;G.shots++;S2.bolt=1.25;S2.kick=1;noise(.12,700,.35,3);noise(.25,180,.25,2);setTimeout(()=>{noise(.05,3000,.12,1);setTimeout(()=>noise(.05,2400,.1,1),260)},420);
@@ -2659,6 +2663,11 @@ const tb=(id,fn,up)=>{const b=$(id);b.addEventListener('pointerdown',e=>{e.stopP
 tb('tScope',()=>setScope(true),()=>setScope(false));tb('tDuck',toggleDuck);tb('tPeek',togglePeek);tb('tFlare',fireFlare);tb('tRpg',fireRpg);tb('tRel',reload);
 function setMode(m){MODE=m;$('mCamp').classList.toggle('on',m==='campaign');$('mEnd').classList.toggle('on',m==='endless');
   $('modeTip').textContent=m==='endless'?'Pick any level · the clock counts up · stay alive as long as you can · ammo resupply every 40 s':'Take each hill in 90 seconds'}
+function setDiff(d){DIFF=d;try{localStorage.setItem('hilltop_diff',d)}catch(e){}$('dNew').classList.toggle('on',d==='recruit');$('dVet').classList.toggle('on',d==='vet')}
+let pendStart=null;function askDiff(fn){pendStart=fn;setDiff(DIFF);$('dpick').classList.remove('hide')}
+const pick=d=>{setDiff(d);$('dpick').classList.add('hide');const f=pendStart;pendStart=null;if(f)f()};
+$('dNew').onclick=()=>pick('recruit');$('dVet').onclick=()=>pick('vet');$('dBack').onclick=()=>{$('dpick').classList.add('hide');pendStart=null};
+['pointerdown','keydown'].forEach(ev=>$('dpick').addEventListener(ev,e=>e.stopPropagation()));
 $('mCamp').onclick=()=>setMode('campaign');$('mEnd').onclick=()=>setMode('endless');
 // newsletter / tournament sign-up: posts to a form service once SIGNUP_URL is set
 const SIGNUP_URL='';
@@ -2687,8 +2696,8 @@ $('shBtn').onclick=()=>{if(!shareRec)return;let nm=$('shName').value.trim().repl
   fetch(SCORES_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(rec)}).then(r=>{if(!r.ok)throw 0;$('shMsg').style.color='#bde58a';$('shMsg').textContent='Shared! You\'re in the Hall of Fame.'}).catch(()=>{$('shMsg').style.color='#ffb38a';$('shMsg').textContent='Saved here — could not reach the online board.'});shareRec=null};
 ['pointerdown','keydown'].forEach(ev=>$('share').addEventListener(ev,e=>e.stopPropagation()));
 hofLoad();
-$('startBtn').onclick=()=>{ac();loadSfx();stopAmbience();newGame()};
-document.querySelectorAll('.levels li').forEach((li,i)=>{if(li.classList.contains('soon'))return;li.style.cursor='pointer';li.title='Start at this level';li.addEventListener('click',()=>{ac();loadSfx();stopAmbience();newGame(i+1)})});
+$('startBtn').onclick=()=>{ac();loadSfx();askDiff(()=>{stopAmbience();newGame()})};
+document.querySelectorAll('.levels li').forEach((li,i)=>{if(li.classList.contains('soon'))return;li.style.cursor='pointer';li.title='Start at this level';li.addEventListener('click',()=>{ac();loadSfx();askDiff(()=>{stopAmbience();newGame(i+1)})})});
 function introAudio(){if(state!=='title')return;ac();loadSfx();startAmbience()}
 ['pointerdown','keydown'].forEach(ev=>addEventListener(ev,introAudio));
 $('resBtn').onclick=pause;
