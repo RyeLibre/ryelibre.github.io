@@ -8,6 +8,14 @@
 html,body{margin:0;height:100%;background:#0c0e0a;overflow:hidden;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:#e8e6dc;user-select:none;-webkit-user-select:none;touch-action:none}
 #wrap{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
 canvas{display:block;cursor:none}
+#end{background:rgba(6,8,4,.42);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px)}
+#end .card{background:none;border:none;box-shadow:none;max-width:960px;padding:10px}
+#end h1{font-family:'Black Ops One',Impact,sans-serif;font-size:min(15vw,130px);letter-spacing:.06em;line-height:1;margin:0 0 6px;color:#f2ede0;text-shadow:0 4px 30px rgba(0,0,0,.6)}
+#end h1.kia{color:#ff6a5a}#end h1.held{color:#cfe8a6}
+#end .sub{font-size:22px;color:#e8e4d8;letter-spacing:.12em;text-transform:uppercase;margin:0 0 18px}
+#end .bon{font-size:24px;color:#ffd36b;margin-bottom:12px}#end .bon:empty{display:none}
+#end .stats{font-size:17px;color:#e2ded2;text-shadow:0 2px 8px #000}
+#end .step{opacity:0;transform:translateY(10px);transition:opacity .6s,transform .6s}#end .step.in{opacity:1;transform:none}
 .ov{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(8,10,6,.74);z-index:5}
 .hide{display:none!important}
 .card{max-width:580px;margin:16px;padding:26px 30px;background:#1a1e15;border:1px solid #3c4630;border-radius:12px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.5)}
@@ -72,6 +80,7 @@ body.rot #stage{inset:auto;top:0;left:100vw;width:100vh;height:100vw;transform-o
 
 <div id="touch" class="hide">
   <button id="tScope">AIM (hold)</button>
+  <button id="tPeek">PEEK</button>
   <button id="tDuck">DUCK</button>
   <button id="tRpg">RPG</button>
   <button id="tRel">RELOAD</button>
@@ -135,6 +144,7 @@ body.rot #stage{inset:auto;top:0;left:100vw;width:100vh;height:100vw;transform-o
 <div id="end" class="ov hide"><div class="card">
   <h1 id="endTitle">Position held</h1>
   <p class="sub" id="endSub"></p>
+  <div class="stats bon" id="endBon"></div>
   <div class="stats" id="endStats"></div>
   <div id="share" class="share"><div class="shtl">🏆 Add to the Hall of Fame?</div><div class="shrow"><input id="shName" maxlength="12" placeholder="name or initials"><button id="shBtn">SHARE SCORE</button></div><div id="shMsg" class="sumsg"></div></div>
   <button id="endBtn">NEXT LEVEL</button>
@@ -988,7 +998,7 @@ function startLevel(){stopHeliSnd();if(G&&!G.demo&&!DEMO)track('level-'+G.level+
   Object.assign(G,{c,time:90,kills:0,health:5,mag:30,reserve:c.ammo-30,rpg:c.rpg,reloading:0,rpgReload:0,cool:0,
     enemies:[],spawnT:1.6,duck:false,duckAmt:0,zoom:0,recoil:0,shake:0,hurt:0,flash:0,shots:0,hits:0,levelScore:0,dieT:0,
     birds:[],msgs:[],parts:[],nparts:[],rockets:[],tracers:[],pending:[],flares:[],flareT:1.5,ambT:1,banner:0,brief:2.6,troops:c.quota+8+G.level*3,arty:[],artyT:G.level===1?30:12+R()*10,artyIn:0,artyHits:0,bigFlash:0,flagBurn:0,fires:[],erockets:[],enemyRpgs:0,rpgHits:0,gaps:[],walkers:[],walkT:3,gapKills:0,smoker:null,smokeT:10+R()*15,smokerKills:0,myFlares:SCENES[(G.level-1)%SCENES.length].night?3:0,flareCool:0,act:null,actIdx:0,smoking:0,smk:[],cases:[],ptr:[],creepers:[],creepT:7+R()*5,ambush:null,herd:null,herdT:6+R()*14,surr:null,surrendered:false,flagShot:false,bird:null,birdT:8+R()*35,birdHit:false,drones:[],droneT:G.level===1?45:9+R()*8,decoysHit:0,preempt:0,hitsTaken:0,dronesDown:0,droneHits:0,enemyShots:0});
-  G.aidUsed=false;G.pagodaUsed=false;G.jadeUsed=-1;G.mach=[];G.logFire=null;G.sflag=0;G.civs=[];G.civT=1;G.cliff=null;G.ships=[];G.shipT=2;if(G.endless){try{G.bestE=+localStorage.getItem('hilltop_endless_'+G.level)||0}catch(e){}G.time=0;G.c.quota=9999;G.resT=40;G.rpgT=90;G.rampT=60;G.birdClock=0;G.birdMin=0}state='play';G.banks=SC.ridge?[{ridge:1,x0:985,x1:1135,st:'ok',t:0,seed:R()*99}]:SC.snowbank?(()=>{const xs=slots.filter(q=>!q.fox).map(q=>q.x).sort((a,b)=>a-b),lo=xs[0],hi=xs[xs.length-1],w=(hi-lo)/3;return[{sd:0,x0:lo+w-20,x1:lo+2*w+20,st:'ok',t:0,seed:R()*99}]})():null;G.ambN=0;G.minesLeft=(SC.creepers||SC.laiza)?1+(R()<.5?1:0):0;G.flashes=[];G.wq=[];G.waveN=0;if(SC.runners)G.creepT=2.5;G.heli=null;G.heliT=20+R()*8;G.patches=SC.runners?[{x:420,y:425,r:78},{x:655,y:470,r:88},{x:885,y:415,r:74}].map(q=>({...q,burnt:false,smoke:0,seed:R()*99})):[];G.blurT=0;G.dustT=0;undeafen();['title','end','pause'].forEach(id=>$(id).classList.add('hide'));G.windT=2.5+Math.random()*3;
+  G.aidUsed=false;G.pagodaUsed=false;G.jadeUsed=-1;G.mach=[];G.logFire=null;G.kf1=G.kf2=0;G.overkill=false;G.ricos=0;G.upT=9;G.peek=false;G.sflag=0;G.civs=[];G.civT=1;G.cliff=null;G.ships=[];G.shipT=2;if(G.endless){try{G.bestE=+localStorage.getItem('hilltop_endless_'+G.level)||0}catch(e){}G.time=0;G.c.quota=9999;G.resT=40;G.rpgT=90;G.rampT=60;G.birdClock=0;G.birdMin=0}state='play';G.banks=SC.ridge?[{ridge:1,x0:985,x1:1135,st:'ok',t:0,seed:R()*99}]:SC.snowbank?(()=>{const xs=slots.filter(q=>!q.fox).map(q=>q.x).sort((a,b)=>a-b),lo=xs[0],hi=xs[xs.length-1],w=(hi-lo)/3;return[{sd:0,x0:lo+w-20,x1:lo+2*w+20,st:'ok',t:0,seed:R()*99}]})():null;G.ambN=0;G.minesLeft=(SC.creepers||SC.laiza)?1+(R()<.5?1:0):0;G.flashes=[];G.wq=[];G.waveN=0;if(SC.runners)G.creepT=2.5;G.heli=null;G.heliT=20+R()*8;G.patches=SC.runners?[{x:420,y:425,r:78},{x:655,y:470,r:88},{x:885,y:415,r:74}].map(q=>({...q,burnt:false,smoke:0,seed:R()*99})):[];G.blurT=0;G.dustT=0;undeafen();['title','end','pause'].forEach(id=>$(id).classList.add('hide'));G.windT=2.5+Math.random()*3;
   if(isTouch)$('touch').classList.remove('hide');
 }
 function msg(t,col){if(G&&G.demo)return;G.msgs=G.msgs.filter(m=>m.t!==t);G.msgs.push({t,col:col||'#f2e7b8',life:1.6})}
@@ -1035,9 +1045,12 @@ function enemyFire(e){const c=G.c;e.flash=.07;
     G.erockets.push({x0:g.x+6,y0:g.hy+6,xt:lerp(420,860,R()),t:0,dur:1.25});return}
   G.enemyShots++;S.far();const g=geo(e);
   G.tracers.push({x1:g.x-4,y1:g.hy+10,x2:lerp(200,1080,R()),y2:H+120,t:0,dur:.22,col:'255,120,80'});
-  if(G.duckAmt<.45&&R()<c.acc){playerHit()}
+  const peek=G.duckAmt>.18&&G.duckAmt<.6,grace=(G.upT||0)<1.3;
+  if(G.duckAmt<.6&&!grace&&R()<c.acc*(peek?.35:1)){if(peek&&R()<.25)helmetRico();else playerHit()}
   else{setTimeout(()=>{if(G&&state==='play'){S.crack();if(G.duckAmt<.6)nearPuff(R()*W,10+R()*50)}},120)}
 }
+function helmetRico(){G.ricos=(G.ricos||0)+1;G.blurT=3;G.shake=.6;msg('TONG! — off the helmet','#e8e4d8');
+  {const A_=ac(),t=A_.currentTime;[[1180,.9],[1730,.7],[2610,.5],[3900,.35]].forEach(([f,v])=>{const o=A_.createOscillator(),g=A_.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(v*.5,t+.004);g.gain.exponentialRampToValueAtTime(.0001,t+1.6);o.connect(g);g.connect(out());o.start(t);o.stop(t+1.7)})}}
 function playerHit(){if(state!=='play'||G.demo)return;G.hitsTaken++;G.health--;G.hurt=1;G.shake=.45;S.hurt();msg('Hit!','#ff8a7a');
   if(G.health<=0){state='dying';G.dieT=0;G.zoom=0;G.duck=true;spaceHeld=false;$('touch').classList.add('hide')}}
 function killEnemy(e,head,byRpg){
@@ -1288,19 +1301,24 @@ function fireFlare(){if(state!=='play')return;ac();if(!SC.night){msg('Flares are
   if(!(G.myFlares>0)){msg('No flares left','#ffb38a');return}if(G.flareCool>0)return;G.myFlares--;G.flareCool=1.2;
   const [wx]=toWorld(...aimPt());noise(.5,2600,.25,1,'bandpass');tone(900,.25,.05,'triangle');
   G.flares.push({x:clamp(wx,150,1130),y:H+60,ty:110+R()*30,rise:true,life:9,max:9,sway:R()*6});msg('Flare up!','#ffd9a0')}
-function toggleDuck(){if(state!=='play')return;ac();G.duck=!G.duck}
+function toggleDuck(){if(state!=='play')return;ac();G.duck=!G.duck;if(G.duck)G.peek=false}
+function togglePeek(){if(state!=='play')return;ac();if(G.duck){G.duck=false;G.peek=true}else G.peek=!G.peek}
 function setScope(on){if(on&&!spaceHeld&&state==='play')S.scope();spaceHeld=on}
 
 /* ---------- end states ---------- */
 function showEnd(title,sub,stats,btn,onBtn,menu,kia){prepShare();$('end').querySelector('.card').classList.toggle('big',!!(G&&G.endless));
-  $('endTitle').textContent=title;$('endTitle').className=kia?'kia':'';
-  $('endSub').textContent=sub||'';$('endStats').innerHTML=stats;
+  let big=title,small=sub||'';const tl=title.toUpperCase();
+  if(!(G&&G.endless)){if(kia){big='DIED';small=SC.name}else if(/NOT ENOUGH/.test(tl)){big='OVERTAKEN';small=SC.name+' · not enough kills'}else if(/SURRENDER/.test(tl)){big='SURRENDERED';small=SC.name}else if(/HILL TAKEN/.test(tl)){big='HILL TAKEN';small=sub}else if(/HELD/.test(tl)){big='HELD';small=SC.name+(sub?' · '+sub:'')}}
+  $('endTitle').textContent=big;$('endTitle').className=kia?'kia':(/^(HELD|HILL TAKEN|SURRENDERED)$/.test(big)?'held':big==='OVERTAKEN'?'kia':'');$('endSub').textContent=small;
+  const parts=String(stats).split('<br>'),isB=x=>/\+\d|burn|DOMINAT|destroy|Bonus/i.test(x);$('endBon').innerHTML=parts.filter(isB).join('<br>');$('endStats').innerHTML=parts.filter(x=>!isB(x)).join('<br>');
+  const steps=['endTitle','endSub','endBon','endStats','share','endBtn','endBtn2'];steps.forEach(id=>{$(id).classList.add('step');$(id).classList.remove('in')});
+  [0,600,1500,2600,3600,4200,4200].forEach((d,i)=>setTimeout(()=>$(steps[i]).classList.add('in'),d+60));
   $('endBtn').textContent=btn;$('endBtn').onclick=onBtn;
   $('endBtn2').classList.toggle('hide',!menu);$('endBtn2').onclick=()=>{$('end').classList.add('hide');$('title').classList.remove('hide');showBest();hofLoad();state='title';startAmbience()};
   $('end').classList.remove('hide')}
 function endLevel(){state='end';stopHeliSnd();stopAmbience();G.arty.forEach(a=>{try{a.wh&&a.wh.stop()}catch(e){}});G.drones.forEach(stopBuzz);$('touch').classList.add('hide');spaceHeld=false;
   const acc=G.shots?Math.round(100*G.hits/G.shots):0,ok=G.kills>=G.c.quota||G.surrendered;
-  const bonus=ok?acc*5+G.health*100+G.rpg*50:0;G.score+=bonus;saveBest();track('level-'+G.level+(ok?'-won':'-not-enough-kills'));
+  const bonus=ok?acc*5+G.health*100+G.rpg*50:0;G.lastBonus=bonus;G.score+=bonus;saveBest();track('level-'+G.level+(ok?'-won':'-not-enough-kills'));
   const stats=`Kills <b>${G.kills}</b> / ${G.c.quota} &nbsp;·&nbsp; Accuracy <b>${acc}%</b><br>`+roundStats()+(ok?`Bonus <b>+${bonus}</b><br>`:'')+`Score <b>${G.score}</b>`;
   if(G.surrendered&&G.level!==CAMPAIGN){showEnd('ENEMY POST SURRENDERED',`${SC.name} taken without more bloodshed · +1000`,stats,'NEXT LEVEL',()=>{G.level++;startLevel()},false);return}
   if(!ok){showEnd(`Level ${G.level} — not enough kills`,SC.name,stats,'RETRY LEVEL',()=>{G.score-=G.levelScore;startLevel()},true);return}
@@ -1313,7 +1331,7 @@ function gameOver(){state='over';stopHeliSnd();track((G.endless?'endless-':'')+'
     showEnd('KILLED IN ACTION',`Endless · ${SC.name}`,`You survived <b>${f(t)}</b>${nb?' — <b>new best!</b>':` &nbsp;·&nbsp; best <b>${f(b)}</b>`}<br>Kills <b>${G.kills}</b> &nbsp;·&nbsp; Accuracy <b>${acc}%</b><br>Score <b>${G.score}</b>`,'TRY AGAIN',()=>{const l=G.level;newGame(l)},true,true);return}stopAmbience();G.arty.forEach(a=>{try{a.wh&&a.wh.stop()}catch(e){}});G.drones.forEach(stopBuzz);saveBest();
   showEnd('KILLED IN ACTION',`Level ${G.level} · ${SC.name}`,
     `Kills this level <b>${G.kills}</b> / ${G.c.quota}<br>`+roundStats()+`Total kills <b>${G.totalKills}</b><br>Final score <b>${G.score}</b><br>Best <b>${best}</b>`,'PLAY AGAIN',newGame,true,true)}
-function roundStats(){return `Killed before they fired <b>${G.preempt}</b><br>Decoys shot <b>${G.decoysHit}</b>${G.decoysHit?` (−${G.decoysHit*50})`:''}<br>Enemy shots fired <b>${G.enemyShots}</b> &nbsp;·&nbsp; Times you were hit <b>${G.hitsTaken}</b><br>`+
+function roundStats(){return (G.overkill?`150% kills — dominating <b>+1000</b><br>`:'')+(G.ricos?`Helmet ricochets <b>${G.ricos}</b><br>`:'')+`Killed before they fired <b>${G.preempt}</b><br>Decoys shot <b>${G.decoysHit}</b>${G.decoysHit?` (−${G.decoysHit*50})`:''}<br>Enemy shots fired <b>${G.enemyShots}</b> &nbsp;·&nbsp; Times you were hit <b>${G.hitsTaken}</b><br>`+
   (G.enemyRpgs?`Enemy RPGs fired <b>${G.enemyRpgs}</b> &nbsp;·&nbsp; RPG hits on you <b>${G.rpgHits}</b><br>`:'')+
   (G.smokerKills?`Smokers hit with RPG <b>${G.smokerKills}</b> (+${G.smokerKills*250})<br>`:'')+
   (G.gapKills?`Shot through the gap <b>${G.gapKills}</b> (+${G.gapKills*200}, +${G.gapKills} RPG)<br>`:'')+
@@ -1334,9 +1352,9 @@ function update(dt){T+=dt;if(DEMO)demoUpdate(dt);if(state!=='play'&&state!=='dyi
     G.rampT-=dt;if(G.rampT<=0){G.rampT=60;const c2=G.c;c2.spawn*=.9;c2.maxActive=Math.min(7,c2.maxActive+1);c2.aim*=.94;c2.acc=Math.min(.9,(c2.acc||.3)*1.06);msg('They are sending more troops','#ffb38a')}}
   else if(state==='play'){G.time-=dt;if(G.time<=0){G.time=0;endLevel();return}}
   G.banner-=dt;if(state==='play'&&G.duckAmt>.8){G.radioT=(G.radioT||1)-dt;if(G.radioT<=0){G.radioT=1.5+R()*3;noise(.25+R()*.4,1800,.06,1,'bandpass');setTimeout(()=>noise(.15,2400,.04,1,'bandpass'),300)}}if(state==='play'){G.windT-=dt;if(G.windT<=0){G.windT=8+R()*10;windGust()}}G.boom=Math.max(0,(G.boom||0)-dt);
-  G.duckAmt+=((G.duck?1:0)-G.duckAmt)*Math.min(1,dt*11);
+  G.duckAmt+=((G.duck?1:G.peek?.3:0)-G.duckAmt)*Math.min(1,dt*11);if(G.duckAmt>.6)G.upT=0;else G.upT=(G.upT||0)+dt;
   const zt=(spaceHeld&&state==='play'&&G.duckAmt<.3)?1:0;G.zoom+=(zt-G.zoom)*Math.min(1,dt*28);
-  G.cool-=dt;G.rpgReload-=dt;G.recoil=Math.max(0,G.recoil-dt*7);G.shake=Math.max(0,G.shake-dt);G.blurT=Math.max(0,(G.blurT||0)-dt);G.dustT=Math.max(0,(G.dustT||0)-dt);G.hurt=Math.max(0,G.hurt-dt*1.4);G.flash-=dt;
+  G.cool-=dt;G.rpgReload-=dt;G.recoil=Math.max(0,G.recoil-dt*7);G.shake=Math.max(0,G.shake-dt);G.blurT=Math.max(0,(G.blurT||0)-dt);if(!G.endless&&!G.demo&&G.c.quota){if(G.kills>=G.c.quota&&!G.kf1){G.kf1=1;G.kflash=.35}if(G.kills>=Math.ceil(G.c.quota*1.5)&&!G.kf2){G.kf2=1;G.kflash=.5;G.score+=1000;G.levelScore+=1000;G.overkill=true;msg('150% KILLS — DOMINATING  +1000','#ffd36b')}}G.dustT=Math.max(0,(G.dustT||0)-dt);G.hurt=Math.max(0,G.hurt-dt*1.4);G.flash-=dt;
   if(G.reloading>0){G.reloading-=dt;if(G.reloading<=0){const n=Math.min(30-G.mag,G.reserve);G.mag+=n;G.reserve-=n}}
   slots.forEach(s=>s.cool-=dt);
   G.flareCool-=dt;updSurrender(dt);updBird(dt);updHerd(dt);updAct(dt);updCreepers(dt);updGaps(dt);updSmoker(dt);
@@ -2082,6 +2100,7 @@ function draw(){setBlur();ctx.setTransform(sc*dpr,0,0,sc*dpr,0,0);
   if(du<.95&&G.zoom<.6&&!SC.nvg&&!(G.demo&&G.dCamAt!==undefined&&DEMO.ct>G.dCamAt))drawGun(ax,ay);drawCases(FDT);drawPtr(FDT);
   if(G.zoom>.02)drawSights(ax,ay);
   ctx.restore();
+  if(G.kflash>0){G.kflash-=FDT;ctx.fillStyle=`rgba(255,255,255,${Math.min(.85,G.kflash*2.4)})`;ctx.fillRect(0,0,W,H)}
   // crosshair (unscoped)
   if(G.zoom<.5&&state!=='dying'&&!SC.nvg){ctx.save();ctx.globalAlpha=(du>.25?.25:.5)*(1-G.zoom*2);ctx.strokeStyle='rgba(255,255,255,.9)';ctx.lineWidth=1.5;const gap=5+G.recoil*3;
     ctx.beginPath();ctx.arc(ax,ay,15+G.recoil*3,0,Math.PI*2);ctx.moveTo(ax-24,ay);ctx.lineTo(ax-gap,ay);ctx.moveTo(ax+gap,ay);ctx.lineTo(ax+24,ay);
@@ -2165,16 +2184,17 @@ cv.addEventListener('pointerdown',e=>{setPos(e);if(state==='dying'){if(G.dieT>1.
   if(e.button===0){if(state==='play'&&Math.hypot(mx-RELOAD_T[0],my-RELOAD_T[1])<RELOAD_R){S.click();if(G.mag>=30)msg('Magazine already full');else if(G.reserve<=0)msg('No spare bullets','#ffb38a');else reload();return}shoot()}});
 cv.addEventListener('contextmenu',e=>e.preventDefault());
 let wheelLock=0;cv.addEventListener('wheel',e=>{e.preventDefault();if(state!=='play'||performance.now()<wheelLock)return;
-  if(e.deltaY>0&&!G.duck){G.duck=true;ac();wheelLock=performance.now()+180}else if(e.deltaY<0&&G.duck){G.duck=false;wheelLock=performance.now()+180}},{passive:false});
+  ac();if(e.deltaY>0){if(G.duck)return;if(G.peek){G.peek=false;G.duck=true}else G.peek=true}else{if(G.duck){G.duck=false;G.peek=true}else if(G.peek)G.peek=false;else return}wheelLock=performance.now()+180},{passive:false});
 addEventListener('keydown',e=>{const k=e.key.toLowerCase();
   if(k==='alt'||k==='z'){e.preventDefault();setScope(true)}
   else if(k===' '){e.preventDefault();if(!e.repeat)toggleDuck()}
+  else if(k==='c'||k==='control'){e.preventDefault();if(!e.repeat)togglePeek()}
   else if(k==='r')reload();else if(k==='f'||k==='e')fireRpg();else if(k==='p'||k==='escape')pause()});
 addEventListener('keyup',e=>{const k=e.key.toLowerCase();if(k==='alt'||k==='z'){e.preventDefault();setScope(false)}});
 addEventListener('blur',()=>setScope(false));
 const tb=(id,fn,up)=>{const b=$(id);b.addEventListener('pointerdown',e=>{e.stopPropagation();e.preventDefault();fn()});
   if(up){b.addEventListener('pointerup',e=>{e.stopPropagation();up()});b.addEventListener('pointerleave',()=>up());b.addEventListener('pointercancel',()=>up())}};
-tb('tScope',()=>setScope(true),()=>setScope(false));tb('tDuck',toggleDuck);tb('tFlare',fireFlare);tb('tRpg',fireRpg);tb('tRel',reload);
+tb('tScope',()=>setScope(true),()=>setScope(false));tb('tDuck',toggleDuck);tb('tPeek',togglePeek);tb('tFlare',fireFlare);tb('tRpg',fireRpg);tb('tRel',reload);
 function setMode(m){MODE=m;$('mCamp').classList.toggle('on',m==='campaign');$('mEnd').classList.toggle('on',m==='endless');
   $('modeTip').textContent=m==='endless'?'Pick any level · the clock counts up · stay alive as long as you can · ammo resupply every 40 s':'Take each hill in 90 seconds'}
 $('mCamp').onclick=()=>setMode('campaign');$('mEnd').onclick=()=>setMode('endless');
