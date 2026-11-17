@@ -1720,8 +1720,8 @@ function drawGun(ax,ay){const off=G.duckAmt*360+G.recoil*12+G.zoom*260;
   const blk='#141413',grn='#4f5732',grnD='#343a21',grnL='#68714a';
   const lin=(x0,y0,x1,y1,stops)=>{const g=ctx.createLinearGradient(x0,y0,x1,y1);stops.forEach(([o,c])=>g.addColorStop(o,c));return g};
   // --- banana magazine: an even-width curved band sticking out to the left and sweeping forward
-  {const P=t=>{const u=1-t;return[u*u*-30+2*u*t*-92+t*t*-128,u*u*-108+2*u*t*-100+t*t*-172]};
-   const D=t=>{const u=1-t;return[2*u*(-92+30)+2*t*(-128+92),2*u*(-100+108)+2*t*(-172+100)]};
+  {const P=t=>{const u=1-t;return[u*u*-30+2*u*t*-84+t*t*-145,u*u*-108+2*u*t*-76.5+t*t*-129]};
+   const D=t=>{const u=1-t;return[2*u*(-84+30)+2*t*(-145+84),2*u*(-76.5+108)+2*t*(-129+76.5)]};
    const L=[],Rr=[];for(let i=0;i<=16;i++){const t=i/16,[x,y]=P(t),[dx,dy]=D(t),n=Math.hypot(dx,dy),w=lerp(19,16,t);L.push([x-dy/n*w,y+dx/n*w]);Rr.push([x+dy/n*w,y-dx/n*w])}
    ctx.fillStyle='rgba(0,0,0,.35)';ctx.beginPath();L.forEach(([x,y],i)=>i?ctx.lineTo(x+5,y+6):ctx.moveTo(x+5,y+6));Rr.slice().reverse().forEach(([x,y])=>ctx.lineTo(x+5,y+6));ctx.fill();
    ctx.fillStyle=lin(-140,0,-20,0,[[0,'#0e0e0d'],[.5,'#262724'],[1,'#141413']]);ctx.beginPath();L.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y));Rr.slice().reverse().forEach(([x,y])=>ctx.lineTo(x,y));ctx.closePath();ctx.fill();
