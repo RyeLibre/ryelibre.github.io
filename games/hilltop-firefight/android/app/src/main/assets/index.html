@@ -1465,7 +1465,8 @@ function fireRpg(){if(SC&&SC.sniper)return;if(state!=='play')return;ac();
   if(!G.demo&&G.mag<=0){S.empty();msg('Need a round in the rifle to launch the grenade — change clips','#ffb38a');return}
   if(G.surr&&G.surr.phase==='flag')G.surr.calm=0;
   if(G.demo)G.rpg--;else{G.mag--;G.shots++}G.gLoaded=false;G.rpgReload=.6;S.shot&&S.shot();S.whoosh();G.shake=.25;const [ax,ay]=toWorld(...aimPt());const k=distK();
-  G.rockets.push({sx:DPX+(W*.56-DPX)/k,sy:DPY+(H+80-DPY)/k,tx:ax,ty:ay,t:0,dur:.85*(SC.dist||200)/200})}
+  let mx0=W*.56,my0=H+80;if(G.gunBase&&!G.demo){const [bx,by,rot,back,GS]=G.gunBase,Y=back+(-560)*GS;mx0=bx-Y*Math.sin(rot);my0=by+Y*Math.cos(rot)}
+  G.rockets.push({sx:DPX+(mx0-DPX)/k,sy:DPY+(my0-DPY)/k,tx:ax,ty:ay,t:0,dur:.85*(SC.dist||200)/200})}
 function fireFlare(){if(state!=='play')return;ac();if(!SC.night){msg('Flares are for night missions');return}
   if(!(G.myFlares>0)){msg('No flares left','#ffb38a');return}if(G.flareCool>0)return;G.myFlares--;G.flareCool=1.2;
   const [wx]=toWorld(...aimPt());noise(.5,2600,.25,1,'bandpass');tone(900,.25,.05,'triangle');
@@ -1720,8 +1721,8 @@ function drawGun(ax,ay){const off=G.duckAmt*360+G.recoil*12+G.zoom*260;
   const blk='#141413',grn='#4f5732',grnD='#343a21',grnL='#68714a';
   const lin=(x0,y0,x1,y1,stops)=>{const g=ctx.createLinearGradient(x0,y0,x1,y1);stops.forEach(([o,c])=>g.addColorStop(o,c));return g};
   // --- banana magazine: an even-width curved band sticking out to the left and sweeping forward
-  {const P=t=>{const u=1-t;return[u*u*-30+2*u*t*-84+t*t*-145,u*u*-108+2*u*t*-76.5+t*t*-129]};
-   const D=t=>{const u=1-t;return[2*u*(-84+30)+2*t*(-145+84),2*u*(-76.5+108)+2*t*(-129+76.5)]};
+  {const P=t=>{const u=1-t;return[u*u*-30+2*u*t*-67.5+t*t*-144,u*u*-108+2*u*t*-58+t*t*-82]};
+   const D=t=>{const u=1-t;return[2*u*(-67.5+30)+2*t*(-144+67.5),2*u*(-58+108)+2*t*(-82+58)]};
    const L=[],Rr=[];for(let i=0;i<=16;i++){const t=i/16,[x,y]=P(t),[dx,dy]=D(t),n=Math.hypot(dx,dy),w=lerp(19,16,t);L.push([x-dy/n*w,y+dx/n*w]);Rr.push([x+dy/n*w,y-dx/n*w])}
    ctx.fillStyle='rgba(0,0,0,.35)';ctx.beginPath();L.forEach(([x,y],i)=>i?ctx.lineTo(x+5,y+6):ctx.moveTo(x+5,y+6));Rr.slice().reverse().forEach(([x,y])=>ctx.lineTo(x+5,y+6));ctx.fill();
    ctx.fillStyle=lin(-140,0,-20,0,[[0,'#0e0e0d'],[.5,'#262724'],[1,'#141413']]);ctx.beginPath();L.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y));Rr.slice().reverse().forEach(([x,y])=>ctx.lineTo(x,y));ctx.closePath();ctx.fill();
