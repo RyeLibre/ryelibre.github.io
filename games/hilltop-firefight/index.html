@@ -2320,7 +2320,7 @@ function drawSniper(){const S2=G.sn;if(!S2)return;const B=W/SNW,oy=(H-SNH*B)/2+4
   ctx.strokeStyle='#0a0a0a';ctx.lineWidth=14;ctx.beginPath();ctx.arc(cx,cy,RAD+6,0,Math.PI*2);ctx.stroke();ctx.strokeStyle='rgba(150,170,190,.35)';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(cx,cy,RAD-1,0,Math.PI*2);ctx.stroke();
   const bar=(x,y,w,f,c,lbl)=>{ctx.fillStyle='rgba(0,0,0,.45)';rr(ctx,x-8,y-22,w+16,38,6);ctx.fillStyle='rgba(255,255,255,.12)';rr(ctx,x,y,w,8,4);ctx.fillStyle=c;if(f>0)rr(ctx,x,y,Math.max(8,w*Math.min(1,f)),8,4);ctx.fillStyle='#d8d9c0';ctx.font='700 11px system-ui,sans-serif';ctx.fillText(lbl,x,y-7)};
   bar(36,H-150,200,S2.alert/100,S2.alert>70?'#ff5a4a':S2.alert>40?'#e8a04a':'#9fd86a','CAMP ALERT');
-  bar(36,H-104,200,S2.holding?Math.max(0,1-S2.hold/4):1,S2.tired>0?'#ff8a6a':'#8ac8ff',S2.tired>0?'OUT OF BREATH':'BREATH (hold SPACE)');
+  bar(36,H-104,200,S2.holding?Math.max(0,1-S2.hold/4):1,S2.tired>0?'#ff8a6a':'#8ac8ff',S2.tired>0?'OUT OF BREATH':'BREATH — hold click, release to fire');
   ctx.font='700 13px system-ui,sans-serif';if(S2.dist>0){ctx.fillStyle='#ffd36b';ctx.font='800 15px system-ui,sans-serif';ctx.fillText('DISTRACTED '+S2.dist.toFixed(0)+'s — kill quietly',W/2-130,H-40)}
   ctx.fillStyle='#d8d9c0';ctx.font='600 12px system-ui,sans-serif';const radios=S2.t.filter(q=>q.radio&&q.st!=='dead').length;ctx.fillText('ZOOM '+(Z/B).toFixed(0)+'×  (wheel)   ·   RADIO MEN LEFT '+radios+(S2.bolt>0?'   ·   working the bolt…':'')+(S2.reloading>0?'   ·   reloading…':''),W-470,H-24)}
 function laizaRetreat(){G.retreated=true;G.kflash=.4;msg('SAC RETREATED — they are running back over the hill!','#cfe8a6');for(const c of G.creepers)if(!c.dead)c.flee=true;G.wq=[];
@@ -2623,7 +2623,7 @@ function draw(){setBlur();ctx.setTransform(sc*dpr,0,0,sc*dpr,0,0);
   if(G.brief>0&&state==='play'){const a=Math.min(1,G.brief/.45);ctx.save();ctx.globalAlpha=a;ctx.fillStyle='rgba(10,12,8,.78)';ctx.fillRect(0,0,W,H);
     ctx.textAlign='center';ctx.fillStyle='#c9a83f';ctx.font='800 20px system-ui,sans-serif';
     ctx.fillText(`LEVEL ${G.level} · ${SC.name.toUpperCase()}${SC.alias?' ('+SC.alias.toUpperCase()+')':''}`,W/2,150);
-    const L=SC.sniper?[['20 soldiers in a sleeping camp','900 40px'],['from '+SC.dist+' metres, through the scope','700 26px'],['',''],['Headshots are silent · body shots make them yell','600 22px'],['Kill loners and radio men first','600 22px'],['The propane tank is your distraction','600 22px'],['30 rounds · bolt action · hold SPACE to steady','600 22px'],['',''],['4 minutes','800 34px']]:[[G.endless?'Waves of troops attacking you':`${G.troops} troops attacking you`,'900 46px'],[`from ${SC.dist||200} metres away`,'700 30px'],['',''],
+    const L=SC.sniper?[['20 soldiers in a sleeping camp','900 40px'],['from '+SC.dist+' metres, through the scope','700 26px'],['',''],['Headshots are silent · body shots make them yell','600 22px'],['Kill loners and radio men first','600 22px'],['The propane tank is your distraction','600 22px'],['Hold click to steady · release to fire · right-click to reload','600 20px'],['',''],['4 minutes','800 34px']]:[[G.endless?'Waves of troops attacking you':`${G.troops} troops attacking you`,'900 46px'],[`from ${SC.dist||200} metres away`,'700 30px'],['',''],
       ['2 clips (60 bullets)','600 24px'],[`${G.rpg} rocket-propelled grenades`,'600 24px'],['1 KA-09 Kachin-made rifle','600 24px'],['',''],[G.endless?'ENDLESS — stay alive':'90 seconds','800 34px']];
     let y=230;for(const [t,f] of L){if(t){ctx.font=f+' system-ui,sans-serif';ctx.fillStyle=(t==='90 seconds'||t.startsWith('ENDLESS'))?'#e0483e':'#f4efd6';ctx.fillText(t,W/2,y)}y+=f.startsWith('900')?58:f.startsWith('800')?50:t?40:16}
     ctx.restore();ctx.textAlign='left'}
@@ -2691,9 +2691,10 @@ if(isTouch){$('rotBtn').classList.remove('hide');
   if(saved==='1'||(saved===null&&innerHeight>innerWidth))setRotated(true)}
 addEventListener('orientationchange',()=>setTimeout(()=>{if(rotated&&innerWidth>innerHeight)setRotated(false);else resize()},300));
 cv.addEventListener('pointermove',setPos);
-cv.addEventListener('pointerdown',e=>{setPos(e);if(G&&G.bookOpen){G.bookOpen=false;tone(420,.08,.04,'triangle');return}if(state==='dying'){if(G.dieT>1.5)gameOver();return}if(e.button===2){if(state==='play'&&G.duck&&G.duckAmt>.6)trenchClick();else fireRpg();return}
+cv.addEventListener('pointerdown',e=>{setPos(e);if(G&&G.bookOpen){G.bookOpen=false;tone(420,.08,.04,'triangle');return}if(SC&&SC.sniper&&state==='play'&&G&&G.sn){ac();if(e.button===2)snReload();else if(e.button===0){G.sn.holding=true;G.sn.mouseHold=true}return}if(state==='dying'){if(G.dieT>1.5)gameOver();return}if(e.button===2){if(state==='play'&&G.duck&&G.duckAmt>.6)trenchClick();else fireRpg();return}
   if(e.button===0){if(state==='play'&&Math.hypot(mx-RELOAD_T[0],my-RELOAD_T[1])<RELOAD_R){S.click();if(G.mag>=30)msg('Magazine already full');else if(G.reserve<=0)msg('No spare bullets','#ffb38a');else reload();return}shoot()}});
 cv.addEventListener('contextmenu',e=>e.preventDefault());
+addEventListener('pointerup',e=>{if(SC&&SC.sniper&&G&&G.sn&&G.sn.mouseHold){G.sn.mouseHold=false;G.sn.holding=false;if(state==='play')snFire()}});
 let wheelLock=0;cv.addEventListener('wheel',e=>{e.preventDefault();if(state==='play'&&SC.sniper&&G.sn){G.sn.Z=clamp(G.sn.Z*(e.deltaY>0?.9:1.1),2,6);return}if(state!=='play'||performance.now()<wheelLock)return;
   ac();if(e.deltaY>0){if(G.duck)return;if(G.peek){G.peek=false;G.duck=true}else G.peek=true}else{if(G.duck){G.duck=false;G.peek=true}else if(G.peek)G.peek=false;else return}wheelLock=performance.now()+180},{passive:false});
 addEventListener('keydown',e=>{const k=e.key.toLowerCase();
