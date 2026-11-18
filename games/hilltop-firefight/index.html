@@ -71,7 +71,7 @@ body.rot #stage{inset:auto;top:0;left:100vw;width:100vh;height:100vw;transform-o
 #mEnd{background:#2b3322;color:#ece6d4;border-color:#c9a83f}
 .sethead{font-family:'Black Ops One',Impact,sans-serif;font-size:56px;color:#ece6d4;letter-spacing:.06em;line-height:1;margin:0 0 12px;text-align:center}
 .setrow{display:flex;gap:8px;justify-content:center;align-items:center;margin:6px 0}.setrow span{color:#a9b08e;font-size:13px;text-transform:uppercase;letter-spacing:.1em;width:90px;text-align:right;margin-right:6px}.setrow .mode{font-size:15px;padding:8px 18px;margin:0}
-.sethint{font-size:14px;color:#cfe8a6;text-align:center;min-height:20px;margin:8px 0 4px}.setbtns{text-align:center}.setbtns button{margin:4px 6px}
+.setbtns #setGo small{display:block;font-size:12px;font-weight:600;letter-spacing:.04em;opacity:.75;margin-top:3px;text-transform:none}.sethint{font-size:14px;color:#cfe8a6;text-align:center;min-height:20px;margin:8px 0 4px}.setbtns{text-align:center}.setbtns button{margin:4px 6px}
 #setup,#title{align-items:flex-start}#title>.card{margin:8px auto;transform-origin:top center!important}#tLevels .levels{grid-template-columns:repeat(3,1fr);gap:12px;font-size:18px;margin:0 0 18px;text-align:left}#tLevels .levels li{padding:8px 10px;position:relative}#tLevels .levels span{font-size:13px}#tLevels .levels li::before{width:24px;height:24px;line-height:24px;font-size:14px}#tLevels .levels li{cursor:pointer}#setup>.card{margin:8px auto;transform-origin:top center!important}#setup>.card{width:960px!important;max-width:960px!important}#setup .levels{grid-template-columns:repeat(3,1fr);gap:12px;font-size:18px;margin-top:14px}#setup .levels li{padding:8px 10px}#setup .levels span{font-size:13px}#setup .levels li::before{width:24px;height:24px;line-height:24px;font-size:14px}#setup .hof{max-width:520px;margin:12px auto 0}#setup .levels li{position:relative;padding:5px 6px}#setup .levels li.sel{background:#4a5530;outline:2px solid #c9a83f}#setup .levels li.sel::after{content:'✓';position:absolute;top:4px;right:6px;background:#c9a83f;color:#1a1608;font-weight:900;border-radius:50%;width:22px;height:22px;line-height:22px;text-align:center;font-size:14px}#setup .levels.dim li:not(.sel){opacity:.45}#setup .levels.lock li{cursor:default!important}.mode{padding:6px 16px;font-size:13px;background:#2b3322;color:#c8c9b0;border:1px solid #56603f}.mode.on{background:#c9a83f;color:#1a1608;border-color:#c9a83f}.modetip{font-size:12px;color:#a9b08e;text-align:center;margin-bottom:6px}
 .hof{margin-top:12px;padding:10px 12px;border-radius:8px;background:#232a1b;border:1px solid #3a4428;font-size:12px}.hoft{font-family:'Black Ops One',Impact,sans-serif;color:#ece6d4;letter-spacing:.08em;font-size:15px;text-align:center}.hoftabs{display:flex;gap:6px;justify-content:center;margin:5px 0}.hoftabs button{padding:3px 10px;font-size:11px;margin:0;background:#2b3322;color:#c8c9b0;border:1px solid #56603f}.hoftabs button.on{background:#e8e4d8;color:#1a1608}#hofList{margin:0;padding-left:22px;color:#e8e4d8;columns:2;column-gap:18px}#hofList li{line-height:1.6;break-inside:avoid}#hofList li span{float:right;color:#d9c27a}#hofList .me{color:#ffd36b}
 .share{margin:8px 0 12px;padding:10px;border-radius:8px;background:#232a1b;border:1px solid #3a4428}.shtl{font-size:14px;color:#ffd36b;margin-bottom:6px}.shrow{display:flex;gap:6px;justify-content:center}.shrow input{width:160px;padding:7px 9px;border-radius:6px;border:1px solid #56603f;background:#14180f;color:#eee;font-size:14px}.shrow button{margin:0;padding:7px 14px;font-size:13px}.card.big .share .shtl{font-size:22px}.card.big .shrow input{font-size:20px;width:240px}
@@ -2773,20 +2773,26 @@ const pick=d=>{setDiff(d);$('dpick').classList.add('hide');const f=pendStart;pen
 $('dNew').onclick=()=>pick('recruit');$('dVet').onclick=()=>pick('vet');$('dBack').onclick=()=>{$('dpick').classList.add('hide');pendStart=null};
 ['pointerdown','keydown'].forEach(ev=>$('dpick').addEventListener(ev,e=>e.stopPropagation()));
 let SETN=0,SEL=[];const DRONE_LV=21;
+function autoFill(sel,n){const out=sel.slice(),has=v=>out.includes(v);
+  for(let i=0;i<n&&out.length<n;i++){const a=Math.floor(i*CAMPAIGN/n)+1,b=Math.floor((i+1)*CAMPAIGN/n);let inB=false;for(let v=a;v<=b;v++)if(has(v))inB=true;if(inB)continue;
+    const c=[];for(let v=a;v<=b;v++)if(!has(v))c.push(v);if(c.length)out.push(c.includes(DRONE_LV)&&!has(DRONE_LV)?DRONE_LV:c[Math.floor(Math.random()*c.length)])}
+  while(out.length<n){const c=[];for(let v=1;v<=CAMPAIGN;v++)if(!has(v))c.push(v);out.push(c[Math.floor(Math.random()*c.length)])}
+  if(!has(DRONE_LV)){const auto=out.filter(v=>!sel.includes(v));if(auto.length)out[out.indexOf(auto[Math.floor(Math.random()*auto.length)])]=DRONE_LV}
+  return out}
 function autoPick(n){const out=[];for(let i=0;i<n;i++){const a=Math.floor(i*CAMPAIGN/n)+1,b=Math.floor((i+1)*CAMPAIGN/n);let v=a+Math.floor(Math.random()*(b-a+1));if(DRONE_LV>=a&&DRONE_LV<=b)v=DRONE_LV;out.push(v)}return out}
 function setRender(){const camp=MODE==='campaign',lis=[...document.querySelectorAll('#setup .levels li')];lis.forEach((li,i)=>li.classList.toggle('sel',camp&&SEL.includes(i+1)));
-  const L=document.querySelector('#setup .levels');L.classList.toggle('dim',camp&&SETN>0);L.classList.toggle('lock',camp&&SETN!==5);L.style.display='';
+  const L=document.querySelector('#setup .levels');L.classList.toggle('dim',camp&&SETN>0&&SEL.length>0&&SETN<CAMPAIGN);L.classList.toggle('lock',camp&&(!SETN||SETN===CAMPAIGN));L.style.display='';
   document.querySelectorAll('#countRow .cnt').forEach(b=>b.classList.toggle('on',+b.dataset.n===SETN));
-  $('setGo').classList.toggle('hide',!(camp&&SETN&&SEL.length===SETN));$('setShuf').classList.toggle('hide',!(camp&&SETN>5&&SETN<CAMPAIGN));
-  $('setHint').textContent=!camp?'Click a level to start':!SETN?'Choose how many levels':SETN===5?(SEL.length<5?`Click ${5-SEL.length} more level${SEL.length===4?'':'s'}`:'Ready — press START'):SETN===CAMPAIGN?'All 25 levels in order':'Picked for variety · press SHUFFLE for a new mix'}
+  const left=SETN-SEL.length;$('setGo').classList.toggle('hide',!(camp&&SETN));$('setGo').innerHTML='START'+(camp&&SETN&&left>0?`<small>${SEL.length?`auto select the other ${left}?`:`auto select ${SETN} rounds?`}</small>`:'');$('setShuf').classList.add('hide');
+  $('setHint').textContent=!camp?'Click a level to start':!SETN?'Choose how many levels':SETN===CAMPAIGN?'All 25 levels in order':SEL.length?`${SEL.length} of ${SETN} chosen`:`Click up to ${SETN} levels, or press START to pick for you`}
 function openSetup(m){ac();loadSfx();setMode(m);SETN=0;SEL=[];$('setTitle').textContent=m==='endless'?'ENDLESS':'CAMPAIGN';$('countRow').style.display=m==='endless'?'none':'';setDiff(DIFF);
   hofMode=m;$('hofC').classList.toggle('on',m==='campaign');$('hofE').classList.toggle('on',m==='endless');hofLoad();renderStars();setRender();$('title').classList.add('hide');$('setup').classList.remove('hide')}
 $('mCamp').onclick=()=>openSetup('campaign');$('mEnd').onclick=()=>openSetup('endless');
 $('sNew').onclick=()=>setDiff('recruit');$('sVet').onclick=()=>setDiff('vet');
-document.querySelectorAll('#countRow .cnt').forEach(b=>b.onclick=()=>{SETN=+b.dataset.n;SEL=SETN===5?[]:SETN===CAMPAIGN?SCENES.slice(0,CAMPAIGN).map((x,i)=>i+1):autoPick(SETN);setRender()});
+document.querySelectorAll('#countRow .cnt').forEach(b=>b.onclick=()=>{SETN=+b.dataset.n;SEL=SETN===CAMPAIGN?SCENES.slice(0,CAMPAIGN).map((x,i)=>i+1):[];setRender()});
 $('setShuf').onclick=()=>{SEL=autoPick(SETN);setRender()};
 $('setBack').onclick=()=>{$('setup').classList.add('hide');$('title').classList.remove('hide')};
-$('setGo').onclick=()=>{stopAmbience();$('setup').classList.add('hide');if(SETN===CAMPAIGN){CUR_PLIST=null;newGame(1)}else{CUR_PLIST=SEL.slice().sort((a,b)=>a-b);newGame()}};
+$('setGo').onclick=()=>{stopAmbience();$('setup').classList.add('hide');if(SETN===CAMPAIGN){CUR_PLIST=null;newGame(1)}else{CUR_PLIST=autoFill(SEL,SETN).sort((a,b)=>a-b);newGame()}};
 ['pointerdown','keydown'].forEach(ev=>$('setup').addEventListener(ev,e=>e.stopPropagation()));
 // newsletter / tournament sign-up: posts to a form service once SIGNUP_URL is set
 const SIGNUP_URL='';
@@ -2816,7 +2822,7 @@ $('shBtn').onclick=()=>{if(!shareRec)return;let nm=$('shName').value.trim().repl
 ['pointerdown','keydown'].forEach(ev=>$('share').addEventListener(ev,e=>e.stopPropagation()));
 hofLoad();
 
-document.querySelectorAll('.levels li').forEach((li,i)=>{if(li.classList.contains('soon'))return;li.style.cursor='pointer';li.addEventListener('click',()=>{ac();loadSfx();if(MODE==='endless'){stopAmbience();$('setup').classList.add('hide');CUR_PLIST=null;newGame(i+1);return}if(SETN!==5)return;const k=SEL.indexOf(i+1);if(k>=0)SEL.splice(k,1);else if(SEL.length<5)SEL.push(i+1);setRender()})});
+document.querySelectorAll('.levels li').forEach((li,i)=>{if(li.classList.contains('soon'))return;li.style.cursor='pointer';li.addEventListener('click',()=>{ac();loadSfx();if(MODE==='endless'){stopAmbience();$('setup').classList.add('hide');CUR_PLIST=null;newGame(i+1);return}if(!SETN||SETN===CAMPAIGN)return;const k=SEL.indexOf(i+1);if(k>=0)SEL.splice(k,1);else if(SEL.length<SETN)SEL.push(i+1);setRender()})});
 function introAudio(){if(state!=='title')return;ac();loadSfx();startAmbience()}
 ['pointerdown','keydown'].forEach(ev=>addEventListener(ev,introAudio));
 $('resBtn').onclick=pause;
