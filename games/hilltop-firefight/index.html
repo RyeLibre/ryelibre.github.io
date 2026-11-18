@@ -1533,7 +1533,7 @@ function gameOver(){state='over';stopHeliSnd();track((G.endless?'endless-':'')+'
     showEnd('KILLED IN ACTION',`Endless · ${SC.name}`,`You survived <b>${f(t)}</b>${nb?' — <b>new best!</b>':` &nbsp;·&nbsp; best <b>${f(b)}</b>`}<br>Kills <b>${G.kills}</b> &nbsp;·&nbsp; Accuracy <b>${acc}%</b><br>Score <b>${G.score}</b>`,'TRY AGAIN',()=>{const l=G.level;newGame(l)},true,true);return}stopAmbience();G.arty.forEach(a=>{try{a.wh&&a.wh.stop()}catch(e){}});G.drones.forEach(stopBuzz);saveBest();
   showEnd('KILLED IN ACTION',`Level ${G.level} · ${SC.name}`,
     (END_HEAD=`<div>Kills this level <b>${G.kills}</b> / ${G.c.quota}</div><div><b>${G.preempt}</b> before they fired</div><div>Hit <b>${G.hitsTaken}</b> times of <b>${G.enemyShots}</b> shots fired</div>`,END_FOOT=`<div>Final score <b>${G.score}</b></div><div>Best <b>${best}</b></div>`,roundStats(true)),'REPLAY LEVEL',()=>{G.score=Math.max(0,G.score-G.levelScore);G.health=5;startLevel()},true,true);
-  if(G.plist?G.pi>0:G.level>1){$('endBtn3').classList.remove('hide');$('endBtn3').onclick=()=>newGame(1)}}
+  $('share').style.display='none';if(G.plist?G.pi>0:G.level>1){$('endBtn3').classList.remove('hide');$('endBtn3').onclick=()=>newGame(1)}}
 function roundStats(top){return (G.ricos?`Helmet ricochets <b>${G.ricos}</b><br>`:'')+(top?'':`Killed before they fired <b>${G.preempt}</b><br>`)+`Decoys shot <b>${G.decoysHit}</b>${G.decoysHit?` (−${G.decoysHit*50})`:''}<br>`+(top?'':`Enemy shots fired <b>${G.enemyShots}</b> &nbsp;·&nbsp; Times you were hit <b>${G.hitsTaken}</b><br>`)+
   (G.enemyRpgs?`Enemy RPGs fired <b>${G.enemyRpgs}</b> &nbsp;·&nbsp; RPG hits on you <b>${G.rpgHits}</b><br>`:'')+
   (G.smokerKills?`Smokers hit with RPG <b>${G.smokerKills}</b> (+${G.smokerKills*250})<br>`:'')+
