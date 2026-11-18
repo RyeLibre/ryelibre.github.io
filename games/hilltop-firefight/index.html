@@ -63,7 +63,15 @@ body.rot #stage{inset:auto;top:0;left:100vw;width:100vh;height:100vw;transform-o
 .levels span{display:block;color:#a9b08e;font-size:11px;margin-left:0}
 .tip{font-size:13px;margin:4px 0 8px}
 .ov{overflow:auto}
-.modes{display:flex;gap:6px;justify-content:center;margin:6px 0 2px}.mode{padding:6px 16px;font-size:13px;background:#2b3322;color:#c8c9b0;border:1px solid #56603f}.mode.on{background:#c9a83f;color:#1a1608;border-color:#c9a83f}.modetip{font-size:12px;color:#a9b08e;text-align:center;margin-bottom:6px}
+.modes{display:flex;gap:6px;justify-content:center;margin:6px 0 2px}
+.tpage{text-align:center;width:900px!important;max-width:900px!important}.tpage .logo .lr1{font-size:84px}.tpage .logo .lr2{font-size:94px}.tpage .ltag{font-size:14px}
+.bigmodes{display:flex;gap:22px;justify-content:center;margin:22px 0 22px}.bigmodes button{font-family:'Black Ops One',Impact,sans-serif;font-size:40px;font-weight:400;padding:18px 40px 14px;letter-spacing:.06em;min-width:330px;line-height:1}
+.bigmodes button small{display:block;font-family:system-ui,sans-serif;font-size:13px;font-weight:600;letter-spacing:.06em;margin-top:8px;opacity:.75;text-transform:uppercase}
+#mEnd{background:#2b3322;color:#ece6d4;border-color:#c9a83f}
+.sethead{font-family:'Black Ops One',Impact,sans-serif;font-size:56px;color:#ece6d4;letter-spacing:.06em;line-height:1;margin:0 0 12px;text-align:center}
+.setrow{display:flex;gap:8px;justify-content:center;align-items:center;margin:6px 0}.setrow span{color:#a9b08e;font-size:13px;text-transform:uppercase;letter-spacing:.1em;width:90px;text-align:right;margin-right:6px}.setrow .mode{font-size:15px;padding:8px 18px;margin:0}
+.sethint{font-size:14px;color:#cfe8a6;text-align:center;min-height:20px;margin:8px 0 4px}.setbtns{text-align:center}.setbtns button{margin:4px 6px}
+#setup{align-items:flex-start}#setup>.card{margin:8px auto;transform-origin:top center!important}#setup .levels{grid-template-columns:repeat(9,1fr);gap:6px;font-size:12px}#setup .levels span{font-size:10px}#setup .hof{max-width:520px;margin:12px auto 0}#setup .levels li{position:relative;padding:5px 6px}#setup .levels li.sel{background:#4a5530;outline:2px solid #c9a83f}#setup .levels li.sel::after{content:'✓';position:absolute;top:4px;right:6px;background:#c9a83f;color:#1a1608;font-weight:900;border-radius:50%;width:22px;height:22px;line-height:22px;text-align:center;font-size:14px}#setup .levels.dim li:not(.sel){opacity:.45}#setup .levels.lock li{cursor:default!important}.mode{padding:6px 16px;font-size:13px;background:#2b3322;color:#c8c9b0;border:1px solid #56603f}.mode.on{background:#c9a83f;color:#1a1608;border-color:#c9a83f}.modetip{font-size:12px;color:#a9b08e;text-align:center;margin-bottom:6px}
 .hof{margin-top:12px;padding:10px 12px;border-radius:8px;background:#232a1b;border:1px solid #3a4428;font-size:12px}.hoft{font-family:'Black Ops One',Impact,sans-serif;color:#ece6d4;letter-spacing:.08em;font-size:15px;text-align:center}.hoftabs{display:flex;gap:6px;justify-content:center;margin:5px 0}.hoftabs button{padding:3px 10px;font-size:11px;margin:0;background:#2b3322;color:#c8c9b0;border:1px solid #56603f}.hoftabs button.on{background:#e8e4d8;color:#1a1608}#hofList{margin:0;padding-left:22px;color:#e8e4d8;columns:2;column-gap:18px}#hofList li{line-height:1.6;break-inside:avoid}#hofList li span{float:right;color:#d9c27a}#hofList .me{color:#ffd36b}
 .share{margin:8px 0 12px;padding:10px;border-radius:8px;background:#232a1b;border:1px solid #3a4428}.shtl{font-size:14px;color:#ffd36b;margin-bottom:6px}.shrow{display:flex;gap:6px;justify-content:center}.shrow input{width:160px;padding:7px 9px;border-radius:6px;border:1px solid #56603f;background:#14180f;color:#eee;font-size:14px}.shrow button{margin:0;padding:7px 14px;font-size:13px}.card.big .share .shtl{font-size:22px}.card.big .shrow input{font-size:20px;width:240px}
 .signup{margin-top:12px;padding:10px 12px;border-radius:8px;background:#232a1b;border:1px solid #3a4428;font-size:12px}.tourn{color:#ffd36b;font-size:13px;margin-bottom:3px}.sutxt{color:#a9b08e;margin-bottom:6px}.surow{display:flex;gap:6px}.surow input{flex:1;min-width:0;padding:6px 8px;border-radius:6px;border:1px solid #56603f;background:#14180f;color:#eee;font-size:12px}.surow button{padding:6px 10px;font-size:11px;margin:0}.sumsg{margin-top:5px;color:#bde58a;min-height:14px}
@@ -100,15 +108,9 @@ html,body,body *{-webkit-user-select:text!important;user-select:text!important;-
   <div class="dopts"><button id="dNew" class="dopt"><b>NEW RECRUIT</b></button>
   <button id="dVet" class="dopt"><b>SEASONED VET</b></button></div><button id="dBack" class="alt">Back</button></div></div>
 <div id="gate" class="ov hide"><div class="gcard"><div class="gstudio">STUDIO SAKSE PRESENTS</div><div class="glogo">H<svg class="bi" viewBox="0 0 18 56" style="width:.26em;height:.8em" aria-hidden="true"><path d="M9 0 C15 7 16 13 16 20 L16 56 L2 56 L2 20 C2 13 3 7 9 0Z" fill="currentColor"/><rect x="2" y="33" width="14" height="2.5" fill="#0d100a"/></svg>LLTOP F<svg class="bi" viewBox="0 0 18 56" style="width:.26em;height:.8em" aria-hidden="true"><path d="M9 0 C15 7 16 13 16 20 L16 56 L2 56 L2 20 C2 13 3 7 9 0Z" fill="currentColor"/><rect x="2" y="33" width="14" height="2.5" fill="#0d100a"/></svg>REF<svg class="bi" viewBox="0 0 18 56" style="width:.26em;height:.8em" aria-hidden="true"><path d="M9 0 C15 7 16 13 16 20 L16 56 L2 56 L2 20 C2 13 3 7 9 0Z" fill="currentColor"/><rect x="2" y="33" width="14" height="2.5" fill="#0d100a"/></svg>GHT</div><button id="gPlay">▶&nbsp; PLAY TRAILER WITH SOUND</button><button id="gSkip" class="alt">Skip to the game</button><div class="ghint">🔊 Turn your sound on</div></div></div>
-<div id="title" class="ov intro"><div class="card wide split"><div class="colL">
-  <div class="vs">
-    <div class="side"><img class="flag" src="data:image/webp;base64,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" alt="KIA flag">
-      <b>Kachin Independence Army</b><span>You · KIA post</span></div>
-    <div class="vsword">VS</div>
-    <div class="side"><img class="flag" src="data:image/webp;base64,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" alt="Burma Army infantry flag">
-      <b>Burma Army</b><span>Enemy post across the valley</span></div>
-  </div>
+<div id="title" class="ov intro"><div class="card wide tpage">
   <div class="logo" aria-label="Hilltop Firefight"><div class="lr1">H<svg class="bi" viewBox="0 0 18 56" style="width:.26em;height:.8em" aria-hidden="true"><path d="M9 0 C15 7 16 13 16 20 L16 56 L2 56 L2 20 C2 13 3 7 9 0Z" fill="currentColor"/><rect x="2" y="33" width="14" height="2.5" fill="#1a1e15"/></svg>LLTOP</div><div class="lr2">F<svg class="bi" viewBox="0 0 18 56" style="width:.26em;height:.8em" aria-hidden="true"><path d="M9 0 C15 7 16 13 16 20 L16 56 L2 56 L2 20 C2 13 3 7 9 0Z" fill="currentColor"/><rect x="2" y="33" width="14" height="2.5" fill="#1a1e15"/></svg>REF<svg class="bi" viewBox="0 0 18 56" style="width:.26em;height:.8em" aria-hidden="true"><path d="M9 0 C15 7 16 13 16 20 L16 56 L2 56 L2 20 C2 13 3 7 9 0Z" fill="currentColor"/><rect x="2" y="33" width="14" height="2.5" fill="#1a1e15"/></svg>GHT</div><div class="ltag">THE KACHIN INDEPENDENCE ARMY HILLTOP WARFARE SIMULATOR</div></div>
+  <div class="bigmodes"><button id="mCamp">CAMPAIGN<small>take each hill in 90 seconds</small></button><button id="mEnd">ENDLESS<small>stay alive as long as you can</small></button></div>
   <p class="sub">25 positions · 150–300 m apart · <b>90-second rounds</b> · <b>60 bullets</b> (2 magazines) per level · reach the kill target to take the next hill</p>
   <ul class="keys">
     <li><b>Click</b> shoot · <b>Hold Alt</b> aim down sights · <b>ducked:</b> click an item to use it</li>
@@ -117,11 +119,6 @@ html,body,body *{-webkit-user-select:text!important;user-select:text!important;-
     <li><b>R</b> or shoot the target: reload · <b>night:</b> duck and click a flare</li>
   </ul>
   <p class="tip">Duck at the scope glint, the RPG warning and the artillery whistle. Look for faces — some are decoy helmets on sticks (−50 if you shoot one). Shoot drones down. Burn their flag with an RPG for +500. At night some sneak down the hill — shoot them before they reach your trench. RPGs blow gaps in the dirt wall — hit a soldier passing the gap for +200 + extra RPG. See cigarette smoke? Someone is hiding — an RPG gets them.</p>
-  <div class="modes"><button id="mCamp" class="mode on">CAMPAIGN</button><button id="mEnd" class="mode">ENDLESS</button></div>
-  <div id="modeTip" class="modetip">Take each hill in 90 seconds</div>
-  <button id="startBtn">START</button>
-  <div style="font-size:12px;color:#a9b08e;margin-top:6px">or click a level to start there</div>
-  <div id="hof" class="hof"><div class="hoft">HALL OF FAME</div><div class="hoftabs"><button id="hofC" class="on">Campaign</button><button id="hofE">Endless</button></div><ol id="hofList"></ol></div>
   <form id="signup" class="signup" onsubmit="return false">
     <div class="tourn">🏆 <b>Tournament coming soon</b> — start practising!</div>
     <div class="sutxt">Want to hear about contests, big updates and new games? (optional)</div>
@@ -129,7 +126,15 @@ html,body,body *{-webkit-user-select:text!important;user-select:text!important;-
     <div id="suMsg" class="sumsg"></div>
   </form>
   <div id="hs"></div>
-</div><div class="colR">
+
+</div></div>
+
+<div id="setup" class="ov intro hide"><div class="card wide">
+  <div class="sethead" id="setTitle">CAMPAIGN</div>
+  <div class="setrow"><span>Difficulty</span><button id="sNew" class="mode">NEW RECRUIT</button><button id="sVet" class="mode">SEASONED VET</button></div>
+  <div class="setrow" id="countRow"><span>Levels</span><button class="mode cnt" data-n="5">5</button><button class="mode cnt" data-n="10">10</button><button class="mode cnt" data-n="15">15</button><button class="mode cnt" data-n="20">20</button><button class="mode cnt" data-n="25">FULL CAMPAIGN</button></div>
+  <div id="setHint" class="sethint"></div>
+  <div class="setbtns"><button id="setGo" class="hide">START</button><button id="setShuf" class="alt hide">SHUFFLE</button><button id="setBack" class="alt">BACK</button></div>
   <ol class="levels">
     <li><b>Hpa Lap Bum</b> <span>Tea Mountain · sunrise</span></li>
     <li><b>A Len Bum</b> <span>monsoon rain · flat top</span></li>
@@ -157,8 +162,8 @@ html,body,body *{-webkit-user-select:text!important;user-select:text!important;-
     <li><b>Hpakant Army Depot</b> <span>assault · fence · yard · office</span></li>
     <li><b>Myitkyina Train Station</b> <span>windows · civilians · flag</span></li>
   </ol>
-</div></div></div>
-
+  <div id="hof" class="hof"><div class="hoft">HALL OF FAME</div><div class="hoftabs"><button id="hofC" class="on">Campaign</button><button id="hofE">Endless</button></div><ol id="hofList"></ol></div>
+</div></div>
 <div id="end" class="ov hide"><div class="card">
   <h1 id="endTitle">Position held</h1>
   <p class="sub" id="endSub"></p>
@@ -1157,8 +1162,8 @@ function drawDemo(){const t=DEMO.t,ct=DEMO.ct,c=CLIPS[DEMO.i];ctx.save();ctx.tex
   ctx.fillStyle='rgba(255,255,255,.45)';ctx.font='600 12px system-ui,sans-serif';ctx.textAlign='right';ctx.fillText('click or press any key to skip',W-24,H-20);
   ctx.restore()}
 ['pointerdown','keydown'].forEach(ev=>addEventListener(ev,e=>{if(!DEMO)return;e.stopPropagation();if(e.cancelable)e.preventDefault();endDemo();introAudio()},true));
-let MODE='campaign',DIFF='vet';try{DIFF=localStorage.getItem('hilltop_diff')||'vet'}catch(e){}
-function newGame(start){track('diff-'+DIFF);G={endless:MODE==='endless',level:typeof start==="number"&&start>0?start:1,score:0,totalKills:0,flagsBurned:0};startLevel()}
+let MODE='campaign',DIFF='vet',CUR_PLIST=null;try{DIFF=localStorage.getItem('hilltop_diff')||'vet'}catch(e){}
+function newGame(start){track('diff-'+DIFF);const PL=MODE!=='endless'&&CUR_PLIST?CUR_PLIST.slice():null;G={endless:MODE==='endless',plist:PL,pi:0,level:PL?PL[0]:typeof start==="number"&&start>0?start:1,score:0,totalKills:0,flagsBurned:0};startLevel()}
 function startLevel(){stopHeliSnd();if(G&&!G.demo&&!DEMO)track('level-'+G.level+'-start');const sc0=SCENES[(G.level-1)%SCENES.length],c=cfg(sc0.diff&&G.level<=CAMPAIGN?sc0.diff:G.level);$('tFlare').style.display='none';if(sc0.diff&&G.level<=CAMPAIGN){c.acc*=.75;c.burst=1;c.maxActive=2;c.rpg=3;Object.assign(c,sc0.opts||{})}if(DIFF==='recruit'){c.acc*=.8;c.aim*=1.2;c.spawn*=1.2;c.maxActive=Math.max(1,Math.round(c.maxActive*.8));if(c.quota)c.quota=Math.max(3,Math.ceil(c.quota*.8));if(c.drone)c.drone*=1.25;if(c.arty)c.arty*=1.25;if(c.decoy)c.decoy*=.8}buildScene(G.level);
   Object.assign(G,{c,time:90,kills:0,health:5,mag:30,reserve:c.ammo-30,rpg:c.rpg,reloading:0,rpgReload:0,cool:0,
     enemies:[],spawnT:1.6,duck:false,duckAmt:0,zoom:0,recoil:0,shake:0,hurt:0,flash:0,shots:0,hits:0,levelScore:0,dieT:0,
@@ -1495,30 +1500,32 @@ function showEnd(title,sub,stats,btn,onBtn,menu,kia){prepShare();$('end').queryS
   $('endBtn').textContent=btn;$('endBtn').onclick=onBtn;$('endBtn3').classList.add('hide');
   $('endBtn2').classList.toggle('hide',!menu);$('endBtn2').onclick=()=>{$('end').classList.add('hide');$('title').classList.remove('hide');showBest();hofLoad();state='title';startAmbience()};
   $('end').classList.remove('hide')}
+function isLast(){return G.plist?G.pi>=G.plist.length-1:G.level===CAMPAIGN}
+function goNext(){if(G.plist){G.pi++;G.level=G.plist[G.pi]}else G.level++;startLevel()}
 function endLevel(){state='end';stopHeliSnd();stopAmbience();G.arty.forEach(a=>{try{a.wh&&a.wh.stop()}catch(e){}});G.drones.forEach(stopBuzz);$('touch').classList.add('hide');spaceHeld=false;
   const acc=G.shots?Math.round(100*G.hits/G.shots):0,ok=(G.kills>=G.c.quota||G.surrendered||G.retreated)&&!(G.city&&G.city.lost)&&!(SC.tank&&!(G.tk&&G.tk.dead));if(G.assaultDone&&ok){G.score+=2000;G.levelScore+=2000}if(G.retreated){G.score+=1500;G.levelScore+=1500}
   const bonus=ok?acc*5+G.health*100+G.rpg*50:0;G.lastBonus=bonus;G.score+=bonus;saveBest();track('level-'+G.level+(ok?'-won':'-not-enough-kills'));
   END_HEAD=`<span>Accuracy <b>${acc}%</b></span> - <span><b>${Math.round(100*G.kills/Math.max(1,G.c.quota))}%</b> kills</span>${G.overkill?' — <span><b>+1000</b></span>':''}`;
   const stats=`Kills <b>${G.kills}</b> / ${G.c.quota}<br>`+roundStats()+(ok?`Bonus <b>+${bonus}</b><br>`:'')+`Score <b>${G.score}</b>`;
-  if(G.assaultDone&&ok&&G.level!==CAMPAIGN){const L=stageList();showEnd('TAKEN',L[0].name+' · all '+L.length+' stages cleared',`All stages cleared <b>+2000</b><br>`+(G.megaWins?`Surrendered to the megaphone <b>${G.megaWins}</b><br>`:'')+stats,'NEXT LEVEL',()=>{G.level++;startLevel()},false);return}
-  if(G.sn){const S2=G.sn,won=!S2.fail&&G.kills>=20;if(won){const clean=S2.maxAlert<50;const b=clean?1500:500;G.score+=b;G.levelScore+=b;showEnd(clean?'GHOST':'CAMP CLEARED',SC.name,(clean?'Never raised the alarm <b>+1500</b><br>':'Camp cleared <b>+500</b><br>')+`Kills <b>${G.kills}</b> / 20 · Shots <b>${G.shots}</b><br>Score <b>${G.score}</b>`,'NEXT LEVEL',()=>{G.level++;startLevel()},false);return}
+  if(G.assaultDone&&ok&&!isLast()){const L=stageList();showEnd('TAKEN',L[0].name+' · all '+L.length+' stages cleared',`All stages cleared <b>+2000</b><br>`+(G.megaWins?`Surrendered to the megaphone <b>${G.megaWins}</b><br>`:'')+stats,'NEXT LEVEL',goNext,false);return}
+  if(G.sn){const S2=G.sn,won=!S2.fail&&G.kills>=20;if(won){const clean=S2.maxAlert<50;const b=clean?1500:500;G.score+=b;G.levelScore+=b;showEnd(clean?'GHOST':'CAMP CLEARED',SC.name,(clean?'Never raised the alarm <b>+1500</b><br>':'Camp cleared <b>+500</b><br>')+`Kills <b>${G.kills}</b> / 20 · Shots <b>${G.shots}</b><br>Score <b>${G.score}</b>`,'NEXT LEVEL',goNext,false);return}
     showEnd(S2.fail||'TIME UP',SC.name+(S2.fail==='RADIOED'?' · a radio man called it in':S2.fail==='SPOTTED'?' · the camp saw you':''),`Kills <b>${G.kills}</b> / 20 · Shots <b>${G.shots}</b><br>Score <b>${G.score}</b>`,'RETRY LEVEL',()=>{G.score-=G.levelScore;startLevel()},true);return}
   if(G.city&&G.city.lost){showEnd('CITY LOST',SC.name,`Civilian casualties <b>${G.city.cas}</b> / ${CIV_LIMIT}<br>`+stats,'RETRY LEVEL',()=>{G.score-=G.levelScore;startLevel()},true);return}
-  if(G.city&&ok&&G.level!==CAMPAIGN){showEnd(`Level ${G.level} — position held`,'City protected',`Civilian casualties <b>${G.city.cas}</b> / ${CIV_LIMIT}<br>`+stats,'NEXT LEVEL',()=>{G.level++;startLevel()},false);return}
-  if(G.tk&&G.tk.dead&&ok&&G.level!==CAMPAIGN){showEnd('TANK DESTROYED',SC.name,stats,'NEXT LEVEL',()=>{G.level++;startLevel()},false);return}
-  if(G.retreated&&G.level!==CAMPAIGN){showEnd(`Level ${G.level} — position held`,'SAC retreated',`SAC retreated <b>+1500</b><br>`+stats,'NEXT LEVEL',()=>{G.level++;startLevel()},false);return}
-  if(G.surrendered&&G.level!==CAMPAIGN){showEnd('ENEMY POST SURRENDERED',`${SC.name} taken without more bloodshed · +1000`,stats,'NEXT LEVEL',()=>{G.level++;startLevel()},false);return}
+  if(G.city&&ok&&!isLast()){showEnd(`Level ${G.level} — position held`,'City protected',`Civilian casualties <b>${G.city.cas}</b> / ${CIV_LIMIT}<br>`+stats,'NEXT LEVEL',goNext,false);return}
+  if(G.tk&&G.tk.dead&&ok&&!isLast()){showEnd('TANK DESTROYED',SC.name,stats,'NEXT LEVEL',goNext,false);return}
+  if(G.retreated&&!isLast()){showEnd(`Level ${G.level} — position held`,'SAC retreated',`SAC retreated <b>+1500</b><br>`+stats,'NEXT LEVEL',goNext,false);return}
+  if(G.surrendered&&!isLast()){showEnd('ENEMY POST SURRENDERED',`${SC.name} taken without more bloodshed · +1000`,stats,'NEXT LEVEL',goNext,false);return}
   if(!ok){showEnd(`Level ${G.level} — not enough kills`,SC.name,stats,'RETRY LEVEL',()=>{G.score-=G.levelScore;startLevel()},true);return}
-  if(G.level===CAMPAIGN){showEnd('HILL TAKEN',`All ${CAMPAIGN} positions held — campaign complete`,stats+`<br>Total kills <b>${G.totalKills}</b>`,'KEEP FIGHTING (ENDLESS)',()=>{G.level++;startLevel()},true);return}
-  const nxt=SCENES[G.level%SCENES.length].name;
-  showEnd(`Level ${G.level} — position held`,`Next: Level ${G.level+1} · ${nxt}`,stats,'NEXT LEVEL',()=>{G.level++;startLevel()},false)}
+  if(isLast()){showEnd('HILL TAKEN',`All ${G.plist?G.plist.length:CAMPAIGN} positions held — campaign complete`,stats+`<br>Total kills <b>${G.totalKills}</b>`,'KEEP FIGHTING (ENDLESS)',()=>{G.plist=null;G.level=CAMPAIGN+1;startLevel()},true);return}
+  const nN=G.plist?G.plist[G.pi+1]:G.level+1,nxt=SCENES[(nN-1)%SCENES.length].name;
+  showEnd(`Level ${G.level} — position held`,`Next: Level ${G.plist?G.pi+2:nN} · ${nxt}`,stats,'NEXT LEVEL',goNext,false)}
 function gameOver(){state='over';stopHeliSnd();track((G.endless?'endless-':'')+'level-'+G.level+'-kia');
   if(G.endless){stopAmbience();G.arty.forEach(a=>{try{a.wh&&a.wh.stop()}catch(e){}});G.drones.forEach(stopBuzz);saveBest();const k='hilltop_endless_'+G.level,t=Math.floor(G.time);let b=0;try{b=+localStorage.getItem(k)||0}catch(e){}const nb=t>b;if(nb)try{localStorage.setItem(k,t)}catch(e){}
     const f=x=>Math.floor(x/60)+':'+String(x%60).padStart(2,'0'),acc=G.shots?Math.round(100*G.hits/G.shots):0;
     showEnd('KILLED IN ACTION',`Endless · ${SC.name}`,`You survived <b>${f(t)}</b>${nb?' — <b>new best!</b>':` &nbsp;·&nbsp; best <b>${f(b)}</b>`}<br>Kills <b>${G.kills}</b> &nbsp;·&nbsp; Accuracy <b>${acc}%</b><br>Score <b>${G.score}</b>`,'TRY AGAIN',()=>{const l=G.level;newGame(l)},true,true);return}stopAmbience();G.arty.forEach(a=>{try{a.wh&&a.wh.stop()}catch(e){}});G.drones.forEach(stopBuzz);saveBest();
   showEnd('KILLED IN ACTION',`Level ${G.level} · ${SC.name}`,
     (END_HEAD=`<div>Kills this level <b>${G.kills}</b> / ${G.c.quota}</div><div><b>${G.preempt}</b> before they fired</div><div>Hit <b>${G.hitsTaken}</b> times of <b>${G.enemyShots}</b> shots fired</div>`,END_FOOT=`<div>Final score <b>${G.score}</b></div><div>Best <b>${best}</b></div>`,roundStats(true)),'REPLAY LEVEL',()=>{G.score=Math.max(0,G.score-G.levelScore);G.health=5;startLevel()},true,true);
-  if(G.level>1){$('endBtn3').classList.remove('hide');$('endBtn3').onclick=()=>newGame(1)}}
+  if(G.plist?G.pi>0:G.level>1){$('endBtn3').classList.remove('hide');$('endBtn3').onclick=()=>newGame(1)}}
 function roundStats(top){return (G.ricos?`Helmet ricochets <b>${G.ricos}</b><br>`:'')+(top?'':`Killed before they fired <b>${G.preempt}</b><br>`)+`Decoys shot <b>${G.decoysHit}</b>${G.decoysHit?` (−${G.decoysHit*50})`:''}<br>`+(top?'':`Enemy shots fired <b>${G.enemyShots}</b> &nbsp;·&nbsp; Times you were hit <b>${G.hitsTaken}</b><br>`)+
   (G.enemyRpgs?`Enemy RPGs fired <b>${G.enemyRpgs}</b> &nbsp;·&nbsp; RPG hits on you <b>${G.rpgHits}</b><br>`:'')+
   (G.smokerKills?`Smokers hit with RPG <b>${G.smokerKills}</b> (+${G.smokerKills*250})<br>`:'')+
@@ -2662,7 +2669,7 @@ function draw(){setBlur();ctx.setTransform(sc*dpr,0,0,sc*dpr,0,0);
   if(G.demo){drawDemo();return}
   // HUD
   ctx.font='700 15px system-ui,sans-serif';
-  panel(16,14,262,62);ctx.fillStyle='#c8c9b0';ctx.fillText(`LEVEL ${G.level}${G.level<=CAMPAIGN?' / '+CAMPAIGN:''}`,30,36);
+  panel(16,14,262,62);ctx.fillStyle='#c8c9b0';ctx.fillText(G.plist?`LEVEL ${G.pi+1} / ${G.plist.length}`:`LEVEL ${G.level}${G.level<=CAMPAIGN?' / '+CAMPAIGN:''}`,30,36);
   {const lbl=SC.name.toUpperCase()+' · '+(SC.dist||200)+' m';ctx.font='600 12px system-ui,sans-serif';ctx.fillStyle='#9ea38a';if(ctx.measureText(lbl).width>132)ctx.font='600 9.5px system-ui,sans-serif';ctx.fillText(lbl,136,36)}
   const tl=G.endless?Math.floor(G.time):Math.ceil(G.time);ctx.font='800 26px system-ui,sans-serif';ctx.fillStyle=!G.endless&&tl<=10?'#ff8a6a':'#f4efd6';
   ctx.fillText(Math.floor(tl/60)+':'+String(tl%60).padStart(2,'0'),30,66);
@@ -2737,14 +2744,28 @@ addEventListener('blur',()=>setScope(false));
 const tb=(id,fn,up)=>{const b=$(id);b.addEventListener('pointerdown',e=>{e.stopPropagation();e.preventDefault();fn()});
   if(up){b.addEventListener('pointerup',e=>{e.stopPropagation();up()});b.addEventListener('pointerleave',()=>up());b.addEventListener('pointercancel',()=>up())}};
 tb('tScope',()=>setScope(true),()=>setScope(false));tb('tDuck',toggleDuck);tb('tPeek',togglePeek);tb('tFlare',fireFlare);tb('tRpg',fireRpg);tb('tRel',reload);
-function setMode(m){MODE=m;$('mCamp').classList.toggle('on',m==='campaign');$('mEnd').classList.toggle('on',m==='endless');
-  $('modeTip').textContent=m==='endless'?'Pick any level · the clock counts up · stay alive as long as you can · ammo resupply every 40 s':'Take each hill in 90 seconds'}
-function setDiff(d){DIFF=d;try{localStorage.setItem('hilltop_diff',d)}catch(e){}$('dNew').classList.toggle('on',d==='recruit');$('dVet').classList.toggle('on',d==='vet')}
+function setMode(m){MODE=m}
+function setDiff(d){DIFF=d;try{localStorage.setItem('hilltop_diff',d)}catch(e){}$('dNew').classList.toggle('on',d==='recruit');$('dVet').classList.toggle('on',d==='vet');$('sNew')&&($('sNew').classList.toggle('on',d==='recruit'),$('sVet').classList.toggle('on',d==='vet'))}
 let pendStart=null;function askDiff(fn){pendStart=fn;setDiff(DIFF);$('dpick').classList.remove('hide')}
 const pick=d=>{setDiff(d);$('dpick').classList.add('hide');const f=pendStart;pendStart=null;if(f)f()};
 $('dNew').onclick=()=>pick('recruit');$('dVet').onclick=()=>pick('vet');$('dBack').onclick=()=>{$('dpick').classList.add('hide');pendStart=null};
 ['pointerdown','keydown'].forEach(ev=>$('dpick').addEventListener(ev,e=>e.stopPropagation()));
-$('mCamp').onclick=()=>setMode('campaign');$('mEnd').onclick=()=>setMode('endless');
+let SETN=0,SEL=[];const DRONE_LV=21;
+function autoPick(n){const out=[];for(let i=0;i<n;i++){const a=Math.floor(i*CAMPAIGN/n)+1,b=Math.floor((i+1)*CAMPAIGN/n);let v=a+Math.floor(Math.random()*(b-a+1));if(DRONE_LV>=a&&DRONE_LV<=b)v=DRONE_LV;out.push(v)}return out}
+function setRender(){const camp=MODE==='campaign',lis=[...document.querySelectorAll('#setup .levels li')];lis.forEach((li,i)=>li.classList.toggle('sel',camp&&SEL.includes(i+1)));
+  const L=document.querySelector('#setup .levels');L.classList.toggle('dim',camp&&SETN>0);L.classList.toggle('lock',camp&&SETN!==5);L.style.display=camp&&!SETN?'none':'';
+  document.querySelectorAll('#countRow .cnt').forEach(b=>b.classList.toggle('on',+b.dataset.n===SETN));
+  $('setGo').classList.toggle('hide',!(camp&&SETN&&SEL.length===SETN));$('setShuf').classList.toggle('hide',!(camp&&SETN>5&&SETN<CAMPAIGN));
+  $('setHint').textContent=!camp?'Click a level to start':!SETN?'Choose how many levels':SETN===5?(SEL.length<5?`Click ${5-SEL.length} more level${SEL.length===4?'':'s'}`:'Ready — press START'):SETN===CAMPAIGN?'All 25 levels in order':'Picked for variety · press SHUFFLE for a new mix'}
+function openSetup(m){ac();loadSfx();setMode(m);SETN=0;SEL=[];$('setTitle').textContent=m==='endless'?'ENDLESS':'CAMPAIGN';$('countRow').style.display=m==='endless'?'none':'';setDiff(DIFF);
+  hofMode=m;$('hofC').classList.toggle('on',m==='campaign');$('hofE').classList.toggle('on',m==='endless');hofLoad();setRender();$('title').classList.add('hide');$('setup').classList.remove('hide')}
+$('mCamp').onclick=()=>openSetup('campaign');$('mEnd').onclick=()=>openSetup('endless');
+$('sNew').onclick=()=>setDiff('recruit');$('sVet').onclick=()=>setDiff('vet');
+document.querySelectorAll('#countRow .cnt').forEach(b=>b.onclick=()=>{SETN=+b.dataset.n;SEL=SETN===5?[]:SETN===CAMPAIGN?SCENES.slice(0,CAMPAIGN).map((x,i)=>i+1):autoPick(SETN);setRender()});
+$('setShuf').onclick=()=>{SEL=autoPick(SETN);setRender()};
+$('setBack').onclick=()=>{$('setup').classList.add('hide');$('title').classList.remove('hide')};
+$('setGo').onclick=()=>{stopAmbience();$('setup').classList.add('hide');if(SETN===CAMPAIGN){CUR_PLIST=null;newGame(1)}else{CUR_PLIST=SEL.slice().sort((a,b)=>a-b);newGame()}};
+['pointerdown','keydown'].forEach(ev=>$('setup').addEventListener(ev,e=>e.stopPropagation()));
 // newsletter / tournament sign-up: posts to a form service once SIGNUP_URL is set
 const SIGNUP_URL='';
 $('suBtn').onclick=()=>{const em=$('suEmail').value.trim(),nm=$('suName').value.trim();if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){$('suMsg').textContent='Please enter a valid email';$('suMsg').style.color='#ffb38a';return}
@@ -2772,8 +2793,8 @@ $('shBtn').onclick=()=>{if(!shareRec)return;let nm=$('shName').value.trim().repl
   fetch(SCORES_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(rec)}).then(r=>{if(!r.ok)throw 0;$('shMsg').style.color='#bde58a';$('shMsg').textContent='Shared! You\'re in the Hall of Fame.'}).catch(()=>{$('shMsg').style.color='#ffb38a';$('shMsg').textContent='Saved here — could not reach the online board.'});shareRec=null};
 ['pointerdown','keydown'].forEach(ev=>$('share').addEventListener(ev,e=>e.stopPropagation()));
 hofLoad();
-$('startBtn').onclick=()=>{ac();loadSfx();askDiff(()=>{stopAmbience();newGame()})};
-document.querySelectorAll('.levels li').forEach((li,i)=>{if(li.classList.contains('soon'))return;li.style.cursor='pointer';li.title='Start at this level';li.addEventListener('click',()=>{ac();loadSfx();askDiff(()=>{stopAmbience();newGame(i+1)})})});
+
+document.querySelectorAll('.levels li').forEach((li,i)=>{if(li.classList.contains('soon'))return;li.style.cursor='pointer';li.addEventListener('click',()=>{ac();loadSfx();if(MODE==='endless'){stopAmbience();$('setup').classList.add('hide');CUR_PLIST=null;newGame(i+1);return}if(SETN!==5)return;const k=SEL.indexOf(i+1);if(k>=0)SEL.splice(k,1);else if(SEL.length<5)SEL.push(i+1);setRender()})});
 function introAudio(){if(state!=='title')return;ac();loadSfx();startAmbience()}
 ['pointerdown','keydown'].forEach(ev=>addEventListener(ev,introAudio));
 $('resBtn').onclick=pause;
