@@ -1,11 +1,11 @@
 Hilltop Firefight — virus scan report
-Date (UTC): 2026-11-18 12:02
+Date (UTC): 2026-11-18 12:09
 Scanner: ClamAV 1.5.4/28187/Wed Nov 18 06:28:39 2026
-Commit: 5ff657fee237c5aa26576a0ca8fa7c7634da0be2
+Commit: aa2d367bb95ea070071dad9b2da19f8af067d85c
 
 SHA-256:
-9fad4bef4761f297b6aaf7f436d91b8b7b169f5b54f44c4d2398b7fc2478c8ee  HilltopFirefight.apk
-88fb682f4bdd8cc17aa3e6d1cc0a2aadbb118c49579d779eef05c2d40c4ff20e  index.html
+307656e33932e6596fa854a293f0c40faac9bde0aebb2cb004892bd8ed027fe2  HilltopFirefight.apk
+6b22268a113459c1fc08f445c52983cb7b10ddd088b708c4d5dc390bf9fcd460  index.html
 
 scan/index.html: OK
 scan/HilltopFirefight.apk: OK
@@ -18,6 +18,6 @@ Scanned files: 2
 Infected files: 0
 Data scanned: 14.16 MiB
 Data read: 6.47 MiB (ratio 2.19:1)
-Time: 10.538 sec (0 m 10 s)
-Start Date: 2026:11:18 12:02:53
-End Date:   2026:11:18 12:03:04
+Time: 6.918 sec (0 m 6 s)
+Start Date: 2026:11:18 12:09:52
+End Date:   2026:11:18 12:09:59
