@@ -14,7 +14,7 @@ canvas{display:block;cursor:none}
 #end h1.kia{color:#ff6a5a}#end h1.held{color:#cfe8a6}
 #end .sub{font-size:22px;color:#e8e4d8;letter-spacing:.12em;text-transform:uppercase;margin:0 0 18px}
 #end .bon{font-size:24px;color:#ffd36b;margin-bottom:12px}#end .bon:empty{display:none}
-#end .ehead{font-family:'Black Ops One',Impact,sans-serif;font-size:min(68px,7vw,9vh);line-height:1.1;color:#f2ede0;margin:0 0 14px;text-shadow:0 3px 16px #000;text-transform:uppercase;letter-spacing:.03em}#end .ehead:empty,#end .enext:empty{display:none}#end .ehead span{white-space:nowrap}#end{align-items:safe center}#end .estars{font-family:system-ui,sans-serif;font-size:min(50px,6vh);letter-spacing:.12em;color:rgba(255,255,255,.22);line-height:1.1}#end .estars b{color:#ffd36b;text-shadow:0 0 18px rgba(255,200,80,.6)}
+#end .ehead{font-family:'Black Ops One',Impact,sans-serif;font-size:min(68px,7vw,9vh);line-height:1.1;color:#f2ede0;margin:0 0 14px;text-shadow:0 3px 16px #000;text-transform:uppercase;letter-spacing:.03em}#end .ehead:empty,#end .enext:empty{display:none}#end .ehead span{white-space:nowrap}#end .hline{line-height:1.08}#end .hsc{font-size:.55em;margin-top:10px;display:flex;gap:46px;justify-content:center;flex-wrap:wrap;color:#e8e4d8}#end .sech{display:flex;align-items:center;gap:14px;width:min(900px,94vw);margin:14px auto 6px;font-family:'Black Ops One',Impact,sans-serif;font-size:20px;letter-spacing:.14em;color:#cfc9b4}#end .sech::before,#end .sech::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.35)}#end{align-items:safe center}#end .estars{font-family:system-ui,sans-serif;font-size:min(50px,6vh);letter-spacing:.12em;color:rgba(255,255,255,.22);line-height:1.1}#end .estars b{color:#ffd36b;text-shadow:0 0 18px rgba(255,200,80,.6)}
 .lstars{font-size:22px;letter-spacing:.08em;color:rgba(255,255,255,.18);margin-top:2px;line-height:1}.lstars b{color:#ffd36b;font-weight:400}.lstars em{font-style:normal;font-size:14px;letter-spacing:.03em;color:#cfe8a6;margin-left:12px;vertical-align:4px;font-weight:700}#end .ehead.multi{font-size:min(46px,4.4vw,6vh);line-height:1.15}#end .enext b{color:#ffd36b;font-weight:400}#end .ehead b{color:#ffd36b;font-weight:400}
 #end .enext{font-family:'Black Ops One',Impact,sans-serif;font-size:min(48px,5vw,6.5vh);color:#cfe8a6;margin:14px 0 10px;text-shadow:0 3px 16px #000;text-transform:uppercase;letter-spacing:.03em}#end #endStats>div{break-inside:avoid}
 #end .bon,#end .stats{font-size:min(34px,3.4vw,4.2vh)!important;line-height:1.3}#end #endStats,#end #endBon{columns:2;column-gap:40px;text-align:left;display:inline-block;width:min(900px,94vw)}#end #endBon:empty{display:none}#end #endBon>div{break-inside:avoid}
@@ -170,8 +170,8 @@ html,body,body *{-webkit-user-select:text!important;user-select:text!important;-
   <h1 id="endTitle">Position held</h1>
   <p class="sub" id="endSub"></p>
   <div class="ehead" id="endHead"></div>
-  <div class="stats bon" id="endBon"></div>
-  <div class="stats" id="endStats"></div>
+  <div class="sech" id="bonH">BONUSES</div><div class="stats bon" id="endBon"></div>
+  <div class="sech" id="statH">STATS</div><div class="stats" id="endStats"></div>
   <div class="enext" id="endNext"></div>
   <div id="share" class="share"><div class="shtl">🏆 Add to the Hall of Fame?</div><div class="shrow"><input id="shName" maxlength="12" placeholder="name or initials"><button id="shBtn">SHARE SCORE</button></div><div class="shrow shrow2"><button id="shSoc">📤 SHARE</button><button id="shImg">💾 SAVE RESULTS IMAGE</button></div><div id="shLinks" class="shsoc" style="display:none"></div><div id="shMsg" class="sumsg"></div></div>
   <button id="endBtn">NEXT LEVEL</button>
@@ -1499,7 +1499,7 @@ function showEnd(title,sub,stats,btn,onBtn,menu,kia){prepShare();$('end').queryS
   let nextL='';if(/^Next:/.test(sub||'')){nextL=sub;if(small===sub)small=SC.name}$('endHead').innerHTML=END_HEAD;$('endHead').classList.toggle('multi',/<div>/.test(END_HEAD));END_HEAD='';if(END_FOOT)$('endNext').innerHTML=END_FOOT;else $('endNext').textContent=nextL;END_FOOT='';
   $('endTitle').textContent=big;$('endTitle').style.fontSize=big.length>14?'min(6.4vw,74px,11vh)':big.length>10?'min(8vw,84px,12vh)':'';$('endTitle').className=kia?'kia':(/^(HELD|HILL TAKEN|POST SURRENDERED|SURRENDERED|TAKEN|TANK DESTROYED|GHOST|CAMP CLEARED)$/.test(big)?'held':/^(CITY LOST|OVERTAKEN|SPOTTED|RADIOED|OUT OF AMMO|TIME UP)$/.test(big)?'kia':'');$('endSub').textContent=small;
   const parts=String(stats).split('<br>'),isB=x=>/\+\d|burn|DOMINAT|destroy|Bonus/i.test(x);$('endBon').innerHTML=parts.filter(isB).map(x=>'<div>'+x+'</div>').join('');$('endStats').innerHTML=parts.filter(x=>!isB(x)&&x.trim()).flatMap(x=>x.split(/\s*&nbsp;·&nbsp;\s*/)).map(x=>'<div>'+x+'</div>').join('');
-  const steps=['endTitle','endSub','endHead','endBon','endStats','endNext','share','endBtn','endBtn2','endBtn3'];steps.forEach(id=>{$(id).classList.add('step');$(id).classList.remove('in')});
+  $('bonH').style.display=$('endBon').innerHTML.trim()?'':'none';$('statH').style.display=$('endStats').innerHTML.trim()?'':'none';const steps=['endTitle','endSub','endHead','endBon','endStats','endNext','share','endBtn','endBtn2','endBtn3'];steps.forEach(id=>{$(id).classList.add('step');$(id).classList.remove('in')});
   [0,600,1100,1700,2400,3100,3600,4200,4200,4200].forEach((d,i)=>setTimeout(()=>$(steps[i]).classList.add('in'),d+60));
   $('endBtn').textContent=btn;$('endBtn').onclick=onBtn;$('endBtn3').classList.add('hide');
   $('endBtn2').classList.toggle('hide',!menu);$('endBtn2').onclick=()=>{$('end').classList.add('hide');$('title').classList.remove('hide');showBest();hofLoad();state='title';startAmbience()};
@@ -1513,8 +1513,8 @@ function endLevel(){state='end';stopHeliSnd();stopAmbience();G.arty.forEach(a=>{
   const acc=G.shots?Math.round(100*G.hits/G.shots):0,ok=(G.kills>=G.c.quota||G.surrendered||G.retreated)&&!(G.city&&G.city.lost)&&!(SC.tank&&!(G.tk&&G.tk.dead));if(G.assaultDone&&ok){G.score+=2000;G.levelScore+=2000}if(G.retreated){G.score+=1500;G.levelScore+=1500}
   const bonus=ok?acc*5+G.health*100+G.rpg*50:0;G.lastBonus=bonus;G.score+=bonus;saveBest();track('level-'+G.level+(ok?'-won':'-not-enough-kills'));
   const STARS=!ok||G.endless?0:Math.max(1,G.surrendered||G.kills>=2*G.c.quota?3:G.kills>=1.5*G.c.quota?2:1);G.lastStars=STARS;if(STARS&&!G.demo)saveStars(G.level,STARS);
-  END_HEAD=(STARS?`<div class="estars"><b>${'★'.repeat(STARS)}</b>${'★'.repeat(3-STARS)}</div>`:'')+`<span>Accuracy <b>${acc}%</b></span> - <span><b>${Math.round(100*G.kills/Math.max(1,G.c.quota))}%</b> kills</span>${G.overkill?' — <span><b>+1000</b></span>':''}`;
-  const stats=`Kills <b>${G.kills}</b> / ${G.c.quota}<br>`+roundStats()+(ok?`Bonus <b>+${bonus}</b><br>`:'')+`Score <b>${G.score}</b>`;
+  END_HEAD=(STARS?`<div class="estars"><b>${'★'.repeat(STARS)}</b>${'★'.repeat(3-STARS)}</div>`:'')+`<div class="hline"><b>${Math.round(100*G.kills/Math.max(1,G.c.quota))}%</b> Required kills</div><div class="hline"><b>${acc}%</b> Accuracy</div><div class="hsc"><span><b>${G.levelScore+bonus}</b> Level score</span><span><b>${G.score}</b> Campaign score</span></div>`;
+  const stats=`Kills <b>${G.kills}</b> / ${G.c.quota}<br>`+(G.overkill?`150% kills — dominating <b>+1000</b><br>`:'')+roundStats()+(ok?`Bonus <b>+${bonus}</b>`:'');
   if(G.assaultDone&&ok&&!isLast()){const L=stageList();showEnd('TAKEN',L[0].name+' · all '+L.length+' stages cleared',`All stages cleared <b>+2000</b><br>`+(G.megaWins?`Surrendered to the megaphone <b>${G.megaWins}</b><br>`:'')+stats,'NEXT LEVEL',goNext,false);return}
   if(G.sn){const S2=G.sn,won=!S2.fail&&G.kills>=20;if(won){const clean=S2.maxAlert<50;saveStars(G.level,G.kills>=40?3:G.kills>=30?2:1);const b=clean?1500:500;G.score+=b;G.levelScore+=b;showEnd(clean?'GHOST':'CAMP CLEARED',SC.name,(clean?'Never raised the alarm <b>+1500</b><br>':'Camp cleared <b>+500</b><br>')+`Kills <b>${G.kills}</b> / 20 · Shots <b>${G.shots}</b><br>Score <b>${G.score}</b>`,'NEXT LEVEL',goNext,false);return}
     showEnd(S2.fail||'TIME UP',SC.name+(S2.fail==='RADIOED'?' · a radio man called it in':S2.fail==='SPOTTED'?' · the camp saw you':''),`Kills <b>${G.kills}</b> / 20 · Shots <b>${G.shots}</b><br>Score <b>${G.score}</b>`,'RETRY LEVEL',()=>{G.score-=G.levelScore;startLevel()},true);return}
@@ -2823,7 +2823,7 @@ function resultImage(){const c=document.createElement('canvas');c.width=1200;c.h
   const t=$('endTitle').textContent,cl=$('endTitle').classList;g.fillStyle=cl.contains('kia')?'#ff6a5a':cl.contains('held')?'#cfe8a6':'#f2ede0';g.font=(t.length>10?'72px ':'110px ')+BO;g.fillText(t,600,t.length>10?190:205);
   g.fillStyle='#e8e4d8';g.font='600 26px system-ui,sans-serif';g.fillText(($('endSub').textContent||'').toUpperCase(),600,250);
   const st=G&&G.lastStars||0;if(st){g.font='70px system-ui,sans-serif';for(let i=0;i<3;i++){g.fillStyle=i<st?'#ffd36b':'rgba(255,255,255,.25)';g.fillText('★',510+i*90,335)}}
-  const hd=[...$('endHead').querySelectorAll('span')].map(x=>x.textContent).join(' · ')||[...$('endHead').querySelectorAll('div:not(.estars)')].map(x=>x.textContent).join(' · ');
+  const hd=[...$('endHead').querySelectorAll('.hline')].map(x=>x.textContent).join(' · ')||[...$('endHead').querySelectorAll('div:not(.estars)')].map(x=>x.textContent).join(' · ');
   g.fillStyle='#f2ede0';g.font='40px '+BO;g.fillText(hd.toUpperCase(),600,st?410:360);
   g.fillStyle='#ffd36b';g.font='64px '+BO;g.fillText('SCORE '+(G?G.score:0),600,st?500:460);
   g.fillStyle='#a9b08e';g.font='600 22px system-ui,sans-serif';g.fillText(GAME_URL.replace('https://',''),600,596);return c}
