@@ -1525,10 +1525,10 @@ function starsOf(lv){try{return (JSON.parse(localStorage.getItem('hilltop_stars'
 function saveStars(lv,n){try{const o=JSON.parse(localStorage.getItem('hilltop_stars')||'{}');if(n>(o[lv]||0)){o[lv]=n;localStorage.setItem('hilltop_stars',JSON.stringify(o))}}catch(e){}renderStars()}
 function renderStars(){document.querySelectorAll('.levels').forEach(ol=>ol.querySelectorAll('li').forEach((li,i)=>{let st=li.querySelector('.lstars');if(!st){st=document.createElement('div');st.className='lstars';li.appendChild(st)}const n=starsOf(i+1);let et=0;try{et=+localStorage.getItem('hilltop_endless_'+(i+1))||0}catch(e){}st.innerHTML='<b>'+'★'.repeat(n)+'</b>'+'★'.repeat(3-n)+(et?`<em>Endless: ${Math.floor(et/60)}:${String(et%60).padStart(2,'0')}</em>`:'')}))}
 const TSTEPS=[
+ {k:'mid',t:'MID POSITION',s:'Scroll down once · best for defensive rifle fighting',st:'Tap PEEK · best for defensive rifle fighting',ok:()=>G.peek&&G.duckAmt>.2&&G.duckAmt<.45},
  {t:'SHOOT',s:'Aim and click a soldier',st:'Tap a soldier to shoot',go(){G.tr.k=0},ok:()=>G.tr.k>=1,need:'enemy'},
  {t:'HEADSHOT',s:'Aim for the head — worth more',st:'Tap his head — worth more',go(){G.tr.h=0},ok:()=>G.tr.h>=1,need:'enemy'},
- {k:'bf',t:'BLACK FLASH = 3 BULLETS LEFT',s:'Stand up · watch the edges of the screen',st:'Stand up · watch the edges of the screen',go(){G.tr.bt=-1;G.duck=false;G.peek=false},tick(t){if(G.tr.bt<0){if(G.duckAmt<.05){G.tr.bt=0;G.mag=3;G.lowT=.8}}else{G.tr.bt+=FDT;if(G.tr.bt>1.6&&G.tr.bt<1.7)G.lowT=.8}},ok:()=>G.tr.bt>3.2},
- {k:'mid',t:'MID',s:'Scroll down once · fire at most targets with some protection',st:'Tap PEEK · fire at most targets with some protection',ok:()=>G.peek&&G.duckAmt>.2&&G.duckAmt<.45},
+ {k:'bf',t:'BLACK FLASH = 3 BULLETS LEFT',s:'Stay in mid · one flash = 3 left · keeps throbbing = empty',st:'Stay in mid · one flash = 3 left · keeps throbbing = empty',go(){G.tr.bt=-1;G.duck=false;G.peek=true},tick(t){if(G.tr.bt<0){if(G.peek&&G.duckAmt>.2&&G.duckAmt<.45){G.tr.bt=0;G.mag=3;G.lowT=.8}}else{G.tr.bt+=FDT;if(G.tr.bt>2&&G.mag>0)G.mag=0}},ok:()=>G.tr.bt>4.6},
  {k:'duck',t:'DUCK',s:'Scroll down again · cover from artillery · use your items',st:'Tap DUCK · cover from artillery · use your items',ok:()=>G.duckAmt>.85},
  {t:'CHANGE CLIPS',s:'Stay down · click a clip on the shelf',st:'Stay down · tap a clip on the shelf',go(){G.tr.rl=0},ok:()=>G.tr.rl},
  {t:'LOAD AN RPG',s:'Stay down · click a grenade on the shelf',st:'Stay down · tap a grenade on the shelf',ok:()=>G.gLoaded},
@@ -1544,7 +1544,7 @@ const TSTEPS=[
  {t:'PLAY THE FLUTE',s:'Duck · click the flute · stand while it plays = bigger bonus',st:'Tap DUCK · tap the flute · stand while it plays = bigger bonus',ok:()=>G.flutePts>0}];
 function trainUpd(dt){const T2=G.tr;if(!T2||T2.done)return;const st=TSTEPS[T2.i];if(!st)return;
   if(!T2.started){T2.started=true;T2.t=0;T2.okT=0;st.go&&st.go()}T2.t+=dt;st.tick&&st.tick(T2.t);
-  if(st.need==='enemy'&&!G.enemies.some(e=>e.state!=='dead'&&e.state!=='gone')){T2.sp=(T2.sp||0)-dt;if(T2.sp<=0){T2.sp=1;spawn({type:'soldier'});const e=G.enemies[G.enemies.length-1];if(e)e.aim=99}}
+  if(st.need==='enemy'&&!G.enemies.some(e=>e.state!=='dead'&&e.state!=='gone')){T2.sp=(T2.sp||0)-dt;if(T2.sp<=0){T2.sp=1;spawn({type:'soldier',slot:[2,3,7,8][Math.floor(R()*4)]});const e=G.enemies[G.enemies.length-1];if(e)e.aim=99}}
   const fin=st.auto?T2.t>=st.auto:st.ok();if(fin){T2.okT+=dt;if(T2.okT>(st.auto?0:.9)){st.end&&st.end();T2.i++;T2.started=false;if(T2.i>=TSTEPS.length){T2.done=true;setTimeout(trainDone,900)}}}}
 function trainDone(){if(!G||!G.train)return;state='over';try{localStorage.setItem('hilltop_rank','Private')}catch(e){}stopAmbience&&stopAmbience();$('touch').classList.add('hide');$('trDone').classList.remove('hide');S.click&&0}
 function drawTrain(){const T2=G.tr;if(!T2||T2.done&&!TSTEPS[T2.i])return;const st=TSTEPS[Math.min(T2.i,TSTEPS.length-1)],okNow=!st.auto&&st.ok&&st.ok();
@@ -2800,6 +2800,7 @@ function draw(){setBlur();ctx.setTransform(sc*dpr,0,0,sc*dpr,0,0);
   // HUD
   ctx.font='700 15px system-ui,sans-serif';
   if(state==='play'&&G.health===1){const a=.22+.2*(.5+.5*Math.sin(T*6.5));const v=ctx.createRadialGradient(W/2,H/2,H*.32,W/2,H/2,H*.9);v.addColorStop(0,'rgba(200,0,0,0)');v.addColorStop(1,`rgba(210,0,0,${a})`);ctx.fillStyle=v;ctx.fillRect(0,0,W,H)}
+  if(state==='play'&&G.mag===0&&!(G.reloading>0)&&!SC.sniper){const k=.5+.5*Math.sin(T*5);const v=ctx.createRadialGradient(W/2,H/2,H*.3,W/2,H/2,H*.9);v.addColorStop(0,'rgba(0,0,0,0)');v.addColorStop(1,`rgba(0,0,0,${.35+.45*k})`);ctx.fillStyle=v;ctx.fillRect(0,0,W,H)}
   if(G.lowT>0){G.lowT-=FDT;const k=Math.sin(Math.PI*Math.max(0,1-G.lowT/.8));const v=ctx.createRadialGradient(W/2,H/2,H*.3,W/2,H/2,H*.9);v.addColorStop(0,'rgba(0,0,0,0)');v.addColorStop(1,`rgba(0,0,0,${.85*k})`);ctx.fillStyle=v;ctx.fillRect(0,0,W,H)}
   panel(16,14,262,62);if(G.endless&&!G.demo){const c=cyc(),hh=Math.floor(c.h),mm=Math.floor((c.h-hh)*60);ctx.save();ctx.font='700 12px system-ui,sans-serif';ctx.textAlign='right';ctx.fillStyle=c.sun>0?'#ffd36b':'#b9c4e0';ctx.fillText('DAY '+c.day+' · '+String(hh).padStart(2,'0')+':'+String(mm).padStart(2,'0')+(c.sun>0?' ☀':' ☾'),266,66);ctx.restore()}if(!G.endless&&G.livesMax){ctx.save();ctx.font='700 12px system-ui,sans-serif';ctx.textAlign='right';ctx.fillStyle='#e8c9a0';ctx.fillText('LIVES '+Math.max(0,G.lives)+' / '+G.livesMax,266,66);ctx.restore()}ctx.fillStyle='#c8c9b0';ctx.fillText(G.plist?`LEVEL ${G.pi+1} / ${G.plist.length}`:`LEVEL ${G.level}${G.level<=CAMPAIGN?' / '+CAMPAIGN:''}`,30,36);
   {const lbl=SC.name.toUpperCase()+' · '+(SC.dist||200)+' m';ctx.font='600 12px system-ui,sans-serif';ctx.fillStyle='#9ea38a';if(ctx.measureText(lbl).width>132)ctx.font='600 9.5px system-ui,sans-serif';ctx.fillText(lbl,136,36)}
