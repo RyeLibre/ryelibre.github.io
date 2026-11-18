@@ -1475,7 +1475,7 @@ function shoot(){if(state!=='play')return;ac();if(SC.sniper){snFire();return}if(
   else{dust(ax,ay,6);
     G.enemies.forEach(e=>{if(e.type!=='decoy'&&e.state==='up'){const g=geo(e);if(Math.hypot(ax-g.x,ay-g.hy)<55&&R()<.55)e.state='lowering'}})}
 }
-function reload(){if(SC.sniper){snReload();return}if(state!=='play'||G.reloading>0||G.mag>=30||G.reserve<=0)return;G.reloading=G.duckAmt<.6?2.1:1.7;S.reload();msg(G.mag>0?'Swapping clips — this one goes back on the shelf':'Reloading…')}
+function reload(){if(SC.sniper){snReload();return}if(state!=='play'||G.reloading>0||G.mag>=30||G.reserve<=0)return;G.reloading=G.duckAmt<.6?1:1.7;S.reload();msg(G.mag>0?'Swapping clips — this one goes back on the shelf':'Reloading…')}
 function syncRes(){G.reserve=G.mags.reduce((a,b)=>a+b,0)}
 function fireRpg(){if(SC&&SC.sniper)return;if(state!=='play')return;ac();
   if(G.duckAmt>.25){msg(G.peek&&G.duckAmt<.6?'No RPG from peek — stand up to fire it':'Stand up to fire the RPG');return}
