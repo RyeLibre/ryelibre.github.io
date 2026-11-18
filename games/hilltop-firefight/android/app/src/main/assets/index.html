@@ -230,7 +230,7 @@ const SCENES=[
  {name:'Mali Hka',river:1,logwall:1,tod:'Across the river',dist:200,sky:['#5f8fbf','#a9c6db','#cfdcd8'],sun:[980,120,'255,250,230',.6],ranges:['#7d98a6','#6b8a86','#58765e'],
   hill:['#4c6234','#2c3c1b'],slope:['#56693a','#2f3d1c'],dead:.15,trees:60,fog:.12,fogc:'170,190,190',px:640,top:215,curv:150,ph:3.7,diff:3,opts:{quota:15}},
  {name:'Jade Mines',jade:1,nopost:1,tod:'Overcast · jade mines',dist:200,sky:['#3f5068','#5d6f86','#7d8a98'],sun:null,ranges:['#4a5568','#46505e','#424a55'],
-  hill:['#8a7a5a','#5a4e38'],slope:['#8a7a5a','#5a4e38'],dead:.5,trees:0,fog:0,px:640,top:900,curv:10,ph:1.1,diff:3,opts:{quota:15}},
+  hill:['#8a7a5a','#5a4e38'],slope:['#8a7a5a','#5a4e38'],dead:.5,trees:0,fog:0,px:640,top:900,curv:10,ph:1.1,diff:3,opts:{quota:15,drone:24,arty:42}},
  {name:'Bhamo',flotilla:1,crates:1,nopost:1,tod:'Upstream ambush · sunset',dist:200,sky:['#4f6590','#c98f6c','#f2c48a'],sun:[560,176,'255,196,120',1],ranges:['#8aa0ad','#7d9296','#6c8379'],
   hill:['#6a7a50','#3a4a2c'],slope:['#6a7a50','#3a4a2c'],dead:.1,trees:0,fog:0,px:640,top:900,curv:10,ph:2.4,diff:3,opts:{quota:14,drone:0,droneDur:0,arty:9999}},
  {name:'Alaw Bum',hq:'haze',nvg:1,dist:150,tod:'Night vision',sky:['#5d8fc4','#bcd3df','#d6d8c8'],sun:[300,80,'255,255,235',.9],ranges:['#8aa2b3','#748e88','#5f7b5c'],
@@ -1204,13 +1204,13 @@ function spawn(opt={}){const c=G.c;if(G.surr&&G.surr.phase!=='over')return;
   const i=(opt.slot!=null&&free.includes(opt.slot))?opt.slot:pool[Math.floor(R()*pool.length)];
   const decoy=opt.type?opt.type==='decoy':R()<c.decoy;
   const rpgBusy=!G.angry&&(G.enemies.some(e=>e.type==='rpg'&&e.state!=='dead'&&e.state!=='gone')||G.erockets.length>0);
-  const type=decoy?'decoy':((!rpgBusy&&(opt.type==='rpg'||(!opt.type&&R()<c.rpgMan)))?'rpg':'soldier');
+  const backRow=isFarHp(i),type=decoy?'decoy':((!rpgBusy&&!backRow&&(opt.type==='rpg'||(!opt.type&&R()<c.rpgMan*(SC.jade?.6:1))))?'rpg':'soldier');
   slots[i].busy=true;
   G.enemies.push({slot:i,type,state:'rising',rise:0,t:0,
     aim:(opt.quick?.45:1)*c.aim*(.7+R()*.6)*(type==='rpg'?1.35:1)*(isFarHp(i)?.55:1),shots:0,next:0,dx:(R()-.5)*16,skin:['#4f3322','#5e3d28','#6f4a31','#86603f','#9c7350','#b08560'][Math.floor(R()*6)],bob:R()*6,flash:0,
     maxRise:decoy?.75:(c.peek&&R()<.4?.68:1),fall:(R()<.5?-1:1)*.9,life:2+R()})
 }
-function isFarHp(i){return /^Hpakant/.test(SC.name)&&slots[i]&&(slots[i].sc||1)<=.6}
+function isFarHp(i){return (/^Hpakant/.test(SC.name)||SC.jade)&&slots[i]&&(slots[i].sc||1)<=.6}
 function freeSlot(e,cool){const s=slots[e.slot];s.busy=false;s.cool=cool}
 function enemyFire(e){const c=G.c;e.flash=.07;
   if(e.type==='rpg'){if(e.rpgFired||(!G.angry&&G.erockets.length))return;e.rpgFired=true;e.flash=.15;G.enemyRpgs++;S.whoosh();const g=geo(e);msg('RPG! — DUCK!','#ff6a5a');
@@ -1219,7 +1219,7 @@ function enemyFire(e){const c=G.c;e.flash=.07;
   G.enemyShots++;S.far();const g=geo(e);
   G.tracers.push({x1:g.x-4,y1:g.hy+10,x2:lerp(200,1080,R()),y2:H+120,t:0,dur:.22,col:'255,120,80'});
   const peek=G.duckAmt>.18&&G.duckAmt<.6,grace=(G.upT||0)<1.3;
-  const hp=/^Hpakant/.test(SC.name),far=isFarHp(e.slot),hk=hp?(far?(DIFF==='recruit'?.12:.25):(DIFF==='recruit'?.6:.85)):1;
+  const hp=/^Hpakant/.test(SC.name)||SC.jade,far=isFarHp(e.slot),hk=hp?(far?(DIFF==='recruit'?.12:.25):(DIFF==='recruit'?.6:.85)):1;
   if(G.duckAmt<.6&&!grace&&R()<c.acc*hk*(peek?.35:1)){if(peek&&R()<.25)helmetRico();else playerHit()}
   else{setTimeout(()=>{if(G&&state==='play'){S.crack();if(G.duckAmt<.6||far)nearPuff(R()*W,10+R()*50);if(far&&R()<.6)nearPuff(lerp(150,1130,R()),20+R()*60)}},120)}
 }
@@ -1586,7 +1586,7 @@ function update(dt){T+=dt;if(DEMO)demoUpdate(dt);if(state!=='play'&&state!=='dyi
     G.parts.push({x:r.x,y:r.y,vx:(R()-.5)*8,vy:-6,g:0,life:.6,max:.6,r:2*r.s,grow:8*r.s,rgb:'185,182,172'});
     if(p<1)return true;
     S.boom();G.shake=.9;for(let i=0;i<5;i++)nearPuff(lerp(r.x-160,r.x+160,R()),5+R()*40);biteNear(clamp(r.x,40,W-40));
-    if(state==='play'&&G.duckAmt<.45){G.rpgHits++;playerHit()}else msg('RPG hit the dirt mound','#e8d9a8');
+    const rk=(SC.jade||/^Hpakant/.test(SC.name))?(DIFF==='recruit'?.3:.6):1;if(state==='play'&&G.duckAmt<.45&&R()<rk){G.rpgHits++;playerHit()}else msg(G.duckAmt<.45?'RPG fell short — hit the dirt in front':'RPG hit the dirt mound','#e8d9a8');
     return false});
   G.rockets=G.rockets.filter(r=>{r.t+=dt;const p=r.t/r.dur;
     const x=lerp(r.sx,r.tx,p),y=lerp(r.sy,r.ty,p)-Math.sin(Math.PI*p)*60;
