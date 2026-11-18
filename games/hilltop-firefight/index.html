@@ -1532,9 +1532,7 @@ const TSTEPS=[
  {k:'mid',t:'TRY MID POSITION',s:'Scroll down once',sk:'Press C',st:'Tap PEEK',d:'Mid position is a safer shooting position · You cannot see the bottom or fire RPGs',ok:()=>G.peek&&G.duckAmt>.2&&G.duckAmt<.45},
  {t:'SHOOT',s:'Click a soldier',sk:'Click a soldier',st:'Tap a soldier',d:'Hit them before they hit you',go(){G.tr.k=0},ok:()=>G.tr.k>=1,need:'enemy'},
  {t:'HEADSHOT',s:'Click his head',sk:'Click his head',st:'Tap his head',d:'Head shots score more',go(){G.tr.h=0},ok:()=>G.tr.h>=1,need:'enemy'},
- {k:'bf',t:'BLACK EDGE THROB = 3 BULLETS LEFT',s:'Watch the screen edges',sk:'Watch the screen edges',st:'Watch the screen edges',d:'One throb is your warning · reload soon',go(){G.mag=3;G.lowT=.8;G.tr.bt=0},tick(t){G.tr.bt+=FDT;if(G.tr.bt>2.6){G.tr.bt=0;G.lowT=.8}},ok:()=>G.tr.nx,next:1},
- {k:'empty',t:'NONSTOP THROB = EMPTY CLIP',s:'Watch the screen edges',sk:'Watch the screen edges',st:'Watch the screen edges',d:'It keeps throbbing until you reload',go(){G.mag=0},ok:()=>G.tr.nx,next:1},
- {k:'duck',t:'DUCK',s:'Scroll down again into the trench',sk:'Press SPACE',st:'Tap DUCK',d:'Safe from bullets · use the shelf',ok:()=>G.duckAmt>.85},
+ {k:'bf',t:'BLACK EDGE THROB = 3 BULLETS LEFT',s:'Scroll down again into the trench to reload',sk:'Press SPACE to get into the trench and reload',st:'Tap DUCK to get into the trench and reload',d:'One black throb = 3 bullets left',go(){G.mag=3;G.tr.fl=0},tick(t){if(t>3.6&&!G.tr.fl){G.tr.fl=1;G.lowT=.8}},ok:()=>G.tr.fl&&G.duckAmt>.85},
  {t:'CHANGE CLIPS',s:'Click a clip on the shelf',sk:'Press R',st:'Tap a clip on the shelf',d:'Swap clips while down',go(){G.tr.rl=0},ok:()=>G.tr.rl},
  {t:'LOAD AN RPG',s:'Click a grenade on the shelf',sk:'Click a grenade on the shelf',st:'Tap a grenade on the shelf',d:'Fits on the end of your barrel',ok:()=>G.gLoaded},
  {k:'stand',t:'STAND',s:'Scroll up twice',sk:'Press SPACE',st:'Tap DUCK, then PEEK',d:'Only standing can fire RPGs',ok:()=>G.gLoaded&&G.duckAmt<.04&&!G.peek},
@@ -1563,7 +1561,7 @@ function drawTrain(){const T2=G.tr;if(!T2||T2.done&&!TSTEPS[T2.i])return;const s
   const at=T2.started?T2.t:0,sub=G.tr.dev==='touch'&&st.st?st.st:G.tr.dev==='kb'&&st.sk?st.sk:st.s;
   const sh=(t,x,y,f,c)=>{ctx.font=f;ctx.lineWidth=6;ctx.strokeStyle='rgba(0,0,0,.7)';ctx.lineJoin='round';ctx.strokeText(t,x,y);ctx.fillStyle=c;ctx.fillText(t,x,y)};
   ctx.save();ctx.textAlign='center';const big=at<3.5,u=big?0:ease(Math.min(1,(at-3.5)/.4));
-  const ty=lerp(H*.4,128,u),fs=lerp(64,34,u),ss=lerp(30,19,u);
+  const ty=lerp(H*.4,128,u),ss=lerp(30,19,u);let fs=lerp(64,34,u);ctx.font=`${fs}px 'Black Ops One',Impact,sans-serif`;{const w=ctx.measureText(st.t).width;if(w>W-120)fs*=(W-120)/w}
   sh((okNow?'✓ ':'')+st.t,W/2,ty,`${fs}px 'Black Ops One',Impact,sans-serif`,okNow?'#bde58a':'#ffd36b');
   sh(sub,W/2,ty+lerp(52,30,u),`700 ${ss}px system-ui,sans-serif`,'#ffffff');
   if(big||T2.exp>0){if(!big)T2.exp-=FDT;const dl=(st.d||'').split(' · ');dl.forEach((x,n)=>sh(x,W/2,ty+lerp(52,30,u)+lerp(48,28,u)+n*lerp(40,24,u),`600 ${lerp(30,18,u)}px system-ui,sans-serif`,'#cfe8a6'))}
