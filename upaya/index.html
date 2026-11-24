@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Upāya Skill Share</title>
+<meta name="description" content="Upāya Skill Share: a 2-hour skill exchange for the International Network of Engaged Buddhists.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#2B4292;--blue2:#203472;--coral:#F26B5B}
+*{box-sizing:border-box}
+body{margin:0;font:17px/1.6 "Noto Sans",system-ui,sans-serif;background:var(--blue);color:#fff}
+.wrap{max-width:980px;margin:0 auto;padding:clamp(28px,5vw,64px) max(5vw,18px)}
+header{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+header img{height:64px;width:auto}
+.brand{font-weight:700;font-size:24px;line-height:1.1;border-left:1px solid #ffffff55;padding-left:18px}
+.brand small{display:block;font-weight:400;font-size:14px;opacity:.85}
+h1{font-size:clamp(32px,5vw,50px);line-height:1.08;margin:42px 0 14px;text-wrap:balance}
+.lead{font-size:19px;max-width:36em;opacity:.92;margin:0 0 26px}
+.rule{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 30px}
+.rule span{background:#ffffff1c;border:1px solid #ffffff38;padding:8px 14px;border-radius:12px;font-size:15px}
+.rule b{color:#ffd0c9}
+.btn{display:inline-block;background:var(--coral);color:#fff;text-decoration:none;font-weight:700;padding:15px 26px;border-radius:14px;font-size:18px;box-shadow:0 8px 30px #0003}
+.btn:hover,.btn:focus-visible{background:#e3584a;outline:3px solid #fff;outline-offset:3px}
+.note{font-size:14px;opacity:.8;margin:14px 0 0;max-width:40em}
+.how{background:#fff;color:#14193a}
+.how h2{font-size:28px;margin:0 0 20px;color:var(--blue)}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px}
+.grid div{border-top:3px solid var(--blue);padding-top:12px}
+.grid h3{margin:0;font-size:18px}
+.grid p{margin:6px 0 0;color:#5b6386;font-size:15px}
+.cats{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 0}
+.cats span{background:#e8ecf8;border-radius:99px;padding:5px 12px;font-size:14px}
+footer{background:var(--blue2);font-size:14px;color:#dfe5f7}
+footer a{color:#fff}
+@media(max-width:800px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.grid{grid-template-columns:minmax(0,1fr)}header img{height:50px}}
+</style>
+</head>
+<body>
+<section class="wrap">
+  <header>
+    <img src="logo.png" alt="International Network of Engaged Buddhists">
+    <span class="brand">Upāya Skill Share<small>skillful means, shared</small></span>
+  </header>
+  <h1>Ask the network for two hours. Give two back.</h1>
+  <p class="lead">A skill share for INEB friends: find someone who has done it before, from organizing a workshop to knowing the roads of Hokkaido or Kachin.</p>
+  <div class="rule"><span>Ask anyone for <b>2 hours</b></span><span>Offer <b>2 hours</b> when asked</span><span>Vouch for others' skills</span></div>
+  <a class="btn" href="https://claude.ai/artifact/BV1RsJFmDWucPC9MWFab9J">Open Upāya Skill Share</a>
+  <p class="note">The skill share runs on claude.ai. Sign in there to join; if the page doesn't open for you, contact Rye Libre to be added.</p>
+</section>
+<section class="how"><div class="wrap">
+  <h2>How it works</h2>
+  <div class="grid">
+    <div><h3>Join</h3><p>List your skills, languages and the places you know, and make the 2-hour pledge.</p></div>
+    <div><h3>Ask</h3><p>Request 2 hours from anyone for advice or hands-on help. Say what you need.</p></div>
+    <div><h3>Give</h3><p>I will give 2 hours to members who ask, when I can. Each profile shows how often its owner responds with help.</p></div>
+    <div><h3>Vouch</h3><p>For members you have worked with or after working, vouch for the skills to build network trust.</p></div>
+  </div>
+  <div class="cats"><span>Exhibitions</span><span>Websites</span><span>Publishing</span><span>Workshop organizing</span><span>Event production</span><span>Film screenings</span><span>Fundraising</span><span>Trip planning</span><span>Places &amp; local knowledge</span></div>
+</div></section>
+<footer><div class="wrap" style="padding-block:22px">Upāya Skill Share — a member-built space for the International Network of Engaged Buddhists. · <a href="../index.html">Rye Libre</a></div></footer>
+</body>
+</html>

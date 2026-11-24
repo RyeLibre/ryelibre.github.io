@@ -23,6 +23,20 @@
 // of every tag view it belongs to (before the normal newest-first sort).
 const PROJECTS = [
   {
+    "id": "upaya-skill-share",
+    "title": "Upāya Skill Share",
+    "categories": ["Projects"],
+    "date": "2026-11",
+    "description": "A skill share for the International Network of Engaged Buddhists (INEB). Anyone in the network can ask another member for 2 hours of advice or help, and offers 2 hours when asked. Members list their skills, languages and the places they know, and vouch for each other's skills.\n\n**Categories:** exhibitions, websites, publishing, workshop organizing, event production, film screenings, fundraising, trip planning, and places — ask me about Hokkaido or Kachin.\n\n[Open Upāya Skill Share](https://claude.ai/artifact/BV1RsJFmDWucPC9MWFab9J)",
+    "link": "https://claude.ai/artifact/BV1RsJFmDWucPC9MWFab9J",
+    "image": "images/upaya-skill-share.jpg",
+    "images": [],
+    "embed": "upaya/index.html",
+    "location": "",
+    "place": "",
+    "featured": false
+  },
+  {
     "id": "hilltop-firefight",
     "title": "Hilltop Firefight",
     "categories": ["Kachin", "Projects"],
