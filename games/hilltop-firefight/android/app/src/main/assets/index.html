@@ -102,7 +102,7 @@ html,body,body *{-webkit-user-select:text!important;user-select:text!important;-
 <div id="stage">
 <div id="wrap"><canvas id="c"></canvas></div>
 <button id="rotBtn" class="hide">⟳ Rotate</button>
-<div id="ctl"><button id="pBtn" title="Pause (P)"><svg width="14" height="14" viewBox="0 0 24 24" fill="#e8e4d8" style="vertical-align:middle"><rect x="5" y="4" width="5" height="16" rx="1"/><rect x="14" y="4" width="5" height="16" rx="1"/></svg></button><button id="vIcon" title="Volume: click to change">🔊</button></div>
+<div id="ctl"><button id="pBtn" title="Pause (P)"><svg width="14" height="14" viewBox="0 0 24 24" fill="#e8e4d8" style="vertical-align:middle"><rect x="5" y="4" width="5" height="16" rx="1"/><rect x="14" y="4" width="5" height="16" rx="1"/></svg></button><button id="vIcon" title="Volume: click to change">🔊</button><button id="fsBtn" title="Fullscreen (F11)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#e8e4d8" stroke-width="2.6" stroke-linecap="round" style="vertical-align:middle"><path id="fsIco" d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button></div>
 
 <div id="touch" class="hide">
   <button id="tScope">AIM (hold)</button>
@@ -3021,6 +3021,11 @@ try{const ol=document.querySelector('#setup .levels').cloneNode(true);ol.querySe
 try{renderStars()}catch(e){}
 try{document.querySelectorAll('#endMore .mimgs img').forEach(im=>im.addEventListener('click',e=>{e.stopPropagation();$('lbox').querySelector('img').src=im.src;$('lbox').classList.remove('hide')}));$('lbox').addEventListener('click',e=>{e.stopPropagation();$('lbox').classList.add('hide')});['pointerdown','keydown'].forEach(ev=>$('lbox').addEventListener(ev,e=>e.stopPropagation()))}catch(e){}
 ['pointerdown','keydown'].forEach(ev=>$('story').addEventListener(ev,e=>e.stopPropagation()));
+try{const fsEl=document.documentElement,inFs=()=>document.fullscreenElement||document.webkitFullscreenElement,setI=()=>$('fsIco').setAttribute('d',inFs()?'M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5':'M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5');
+  if(!(fsEl.requestFullscreen||fsEl.webkitRequestFullscreen))$('fsBtn').style.display='none';
+  $('fsBtn').addEventListener('pointerdown',e=>e.stopPropagation());
+  $('fsBtn').onclick=e=>{e.stopPropagation();if(inFs())(document.exitFullscreen||document.webkitExitFullscreen).call(document);else{const r=fsEl.requestFullscreen||fsEl.webkitRequestFullscreen;const p=r.call(fsEl);p&&p.catch&&p.catch(()=>{});try{screen.orientation&&screen.orientation.lock&&screen.orientation.lock('landscape').catch(()=>{})}catch(_){}}};
+  document.addEventListener('fullscreenchange',setI);document.addEventListener('webkitfullscreenchange',setI)}catch(e){}
 })();
 </script>
 </body>
