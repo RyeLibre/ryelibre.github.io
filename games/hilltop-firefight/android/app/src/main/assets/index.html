@@ -1671,7 +1671,7 @@ function showEnd(title,sub,stats,btn,onBtn,menu,kia){prepShare();$('end').queryS
   [0,400,600,1100,1500,1900,2500,3100,3500,3500,3500,4000,4300].forEach((d,i)=>setTimeout(()=>$(steps[i]).classList.add('in'),d+60));
   $('endBtn').textContent=btn;$('endBtn').onclick=onBtn;$('endBtn3').classList.add('hide');
   $('endBtn2').classList.toggle('hide',!menu);$('endBtn2').onclick=()=>{$('end').classList.add('hide');$('title').classList.remove('hide');showBest();hofLoad();state='title';startAmbience()};
-  $('end').classList.remove('hide')}
+  $('end').classList.remove('hide');const tp=()=>{$('end').scrollTop=0};tp();requestAnimationFrame(tp);setTimeout(tp,60)}
 function starsOf(lv){try{return (JSON.parse(localStorage.getItem('hilltop_stars')||'{}'))[lv]||0}catch(e){return 0}}
 function saveStars(lv,n){try{const o=JSON.parse(localStorage.getItem('hilltop_stars')||'{}');if(n>(o[lv]||0)){o[lv]=n;localStorage.setItem('hilltop_stars',JSON.stringify(o))}}catch(e){}renderStars()}
 function renderStars(){document.querySelectorAll('.levels').forEach(ol=>ol.querySelectorAll('li').forEach((li,i)=>{let st=li.querySelector('.lstars');if(!st){st=document.createElement('div');st.className='lstars';li.appendChild(st)}const n=starsOf(i+1);let et=0;try{et=+localStorage.getItem('hilltop_endless_'+(i+1))||0}catch(e){}st.innerHTML='<b>'+'★'.repeat(n)+'</b>'+'★'.repeat(3-n)+(et?`<em>Endless ${lived(et).replace(/ hours?/,'h').replace(/ mins?/,'m').replace(/ days?/,'d')}</em>`:'')}))}
