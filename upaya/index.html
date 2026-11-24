@@ -1,65 +1,401 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Upāya Skill Share</title>
-<meta name="description" content="Upāya Skill Share: a 2-hour skill exchange for the International Network of Engaged Buddhists.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--blue:#2B4292;--blue2:#203472;--coral:#F26B5B}
-*{box-sizing:border-box}
-body{margin:0;font:17px/1.6 "Noto Sans",system-ui,sans-serif;background:var(--blue);color:#fff}
-.wrap{max-width:980px;margin:0 auto;padding:clamp(28px,5vw,64px) max(5vw,18px)}
-header{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
-header img{height:64px;width:auto}
-.brand{font-weight:700;font-size:24px;line-height:1.1;border-left:1px solid #ffffff55;padding-left:18px}
-.brand small{display:block;font-weight:400;font-size:14px;opacity:.85}
-h1{font-size:clamp(32px,5vw,50px);line-height:1.08;margin:42px 0 14px;text-wrap:balance}
-.lead{font-size:19px;max-width:36em;opacity:.92;margin:0 0 26px}
-.rule{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 30px}
-.rule span{background:#ffffff1c;border:1px solid #ffffff38;padding:8px 14px;border-radius:12px;font-size:15px}
+/* VOICE: calm, communal, practical — a network of friends offering time.
+   IDEA: a temple notice board crossed with a time bank: every ask is a 2-hour gift.
+   PICTURE: the network map in INEB blue, members and the places they know.
+   COLOUR and TYPE: INEB blue #2B4292 fields, white, one lotus-coral accent; Noto Sans like the logo lettering.
+   LAYOUT: blue masthead band with logo + search, map, then directory, requests and profile sections. */
+:root{color-scheme:light dark;--blue:#2B4292;--blue2:#203472;--bg:light-dark(#f5f7fc,#0f1730);--card:light-dark(#fff,#18234a);--ink:light-dark(#14193a,#eef1fb);--mute:light-dark(#5b6386,#a8b1d6);--line:light-dark(#dde2f0,#2a3766);--coral:#F26B5B;--chip:light-dark(#e8ecf8,#223061);--land:light-dark(#c7d1ee,#2e3d75)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Noto Sans",system-ui,sans-serif;overflow-x:clip}
+.band{padding:clamp(28px,4vw,56px) max(5vw,16px)}
+.wrap{max-width:1240px;margin:0 auto}
+h1,h2,h3{line-height:1.08;text-wrap:balance;margin:0}
+h1{font-size:clamp(30px,4.4vw,48px)}h2{font-size:clamp(24px,3vw,32px)}h3{font-size:18px}
+a{color:inherit}
+.top{background:var(--blue);color:#fff}
+.nav{display:flex;align-items:center;gap:18px;flex-wrap:wrap;padding:14px max(5vw,16px);max-width:1240px;margin:0 auto}
+.nav img{height:52px;width:auto}
+.brand{font-weight:700;font-size:22px;line-height:1.1;border-left:1px solid #ffffff55;padding-left:16px}.brand small{display:block;font-weight:400;font-size:13px;opacity:.85}
+.nav .links{display:flex;gap:4px;flex-wrap:wrap;margin-inline-start:auto}
+.nav .links a{color:#fff;text-decoration:none;padding:10px 14px;border-radius:99px;font-weight:600}
+.nav .links a:hover,.nav .links a:focus-visible{background:#ffffff22;outline:none}
+.hero{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(20px,3vw,40px);align-items:stretch}
+.hero p.lead{font-size:17px;max-width:34em;opacity:.92;margin:14px 0 22px}
+.rule{display:flex;gap:10px;margin:0 0 22px;flex-wrap:wrap}
+.rule span{background:#ffffff1c;border:1px solid #ffffff38;padding:8px 12px;border-radius:12px;font-size:14px}
 .rule b{color:#ffd0c9}
-.btn{display:inline-block;background:var(--coral);color:#fff;text-decoration:none;font-weight:700;padding:15px 26px;border-radius:14px;font-size:18px;box-shadow:0 8px 30px #0003}
-.btn:hover,.btn:focus-visible{background:#e3584a;outline:3px solid #fff;outline-offset:3px}
-.note{font-size:14px;opacity:.8;margin:14px 0 0;max-width:40em}
-.how{background:#fff;color:#14193a}
-.how h2{font-size:28px;margin:0 0 20px;color:var(--blue)}
-.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px}
-.grid div{border-top:3px solid var(--blue);padding-top:12px}
-.grid h3{margin:0;font-size:18px}
-.grid p{margin:6px 0 0;color:#5b6386;font-size:15px}
-.cats{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 0}
-.cats span{background:#e8ecf8;border-radius:99px;padding:5px 12px;font-size:14px}
-footer{background:var(--blue2);font-size:14px;color:#dfe5f7}
-footer a{color:#fff}
-@media(max-width:800px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:520px){.grid{grid-template-columns:minmax(0,1fr)}header img{height:50px}}
+.search{display:flex;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 8px 30px #0003}
+.search input{flex:1;border:0;padding:14px 16px;font:inherit;font-size:16px;color:#14193a;background:#fff;outline:none}
+.search button{border:0;background:var(--coral);color:#fff;font:inherit;font-weight:700;padding:0 20px;cursor:pointer;min-height:48px}
+.mapbox{background:#ffffff12;border:1px solid #ffffff30;border-radius:18px;padding:10px;display:flex;flex-direction:column;min-height:360px}
+.maphead{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;padding:2px 4px 8px}
+.seg{display:flex;background:#ffffff1f;border-radius:99px;padding:3px}
+.seg button{border:0;background:none;color:#fff;font:inherit;font-size:14px;padding:8px 14px;border-radius:99px;cursor:pointer;min-height:36px}
+.seg button[aria-pressed=true]{background:#fff;color:var(--blue);font-weight:700}
+#map{flex:1;position:relative;min-height:300px;border-radius:12px;overflow:hidden;background:#ffffff0d}
+.jvm-container{position:relative;overflow:hidden;width:100%;height:100%;touch-action:none}
+.jvm-container svg{position:absolute;inset:0;width:100%;height:100%}
+.jvm-tooltip{position:absolute;display:none;background:#14193a;color:#fff;font-size:13px;padding:6px 10px;border-radius:8px;pointer-events:none;z-index:9;white-space:nowrap}
+.jvm-tooltip.active{display:block}
+.jvm-zoom-btn{position:absolute;left:10px;width:30px;height:30px;border-radius:8px;background:#fff;color:var(--blue);display:grid;place-items:center;cursor:pointer;font-weight:700;box-shadow:0 2px 8px #0003}
+.jvm-zoomin{top:10px}.jvm-zoomout{top:46px}
+.mapnote{font-size:13px;opacity:.85;padding:8px 4px 0}
+.cats{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0 0}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-size:14px;padding:8px 14px;border-radius:99px;cursor:pointer;min-height:40px}
+.chip[aria-pressed=true]{background:var(--blue);border-color:var(--blue);color:#fff}
+.filters{display:flex;gap:12px;flex-wrap:wrap;align-items:end;margin:18px 0 10px}
+label.f{display:flex;flex-direction:column;font-size:13px;color:var(--mute);gap:4px}
+select,input,textarea{font:inherit;font-size:16px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-height:44px}
+textarea{min-height:90px;resize:vertical;width:100%}
+:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+.status{color:var(--mute);font-size:14px;margin:6px 0 16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:10px}
+.card.ex{border-style:dashed;opacity:.8}
+.who{display:flex;gap:12px;align-items:center}
+.av{width:44px;height:44px;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-items:center;font-weight:700;flex:none}
+.who small{display:block;color:var(--mute);font-size:13px}
+.bio{margin:0;font-size:15px}
+.lbl{font-size:13px;color:var(--mute);margin:0}
+.skills{display:flex;flex-direction:column;gap:6px;margin:0;padding:0;list-style:none}
+.skills li{display:flex;justify-content:space-between;align-items:center;gap:8px;background:var(--chip);border-radius:10px;padding:6px 6px 6px 10px;font-size:14px}
+.skills li i{font-style:normal;color:var(--mute);font-size:12px;display:block}
+.vouch{border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-size:13px;border-radius:99px;padding:4px 10px;cursor:pointer;white-space:nowrap;min-height:32px}
+.vouch[aria-pressed=true]{background:var(--coral);border-color:var(--coral);color:#fff}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-size:13px;background:var(--chip);border-radius:99px;padding:3px 10px}
+.tag.place{background:light-dark(#fde4e0,#4a2630)}
+.btn{border:0;background:var(--blue);color:#fff;font:inherit;font-weight:700;padding:12px 18px;border-radius:12px;cursor:pointer;min-height:44px}
+.btn.alt{background:var(--chip);color:var(--ink)}.btn.coral{background:var(--coral)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.card .btn{margin-top:auto}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
+.ledger{display:flex;gap:24px;flex-wrap:wrap;margin:10px 0 18px}
+.ledger div{font-size:14px;color:var(--mute)}.ledger b{display:block;font-size:30px;color:var(--ink)}
+.req{border-top:1px solid var(--line);padding:12px 0;display:flex;flex-direction:column;gap:6px}
+.req .row{display:flex;gap:8px;flex-wrap:wrap}
+.req .btn{padding:8px 12px;min-height:38px;font-size:14px}
+.st{font-size:12px;font-weight:700;padding:2px 8px;border-radius:99px;background:var(--chip)}
+.st.accepted{background:#dbeafe;color:#1e3a8a}.st.done{background:#d9f2e3;color:#14532d}.st.declined{background:#fde4e0;color:#7f1d1d}
+form .fld{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+form .fld>span{font-weight:600;font-size:15px}
+form .hint{font-size:13px;color:var(--mute)}
+.taginput{display:flex;gap:6px;flex-wrap:wrap;align-items:center;border:1px solid var(--line);border-radius:10px;padding:6px;background:var(--card)}
+.taginput input{border:0;flex:1;min-width:140px;padding:6px;min-height:36px}
+.taginput .tag button{border:0;background:none;color:inherit;cursor:pointer;font-size:15px;padding:0 0 0 4px}
+.skrow{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,3fr) auto;gap:8px;margin-bottom:8px}
+.x{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;width:44px;cursor:pointer;font-size:18px}
+.pledge{display:flex;gap:10px;align-items:flex-start;background:var(--chip);padding:14px;border-radius:12px}
+.pledge input{width:22px;height:22px;min-height:0;margin-top:2px}
+.how{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:20px}
+.how div{border-top:3px solid var(--blue);padding-top:12px}
+.how p{margin:6px 0 0;color:var(--mute);font-size:15px}
+dialog{border:0;border-radius:18px;padding:0;max-width:520px;width:calc(100% - 32px);background:var(--card);color:var(--ink);box-shadow:0 20px 60px #0006}
+dialog::backdrop{background:#0b1230aa}
+dialog form{padding:22px}
+.dhead{display:flex;justify-content:space-between;gap:10px;margin-bottom:14px}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#14193a;color:#fff;padding:12px 18px;border-radius:12px;font-size:15px;display:none;z-index:50;max-width:90vw}
+foot,footer{display:block;background:var(--blue2);color:#dfe5f7;font-size:14px}
+html{scroll-padding-top:20px}
+@media(max-width:900px){.hero,.two{grid-template-columns:minmax(0,1fr)}.how{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.nav img{height:42px}.nav .links a{padding:8px 10px;font-size:14px}.how{grid-template-columns:minmax(0,1fr)}.skrow{grid-template-columns:minmax(0,1fr) auto}.skrow select{grid-column:1/-1}.mapbox{min-height:300px}}
+@media(prefers-reduced-motion:no-preference){.card{transition:transform .2s}.card:hover{transform:translateY(-2px)}}
 </style>
 </head>
 <body>
-<section class="wrap">
-  <header>
-    <img src="logo.png" alt="International Network of Engaged Buddhists">
-    <span class="brand">Upāya Skill Share<small>skillful means, shared</small></span>
-  </header>
-  <h1>Ask the network for two hours. Give two back.</h1>
-  <p class="lead">A skill share for INEB friends: find someone who has done it before, from organizing a workshop to knowing the roads of Hokkaido or Kachin.</p>
-  <div class="rule"><span>Ask anyone for <b>2 hours</b></span><span>Offer <b>2 hours</b> when asked</span><span>Vouch for others' skills</span></div>
-  <a class="btn" href="https://claude.ai/artifact/BV1RsJFmDWucPC9MWFab9J">Open Upāya Skill Share</a>
-  <p class="note">The skill share runs on claude.ai. Sign in there to join; if the page doesn't open for you, contact Rye Libre to be added.</p>
-</section>
-<section class="how"><div class="wrap">
-  <h2>How it works</h2>
-  <div class="grid">
-    <div><h3>Join</h3><p>List your skills, languages and the places you know, and make the 2-hour pledge.</p></div>
-    <div><h3>Ask</h3><p>Request 2 hours from anyone for advice or hands-on help. Say what you need.</p></div>
-    <div><h3>Give</h3><p>I will give 2 hours to members who ask, when I can. Each profile shows how often its owner responds with help.</p></div>
-    <div><h3>Vouch</h3><p>For members you have worked with or after working, vouch for the skills to build network trust.</p></div>
+<header class="top">
+  <nav class="nav" aria-label="Main">
+    <img src="logo.png" alt="International Network of Engaged Buddhists"><span class="brand">Upāya Skill Share<small>skillful means, shared</small></span>
+    <div class="links"><a href="#find">Search skills</a><a href="#requests">My hours</a><a href="#profile">My profile</a><a href="#how">How it works</a></div>
+  </nav>
+  <div class="band" style="padding-top:12px">
+    <div class="wrap hero">
+      <div>
+        <h1>Ask the network for two hours. Give two back.</h1>
+        <p class="lead">A skill share for INEB friends: find someone who has done it before, from organizing a workshop to knowing the roads of Hokkaido or Kachin.</p>
+        <div class="rule"><span>Ask anyone for <b>2 hours</b></span><span>Offer <b>2 hours</b> when asked</span><span>Vouch for others' skills</span></div>
+        <form class="search" id="sform" role="search"><input id="q" type="search" placeholder="Try fundraising, Thai, Hokkaido, film screenings…" aria-label="Search members"><button>Search</button></form>
+      </div>
+      <div class="mapbox">
+        <div class="maphead"><strong>Where the network is</strong>
+          <div class="seg" role="group" aria-label="Map layer"><button type="button" id="lyrLive" aria-pressed="true">Members</button><button type="button" id="lyrKnow" aria-pressed="false">Places they know</button></div></div>
+        <div id="map" aria-label="Map of members"></div>
+        <div class="mapnote" id="mapnote">Tap a dot to see who is there.</div>
+      </div>
+    </div>
   </div>
-  <div class="cats"><span>Exhibitions</span><span>Websites</span><span>Publishing</span><span>Workshop organizing</span><span>Event production</span><span>Film screenings</span><span>Fundraising</span><span>Trip planning</span><span>Places &amp; local knowledge</span></div>
+</header>
+
+<main>
+<section class="band" id="find"><div class="wrap">
+  <h2>Find someone to ask</h2>
+  <div class="cats" id="cats" role="group" aria-label="Categories"></div>
+  <div class="filters">
+    <label class="f">Speaks<select id="fLang"><option value="">Any language</option></select></label>
+    <label class="f">Knows the place<select id="fPlace"><option value="">Anywhere</option></select></label>
+    <label class="f">Sort<select id="fSort"><option value="v">Most vouched</option><option value="n">Name</option><option value="r">Recently joined</option></select></label>
+    <button class="btn alt" type="button" id="clear">Clear filters</button>
+  </div>
+  <p class="status" id="status" aria-live="polite">Loading the network…</p>
+  <div class="grid" id="grid"></div>
 </div></section>
-<footer><div class="wrap" style="padding-block:22px">Upāya Skill Share — a member-built space for the International Network of Engaged Buddhists. · <a href="../index.html">Rye Libre</a></div></footer>
+
+<section class="band" id="requests" style="background:var(--card);border-block:1px solid var(--line)"><div class="wrap">
+  <h2>My hours</h2>
+  <div class="ledger" id="ledger"></div>
+  <div class="two">
+    <div><h3>Asked of me</h3><div id="inbox"><p class="status">Nothing yet.</p></div></div>
+    <div><h3>I asked</h3><div id="outbox"><p class="status">Nothing yet.</p></div></div>
+  </div>
+</div></section>
+
+<section class="band" id="profile"><div class="wrap" style="max-width:760px">
+  <h2>My profile</h2>
+  <p class="status" id="pnote">Add your skills, languages and the places you know. No login needed. Your profile is public; your contact details are shown only to members.</p>
+  <form id="pform" class="panel">
+    <label class="fld"><span>Your name</span><input id="pName" required maxlength="60" autocomplete="name"></label>
+    <label class="fld"><span>Where you are based</span><input id="pPlace" list="gaz" maxlength="60" placeholder="Chiang Mai"><span class="hint">Pick from the list to appear on the map.</span></label>
+    <label class="fld"><span>About you</span><textarea id="pBio" maxlength="400" placeholder="What you work on, what you love helping with."></textarea></label>
+    <label class="fld"><span>How to reach you</span><input id="pContact" maxlength="120" placeholder="Email, Signal, Line or WhatsApp"><span class="hint">Shown only to members, so they can arrange the 2 hours.</span></label>
+    <div class="fld"><span>Languages</span><div class="taginput" id="tLang"></div></div>
+    <div class="fld"><span>Skills</span><span class="hint">Choose a category, then describe what you can help with.</span><div id="skills"></div><button type="button" class="btn alt" id="addSkill" style="align-self:start">Add a skill</button></div>
+    <div class="fld"><span>Places people can ask me about</span><span class="hint">Regions, cities or communities you know well, such as Hokkaido or Kachin State.</span><div class="taginput" id="tKnow"></div></div>
+    <label class="pledge"><input type="checkbox" id="pPledge" required><span><strong>I will give 2 hours</strong> to members who ask, when I can. My profile shows how often I respond with help.</span></label>
+    <div style="display:flex;gap:10px;margin-top:18px;flex-wrap:wrap"><button class="btn" id="psave">Save profile</button><button class="btn alt" type="button" id="pdel" hidden>Remove my profile</button></div>
+  </form>
+  <div id="linkbox" class="panel" hidden style="margin-top:16px"><h3>Your private edit link</h3><p class="hint" style="color:var(--mute);margin:6px 0 10px">This browser remembers you. To edit your profile on another phone or computer, open this link there. Keep it private: anyone with it can edit your profile.</p><div style="display:flex;gap:8px;flex-wrap:wrap"><input id="plink" readonly style="flex:1;min-width:220px" aria-label="Private edit link"><button class="btn" type="button" id="pcopy">Copy</button></div></div>
+</div></section>
+
+<section class="band" id="how" style="background:var(--blue);color:#fff"><div class="wrap">
+  <h2>How it works</h2>
+  <div class="how">
+    <div><h3>Join</h3><p style="color:#dfe5f7">List your skills, languages and the places you know, and make the 2-hour pledge.</p></div>
+    <div><h3>Ask</h3><p style="color:#dfe5f7">Request 2 hours from anyone for advice or hands-on help. Say what you need.</p></div>
+    <div><h3>Give</h3><p style="color:#dfe5f7">When someone asks you, accept and arrange a time. Mark it given when done.</p></div>
+    <div><h3>Vouch</h3><p style="color:#dfe5f7">For members you have worked with or after working, vouch for the skills to build network trust.</p></div>
+  </div>
+</div></section>
+</main>
+<footer class="band" style="padding-block:22px"><div class="wrap">Upāya Skill Share — a member-built space for the International Network of Engaged Buddhists. Requests and contact details are visible to members only. · <a href="../index.html">Rye Libre</a></div></footer>
+
+<datalist id="gaz"></datalist><datalist id="langs"></datalist>
+
+<dialog id="dlg"><form id="rform" method="dialog">
+  <div class="dhead"><h3 id="rTitle">Ask for 2 hours</h3><button class="x" value="cancel" formnovalidate aria-label="Close">×</button></div>
+  <label class="fld"><span>About</span><select id="rTopic"></select></label>
+  <label class="fld"><span>What do you need?</span><textarea id="rMsg" required maxlength="800" placeholder="Context, timing, what a good outcome looks like."></textarea></label>
+  <p class="hint" style="margin:0 0 14px">They can accept or decline. You pledge to give 2 hours back to the network.</p>
+  <button class="btn coral" id="rSend" value="send">Send request</button>
+</form></dialog>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="firebase-config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.6.0/dist/jsvectormap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.6.0/dist/maps/world.js"></script>
+<script>
+{
+const CATS=["Exhibitions","Websites","Publishing","Workshop organizing","Event production","Film screenings","Fundraising","Trip planning","Other"];
+const GAZ={"Bangkok":[13.75,100.5],"Chiang Mai":[18.79,98.98],"Chiang Rai":[19.91,99.83],"Mae Sot":[16.71,98.57],"Isan":[15.8,103.5],"Yangon":[16.84,96.17],"Mandalay":[21.97,96.08],"Myitkyina":[25.38,97.4],"Laiza":[24.77,97.55],"Kachin State":[26,97.5],"Shan State":[21.5,98],"Karen State":[17,97.8],"Chin State":[22,93.6],"Rakhine State":[19.8,93.9],"Phnom Penh":[11.56,104.92],"Siem Reap":[13.36,103.86],"Vientiane":[17.97,102.6],"Luang Prabang":[19.89,102.13],"Hanoi":[21.03,105.85],"Ho Chi Minh City":[10.82,106.63],"Kuala Lumpur":[3.14,101.69],"Penang":[5.41,100.33],"Singapore":[1.35,103.82],"Jakarta":[-6.2,106.85],"Yogyakarta":[-7.8,110.36],"Bali":[-8.4,115.19],"Manila":[14.6,120.98],"Mindanao":[7.5,125],"Taipei":[25.03,121.56],"Hong Kong":[22.32,114.17],"Seoul":[37.57,126.98],"Tokyo":[35.68,139.69],"Kyoto":[35.01,135.77],"Osaka":[34.69,135.5],"Hokkaido":[43.2,142.8],"Daisetsuzan":[43.66,142.85],"Sapporo":[43.06,141.35],"Okinawa":[26.33,127.8],"Ulaanbaatar":[47.92,106.92],"Beijing":[39.9,116.4],"Kunming":[25.04,102.71],"Lhasa":[29.65,91.17],"Tibet":[31,88],"Thimphu":[27.47,89.64],"Kathmandu":[27.72,85.32],"Lumbini":[27.47,83.28],"Dhaka":[23.81,90.41],"Chittagong Hill Tracts":[22.5,92.2],"Kolkata":[22.57,88.36],"Bodh Gaya":[24.7,84.99],"Delhi":[28.61,77.21],"Dharamsala":[32.22,76.32],"Ladakh":[34.15,77.58],"Mumbai":[19.08,72.88],"Nagpur":[21.15,79.09],"Bangalore":[12.97,77.59],"Colombo":[6.93,79.86],"Kandy":[7.29,80.63],"Sydney":[-33.87,151.21],"Melbourne":[-37.81,144.96],"London":[51.51,-0.13],"Paris":[48.86,2.35],"Berlin":[52.52,13.4],"Amsterdam":[52.37,4.9],"San Francisco":[37.77,-122.42],"New York":[40.71,-74.01],"Vancouver":[49.28,-123.12]};
+const LANGS=["English","Thai","Burmese","Jinghpaw","Shan","Karen","Mon","Japanese","Chinese","Korean","Hindi","Bengali","Nepali","Sinhala","Tamil","Tibetan","Khmer","Lao","Vietnamese","Bahasa Indonesia","Malay","Tagalog","Mongolian","French","German","Spanish"];
+const $=s=>document.querySelector(s);
+const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const norm=s=>String(s||"").trim().toLowerCase();
+const gazKey=p=>{const n=norm(p);if(!n)return;return Object.keys(GAZ).find(k=>norm(k)===n)||Object.keys(GAZ).filter(k=>new RegExp("(^|[^a-z])"+norm(k).replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"([^a-z]|$)").test(n)).sort((a,b)=>b.length-a.length)[0]};
+const skey=s=>norm(s.cat)+"|"+norm(s.text);
+const st={members:{},vouches:{},asks:{},replies:{},contacts:{},priv:false,cat:"",q:"",lang:"",place:"",sort:"v",layer:"live",loaded:false};
+let fb=null,fdb=null,uid=null,me=null,myCode=null,map=null,mapPts=[];
+$("#gaz").innerHTML=Object.keys(GAZ).map(k=>`<option value="${esc(k)}">`).join("");
+$("#langs").innerHTML=LANGS.map(k=>`<option value="${esc(k)}">`).join("");
+const toast=m=>{const t=$("#toast");t.textContent=m;t.style.display="block";clearTimeout(toast.t);toast.t=setTimeout(()=>t.style.display="none",3200)};
+
+$("#cats").innerHTML=["All",...CATS,"Places"].map(c=>`<button class="chip" type="button" data-c="${esc(c==="All"?"":c)}" aria-pressed="${c==="All"}">${esc(c)}</button>`).join("");
+$("#cats").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;st.cat=b.dataset.c;for(const x of $("#cats").children)x.setAttribute("aria-pressed",x===b);render()});
+$("#sform").addEventListener("submit",e=>{e.preventDefault();st.q=$("#q").value;render();$("#find").scrollIntoView({behavior:"smooth"})});
+$("#q").addEventListener("input",e=>{st.q=e.target.value;render()});
+$("#fLang").onchange=e=>{st.lang=e.target.value;render()};
+$("#fPlace").onchange=e=>{st.place=e.target.value;render()};
+$("#fSort").onchange=e=>{st.sort=e.target.value;render()};
+$("#clear").onclick=()=>{st.cat=st.q=st.lang=st.place="";$("#q").value="";$("#fLang").value="";$("#fPlace").value="";for(const x of $("#cats").children)x.setAttribute("aria-pressed",x.dataset.c==="");render()};
+
+function vouchMap(){const m={};for(const [from,d] of Object.entries(st.vouches))for(const v of (d.list||[])){if(v.to===from||!st.members[from])continue;(m[v.to+"#"+v.key]??=[]).push(from)}return m}
+function memberList(){return Object.entries(st.members).map(([id,m])=>({id,...m})).filter(m=>m.name)}
+function matches(m){
+  const sk=m.skills||[],kn=m.knows||[],la=m.langs||[];
+  if(st.cat==="Places"&&!kn.length)return false;
+  if(st.cat&&st.cat!=="Places"&&!sk.some(s=>s.cat===st.cat))return false;
+  if(st.lang&&!la.some(l=>norm(l)===norm(st.lang)))return false;
+  if(st.place&&!(kn.some(k=>norm(k)===norm(st.place))||norm(m.place)===norm(st.place)))return false;
+  const q=norm(st.q);if(!q)return true;
+  return [m.name,m.bio,m.place,...la,...kn,...sk.map(s=>s.cat+" "+s.text)].some(x=>norm(x).includes(q));
+}
+function initials(n){return esc(String(n).trim().split(/\s+/).slice(0,2).map(w=>w[0]).join("").toUpperCase())}
+function card(m,vm,ex){
+  const sk=(m.skills||[]).map(s=>{const k=skey(s),by=vm[m.id+"#"+k]||[],mine=by.includes(me);
+    const names=by.map(i=>st.members[i]?.name).filter(Boolean).join(", ");
+    const vb=ex||m.id===me||!me?`<span class="lbl">${by.length?by.length+" vouched":""}</span>`:`<button class="vouch" type="button" data-vouch="${esc(m.id)}" data-k="${esc(k)}" aria-pressed="${mine}" title="${esc(names?"Vouched by "+names:"Be the first to vouch")}">${mine?"Vouched":"Vouch"} · ${by.length}</button>`;
+    return `<li><span><i>${esc(s.cat)}</i>${esc(s.text)}</span>${vb}</li>`}).join("");
+  const langs=(m.langs||[]).map(l=>`<span class="tag">${esc(l)}</span>`).join("");
+  const kn=(m.knows||[]).map(l=>`<span class="tag place">${esc(l)}</span>`).join("");
+  const btn=ex?`<button class="btn" type="button" disabled>Ask for 2 hours</button>`:m.id===me?`<a class="btn alt" href="#profile" style="text-align:center;text-decoration:none">Edit my profile</a>`:`<button class="btn" type="button" data-ask="${esc(m.id)}">Ask for 2 hours</button>`;
+  return `<article class="card${ex?" ex":""}"><div class="who"><div class="av" aria-hidden="true">${initials(m.name)}</div><div><strong>${esc(m.name)}</strong><small>${esc(m.place||"Location not set")}</small></div></div>${ex?"":helpLine(m.id)}
+  ${m.bio?`<p class="bio">${esc(m.bio)}</p>`:""}${sk?`<ul class="skills">${sk}</ul>`:""}
+  ${langs?`<p class="lbl">Speaks</p><div class="tags">${langs}</div>`:""}${kn?`<p class="lbl">Ask me about</p><div class="tags">${kn}</div>`:""}${btn}</article>`;
+}
+const EXAMPLES=[{id:"ex1",name:"Example member",place:"Chiang Mai",bio:"Runs community film nights and small photo exhibitions.",skills:[{cat:"Film screenings",text:"Outdoor screenings with a generator and projector"},{cat:"Exhibitions",text:"Hanging and lighting photo shows on a budget"}],langs:["English","Thai","Burmese"],knows:["Kachin State","Hokkaido"]},{id:"ex2",name:"Example member",place:"Kyoto",bio:"Plans study trips for engaged Buddhist groups.",skills:[{cat:"Trip planning",text:"Temple stays and study tours in Japan"},{cat:"Fundraising",text:"Small grants from Japanese foundations"}],langs:["Japanese","English"],knows:["Kyoto","Okinawa"]}];
+
+let HS={};
+function helpStats(){const o={},now=Date.now();for(const a of allAsks()){if(a.status==="waiting"&&now-a.at<21*864e5)continue;const s=o[a.to]??={y:0,n:0};(a.status==="accepted"||a.status==="done")?s.y++:s.n++}return o}
+function helpLine(id){if(!st.priv)return "";const s=HS[id];if(!s)return `<p class="lbl">No asks yet</p>`;const t=s.y+s.n;return `<p class="lbl"><strong style="color:var(--ink)">${Math.round(100*s.y/t)}%</strong> responded with help (${s.y} of ${t} asks)</p>`}
+function render(){
+  const vm=vouchMap(),all=memberList();HS=helpStats();
+  const langs=[...new Set(all.flatMap(m=>m.langs||[]).map(l=>l.trim()))].sort();
+  const places=[...new Set(all.flatMap(m=>m.knows||[]).map(l=>l.trim()))].sort();
+  fillSel("#fLang","Any language",langs,st.lang);fillSel("#fPlace","Anywhere",places,st.place);
+  const score=m=>(m.skills||[]).reduce((a,s)=>a+(vm[m.id+"#"+skey(s)]||[]).length,0);
+  let list=all.filter(matches);
+  list.sort(st.sort==="n"?(a,b)=>a.name.localeCompare(b.name):st.sort==="r"?(a,b)=>(b.joined||0)-(a.joined||0):(a,b)=>score(b)-score(a)||a.name.localeCompare(b.name));
+  if(!st.loaded){$("#status").textContent="Loading the network…"}
+  else if(!all.length){$("#status").textContent="No members yet. Be the first: add your profile below. These two cards show what a profile looks like.";$("#grid").innerHTML=EXAMPLES.map(m=>card(m,{},true)).join("");drawMap(all);renderReq();return}
+  else $("#status").textContent=`${list.length} of ${all.length} member${all.length===1?"":"s"}`+(st.q?` matching “${st.q}”`:"");
+  $("#grid").innerHTML=list.length?list.map(m=>card(m,vm)).join(""):(st.loaded?`<p class="status">Nobody matches yet. Try another word or clear the filters.</p>`:"");
+  drawMap(all);renderReq();
+}
+function fillSel(sel,first,opts,cur){const el=$(sel),h=`<option value="">${first}</option>`+opts.map(o=>`<option${o===cur?" selected":""} value="${esc(o)}">${esc(o)}</option>`).join("");if(el.dataset.h!==h){el.innerHTML=h;el.dataset.h=h}}
+
+/* map */
+let mapSig="";
+function drawMap(all){
+  if(!window.jsVectorMap){$("#mapnote").textContent="The map could not load here; search and filters still work.";return}
+  const pts={};
+  for(const m of all){
+    const names=st.layer==="live"?[m.place]:(m.knows||[]);
+    for(const p of names){const k=gazKey(p);if(!k)continue;(pts[k]??=[]).push(m.name)}
+  }
+  mapPts=Object.entries(pts).map(([k,n])=>({k,n:[...new Set(n)]}));
+  const sig=st.layer+JSON.stringify(mapPts)+document.documentElement.dataset.theme;
+  if(sig===mapSig&&map)return;mapSig=sig;
+  try{map&&map.destroy&&map.destroy()}catch(e){}
+  $("#map").innerHTML="";
+  const land=getComputedStyle(document.documentElement).getPropertyValue("--land").trim()||"#c7d1ee";
+  const dark=matchMedia("(prefers-color-scheme: dark)").matches&&document.documentElement.dataset.theme!=="light"||document.documentElement.dataset.theme==="dark";
+  try{
+    map=new jsVectorMap({selector:"#map",map:"world",zoomButtons:true,zoomOnScroll:false,
+      focusOn:{regions:["IN","JP","ID","MN"],animate:false},
+      regionStyle:{initial:{fill:dark?"#3a4c8f":"#d5ddf3",stroke:"#2B4292",strokeWidth:.4,fillOpacity:1},hover:{fillOpacity:.85,cursor:"default"}},
+      markerStyle:{initial:{fill:"#F26B5B",stroke:"#fff",strokeWidth:2,r:6},hover:{fill:"#fff",stroke:"#F26B5B",cursor:"pointer"}},
+      markers:mapPts.map(p=>({name:p.k,coords:GAZ[p.k],style:{r:Math.min(5+p.n.length*1.5,14),fill:st.layer==="live"?"#F26B5B":"#ffd0c9"}})),
+      onMarkerTooltipShow(e,tip,i){const p=mapPts[+i];if(p)tip.text(`${p.k}: ${p.n.length} ${st.layer==="live"?"based here":"know it"}`)},
+      onMarkerClick(e,i){const p=mapPts[+i];if(!p)return;
+        if(st.layer==="live"){st.q=p.k;$("#q").value=p.k}else{st.place=(memberList().flatMap(m=>m.knows||[]).find(x=>norm(x)===norm(p.k)))||p.k}
+        render();$("#find").scrollIntoView({behavior:"smooth"})}
+    });
+    $("#mapnote").textContent=mapPts.length?(st.layer==="live"?"Tap a dot to see who is based there.":"Tap a dot to find members who know that place."):"Dots appear as members add places from the list.";
+  }catch(e){$("#mapnote").textContent="The map could not load here; search and filters still work."}
+}
+function setLayer(l){st.layer=l;$("#lyrLive").setAttribute("aria-pressed",l==="live");$("#lyrKnow").setAttribute("aria-pressed",l==="know");render()}
+$("#lyrLive").onclick=()=>setLayer("live");$("#lyrKnow").onclick=()=>setLayer("know");
+new MutationObserver(()=>render()).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
+
+/* requests */
+function allAsks(){const out=[];for(const [from,d] of Object.entries(st.asks))for(const a of (d.list||[]))out.push({...a,from,status:st.replies[a.to]?.map?.[a.rid]?.status||"waiting"});return out}
+function renderReq(){
+  const asks=allAsks(),inb=asks.filter(a=>a.to===me),out=asks.filter(a=>a.from===me);
+  const given=inb.filter(a=>a.status==="done").length*2,got=out.filter(a=>a.status==="done").length*2;
+  $("#ledger").innerHTML=me?`<div><b>${given} h</b>given</div><div><b>${got} h</b>received</div><div><b>${inb.filter(a=>a.status==="waiting").length}</b>waiting for my reply</div>${got>given?`<div style="max-width:24em;color:var(--ink)">You have received more than you've given. Keep your offer open: the next ask that comes to you settles it.</div>`:""}`:`<p class="status">Connecting…</p>`;
+  const nm=id=>st.members[id]?.name||"A member";
+  const row=(a,inbox)=>{const acts=inbox?(a.status==="waiting"?`<button class="btn" data-rep="accepted" data-rid="${esc(a.rid)}">Accept</button><button class="btn alt" data-rep="declined" data-rid="${esc(a.rid)}">Decline</button>`:a.status==="accepted"?`<button class="btn coral" data-rep="done" data-rid="${esc(a.rid)}">Mark 2 hours given</button>`:""):(a.status==="waiting"?`<button class="btn alt" data-cancel="${esc(a.rid)}">Withdraw</button>`:"");
+    const contact=a.status==="accepted"||a.status==="done"?(st.contacts[inbox?a.from:a.to]?.contact||""):"";
+    return `<div class="req"><div class="row"><strong>${esc(inbox?nm(a.from):nm(a.to))}</strong><span class="st ${esc(a.status)}">${esc(a.status)}</span><span class="lbl">${esc(a.topic)} · ${esc(new Date(a.at).toLocaleDateString())}</span></div><div>${esc(a.msg)}</div>${contact?`<div class="lbl">Reach them: ${esc(contact)}</div>`:""}${acts?`<div class="row">${acts}</div>`:""}</div>`};
+  $("#inbox").innerHTML=inb.length?inb.sort((a,b)=>b.at-a.at).map(a=>row(a,true)).join(""):`<p class="status">No one has asked you yet.</p>`;
+  $("#outbox").innerHTML=out.length?out.sort((a,b)=>b.at-a.at).map(a=>row(a,false)).join(""):`<p class="status">Find someone above and ask for 2 hours.</p>`;
+}
+async function write(path,data){if(!fb||!me)throw new Error("Still connecting. Try again in a moment.");await fb.setDoc(fb.doc(fdb,path),data)}
+const fail=e=>toast(e?.code==="permission-denied"?"That wasn't allowed. To edit your profile on this device, open your private edit link.":e?.code==="resource-exhausted"?"The network is busy. Try again in a minute.":(e?.message||"That didn't save. Try again."));
+
+let askTo=null;
+document.addEventListener("click",async e=>{
+  const v=e.target.closest("[data-vouch]"),a=e.target.closest("[data-ask]"),r=e.target.closest("[data-rep]"),c=e.target.closest("[data-cancel]");
+  try{
+    if(v){if(!st.members[me])return toast("Add your profile first, then you can vouch.");
+      const list=[...(st.vouches[me]?.list||[])],i=list.findIndex(x=>x.to===v.dataset.vouch&&x.key===v.dataset.k);
+      i>=0?list.splice(i,1):list.push({to:v.dataset.vouch,key:v.dataset.k});v.disabled=true;await write("vouches/"+me,{list});toast(i>=0?"Vouch removed.":"Vouched. Thank you.")}
+    if(a){if(!st.members[me]?.pledge){toast("Add your profile and make the 2-hour pledge first.");location.hash="profile";return}
+      askTo=a.dataset.ask;const m=st.members[askTo];$("#rTitle").textContent="Ask "+m.name+" for 2 hours";
+      const opts=[...new Set([...(m.skills||[]).map(s=>s.cat+": "+s.text),...(m.knows||[]).map(k=>"Place: "+k),"General advice"])];
+      $("#rTopic").innerHTML=opts.map(o=>`<option>${esc(o)}</option>`).join("");$("#rMsg").value="";$("#dlg").showModal()}
+    if(r){const map={...(st.replies[me]?.map||{})};map[r.dataset.rid]={status:r.dataset.rep,at:Date.now()};r.disabled=true;await write("replies/"+me,{map});toast(r.dataset.rep==="done"?"2 hours given. Thank you.":"Reply sent.")}
+    if(c){const list=(st.asks[me]?.list||[]).filter(x=>x.rid!==c.dataset.cancel);await write("asks/"+me,{list});toast("Request withdrawn.")}
+  }catch(err){fail(err)}
+});
+$("#rform").addEventListener("submit",async e=>{
+  if(e.submitter?.value!=="send")return;e.preventDefault();if(!$("#rMsg").value.trim())return;
+  const list=[...(st.asks[me]?.list||[])];
+  list.push({rid:Date.now().toString(36)+Math.random().toString(36).slice(2,6),to:askTo,topic:$("#rTopic").value,msg:$("#rMsg").value.trim(),at:Date.now()});
+  try{$("#rSend").disabled=true;await write("asks/"+me,{list:list.slice(-60)});$("#dlg").close();toast("Request sent. Watch My hours for their reply.")}catch(err){fail(err)}finally{$("#rSend").disabled=false}
+});
+
+/* profile form */
+function tagField(el,listId){const f={vals:[]};const draw=()=>{el.innerHTML=f.vals.map((v,i)=>`<span class="tag">${esc(v)}<button type="button" data-i="${i}" aria-label="Remove ${esc(v)}">×</button></span>`).join("")+`<input list="${listId}" placeholder="Type and press Enter" aria-label="Add">`;const inp=el.querySelector("input");inp.onkeydown=ev=>{if(ev.key==="Enter"||ev.key===","){ev.preventDefault();add(inp.value)}};inp.onblur=()=>inp.value.trim()&&add(inp.value);inp.onchange=()=>{if(listId&&[...document.getElementById(listId).options].some(o=>o.value===inp.value))add(inp.value)}};
+  const add=v=>{v=v.replace(/,/g,"").trim();if(v&&!f.vals.some(x=>norm(x)===norm(v))&&f.vals.length<20)f.vals.push(v.slice(0,40));draw();el.querySelector("input").focus()};
+  el.addEventListener("click",ev=>{const b=ev.target.closest("button[data-i]");if(b){f.vals.splice(+b.dataset.i,1);draw()}});f.set=v=>{f.vals=[...(v||[])];draw()};draw();return f}
+const tLang=tagField($("#tLang"),"langs"),tKnow=tagField($("#tKnow"),"gaz");
+function skillRow(s={cat:CATS[0],text:""}){const d=document.createElement("div");d.className="skrow";d.innerHTML=`<select aria-label="Category">${CATS.map(c=>`<option${c===s.cat?" selected":""}>${esc(c)}</option>`).join("")}</select><input maxlength="80" aria-label="Skill" placeholder="e.g. Grant writing for small NGOs" value="${esc(s.text)}"><button type="button" class="x" aria-label="Remove skill">×</button>`;d.querySelector(".x").onclick=()=>d.remove();$("#skills").append(d)}
+$("#addSkill").onclick=()=>skillRow();
+let formFilled=false;
+function fillForm(){const m=st.members[me];if(formFilled)return;formFilled=true;$("#skills").innerHTML="";
+  if(m){$("#pName").value=m.name||"";$("#pPlace").value=m.place||"";$("#pBio").value=m.bio||"";$("#pContact").value=st.contacts[me]?.contact||"";$("#pPledge").checked=!!m.pledge;tLang.set(m.langs);tKnow.set(m.knows);(m.skills||[]).forEach(skillRow);$("#pdel").hidden=false;$("#psave").textContent="Update profile"}
+  if(!$("#skills").children.length)skillRow()}
+$("#pform").addEventListener("submit",async e=>{e.preventDefault();
+  const skills=[...$("#skills").children].map(r=>({cat:r.querySelector("select").value,text:r.querySelector("input").value.trim()})).filter(s=>s.text).slice(0,15);
+  const place=$("#pPlace").value.trim(),k=gazKey(place);
+  const doc={name:$("#pName").value.trim(),place:k||place,bio:$("#pBio").value.trim(),langs:tLang.vals,knows:tKnow.vals.map(v=>gazKey(v)||v),skills,pledge:$("#pPledge").checked,joined:st.members[me]?.joined||Date.now()};
+  try{$("#psave").disabled=true;await write("members/"+me,doc);await write("contacts/"+me,{contact:$("#pContact").value.trim()});
+    if(!myCode){const code=randCode();await write("links/"+code,{member:me});if(me===uid)await write("devices/"+uid,{member:me,code});myCode=code}
+    showLink();subPriv();toast("Profile saved. Welcome to the network.");$("#pdel").hidden=false;$("#psave").textContent="Update profile"}catch(err){fail(err)}finally{$("#psave").disabled=false}});
+$("#pdel").onclick=async()=>{if($("#pdel").dataset.sure!=="1"){$("#pdel").dataset.sure="1";$("#pdel").textContent="Tap again to remove";return}
+  try{await fb.deleteDoc(fb.doc(fdb,"members/"+me));await fb.deleteDoc(fb.doc(fdb,"contacts/"+me));formFilled=false;$("#pform").reset();tLang.set([]);tKnow.set([]);$("#skills").innerHTML="";skillRow();$("#pdel").hidden=true;toast("Profile removed.")}catch(err){fail(err)}};
+
+/* link + data */
+function randCode(){const a=new Uint8Array(18);crypto.getRandomValues(a);return [...a].map(x=>"abcdefghijkmnpqrstuvwxyz23456789"[x%32]).join("")}
+function showLink(){if(!myCode)return;$("#linkbox").hidden=false;$("#plink").value=location.origin+location.pathname+"?key="+myCode}
+$("#pcopy").onclick=async()=>{try{await navigator.clipboard.writeText($("#plink").value);toast("Link copied. Keep it somewhere safe.")}catch(e){$("#plink").select();toast("Select the link and copy it.")}};
+const subs={};
+function sub(name,priv){if(subs[name])return;subs[name]=1;
+  fb.onSnapshot(fb.collection(fdb,name),s=>{const o={};for(const d of s.docs)o[d.id]=d.data();st[name]=o;
+    if(priv)st.priv=true;
+    if(name==="members"){st.loaded=true;clearTimeout(timer);if(o[me]||st.loaded)fillForm();if(o[me])showLink()}
+    render()},err=>{subs[name]=0;if(!priv){clearTimeout(timer);st.loaded=true;$("#status").textContent="The directory couldn't be reached. Reload the page to try again."}})}
+function subPriv(){["contacts","asks","replies"].forEach(n=>sub(n,true))}
+let timer=0;
+render();
+(async()=>{
+  const cfg=window.UPAYA_FIREBASE;
+  if(!cfg||!cfg.apiKey||/^PASTE/.test(cfg.apiKey)){$("#status").textContent="The skill share isn't connected to its database yet. Check back soon.";$("#psave").disabled=true;$("#pnote").textContent="Joining opens once the database is connected.";return}
+  timer=setTimeout(()=>{if(!st.loaded)$("#status").textContent="The directory is taking a while to reach. It will appear when the connection returns."},10000);
+  try{
+    const B="https://www.gstatic.com/firebasejs/10.12.2/";
+    const [A,U,F]=await Promise.all([import(B+"firebase-app.js"),import(B+"firebase-auth.js"),import(B+"firebase-firestore.js")]);
+    fb=F;const app=A.initializeApp(cfg);fdb=F.getFirestore(app);const au=U.getAuth(app);
+    await au.authStateReady();if(!au.currentUser)await U.signInAnonymously(au);
+    uid=au.currentUser.uid;me=uid;
+    const key=new URLSearchParams(location.search).get("key");
+    if(key){try{const l=await F.getDoc(F.doc(fdb,"links/"+key));if(l.exists()){await F.setDoc(F.doc(fdb,"devices/"+uid),{member:l.data().member,code:key});toast("This device can now edit your profile.")}else toast("That edit link isn't valid.")}catch(e){toast("That edit link couldn't be used.")}
+      history.replaceState(null,"",location.pathname+location.hash)}
+    try{const d=await F.getDoc(F.doc(fdb,"devices/"+uid));if(d.exists()){me=d.data().member;myCode=d.data().code}}catch(e){}
+  }catch(e){clearTimeout(timer);$("#status").textContent="The skill share couldn't connect. Check your internet and reload.";$("#psave").disabled=true;return}
+  sub("members");sub("vouches");subPriv();
+})();
+}
+</script>
 </body>
 </html>

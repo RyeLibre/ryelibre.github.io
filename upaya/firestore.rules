@@ -1,0 +1,38 @@
+rules_version = '2';
+// Upāya Skill Share: paste into Firebase console > Firestore Database > Rules.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function devPath() { return /databases/$(database)/documents/devices/$(request.auth.uid); }
+    function hasDev() { return signedIn() && exists(devPath()); }
+    function canAct(mid) { return signedIn() && (mid == request.auth.uid || (hasDev() && get(devPath()).data.member == mid)); }
+    function isMember() {
+      return signedIn() && (exists(/databases/$(database)/documents/members/$(request.auth.uid))
+        || (hasDev() && exists(/databases/$(database)/documents/members/$(get(devPath()).data.member))));
+    }
+
+    // Public: profiles and vouches. Each member writes only their own.
+    match /members/{mid} { allow read: if true; allow write: if canAct(mid); }
+    match /vouches/{mid} { allow read: if true; allow write: if canAct(mid); }
+
+    // Members only: contact details, requests and replies.
+    match /contacts/{mid} { allow read: if isMember(); allow write: if canAct(mid); }
+    match /asks/{mid}     { allow read: if isMember(); allow write: if canAct(mid); }
+    match /replies/{mid}  { allow read: if isMember(); allow write: if canAct(mid); }
+
+    // A browser (anonymous sign-in) linked to a member, by its own id or by a private edit link.
+    match /devices/{uid} {
+      allow read, delete: if signedIn() && request.auth.uid == uid;
+      allow create, update: if signedIn() && request.auth.uid == uid
+        && (request.resource.data.member == uid
+            || get(/databases/$(database)/documents/links/$(request.resource.data.code)).data.member == request.resource.data.member);
+    }
+
+    // Private edit links: readable only by exact code, never listed.
+    match /links/{code} {
+      allow get: if signedIn();
+      allow create: if code.size() >= 16 && canAct(request.resource.data.member);
+      allow delete: if signedIn() && canAct(resource.data.member);
+    }
+  }
+}
