@@ -278,7 +278,7 @@ const SCENES=[
   hill:['#6f7f8f','#4f5d6c'],slope:['#6f7f8f','#4f5d6c'],dead:0,trees:0,fog:0,px:640,top:900,curv:10,ph:1.4,diff:3,opts:{quota:15}},
  {name:'Chipwi Leach Pits',rare:2,nopost:1,tod:'Dawn mist · misty ridges',dist:200,sky:['#2f68c0','#6f9fd6','#b4cbe0'],sun:null,ranges:['#2f4a50','#2c4a3c','#28432f'],
   hill:['#2c4a3c','#1e3328'],slope:['#2c4a3c','#1e3328'],dead:0,trees:0,fog:0,px:640,top:900,curv:10,ph:2.2,diff:3,opts:{quota:15}},
- {name:'Mansi Ponds',rare:3,nopost:1,tod:'Hazy noon · leach ponds',dist:200,sky:['#93aac0','#bccad6','#d8dee0'],sun:[900,60,'255,250,235',.5],ranges:['#7d9488','#6c8676','#5f7a5a'],
+ {name:'Mansi Ponds',rare:3,nopost:1,tod:'Hazy noon · chemical bags',dist:200,sky:['#93aac0','#bccad6','#d8dee0'],sun:[900,60,'255,250,235',.5],ranges:['#7d9488','#6c8676','#5f7a5a'],
   hill:['#5f7a5a','#3f5a3a'],slope:['#5f7a5a','#3f5a3a'],dead:0,trees:0,fog:0,px:640,top:900,curv:10,ph:3.1,diff:3,opts:{quota:16}},
  {name:'Chi Pwe Timber Yard',rare:4,nopost:1,tod:'Old-growth log yard',dist:200,sky:['#8a8f8c','#b4b2a6','#cfc6b2'],sun:[1000,120,'255,230,190',.4],ranges:['#6f7a6a','#5f6c5a','#55624e'],
   hill:['#7a5e40','#4e3a26'],slope:['#7a5e40','#4e3a26'],dead:0,trees:0,fog:0,px:640,top:900,curv:10,ph:2.7,diff:3,opts:{quota:16}},
@@ -313,9 +313,14 @@ const PITS2=[[430,472,40],[560,466,44],[700,460,46],[845,464,48],[990,470,50],[1
 const MH3=x=>292+Math.sin(x*.009+1)*8+Math.sin(x*.031)*4;
 const PONDS3=[[360,338,46,'w'],[480,334,48,'w'],[600,332,48,'l'],[720,334,50,'w'],[850,338,52,'w'],[980,342,54,'l'],[1110,346,54,'w'],
   [300,410,74,'w'],[480,404,78,'l'],[680,400,82,'w'],[890,404,86,'w'],[1100,412,88,'l'],[380,512,110,'l'],[640,500,118,'w'],[920,506,120,'w']];
+const BAGS3=[[420,374,.62],[790,372,.62],[1040,380,.64],[205,474,.8],[780,478,.82],[1190,474,.82]];
+function chemBags(g,x,y,s){const w=56*s,h=26*s;g.fillStyle='rgba(60,50,30,.25)';ell(g,x,y+2,w*1.8,h*.3);
+  const sack=(cx,cy)=>{const gr=g.createLinearGradient(0,cy-h/2,0,cy+h/2);gr.addColorStop(0,'#fbfaf4');gr.addColorStop(1,'#c9c8bd');g.fillStyle=gr;rr(g,cx-w/2+1,cy-h/2,w-2,h,h*.4);g.fillStyle='#2f6fb0';g.fillRect(cx-w*.3,cy-h*.12,w*.6,h*.24);g.fillStyle='#c8322a';g.fillRect(cx-w*.08,cy-h*.36,w*.16,h*.14);
+    g.strokeStyle='rgba(120,118,105,.35)';g.lineWidth=Math.max(.5,.8*s);for(let k=-2;k<=2;k++){g.beginPath();g.moveTo(cx-w/2+4,cy+k*h*.18);g.lineTo(cx+w/2-4,cy+k*h*.18);g.stroke()}};
+  for(let i=0;i<3;i++)sack(x+(i-1)*w,y-h/2);for(let i=0;i<2;i++)sack(x+(i-.5)*w,y-h*1.5+2*s)}
 const RARE_SL={1:[[1,.5,[700,860,1020,1150]],[2,.62,[180,320,760,1080]],[3,.75,[120,260,620,880,1180]],[4,.9,[60,800,1000]]],
   2:{hill:[[200,352],[340,346],[470,358],[930,350],[1090,344]],h4:[150,420,760,1010,1190],h5:[270,580,900,1130]},
-  3:{hill:[[200,286],[420,282],[640,288],[860,284],[1060,290]],pond:[1,3,5,8,10,11]}};
+  3:{hill:[[200,286],[420,282],[640,288],[860,284],[1060,290]],pond:[2,5,8,11]}};
 const STK4=[[-440,1720,290,9,6],[-440,1720,362,13,6],[-440,1720,452,19,5],[-440,780,572,28,4],[1010,1720,572,28,4]];
 const stkTop=([x0,x1,y,r,n])=>y-(n-1)*r*1.75-r;
 const STAGES={station:[{name:'Myitkyina Station · Platform',room:'hall',indoor:1,nopost:1,tod:'Stage 2 · inside the station',dist:200,sky:['#777','#888','#999'],sun:null,ranges:['#7a8478','#6c7868','#5f6c5a'],hill:['#6a6a5a','#4a4a3a'],slope:['#6a6a5a','#4a4a3a'],dead:0,trees:0,fog:0,px:640,top:900,curv:10,ph:2,diff:3,port:[640,96,64,84],opts:{quota:8,drone:0,droneDur:0,arty:9999}},
@@ -457,7 +462,7 @@ function makeSlots(){if(SC.sniper){slots=[{x:-9999,by:-9999,busy:true,cool:999,f
   if(SC.rare===2){const q=RARE_SL[2];slots=q.hill.map(([x,y])=>({x,by:y,busy:false,cool:0,fox:true,ridge:true,sc:.5}));q.h4.forEach(x=>slots.push({x,by:CH4(x)+3,busy:false,cool:0,fox:true,ridge:true,sc:.62}));q.h5.forEach(x=>slots.push({x,by:CH5(x)+4,busy:false,cool:0,fox:true,ridge:true,sc:.78}));return}
   if(SC.rare===4){slots=[];const XS=[[140,330,520,760,960,1150],[90,280,470,820,1010,1200],[160,380,600,880,1100],[110,330,560],[1090,1220]];
     STK4.forEach((st,j)=>{const sc=[.38,.5,.7,.95,.95][j];XS[j].forEach(x=>slots.push({x,by:stkTop(st)+st[3]*.9,busy:false,cool:0,fox:true,ridge:true,sc}))});[840,950].forEach(x=>slots.push({x,by:572,busy:false,cool:0,fox:true,ridge:true,clip:true,sc:1}));return}
-  if(SC.rare===3){const q=RARE_SL[3];slots=q.hill.map(([x,y])=>({x,by:y,busy:false,cool:0,fox:true,ridge:true,sc:.45}));q.pond.forEach(i=>{const [x,y,r]=PONDS3[i];slots.push({x:x+r*.55,by:y-r*.18,busy:false,cool:0,fox:true,ridge:true,clip:true,sc:.5+r/150})});return}
+  if(SC.rare===3){const q=RARE_SL[3];slots=q.hill.map(([x,y])=>({x,by:y,busy:false,cool:0,fox:true,ridge:true,sc:.45}));q.pond.forEach(i=>{const [x,y,r]=PONDS3[i];slots.push({x:x+r*.3,by:y+r*.1,busy:false,cool:0,fox:true,ridge:true,clip:true,sc:.5+r/150})});BAGS3.forEach(([x,y,sc])=>slots.push({x,by:y-26*sc*2+8*sc,busy:false,cool:0,fox:true,ridge:true,clip:true,sc}));return}
   if(SC.station){slots=WIN.map(([x,y])=>({x,by:y+20,busy:false,cool:0,fox:true,win:true}));return}
   if(SC.jade){slots=[];[[JA,.55,[500,640,780,920]],[JB,.75,[150,320,500,660]],[JD,1,[130,300,480,660]]].forEach(([f,sc,xs])=>xs.forEach(x=>slots.push({x,by:f(x)+8*sc,busy:false,cool:0,fox:true,ridge:true,clip:true,sc})));[[870,101,.5],[960,111,.5],[1140,174,.5]].forEach(([x,y,sc])=>slots.push({x,by:y+6,busy:false,cool:0,fox:true,ridge:true,clip:true,sc}));[[990,.8],[1090,.72],[1190,.64]].forEach(([x,sc])=>slots.push({x,by:JC(x)+6,busy:false,cool:0,fox:true,ridge:true,clip:true,sc,scrape:true}));return}
   if(SC.holes){slots=HOLES.map(([x,y])=>({x,by:y+22,busy:false,cool:0,fox:true,hole:true}));return}const L=[],Rt=[];const lo=RING?SC.px-(RING.L-40):205,hi=RING?SC.px+(RING.R-40):1075;for(let i=0;i<5;i++){L.push(lerp(lo,SC.px-95,i/4));Rt.push(lerp(SC.px+95,hi,i/4))}
@@ -797,6 +802,7 @@ function buildBg(){let g=bg.getContext('2d');g.setTransform(1,0,0,1,PADX,0);cons
         else{g.fillStyle='#d8dad6';ell(g,x,y,r,ry);g.fillStyle='#f2f2ee';ell(g,x,y+ry*.25,r*.8,ry*.55);g.strokeStyle='rgba(120,125,125,.55)';g.lineWidth=1;for(let k=0;k<14;k++){const a=Math.PI+k*Math.PI/13;g.beginPath();g.moveTo(x+Math.cos(a)*r,y+Math.sin(a)*ry);g.lineTo(x+Math.cos(a)*r*.82,y+Math.sin(a)*ry*.5+ry*.3);g.stroke()}}
         g.strokeStyle='#8a8a7a';g.lineWidth=1;for(let k=-1;k<=1;k+=2){g.beginPath();g.moveTo(x+k*r*.6,y-ry-12);g.lineTo(x+k*r*.6,y-ry+2);g.stroke()}g.beginPath();g.moveTo(x-r*.6,y-ry-12);g.lineTo(x+r*.6,y-ry-12);g.stroke()});
       g.fillStyle='rgba(228,220,196,.95)';for(const [x1,y1,x2,y2] of [[300,440,480,370],[680,460,600,370],[890,450,980,380],[200,560,380,470]]){g.save();g.translate(x1,y1);g.rotate(Math.atan2(y2-y1,x2-x1));const L=Math.hypot(x2-x1,y2-y1);g.fillRect(0,-5,L,10);g.strokeStyle='rgba(120,100,70,.5)';for(let k=0;k<L;k+=8){g.beginPath();g.moveTo(k,-5);g.lineTo(k,5);g.stroke()}g.restore()}
+      BAGS3.forEach(([x,y,sc])=>chemBags(g,x,y,sc));
       haze(300,460,'225,228,226',.15)}
     }
   if(SC.room)drawRoom(g,X0,X1,WW,HB);
@@ -1666,7 +1672,7 @@ function showEnd(title,sub,stats,btn,onBtn,menu,kia){prepShare();$('end').queryS
   $('bonH').style.display=$('endBon').innerHTML.trim()?'':'none';$('statH').style.display=$('endStats').innerHTML.trim()?'':'none';const steps=['endTitle','endTag','endSub','endHead','endCamp','endBon','endStats','endNext','endBtn','endBtn2','endBtn3','share','endMore'];steps.forEach(id=>{$(id).classList.add('step');$(id).classList.remove('in')});
   [0,400,600,1100,1500,1900,2500,3100,3500,3500,3500,4000,4300].forEach((d,i)=>setTimeout(()=>$(steps[i]).classList.add('in'),d+60));
   $('endBtn').textContent=btn;$('endBtn').onclick=onBtn;$('endBtn3').classList.add('hide');
-  $('endBtn2').classList.toggle('hide',!menu);$('endBtn2').onclick=()=>{$('end').classList.add('hide');$('title').classList.remove('hide');showBest();hofLoad();state='title';startAmbience()};
+  $('endBtn2').classList.toggle('hide',btn==='MAIN MENU');$('endBtn2').onclick=()=>{$('end').classList.add('hide');$('title').classList.remove('hide');showBest();hofLoad();state='title';startAmbience()};
   $('end').classList.remove('hide');const tp=()=>{$('end').scrollTop=0};tp();requestAnimationFrame(tp);setTimeout(tp,60)}
 function starsOf(lv){try{return (JSON.parse(localStorage.getItem('hilltop_stars')||'{}'))[lv]||0}catch(e){return 0}}
 function saveStars(lv,n){try{const o=JSON.parse(localStorage.getItem('hilltop_stars')||'{}');if(n>(o[lv]||0)){o[lv]=n;localStorage.setItem('hilltop_stars',JSON.stringify(o))}}catch(e){}renderStars()}
