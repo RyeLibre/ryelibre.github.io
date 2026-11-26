@@ -447,7 +447,9 @@ function drawBridgeVeh(){if(!SC.bridge||!G.bv)return;for(const v of [...G.bv].so
     ctx.fillStyle=d?'#333':'#e4e2d0';circ(ctx,-112,-60,8);circ(ctx,112,-60,8);
     if(!d){ctx.fillStyle='#f2efe2';ctx.font='bold 22px sans-serif';ctx.textAlign='center';ctx.fillText('C-01',-100,-132);ctx.textAlign='left';ctx.fillStyle='#b8865a';circ(ctx,40,-226,8);ctx.fillStyle='#3a4428';ctx.beginPath();ctx.ellipse(40,-230,12,7,0,Math.PI,0);ctx.fill()}}
   ctx.restore()}}
-function makeSlots(){if(SC.sniper){slots=[{x:-9999,by:-9999,busy:true,cool:999,fox:true}];return}
+const PHONE=/[?&#]phone/.test(location.href)||(()=>{try{return matchMedia('(pointer:coarse)').matches&&Math.min(screen.width,screen.height)<=500}catch(e){return false}})(),PHONE_K=1.8;
+function makeSlots(){makeSlots0();if(PHONE)for(const s of slots)s.sc=(s.sc||1)*PHONE_K}
+function makeSlots0(){if(SC.sniper){slots=[{x:-9999,by:-9999,busy:true,cool:999,fox:true}];return}
   if(SC.bridge){slots=BCOV.map(([z,u,kd])=>({x:BX(u,z),by:BY(z)-BCOVH[kd]/z+6/z,busy:false,cool:0,fox:true,ridge:true,clip:true,sc:2/z}));return}
   if(SC.room){slots=[];const P=(x,by,sc,o)=>slots.push(Object.assign({x,by,busy:false,cool:0,fox:true,ridge:true,clip:true,sc},o||{}));
     if(SC.room==='hall'){HALLW.forEach(x=>P(x+35,302,.72));HALLD.forEach(x=>P(x+30,438,.9))}
@@ -1349,7 +1351,7 @@ function floatText(x,y,t,col){G.parts.push({x,y,vx:0,vy:-30,g:0,life:1,max:1,txt
 
 /* ---------- enemies ---------- */
 function ridgeLine(x){return 352-(x-720)*.62+Math.sin(x*.03)*6+Math.sin(x*.011)*10}
-function drawScaled(e,fn){const s=slots[e.slot],x=s.x+e.dx,l=s.by-5;ctx.save();ctx.translate(x,l);ctx.scale(s.sc,s.sc);ctx.translate(-x,-l);fn(e);ctx.restore()}
+function drawScaled(e,fn){const s=slots[e.slot],x=s.x+e.dx,l=s.by-5;ctx.save();ctx.translate(x,l);ctx.scale(s.sc,s.sc);ctx.translate(-x,-l);if(PHONE&&fn!==drawEnemyFx&&e.state!=='dead'){ctx.shadowColor='rgba(255,236,190,.95)';ctx.shadowBlur=7}fn(e);ctx.restore()}
 function geo(e){const s=slots[e.slot];let x=s.x+e.dx;if(e.type==='decoy')x+=Math.sin(T*3+e.bob)*3;
   const hy=s.by+14-e.rise*44+(e.type==='decoy'?Math.sin(T*5+e.bob)*1.5:0);
   return{x,hy,hr:9.5,tx:x-12,ty:hy+9,tw:24,th:34,lip:s.by-5,by:s.by}}
@@ -1632,9 +1634,9 @@ function shoot(){if(state!=='play')return;ac();if(SC.sniper){snFire();return}if(
         if(G.health<5){G.health++;G.goatRew='heart';msg('Goats gone — +1 HEART','#ff9a8a');floatText(gx,gy-24,'+1 ♥','#ff9a8a')}else{G.rpg++;G.goatRew='rpg';msg('Goats gone — hearts full, +1 RPG','#ffd36b');floatText(gx,gy-24,'+1 RPG','#ffd36b')}tone(1568,.5,.07,'sine');return}}}
   if(walkerHit(ax,ay))return;
   let hit=null,head=false;
-  for(const e of G.enemies){if(e.state==='dead'||e.state==='gone'||e.rise<.25)continue;const g=geo(e),sl=slots[e.slot];let qx=ax,qy=ay;if(sl&&sl.sc){qx=g.x+(ax-g.x)/sl.sc;qy=g.lip+(ay-g.lip)/sl.sc}
-    if(Math.hypot(qx-g.x,qy-g.hy)<=g.hr&&qy<g.lip){hit=e;head=true;break}
-    if(e.type!=='decoy'&&qx>g.tx&&qx<g.tx+g.tw&&qy>g.ty&&qy<Math.min(g.ty+g.th,g.lip)){hit=e;break}}
+  for(const e of G.enemies){if(e.state==='dead'||e.state==='gone'||e.rise<.25)continue;const g=geo(e),sl=slots[e.slot];let qx=ax,qy=ay;if(sl&&sl.sc){qx=g.x+(ax-g.x)/sl.sc;qy=g.lip+(ay-g.lip)/sl.sc}const pd=PHONE?7/((sl&&sl.sc)||1):0;
+    if(Math.hypot(qx-g.x,qy-g.hy)<=g.hr+pd*.5&&qy<g.lip){hit=e;head=true;break}
+    if(e.type!=='decoy'&&qx>g.tx-pd&&qx<g.tx+g.tw+pd&&qy>g.ty-pd&&qy<Math.min(g.ty+g.th,g.lip)){hit=e;break}}
   if(hit&&hit.type!=='decoy'&&hit.rise<.8&&R()<.25){const g=geo(hit);S.ting();floatText(g.x,g.hy-20,'TING!','#e8e4d8');for(let i=0;i<8;i++)G.parts.push({x:g.x,y:g.hy,vx:(R()-.5)*180,vy:-R()*140,life:.35,max:.35,r:1.4,col:'#fff2b0',type:'spark'});return}
   if(hit){if(hit.type==='decoy')helmetFly(hit);else{G.hits++;killEnemy(hit,head)}}
   else{dust(ax,ay,6);
