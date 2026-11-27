@@ -1302,7 +1302,7 @@ showBest();
 // small preview of every level's scene for the intro page
 let THUMB_TK=66;const THUMB_X=[];
 function thumbExtras(){const G0=G,T0=T;for(const q of THUMB_X){try{const {sc,c,li}=q,g=c.getContext('2d');ctx.save();ctx.setTransform(cv.width/W,0,0,cv.height/H,0,0);ctx.clearRect(0,0,W,H);ctx.drawImage(c,0,0,320,180,0,0,W,H);
-    const keep=SC;SC=sc;if(sc.tank){G={tk:{},time:90-THUMB_TK,parts:[]};drawTank()}if(sc.storm){T=2.1;G={duckAmt:0};drawStorm()}SC=keep;ctx.restore();g.setTransform(1,0,0,1,0,0);g.drawImage(cv,0,0,cv.width,cv.height,0,0,320,180);
+    const keep=SC;SC=sc;if(sc.tank){G={tk:{},time:90-THUMB_TK,parts:[]};drawTank()}if(sc.storm){T=2.1;G={duckAmt:0};drawStorm()}if(sc.mjy&&MJYTREE){G={treeBurn:[]};TREEN=-1;drawMjyTree();TREEN=-1}if(sc.mjy){for(const [x,y,k,red] of [[760,150,1.2,0],[1010,105,.95,1],[880,215,.8,0]]){ctx.save();ctx.translate(x,y);ctx.scale(k,k);ctx.strokeStyle='#22262a';ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(-26,-10);ctx.lineTo(26,10);ctx.moveTo(26,-10);ctx.lineTo(-26,10);ctx.stroke();ctx.fillStyle='#2b3034';rr(ctx,-12,-7,24,14,5);ctx.fillStyle='rgba(40,44,48,.55)';for(const [dx,dy] of [[-26,-10],[26,-10],[-26,10],[26,10]]){ctx.beginPath();ctx.ellipse(dx,dy-3,15,4,0,0,Math.PI*2);ctx.fill()}ctx.fillStyle=red?'#ff3a2a':'#9fe0ff';circ(ctx,0,6,3.5);ctx.restore()}}SC=keep;ctx.restore();g.setTransform(1,0,0,1,0,0);g.drawImage(cv,0,0,cv.width,cv.height,0,0,320,180);
     const im=li.querySelector('img.thumb');if(im)im.src=c.toDataURL('image/jpeg',.8);
     document.querySelectorAll('.levels li img.thumb').forEach(x=>{if(x!==im&&x.dataset.k===String(SCENES.indexOf(sc)))x.src=im.src})}catch(e){console.error('THUMBX',e.message);try{ctx.restore()}catch(_){}}}G=G0;T=T0;try{ctx.setTransform(cv.width/W,0,0,cv.height/H,0,0);ctx.clearRect(0,0,W,H)}catch(e){}}
 function makeThumbs(){const lis=document.querySelectorAll('.levels li');const keep=SC;
@@ -1310,7 +1310,7 @@ function makeThumbs(){const lis=document.querySelectorAll('.levels li');const ke
     g.drawImage(bg,-PADX,0);g.drawImage(bgh,-PADX,0);g.drawImage(fg,-PADX,0);
     if(sc.night){g.fillStyle=`rgba(4,8,20,${sc.dark?.45:.35})`;g.fillRect(0,0,W,H)}if(sc.dim){g.fillStyle=`rgba(${sc.dimc},${sc.dim})`;g.fillRect(0,0,W,H)}
     if(TOWN)g.drawImage(TOWN,-100,445);
-    if(sc.tank||sc.storm)THUMB_X.push({sc,c,li:lis[i]});
+    if(sc.tank||sc.storm||sc.mjy)THUMB_X.push({sc,c,li:lis[i]});
     g.drawImage(near,0,600);if(sc.nvg)nvgPost(g,false);const im=document.createElement('img');im.src=c.toDataURL('image/jpeg',.8);im.className='thumb';lis[i].prepend(im)});
   document.querySelectorAll('.levels li.soon').forEach(li=>{const d=document.createElement('div');d.className='thumb ph';d.textContent='?';li.prepend(d)});
   buildScene(1)}
