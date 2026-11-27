@@ -1662,7 +1662,7 @@ function drawOneBird(b){ctx.save();ctx.translate(b.x,b.y);ctx.scale(1.7,1.7);if(
 
 /* ---------- player actions ---------- */
 function aimPt(){const k=1-G.zoom*.45;return[mx+(Math.sin(T*1.3)*2.6+Math.sin(T*3.1)*.8)*k,my+Math.cos(T*1.7)*2.2*k-G.recoil*9]}
-function shoot(){if(state!=='play')return;ac();if(SC.sniper){snFire();return}if(G.act&&G.act.type==='flute'){if(!G.fmsg){G.fmsg=1;msg('Finish the song first','#e8d9a8');setTimeout(()=>G.fmsg=0,1500)}return}
+function shoot(){if(state!=='play')return;ac();if(G&&G.dv&&G.dv.narr>0)return;if(SC.sniper){snFire();return}if(G.act&&G.act.type==='flute'){if(!G.fmsg){G.fmsg=1;msg('Finish the song first','#e8d9a8');setTimeout(()=>G.fmsg=0,1500)}return}
   if(G.ovt)return;if(G.ambush&&!G.ambush.dead&&!G.ambush.fired&&G.reloading<=0&&G.cool<=0&&G.mag>0){const [sx,sy]=aimPt();G.mag--;G.cool=.15;G.shots++;S.shot();G.recoil=Math.min(3,G.recoil+1);G.flash=.05;
     ambushHit(sx,sy);return}
   if(G.duckAmt>.6){trenchClick();return}if(G.duckAmt>.12&&G.duckAmt<.18)return;
@@ -1695,7 +1695,7 @@ function shoot(){if(state!=='play')return;ac();if(SC.sniper){snFire();return}if(
 }
 function reload(){if(G&&G.tr&&G.duckAmt>.6)G.tr.rl=1;if(SC.sniper){snReload();return}if(state!=='play'||G.reloading>0||G.mag>=30||G.reserve<=0)return;G.reloading=1;S.reload();msg(G.mag>0?'Swapping clips — this one goes back on the shelf':'Reloading…')}
 function syncRes(){G.reserve=G.mags.reduce((a,b)=>a+b,0)}
-function fireRpg(){if(SC&&SC.sniper)return;if(state!=='play')return;ac();
+function fireRpg(){if(SC&&SC.sniper)return;if(state!=='play')return;ac();if(G&&G.dv&&G.dv.narr>0)return;
   if(G.duckAmt>.25){msg(G.peek&&G.duckAmt<.6?'No RPG from peek — stand up to fire it':'Stand up to fire the RPG');return}
   if(!G.gLoaded&&!G.demo){msg(G.rpg>0?'No grenade on the barrel — duck and click one on the shelf to fit it':'No grenades left','#ffb38a');return}
   if(G.demo&&G.rpg<=0)return;
@@ -1895,7 +1895,7 @@ function update(dt){T+=dt;if(DEMO)demoUpdate(dt);if(state!=='play'&&state!=='dyi
     G.resT-=dt;if(G.resT<=0){G.resT=40;const add=Math.min(30,90-G.reserve);if(add>0){if(G.mags)G.mags.push(add);G.reserve+=add;msg('Ammo resupply +'+add+' bullets','#bde58a');S.reload()}}
     G.rpgT-=dt;if(G.rpgT<=0){G.rpgT=90;if(G.rpg<5){G.rpg++;msg('+1 RPG','#ffd36b')}}
     G.rampT-=dt;if(G.rampT<=0){G.rampT=60;const c2=G.c;c2.spawn*=.9;c2.maxActive=Math.min(7,c2.maxActive+1);c2.aim*=.94;c2.acc=Math.min(.9,(c2.acc||.3)*1.06);msg('They are sending more troops','#ffb38a')}}
-  else if(state==='play'){stageCheck();G.megaT=Math.max(0,(G.megaT||0)-dt);if(!(G.act&&G.act.type==='mega')&&!G.stageBusy)G.time-=dt;if(G.time<=0){G.time=0;endLevel();if(G.ovt){G.duck=false;spaceHeld=false;updCreepers(dt)}return}}
+  else if(state==='play'){stageCheck();G.megaT=Math.max(0,(G.megaT||0)-dt);if(!(G.act&&G.act.type==='mega')&&!G.stageBusy&&!(G.dv&&G.dv.narr>0))G.time-=dt;if(G.time<=0){G.time=0;endLevel();if(G.ovt){G.duck=false;spaceHeld=false;updCreepers(dt)}return}}
   G.banner-=dt;if(state==='play'&&G.duckAmt>.8){G.radioT=(G.radioT||1)-dt;if(G.radioT<=0){G.radioT=1.5+R()*3;noise(.25+R()*.4,1800,.06,1,'bandpass');setTimeout(()=>noise(.15,2400,.04,1,'bandpass'),300)}}if(state==='play'){G.windT-=dt;if(G.windT<=0){G.windT=8+R()*10;windGust()}}G.boom=Math.max(0,(G.boom||0)-dt);
   G.duckAmt+=((G.duck?1:G.peek?.3:0)-G.duckAmt)*Math.min(1,dt*11);if(G.duckAmt>.6)G.upT=0;else G.upT=(G.upT||0)+dt;
   const zt=(spaceHeld&&state==='play'&&G.duckAmt<.3)?1:0;G.zoom+=(zt-G.zoom)*Math.min(1,dt*28);
@@ -2591,12 +2591,12 @@ function cityShot(ax,ay){if(!SC.mjy||!G.city)return false;for(const d of G.city.
 /* ---- airport drive-in ---- */
 const DRIVE=[{z:320,x:-170,n:1,kind:'post'},{z:520,x:150,n:1,kind:'post'},{z:700,x:-120,n:1,kind:'cp'},{z:700,x:130,n:2,kind:'cp'},{z:1050,x:180,n:2,kind:'post'},{z:1300,x:-190,n:2,kind:'post'},{z:1440,x:-260,n:1,kind:'post'},{z:1440,x:260,n:1,kind:'post'}];
 const DJETS=[{z:430,x:-470,d:1},{z:900,x:480,d:-1},{z:1180,x:-500,d:1}];
-function initDrive(){G.dv={z:0,v:34,tg:[],ally:3,end:1560,gateZ:1500,breach:false,narr:7,jets:DJETS.map(j=>({...j,dead:false,burn:0}))};G.jetsDown=0;
+function initDrive(){G.dv={z:0,v:34,tg:[],ally:3,end:1560,gateZ:1500,breach:false,narr:4,jets:DJETS.map(j=>({...j,dead:false,burn:0}))};G.jetsDown=0;
   DRIVE.forEach(o=>{for(let i=0;i<o.n;i++)G.dv.tg.push({z:o.z+i*6,x:o.x+i*44*(o.x<0?-1:1),kind:o.kind,dead:false,fT:.8+R()*2,up:o.kind==='cp'?1:0,st:'hide',flash:0,fall:R()<.5?-1:1,aim:0})})}
 function dproj(z,xw,yw){const dz=Math.max(1,z-G.dv.z),k=260/dz;return[640+xw*k,260+yw*k,k]}
 function dvFire(t){t.flash=.07;S.far();const [x,y,k]=dproj(t.z,t.x,90),s=k*2.2,mx=x+(t.x<0?14:-14)*s*.4,my=y-40*s+(t.kind==='post'?(1-t.up)*34*s:0);
   G.tracers.push({x1:mx,y1:my,x2:lerp(300,1000,R()),y2:H+80,t:0,dur:.15,col:'255,140,90'});if(G.duckAmt<.6&&(G.upT||0)>1.3&&R()<.2)playerHit()}
-function updDrive(dt){if(!SC.drive||!G.dv||state!=='play'||G.stageBusy)return;const D=G.dv;D.narr=Math.max(0,D.narr-dt);
+function updDrive(dt){if(!SC.drive||!G.dv||state!=='play'||G.stageBusy)return;const D=G.dv;if(D.narr>0){if(!((G.brief||0)>0||G.reqB==null||G.reqB>0))D.narr=Math.max(0,D.narr-dt);D.eng=(D.eng||0)-dt;if(D.eng<=0){D.eng=.25;noise(.25,90,.12,1)}return}
   const block=!D.breach&&D.z>=D.gateZ-250;if(block){if(!D.blkMsg){D.blkMsg=1;msg('The gate wall blocks the road — stand up and RPG a hole to drive through!','#ffb347');if(G.rpg<1&&!G.gLoaded){G.rpg=1;setTimeout(()=>msg('+1 RPG passed up from the back','#ffd36b'),1500)}}}
   else D.z+=D.v*dt;D.eng=(D.eng||0)-dt;if(D.eng<=0){D.eng=.25;noise(.25,90,block?.06:.12,1)}
   for(const j of D.jets)if(j.dead){j.burn+=dt;const [x,y,k]=dproj(j.z,j.x,90);if(j.z-D.z>10&&R()<.5)G.parts.push({x:x+(R()-.5)*200*k,y:y-60*k,vx:4+R()*6,vy:-30,g:-4,life:2.4,max:2.4,r:8*k+2,grow:60*k+6,rgb:'40,38,36'})}
@@ -2655,7 +2655,7 @@ function drawDrive(){if(!SC.drive||!G.dv)return;const D=G.dv;
       if(t.dead){const e=Math.min(1,t.dt),ee=1-(1-e)*(1-e);if(t.kind==='post'){ctx.translate(0,34*ee+(1-t.up)*34);ctx.rotate(t.fall*.5*ee);dvMan(t,false)}
         else{ctx.rotate(t.fall*1.5*ee);ctx.translate(0,-4*Math.sin(e*Math.PI));dvMan(t,false);if(e>=1){ctx.rotate(-t.fall*1.5);ctx.fillStyle='rgba(110,20,16,.5)';ell(ctx,t.fall*30,-2,16,4)}}}
       else{if(t.kind==='post')ctx.translate(0,(1-t.up)*36);dvMan(t,t.flash>0)}ctx.restore()}});
-  if(D.narr>0){const a=Math.min(1,D.narr/1.2,(7-D.narr)/.8);ctx.save();ctx.globalAlpha=a;ctx.fillStyle='rgba(10,14,8,.55)';ctx.fillRect(0,150,W,128);ctx.textAlign='center';ctx.fillStyle='#ffd36b';ctx.font="700 34px 'Black Ops One',Impact,sans-serif";ctx.fillText('YOU HAVE CAPTURED A BURMESE ARMORED PERSONNEL CARRIER',W/2,205);ctx.fillStyle='#f2ede0';ctx.font='600 24px system-ui,sans-serif';ctx.fillText('Now attempting to overtake Myitkyina Airport',W/2,248);ctx.restore()}}
+  if(D.narr>0&&!((G.brief||0)>0||G.reqB==null||G.reqB>0)){const a=Math.min(1,D.narr/.5,(4-D.narr)/.3);ctx.save();ctx.globalAlpha=a;ctx.fillStyle='rgba(8,10,6,.82)';ctx.fillRect(0,0,W,H);ctx.fillStyle='rgba(255,211,107,.15)';ctx.fillRect(0,150,W,2);ctx.fillRect(0,276,W,2);ctx.textAlign='center';ctx.fillStyle='#ffd36b';ctx.font="700 34px 'Black Ops One',Impact,sans-serif";ctx.fillText('YOU HAVE CAPTURED A BURMESE ARMORED PERSONNEL CARRIER',W/2,205);ctx.fillStyle='#f2ede0';ctx.font='600 24px system-ui,sans-serif';ctx.fillText('Now attempting to overtake Myitkyina Airport',W/2,248);ctx.restore()}}
 function driveShot(ax,ay){if(!SC.drive||!G.dv)return false;const D=G.dv;for(const t of [...D.tg].sort((a,b)=>a.z-b.z)){if(t.dead)continue;const dz=t.z-D.z;if(dz<8||dz>600)continue;const [x,y,k]=dproj(t.z,t.x,90),s=k*2.2;
     const top=y-60*s+(t.kind==='post'?(1-t.up)*36*s:0),bot=t.kind==='post'?y-24*s:y;if(t.kind==='post'&&t.up<.45)continue;
     if(Math.abs(ax-x)<11*s+2&&ay>top&&ay<bot){G.hits++;S.enemyHit();dvKill(t,true);return true}}return false}
