@@ -161,17 +161,17 @@ html,body,body *{-webkit-user-select:text!important;user-select:text!important;-
   <ol class="levels">
     <li><b>Hpa Lap Bum</b> <span>Tea Mountain · sunrise</span></li>
     <li><b>A Len Bum</b> <span>monsoon rain · flat top</span></li>
-    <li><b>Hkaya Bum</b> <span>burnt ridge · 250 m · foxholes</span></li>
+    <li><b>Hkaya Bum</b> <span>burnt ridge · 50–250 m · foxholes</span></li>
     <li><b>Lawa Yang</b> <span>dusk · flat top</span></li>
     <li><b>Yaw Yone</b> <span>night flares</span></li>
     <li><b>Sumprabum</b> <span>dark · tracers · they creep down</span></li>
     <li><b>3rd Brigade Pillbox</b> <span>concrete bunker · shells stun you</span></li>
-    <li><b>Putao</b> <span>snow · blue hour · 220 m</span></li>
-    <li><b>Waimaw</b> <span>burnt out · ash · 200 m</span></li>
+    <li><b>Putao</b> <span>snow · blue hour · 50–220 m</span></li>
+    <li><b>Waimaw</b> <span>burnt out · ash · 50–200 m</span></li>
     <li><b>Mali Hka</b> <span>river · brush · log wall</span></li>
     <li><b>Jade Mines</b> <span>spoil ridges · tents · mine lake</span></li>
     <li><b>Bhamo</b> <span>Irrawaddy river bank · sink ships</span></li>
-    <li><b>Alaw Bum</b> <span>night vision · 150 m</span></li>
+    <li><b>Alaw Bum</b> <span>night vision · 50–150 m</span></li>
     <li><b>The Laiza Hotel</b> <span>rooftop · waves · helicopter</span></li>
     <li><b>Nam San Yang</b> <span>storm · bamboo · fighting holes</span></li>
     <li><b>Pangwa Rare Earth</b> <span>open pit · terraces · excavator</span></li>
@@ -2000,6 +2000,7 @@ function drawParts(arr,yBase){for(const p of arr){const a=clamp(p.life/p.max,0,1
   if(p.helmet){ctx.save();ctx.globalAlpha=a;ctx.translate(p.x,p.y);ctx.rotate(p.rot);helmet(0,0);ctx.restore();continue}
   const y=yBase!==undefined?yBase+p.ry:p.y,r=p.r+(1-a)*p.grow*.5;
   ctx.globalAlpha=a*(p.glow?1:.75);ctx.fillStyle=`rgb(${p.rgb})`;circ(ctx,p.x,y,r)}ctx.globalAlpha=1;ctx.textAlign='left'}
+function distRange(){const f=SC.dist||200,n=SC.sniper?Math.round(f*.5/10)*10:SC.near||50;return n+'–'+f}
 const DPX=640,DPY=335;function distK(){return 200/(SC.dist||200)}
 function toWorld(ax,ay){const k=distK();return[DPX+(ax-DPX)/k,DPY+(ay+G.duckAmt*90-DPY)/k]}
 function drawFar(){const k=distK();if(k!==1){ctx.fillStyle=SC.sky[0];ctx.fillRect(-300,-300,W+600,H+600);ctx.save();ctx.translate(DPX,DPY);ctx.scale(k,k);ctx.translate(-DPX,-DPY);drawFarInner();ctx.restore()}else drawFarInner()}
@@ -3134,7 +3135,7 @@ function draw(){setBlur();ctx.setTransform(sc*dpr,0,0,sc*dpr,0,0);
   if(G.brief>0&&state==='play'){const a=Math.min(1,G.brief/.45);ctx.save();ctx.globalAlpha=a;ctx.fillStyle='rgba(10,12,8,.78)';ctx.fillRect(0,0,W,H);
     ctx.textAlign='center';ctx.fillStyle='#c9a83f';ctx.font='800 20px system-ui,sans-serif';
     ctx.fillText(`LEVEL ${G.plist?G.pi+1:G.level} · ${SC.name.toUpperCase()}${SC.alias?' ('+SC.alias.toUpperCase()+')':''}`,W/2,150);
-    const L=SC.sniper?[['20 soldiers in a sleeping camp','900 40px'],['from '+SC.dist+' metres, through the scope','700 26px'],['',''],['Headshots are silent · body shots make them yell','600 22px'],['Kill loners and radio men first','600 22px'],['The propane tank is your distraction','600 22px'],['Hold click to steady · release to fire · right-click to reload','600 20px'],['',''],['4 minutes','800 34px']]:[[G.endless?'Waves of troops attacking you':`${G.troops} troops attacking you`,'900 46px'],[`from ${SC.dist||200} metres away`,'700 30px'],['',''],
+    const L=SC.sniper?[['20 soldiers in a sleeping camp','900 40px'],['from '+distRange()+' metres, through the scope','700 26px'],['',''],['Headshots are silent · body shots make them yell','600 22px'],['Kill loners and radio men first','600 22px'],['The propane tank is your distraction','600 22px'],['Hold click to steady · release to fire · right-click to reload','600 20px'],['',''],['4 minutes','800 34px']]:[[G.endless?'Waves of troops attacking you':`${G.troops} troops attacking you`,'900 46px'],[`from ${distRange()} metres away`,'700 30px'],['',''],
       ['2 clips (60 bullets)','600 24px'],[`${G.rpg} rocket-propelled grenades`,'600 24px'],['1 KA-09 Kachin-made rifle','600 24px'],['',''],[G.endless?'ENDLESS — stay alive':'90 seconds','800 34px']];
     let y=230;for(const [t,f] of L){if(t){ctx.font=f+' system-ui,sans-serif';ctx.fillStyle=(t==='90 seconds'||t.startsWith('ENDLESS'))?'#e0483e':'#f4efd6';ctx.fillText(t,W/2,y)}y+=f.startsWith('900')?58:f.startsWith('800')?50:t?40:16}
     ctx.restore();ctx.textAlign='left'}
@@ -3148,7 +3149,7 @@ function draw(){setBlur();ctx.setTransform(sc*dpr,0,0,sc*dpr,0,0);
   if(state==='play'&&G.mag===0&&!(G.reloading>0)&&!SC.sniper){const k=.5+.5*Math.sin(T*5);const v=ctx.createRadialGradient(W/2,H/2,H*.3,W/2,H/2,H*.9);v.addColorStop(0,'rgba(0,0,0,0)');v.addColorStop(1,`rgba(0,0,0,${.35+.45*k})`);ctx.fillStyle=v;ctx.fillRect(0,0,W,H)}
   if(G.lowT>0){G.lowT-=FDT;const k=Math.sin(Math.PI*Math.max(0,1-G.lowT/.8));const v=ctx.createRadialGradient(W/2,H/2,H*.3,W/2,H/2,H*.9);v.addColorStop(0,'rgba(0,0,0,0)');v.addColorStop(1,`rgba(0,0,0,${.85*k})`);ctx.fillStyle=v;ctx.fillRect(0,0,W,H)}
   panel(16,14,262,62);if(G.endless&&!G.demo){const c=cyc(),hh=Math.floor(c.h),mm=Math.floor((c.h-hh)*60);ctx.save();ctx.font='700 12px system-ui,sans-serif';ctx.textAlign='right';ctx.fillStyle=c.sun>0?'#ffd36b':'#b9c4e0';ctx.fillText('DAY '+c.day+' · '+String(hh).padStart(2,'0')+':'+String(mm).padStart(2,'0')+(c.sun>0?' ☀':' ☾'),266,66);ctx.restore()}if(!G.endless&&G.livesMax){ctx.save();ctx.font='700 12px system-ui,sans-serif';ctx.textAlign='right';ctx.fillStyle='#e8c9a0';ctx.fillText('LIVES '+Math.max(0,G.lives)+' / '+G.livesMax,266,66);ctx.restore()}ctx.fillStyle='#c8c9b0';ctx.fillText(G.plist?`LEVEL ${G.pi+1} / ${G.plist.length}`:`LEVEL ${G.level}${G.level<=CAMPAIGN?' / '+CAMPAIGN:''}`,30,36);
-  {const lbl=SC.name.toUpperCase()+' · '+(SC.dist||200)+' m';ctx.font='600 12px system-ui,sans-serif';ctx.fillStyle='#9ea38a';if(ctx.measureText(lbl).width>132)ctx.font='600 9.5px system-ui,sans-serif';ctx.fillText(lbl,136,36)}
+  {const lbl=SC.name.toUpperCase()+' · '+distRange()+' m';ctx.font='600 12px system-ui,sans-serif';ctx.fillStyle='#9ea38a';if(ctx.measureText(lbl).width>132)ctx.font='600 9.5px system-ui,sans-serif';ctx.fillText(lbl,136,36)}
   const tl=G.endless?Math.floor(G.time):Math.ceil(G.time);ctx.font='800 26px system-ui,sans-serif';ctx.fillStyle=!G.endless&&tl<=10?'#ff8a6a':'#f4efd6';
   ctx.fillText(Math.floor(tl/60)+':'+String(tl%60).padStart(2,'0'),30,66);
   panel(W/2-150,14,300,46);ctx.font='700 14px system-ui,sans-serif';ctx.fillStyle='#c8c9b0';ctx.textAlign='center';
@@ -3182,7 +3183,7 @@ function draw(){setBlur();ctx.setTransform(sc*dpr,0,0,sc*dpr,0,0);
   if(G.banner>0){ctx.globalAlpha=Math.min(1,G.banner);ctx.font='800 34px system-ui,sans-serif';ctx.fillStyle='#f4efd6';
     ctx.fillText(`LEVEL ${G.level} · ${SC.name.toUpperCase()}`,W/2,H*.22);ctx.font='600 17px system-ui,sans-serif';
     const sub=[SC.alias,SC.tod!==SC.name?SC.tod:null].filter(Boolean).join(' · ');
-    ctx.fillText((sub?sub+'  ·  ':'')+`${SC.dist||200} m  ·  Get ${G.c.quota} kills in 90 seconds`,W/2,H*.22+28);ctx.globalAlpha=1;my2=H*.34}
+    ctx.fillText((sub?sub+'  ·  ':'')+`${distRange()} m  ·  Get ${G.c.quota} kills in 90 seconds`,W/2,H*.22+28);ctx.globalAlpha=1;my2=H*.34}
   for(const m of G.msgs){ctx.globalAlpha=Math.min(1,m.life*2);ctx.font='700 19px system-ui,sans-serif';ctx.fillStyle='rgba(0,0,0,.5)';ctx.fillText(m.t,W/2+1,my2+1);ctx.fillStyle=m.col;ctx.fillText(m.t,W/2,my2);my2+=26}
   ctx.globalAlpha=1;ctx.textAlign='left';
 }
