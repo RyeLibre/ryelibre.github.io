@@ -1300,14 +1300,22 @@ function levelCleared(){let n=0;try{n=(+localStorage.getItem('hilltop_lvdone')||
 function showBest(){try{const r=localStorage.getItem('hilltop_rank');$('rankLine').textContent=r?'RANK: '+r.toUpperCase():''}catch(e){}try{renderStars()}catch(e){}$('hs').textContent=best?('Best score: '+best):''}
 showBest();
 // small preview of every level's scene for the intro page
+let THUMB_TK=66;const THUMB_X=[];
+function thumbExtras(){const G0=G,T0=T;for(const q of THUMB_X){try{const {sc,c,li}=q,g=c.getContext('2d');ctx.save();ctx.setTransform(cv.width/W,0,0,cv.height/H,0,0);ctx.clearRect(0,0,W,H);ctx.drawImage(c,0,0,320,180,0,0,W,H);
+    const keep=SC;SC=sc;if(sc.tank){G={tk:{},time:90-THUMB_TK,parts:[]};drawTank()}if(sc.storm){T=2.1;G={duckAmt:0};drawStorm()}SC=keep;ctx.restore();g.setTransform(1,0,0,1,0,0);g.drawImage(cv,0,0,cv.width,cv.height,0,0,320,180);
+    const im=li.querySelector('img.thumb');if(im)im.src=c.toDataURL('image/jpeg',.8);
+    document.querySelectorAll('.levels li img.thumb').forEach(x=>{if(x!==im&&x.dataset.k===String(SCENES.indexOf(sc)))x.src=im.src})}catch(e){console.error('THUMBX',e.message);try{ctx.restore()}catch(_){}}}G=G0;T=T0;try{ctx.setTransform(cv.width/W,0,0,cv.height/H,0,0);ctx.clearRect(0,0,W,H)}catch(e){}}
 function makeThumbs(){const lis=document.querySelectorAll('.levels li');const keep=SC;
   SCENES.forEach((sc,i)=>{if(!lis[i])return;buildScene(i+1);const c=mk(320,180),g=c.getContext('2d'),k=320/W;g.scale(k,k);
     g.drawImage(bg,-PADX,0);g.drawImage(bgh,-PADX,0);g.drawImage(fg,-PADX,0);
     if(sc.night){g.fillStyle=`rgba(4,8,20,${sc.dark?.45:.35})`;g.fillRect(0,0,W,H)}if(sc.dim){g.fillStyle=`rgba(${sc.dimc},${sc.dim})`;g.fillRect(0,0,W,H)}
-    if(TOWN)g.drawImage(TOWN,-100,445);g.drawImage(near,0,600);if(sc.nvg)nvgPost(g,false);const im=document.createElement('img');im.src=c.toDataURL('image/jpeg',.8);im.className='thumb';lis[i].prepend(im)});
+    if(TOWN)g.drawImage(TOWN,-100,445);
+    if(sc.tank||sc.storm)THUMB_X.push({sc,c,li:lis[i]});
+    g.drawImage(near,0,600);if(sc.nvg)nvgPost(g,false);const im=document.createElement('img');im.src=c.toDataURL('image/jpeg',.8);im.className='thumb';lis[i].prepend(im)});
   document.querySelectorAll('.levels li.soon').forEach(li=>{const d=document.createElement('div');d.className='thumb ph';d.textContent='?';li.prepend(d)});
   buildScene(1)}
 try{makeThumbs()}catch(e){buildScene(1)}
+setTimeout(()=>{try{const keep=SC;thumbExtras();if(keep)SC=keep}catch(e){}},0);
 setTimeout(()=>{if(state==='title'&&!/nosplash/.test(location.hash)){$('title').classList.add('hide');$('gate').classList.remove('hide')}},50);
 function gateGo(withTrailer){const a=ac();try{a&&a.resume&&a.resume()}catch(e){}try{loadSfx()}catch(e){}$('gate').classList.add('hide');track(withTrailer?'trailer-play':'trailer-skip');
   if(!withTrailer){$('title').classList.remove('hide');introAudio();return}setTimeout(()=>{try{if(state==='title')startDemo()}catch(e){DEMO=null;$('title').classList.remove('hide')}},700)}
