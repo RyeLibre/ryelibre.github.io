@@ -23,6 +23,25 @@
 // of every tag view it belongs to (before the normal newest-first sort).
 const PROJECTS = [
   {
+    "id": "playground-of-the-gods",
+    "title": "Playground of the Gods",
+    "categories": [
+      "Photography",
+      "Books",
+      "Mountains",
+      "Hokkaido"
+    ],
+    "date": "2026-11",
+    "description": "A photobook from the Kamui Mintara series. Turn the pages below: drag a corner, click a page, or use the arrow keys.",
+    "link": "books/playground-of-the-gods/index.html",
+    "image": "images/playground-of-the-gods.jpg",
+    "images": [],
+    "embed": "books/playground-of-the-gods/index.html",
+    "location": "",
+    "place": "",
+    "featured": false
+  },
+  {
     "id": "upaya-skill-share",
     "title": "Upāya Skill Share",
     "categories": ["Projects"],

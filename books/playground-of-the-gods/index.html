@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flip book</title>
+<style>
+  :root { --bg: #232326; --text: #e9e9ec; --muted: #9a9aa3; --line: #3a3a40; --accent: #c4c8cf; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body { background: radial-gradient(ellipse at 50% 40%, #34343a 0%, var(--bg) 70%); color: var(--text);
+    font: 14px/1.4 "Segoe UI", system-ui, -apple-system, sans-serif; display: flex; flex-direction: column; overflow: hidden; }
+  header { padding: 14px 20px 0; text-align: center; }
+  h1 { margin: 0; font: italic 24px Georgia, "Times New Roman", serif; letter-spacing: .01em; }
+  main { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; padding: 14px 24px; }
+  .page { background: #fff; }
+  .page img { width: 100%; height: 100%; display: block; object-fit: cover; user-select: none; -webkit-user-drag: none; }
+  nav { display: flex; align-items: center; justify-content: center; gap: 14px; padding: 0 20px 16px; color: var(--muted); }
+  button { background: #2e2e33; color: var(--text); border: 1px solid var(--line); border-radius: 8px; height: 36px; min-width: 40px;
+    font: inherit; font-size: 18px; cursor: pointer; padding: 0 12px; }
+  button:hover { border-color: var(--accent); }
+  button:disabled { opacity: .35; cursor: default; }
+  #count { min-width: 110px; text-align: center; font-variant-numeric: tabular-nums; }
+  .hint { font-size: 12px; }
+  @media (max-width: 700px) { h1 { font-size: 19px; } .hint { display: none; } }
+</style>
+</head>
+<body>
+<header><h1 id="title"></h1></header>
+<main id="stage"><div id="book"></div></main>
+<nav>
+  <button id="first" title="First page">⏮</button>
+  <button id="prev" title="Previous page (←)">‹</button>
+  <span id="count"></span>
+  <button id="next" title="Next page (→)">›</button>
+  <button id="last" title="Last page">⏭</button>
+  <button id="fs" title="Fullscreen">⛶</button>
+  <span class="hint">Drag a page corner, click a page, or use the arrow keys</span>
+</nav>
+<script src="page-flip.js"></script>
+<script id="flip-data" type="application/json">{"title":"Playground of the gods","width":1750,"height":1400,"pages":["pages/p001.jpg","pages/p002.jpg","pages/p003.jpg","pages/p004.jpg","pages/p005.jpg","pages/p006.jpg","pages/p007.jpg","pages/p008.jpg","pages/p009.jpg","pages/p010.jpg","pages/p011.jpg","pages/p012.jpg","pages/p013.jpg","pages/p014.jpg","pages/p015.jpg","pages/p016.jpg","pages/p017.jpg","pages/p018.jpg","pages/p019.jpg","pages/p020.jpg","pages/p021.jpg","pages/p022.jpg","pages/p023.jpg","pages/p024.jpg","pages/p025.jpg","pages/p026.jpg","pages/p027.jpg","pages/p028.jpg","pages/p029.jpg","pages/p030.jpg","pages/p031.jpg","pages/p032.jpg","pages/p033.jpg","pages/p034.jpg","pages/p035.jpg","pages/p036.jpg","pages/p037.jpg","pages/p038.jpg","pages/p039.jpg","pages/p040.jpg","pages/p041.jpg","pages/p042.jpg","pages/p043.jpg","pages/p044.jpg","pages/p045.jpg","pages/p046.jpg","pages/p047.jpg","pages/p048.jpg","pages/p049.jpg","pages/p050.jpg","pages/p051.jpg","pages/p052.jpg","pages/p053.jpg","pages/p054.jpg","pages/p055.jpg","pages/p056.jpg","pages/p057.jpg","pages/p058.jpg","pages/p059.jpg","pages/p060.jpg","pages/p061.jpg","pages/p062.jpg","pages/p063.jpg","pages/p064.jpg","pages/p065.jpg","pages/p066.jpg","pages/p067.jpg","pages/p068.jpg","pages/p069.jpg","pages/p070.jpg","pages/p071.jpg","pages/p072.jpg","pages/p073.jpg","pages/p074.jpg","pages/p075.jpg","pages/p076.jpg","pages/p077.jpg","pages/p078.jpg","pages/p079.jpg","pages/p080.jpg","pages/p081.jpg","pages/p082.jpg","pages/p083.jpg","pages/p084.jpg","pages/p085.jpg","pages/p086.jpg","pages/p087.jpg","pages/p088.jpg","pages/p089.jpg","pages/p090.jpg","pages/p091.jpg","pages/p092.jpg","pages/p093.jpg","pages/p094.jpg","pages/p095.jpg","pages/p096.jpg","pages/p097.jpg","pages/p098.jpg","pages/p099.jpg","pages/p100.jpg","pages/p101.jpg","pages/p102.jpg"]}</script>
+<script>
+(function () {
+  'use strict';
+  var D = JSON.parse(document.getElementById('flip-data').textContent);
+  if (!D) return;
+  document.title = D.title || 'Flip book';
+  document.getElementById('title').textContent = D.title || '';
+  var stage = document.getElementById('stage');
+  var bookEl = document.getElementById('book');
+  function fillPages(el) {
+    el.innerHTML = D.pages.map(function (src, i) {
+      var hard = i === 0 || i === D.pages.length - 1;
+      return '<div class="page"' + (hard ? ' data-density="hard"' : '') + '><img src="' + src + '" alt="" draggable="false"></div>';
+    }).join('');
+    return el.querySelectorAll('.page');
+  }
+
+  // Size the book to fit the window: two pages side by side, or one on narrow screens.
+  function fit() {
+    var spread = stage.clientWidth > 700;
+    var maxW = (stage.clientWidth - 48) / (spread ? 2 : 1);
+    var maxH = stage.clientHeight - 28;
+    var s = Math.min(maxW / D.width, maxH / D.height, 1.25);
+    return { w: Math.floor(D.width * s), h: Math.floor(D.height * s) };
+  }
+  var size = fit();
+  var pf = new St.PageFlip(bookEl, {
+    width: size.w, height: size.h, size: 'fixed',
+    showCover: true,              // the cover sits alone, like a real book; then two-page spreads
+    usePortrait: true,            // one page at a time on narrow screens
+    drawShadow: true, maxShadowOpacity: 0.55,
+    flippingTime: 850, mobileScrollSupport: false, showPageCorners: true,
+  });
+  pf.loadFromHTML(fillPages(bookEl));
+
+  var count = document.getElementById('count');
+  function update() {
+    var i = pf.getCurrentPageIndex(), n = pf.getPageCount();
+    var shown = pf.getOrientation() === 'landscape' && i > 0 && i < n - 1 ? (i + 1) + '–' + Math.min(i + 2, n) : String(i + 1);
+    count.textContent = 'Page ' + shown + ' of ' + n;
+    document.getElementById('prev').disabled = document.getElementById('first').disabled = i === 0;
+    document.getElementById('next').disabled = document.getElementById('last').disabled = i >= n - (pf.getOrientation() === 'landscape' ? 2 : 1);
+  }
+  pf.on('flip', update);
+  pf.on('changeOrientation', update);
+  update();
+
+  document.getElementById('prev').onclick = function () { pf.flipPrev(); };
+  document.getElementById('next').onclick = function () { pf.flipNext(); };
+  document.getElementById('first').onclick = function () { pf.turnToPage(0); update(); };
+  document.getElementById('last').onclick = function () { pf.turnToPage(pf.getPageCount() - 1); update(); };
+  document.getElementById('fs').onclick = function () {
+    if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen();
+  };
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown') pf.flipNext();
+    if (e.key === 'ArrowLeft' || e.key === 'PageUp') pf.flipPrev();
+  });
+  // Rebuild at the new size when the window changes.
+  var t;
+  window.addEventListener('resize', function () {
+    clearTimeout(t);
+    t = setTimeout(function () {
+      var s = fit();
+      if (Math.abs(s.w - size.w) < 4) return;
+      var at = pf.getCurrentPageIndex();
+      size = s;
+      pf.destroy();
+      var el = document.createElement('div'); el.id = 'book'; stage.appendChild(el); bookEl = el;
+      pf = new St.PageFlip(el, { width: s.w, height: s.h, size: 'fixed', showCover: true, usePortrait: true,
+        drawShadow: true, maxShadowOpacity: 0.55, flippingTime: 850, mobileScrollSupport: false, showPageCorners: true, startPage: at });
+      pf.loadFromHTML(fillPages(el));
+      pf.on('flip', update); pf.on('changeOrientation', update); update();
+    }, 250);
+  });
+})();
+</script>
+</body>
+</html>
