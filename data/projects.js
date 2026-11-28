@@ -39,7 +39,7 @@ const PROJECTS = [
     "embed": "books/playground-of-the-gods/index.html",
     "location": "",
     "place": "",
-    "featured": false
+    "featured": true
   },
   {
     "id": "upaya-skill-share",
