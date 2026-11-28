@@ -33,7 +33,7 @@ const PROJECTS = [
     ],
     "date": "2026-11",
     "description": "A photobook from the Kamui Mintara series. Turn the pages below: drag a corner, click a page, or use the arrow keys.",
-    "link": "books/playground-of-the-gods/index.html",
+    "link": "",
     "image": "images/playground-of-the-gods.jpg",
     "images": [],
     "embed": "books/playground-of-the-gods/index.html",
